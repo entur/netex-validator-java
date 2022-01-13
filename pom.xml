@@ -24,7 +24,7 @@
     </licenses>
     <scm>
         <connection>scm:git:ssh://git@github.com:entur/netex-validator-java.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:entur/netex-validator-java.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@github.com/entur/netex-validator-java.git</developerConnection>
         <url>https://github.com/entur/netex-validator-java/tree/main</url>
   </scm>
     <distributionManagement>
