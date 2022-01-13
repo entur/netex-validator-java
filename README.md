@@ -1,2 +1,2 @@
 # netex-validator-java
-Validate NeTEx dataset against the Nordic NeTEx profile
+Validate NeTEx datasets against the Nordic NeTEx profile
