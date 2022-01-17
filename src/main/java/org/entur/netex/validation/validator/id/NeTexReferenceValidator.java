@@ -22,10 +22,10 @@ public class NeTexReferenceValidator implements NetexValidator {
 
     private static final String MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE = "Unresolved reference to external reference data";
     private final List<ExternalReferenceValidator> externalReferenceValidators;
-    private final CommonNetexIdRepository commonNetexIdRepository;
+    private final NetexIdRepository netexIdRepository;
 
-    public NeTexReferenceValidator(CommonNetexIdRepository commonNetexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators) {
-        this.commonNetexIdRepository = commonNetexIdRepository;
+    public NeTexReferenceValidator(NetexIdRepository netexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators) {
+        this.netexIdRepository = netexIdRepository;
         this.externalReferenceValidators = externalReferenceValidators;
     }
 
@@ -45,7 +45,7 @@ public class NeTexReferenceValidator implements NetexValidator {
         possibleExternalReferences.removeAll(localIds);
         if (!possibleExternalReferences.isEmpty()) {
             // Remove references that are found in the common files, comparing only by id, not by id and version
-            Set<String> commonIds = commonNetexIdRepository.getCommonNetexIds(reportId);
+            Set<String> commonIds = netexIdRepository.getSharedNetexIds(reportId);
             possibleExternalReferences.removeIf(ref -> commonIds.stream().anyMatch(commonId -> commonId.equals(ref.getId())));
             if (!possibleExternalReferences.isEmpty()) {
                 // Remove references that are valid according to the external id validators
@@ -60,7 +60,7 @@ public class NeTexReferenceValidator implements NetexValidator {
         }
 
         if(isCommonFile){
-            commonNetexIdRepository.addCommonNetexIds(reportId, localIds);
+            netexIdRepository.addSharedNetexIds(reportId, localIds);
         }
 
         return validationReportEntries;

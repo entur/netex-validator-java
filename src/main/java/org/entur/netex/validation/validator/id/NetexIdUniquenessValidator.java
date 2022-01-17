@@ -56,7 +56,7 @@ public class NetexIdUniquenessValidator implements NetexValidator {
         } else {
             netexIds = netexFileLocalIds.stream().filter(idVersion -> !IGNORABLE_ELEMENTS.contains(idVersion.getElementName())).collect(Collectors.toMap(IdVersion::getId, Function.identity()));
         }
-        Set<String> duplicateIds = netexIdRepository.getDuplicates(reportId, fileName, netexIds.keySet());
+        Set<String> duplicateIds = netexIdRepository.getDuplicateNetexIds(reportId, fileName, netexIds.keySet());
         if (!duplicateIds.isEmpty()) {
             for (String id : duplicateIds) {
                 String validationReportEntryMessage = getIdVersionLocation(netexIds.get(id)) + MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES;

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.entur.netex.validation.validator.ValidatorTestUtil.getReport;
@@ -34,8 +33,8 @@ class NetexReferenceValidatorTest {
     }
 
     private NeTexReferenceValidator createValidator() {
-        CommonNetexIdRepository commonNetexIdRepository = new DefaultCommonNetexIdRepository();
+        NetexIdRepository netexIdRepository = new DefaultNetexIdRepository();
         ExternalReferenceValidator acceptAllStopPlacesAndQuays = externalIdsToValidate -> externalIdsToValidate.stream().filter(e -> e.getId().contains(":Quay:") || e.getId().contains(":StopPlace:")).collect(Collectors.toSet());
-        return new NeTexReferenceValidator(commonNetexIdRepository, List.of(acceptAllStopPlacesAndQuays));
+        return new NeTexReferenceValidator(netexIdRepository, List.of(acceptAllStopPlacesAndQuays));
     }
 }
