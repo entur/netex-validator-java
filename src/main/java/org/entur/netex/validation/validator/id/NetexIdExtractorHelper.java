@@ -7,6 +7,7 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
+import org.entur.netex.validation.exception.NetexValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,18 +21,15 @@ public final class NetexIdExtractorHelper {
     private NetexIdExtractorHelper() {
     }
 
-    public static List<IdVersion> collectEntityIdentificators(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames)
-            throws SaxonApiException {
+    public static List<IdVersion> collectEntityIdentifiers(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames) {
         return collectIdOrRefWithVersion(document, xPathCompiler, filename, "id", ignorableElementNames);
     }
 
-    public static List<IdVersion> collectEntityReferences(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames)
-            throws SaxonApiException {
+    public static List<IdVersion> collectEntityReferences(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames) {
         return collectIdOrRefWithVersion(document, xPathCompiler, filename, "ref", ignorableElementNames);
     }
 
-    public static List<IdVersion> collectIdOrRefWithVersion(XdmNode document, XPathCompiler xPathCompiler, String filename, String attributeName, Set<String> ignorableElementNames)
-            throws SaxonApiException {
+    private static List<IdVersion> collectIdOrRefWithVersion(XdmNode document, XPathCompiler xPathCompiler, String filename, String attributeName, Set<String> ignorableElementNames) {
         StringBuilder filterClause = new StringBuilder();
         filterClause.append("//n:*[");
         if (ignorableElementNames != null) {
@@ -41,9 +39,14 @@ public final class NetexIdExtractorHelper {
         }
         filterClause.append("@").append(attributeName).append("]");
 
-        XPathSelector selector = xPathCompiler.compile(filterClause.toString()).load();
-        selector.setContextItem(document);
-        XdmValue nodes = selector.evaluate();
+        XdmValue nodes;
+        try {
+            XPathSelector selector = xPathCompiler.compile(filterClause.toString()).load();
+            selector.setContextItem(document);
+            nodes = selector.evaluate();
+        } catch (SaxonApiException e) {
+            throw new NetexValidationException("Exception while parsing the NeTEx file " + filename, e);
+        }
 
         QName versionQName = new QName("version");
         List<IdVersion> ids = new ArrayList<>();
