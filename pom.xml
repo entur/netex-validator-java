@@ -53,7 +53,7 @@
 
         <junit.version>5.8.2</junit.version>
         <mockito-core.version>3.12.4</mockito-core.version>
-        <logback-classic.version>1.2.9</logback-classic.version>
+        <logback-classic.version>1.2.10</logback-classic.version>
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
