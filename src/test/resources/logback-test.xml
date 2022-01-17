@@ -30,6 +30,7 @@
     <logger name="com.google.auth.oauth2.DefaultCredentialsProvider" level="ERROR"/>
 
 
+    <logger name="org.entur" level="DEBUG"/>
     <logger name="org.entur.netex.validation.validator.xpath.ValidationTree" level="INFO" />
 
 

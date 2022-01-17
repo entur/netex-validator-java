@@ -1,6 +1,5 @@
 package org.entur.netex.validation.validator;
 
-import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.id.IdVersion;
@@ -26,7 +25,7 @@ public class NetexValidatorsRunner {
         this.netexValidators = netexValidators;
     }
 
-    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent) throws SaxonApiException {
+    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent)  {
         ValidationReport validationReport = new ValidationReport(codespace, validationReportId);
         validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
         if (validationReport.hasError()) {
@@ -36,7 +35,7 @@ public class NetexValidatorsRunner {
 
         XdmNode document = XMLParserUtil.parseFileToXdmNode(fileContent);
         XPathCompiler xPathCompiler = XMLParserUtil.getXPathCompiler();
-        Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentificators(document, xPathCompiler, filename, Set.of("Codespace")));
+        Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentifiers(document, xPathCompiler, filename, Set.of("Codespace")));
         List<IdVersion> localRefs = NetexIdExtractorHelper.collectEntityReferences(document, xPathCompiler, filename, null);
 
         ValidationContext validationContext = new ValidationContext(document, xPathCompiler, codespace, filename, localIds, localRefs);
