@@ -12,7 +12,7 @@
     <url>https://github.com/entur/netex-validator-java</url>
     <organization>
         <name>Entur AS</name>
-        <url>http://www.entur.org/</url>
+        <url>https://www.entur.org/</url>
     </organization>
     <licenses>
         <license>
@@ -48,7 +48,6 @@
         <netex-java-model.version>1.0.13</netex-java-model.version>
         <saxon.version>10.6</saxon.version>
         <zt-zip.version>1.14</zt-zip.version>
-        <jackson-annotations.version>2.13.1</jackson-annotations.version>
         <slf4j.version>1.7.33</slf4j.version>
 
         <junit.version>5.8.2</junit.version>
@@ -95,11 +94,6 @@
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>
             <version>${saxon.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson-annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -393,10 +387,6 @@
                 <activeByDefault>false</activeByDefault>
             </activation>
             <distributionManagement>
-                <!--snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository-->
                 <repository>
                     <id>ossrh</id>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>

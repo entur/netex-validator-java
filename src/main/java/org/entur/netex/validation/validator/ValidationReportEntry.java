@@ -1,11 +1,8 @@
 package org.entur.netex.validation.validator;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 /**
  * Single entry in a validation report.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ValidationReportEntry {
 
     private String name;
