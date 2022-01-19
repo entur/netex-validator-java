@@ -1,8 +1,5 @@
 package org.entur.netex.validation.validator;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,13 +7,12 @@ import java.util.Collection;
 /**
  * NeTEx validation report.
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ValidationReport {
 
-    private  String codespace;
-    private  String validationReportId;
-    private  LocalDateTime creationDate;
-    private  Collection<ValidationReportEntry> validationReportEntries;
+    private String codespace;
+    private String validationReportId;
+    private LocalDateTime creationDate;
+    private Collection<ValidationReportEntry> validationReportEntries;
 
     public ValidationReport() {
     }
@@ -59,7 +55,6 @@ public class ValidationReport {
         return validationReportId;
     }
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
