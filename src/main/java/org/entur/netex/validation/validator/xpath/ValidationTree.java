@@ -18,6 +18,8 @@ import java.util.function.Predicate;
 
 /**
  * A tree of XPath validation rules to be applied to a NeTEx document. See {@link ValidationRule}.
+ * The tree can be structured in subtrees that validate a part of the XML documents.
+ * The tree leaves are instances {@link ValidationRule}.
  */
 public class ValidationTree {
 
@@ -29,10 +31,19 @@ public class ValidationTree {
     private final List<ValidationRule> validationRules;
     private final Predicate<XPathValidationContext> executionCondition;
 
+    /**
+     * @param name the name of the validation tree.
+     * @param context the XPath context, that is the XPath path on which the rule is applied.
+     */
     public ValidationTree(String name, String context) {
         this(name, context, validationContext -> true);
     }
 
+    /**
+     * @param name the name of the validation tree.
+     * @param context the XPath context, that is the XPath path on which the rule is applied.
+     * @param executionCondition condition evaluated at validation-time. The validation tree is executed only if the condition returns true.
+     */
     public ValidationTree(String name, String context, Predicate<XPathValidationContext> executionCondition) {
         this.name = name;
         this.context = context;
@@ -63,9 +74,13 @@ public class ValidationTree {
 
         return validationReportEntries;
 
-
     }
 
+    /**
+     * Return a string representation of the validation tree, for debugging purpose.
+     *
+     * @return a string representation of the validation tree, for debugging purpose.
+     */
     public String describe() {
         return describe(0);
     }

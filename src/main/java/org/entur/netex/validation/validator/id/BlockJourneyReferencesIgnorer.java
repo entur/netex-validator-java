@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Validate references to Blocks as valid by default.
+ * Mark references to Blocks as valid by default.
  */
 public class BlockJourneyReferencesIgnorer implements ExternalReferenceValidator {
 

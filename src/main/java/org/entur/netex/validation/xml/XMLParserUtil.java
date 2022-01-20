@@ -34,6 +34,11 @@ public final class XMLParserUtil {
     private XMLParserUtil() {
     }
 
+    /**
+     * Return a secure XMLInput factory.
+     * Security-sensitive features are disabled.
+     * @return a secure XMLInput factory
+     */
     public static XMLInputFactory getSecureXmlInputFactory() {
         XMLInputFactory factory = XMLInputFactory.newInstance();
         factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
@@ -41,10 +46,11 @@ public final class XMLParserUtil {
         return factory;
     }
 
-    public static Processor getProcessor() {
-        return processor;
-    }
 
+    /**
+     * Return a shared, thread-safe, instance of XPathCompiler.
+     * @return a shared XPathCompiler.
+     */
     public static synchronized XPathCompiler getXPathCompiler() {
 
         if (xpathCompiler == null) {
@@ -59,8 +65,13 @@ public final class XMLParserUtil {
         return xpathCompiler;
     }
 
+    /**
+     * Parse an XML file and return an XML nodes graph.
+     * @param content the XML file.
+     * @return an XML nodes graph representing the XML document.
+     */
     public static XdmNode parseFileToXdmNode(byte[] content) {
-        DocumentBuilder builder = getProcessor().newDocumentBuilder();
+        DocumentBuilder builder = processor.newDocumentBuilder();
         builder.setLineNumbering(true);
         builder.setWhitespaceStrippingPolicy(WhitespaceStrippingPolicy.ALL);
         // ignore SiteFrame
@@ -72,13 +83,20 @@ public final class XMLParserUtil {
         }
     }
 
-    public static XdmValue selectNodeSet(String expression, XPathCompiler xpath, XdmNode document) {
+    /**
+     * Select a set of nodes according to an XPath expression.
+     * @param expression the XPath expression to evaluate.
+     * @param xPathCompiler the XPath compiler.
+     * @param document the XML document on which the XPath is evaluated.
+     * @return the nodes that match the XPath expression.
+     */
+    public static XdmValue selectNodeSet(String expression, XPathCompiler xPathCompiler, XdmNode document) {
         try {
-            XPathSelector selector = xpath.compile(expression).load();
+            XPathSelector selector = xPathCompiler.compile(expression).load();
             selector.setContextItem(document);
             return selector.evaluate();
         } catch (SaxonApiException e) {
-            throw new NetexValidationException("Exception while selecting node with xpath " + expression, e);
+            throw new NetexValidationException("Exception while selecting node with xPath " + expression, e);
         }
     }
 }

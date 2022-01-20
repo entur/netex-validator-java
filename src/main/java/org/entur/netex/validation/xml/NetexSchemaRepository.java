@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Store the different versions of the NeTEX XML schema.
+ * Manage the different versions of the NeTEX XML schema.
+ * Parsed instances of the NeTEx schemas are cached.
  */
 public final class NetexSchemaRepository {
 
@@ -24,6 +25,11 @@ public final class NetexSchemaRepository {
         this.netexSchema = new ConcurrentHashMap<>();
     }
 
+    /**
+     * Return an XML schema for a particular NeTEx version.
+     * @param version the NeTEx version
+     * @return an XML schema for a particular NeTEx version.
+     */
     public Schema getNetexSchema(NeTExValidator.NetexVersion version) {
         return netexSchema.computeIfAbsent(version, netexVersion -> createNetexSchema(version));
     }
@@ -37,6 +43,11 @@ public final class NetexSchemaRepository {
         }
     }
 
+    /**
+     * Identify the version of NeTEx used in a given document.
+     * @param content the NeTEx document
+     * @return the NeTEx version.
+     */
     public static NeTExValidator.NetexVersion detectNetexSchemaVersion(byte[] content) {
         String profileVersion = PublicationDeliveryVersionAttributeReader.findPublicationDeliveryVersion(content);
         String netexSchemaVersion = getSchemaVersion(profileVersion);

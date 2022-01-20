@@ -10,7 +10,8 @@ import javax.xml.namespace.QName;
 import java.util.Set;
 
 /**
- * SAX handler that skips parsing of the given XML elements in order to improve performance.
+ * SAX handler that skips parsing of the given XML elements.
+ * This is a performance optimization.
  */
 public class SkippingElementContentHandler extends DefaultHandler {
 
