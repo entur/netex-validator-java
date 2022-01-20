@@ -21,10 +21,26 @@ public final class NetexIdExtractorHelper {
     private NetexIdExtractorHelper() {
     }
 
+    /**
+     * Collect NeTEx ids declared in a NeTEx document.
+     * @param document the parsed NeTEx document.
+     * @param xPathCompiler the XPath compiler.
+     * @param filename the NeTEx file name.
+     * @param ignorableElementNames set of NeTEx elements that are not collected.
+     * @return a list of IDVersion representing the NeTEx ids present in the document.
+     */
     public static List<IdVersion> collectEntityIdentifiers(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames) {
         return collectIdOrRefWithVersion(document, xPathCompiler, filename, "id", ignorableElementNames);
     }
 
+    /**
+     * Collect NeTEx references declared in a NeTEx document.
+     * @param document the parsed NeTEx document.
+     * @param xPathCompiler the XPath compiler.
+     * @param filename the NeTEx file name.
+     * @param ignorableElementNames set of NeTEx elements that are not collected.
+     * @return a list of IDVersion representing the NeTEx references present in the document.
+     */
     public static List<IdVersion> collectEntityReferences(XdmNode document, XPathCompiler xPathCompiler, String filename, Set<String> ignorableElementNames) {
         return collectIdOrRefWithVersion(document, xPathCompiler, filename, "ref", ignorableElementNames);
     }

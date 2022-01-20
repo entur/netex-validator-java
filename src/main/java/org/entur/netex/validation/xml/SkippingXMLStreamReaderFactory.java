@@ -9,7 +9,8 @@ import java.io.InputStream;
 import java.util.Set;
 
 /**
- * Stream reader that skips parsing of the given XML elements in order to improve performance.
+ * Stream reader that skips parsing of the given XML elements.
+ * This is a performance optimization.
  */
 public class SkippingXMLStreamReaderFactory {
 

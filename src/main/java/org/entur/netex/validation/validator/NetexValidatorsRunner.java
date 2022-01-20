@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Orchestrate the execution of individual {@link NetexValidator}
+ * Orchestrate the execution of individual instances of {@link NetexValidator}.
+ * The first step in the validation process is the XML Schema validation.
+ * The XML Schema validation is a blocking step: further validators downstream are skipped in case of XML Schema validation errors.
  */
 public class NetexValidatorsRunner {
 

@@ -10,11 +10,33 @@ import java.util.List;
  */
 public interface ValidationRule {
 
-    List<ValidationReportEntry> validate(XPathValidationContext validationContext) ;
+    /**
+     * Validate a NeTEx document or document part.
+     *
+     * @param validationContext the current validation context.
+     * @return a list of validation entries for the current context.
+     */
+    List<ValidationReportEntry> validate(XPathValidationContext validationContext);
 
-    String getMessage();
-
+    /**
+     * The name of the validation rule.
+     *
+     * @return the name of the validation rule.
+     */
     String getName();
 
+    /**
+     * The context specific validation message
+     *
+     * @return the context-specific validation message
+     */
+    String getMessage();
+
+
+    /**
+     * The rule severity.
+     *
+     * @return the rule severity.
+     */
     ValidationReportEntrySeverity getSeverity();
 }

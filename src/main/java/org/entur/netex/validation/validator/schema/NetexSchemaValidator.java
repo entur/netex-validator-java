@@ -20,7 +20,7 @@ import java.util.List;
 
 
 /**
- * Validate that NeTEx files against the NeTEx XML schema.
+ * Validate NeTEx files against the NeTEx XML schema.
  */
 public class NetexSchemaValidator {
 
@@ -30,6 +30,9 @@ public class NetexSchemaValidator {
     private final int maxValidationReportEntries;
 
 
+    /**
+     * @param maxValidationReportEntries the maximum number of entries reported. Additional entries are ignored.
+     */
     public NetexSchemaValidator(int maxValidationReportEntries) {
         this.netexSchemaRepository = new NetexSchemaRepository();
         this.maxValidationReportEntries = maxValidationReportEntries;

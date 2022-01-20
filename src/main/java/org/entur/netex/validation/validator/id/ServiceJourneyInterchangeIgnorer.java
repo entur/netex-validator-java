@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Validate references to ServiceJourney from an ServiceJourneyInterchange as valid by default.
+ * Mark references to ServiceJourney from an ServiceJourneyInterchange as valid by default.
  */
 public class ServiceJourneyInterchangeIgnorer implements ExternalReferenceValidator {
 

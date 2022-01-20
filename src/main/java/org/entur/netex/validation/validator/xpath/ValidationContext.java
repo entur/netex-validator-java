@@ -20,6 +20,15 @@ public class ValidationContext {
     private final Set<IdVersion> localIds;
     private final List<IdVersion> localRefs;
 
+    /**
+     * Build the validation context for a validation run
+     * @param document the document being analyzed.
+     * @param xPathCompiler the XPath compiler.
+     * @param codespace the current codespace.
+     * @param fileName the name of the file being analyzed
+     * @param localIds the set of NeTEx ids declared in the file.
+     * @param localRefs the set of references to other NeTEx objects. They may refer to object in the same file or to external sources.
+     */
     public ValidationContext(XdmNode document, XPathCompiler xPathCompiler, String codespace, String fileName, Set<IdVersion> localIds, List<IdVersion> localRefs) {
         this.xmlNode = document;
         this.xPathCompiler = xPathCompiler;
