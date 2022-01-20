@@ -15,7 +15,10 @@ aliases:
 jobs:
   test:
     docker:
-      - image:  cimg/openjdk:11.0
+      - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
     environment:
       MAVEN_OPTS: -Xmx3G
     steps:
@@ -54,7 +57,10 @@ jobs:
 
   sonar:
     docker:
-      - image:  cimg/openjdk:11.0
+      - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
     environment:
       MAVEN_OPTS: -Xmx3G
     steps:
@@ -67,7 +73,10 @@ jobs:
 
   deploy:
     docker:
-      - image:  cimg/openjdk:11.0
+      - image: cimg/openjdk:11.0
+        auth:
+          username: $DOCKERHUB_LOGIN
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - restore_cache:
@@ -83,13 +92,19 @@ workflows:
   build_test_deploy:
     jobs:
       - test:
-          context: org-carbon
+          context:
+            - org-carbon
+            - global
       - sonar:
-          context: org-carbon
+          context:
+            - org-carbon
+            - global
           requires:
             - test
       - deploy:
-          context: org-carbon
+          context:
+            - org-carbon
+            - global
           requires:
             - sonar
           filters:
