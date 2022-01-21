@@ -51,7 +51,7 @@
         <slf4j.version>1.7.33</slf4j.version>
 
         <junit.version>5.8.2</junit.version>
-        <mockito-core.version>3.12.4</mockito-core.version>
+        <mockito-core.version>4.2.0</mockito-core.version>
         <logback-classic.version>1.2.10</logback-classic.version>
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
