@@ -18,7 +18,7 @@ public class SkippingXMLStreamReaderFactory {
     }
 
     public static XMLStreamReader newXMLStreamReader(final InputStream is, final Set<QName> elementsToSkip) throws XMLStreamException {
-        XMLInputFactory factory = XMLParserUtil.getSecureXmlInputFactory();
+        XMLInputFactory factory = NetexXMLParser.getSecureXmlInputFactory();
         XMLStreamReader xmlStreamReader = factory.createXMLStreamReader(is);
         if (elementsToSkip.isEmpty()) {
             return xmlStreamReader;

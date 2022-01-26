@@ -34,11 +34,11 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
     public List<ValidationReportEntry> validate(XPathValidationContext validationContext) {
         try {
             List<XdmValue> errorNodes = new ArrayList<>();
-            XPathSelector missingFieldSelector = validationContext.getXPathCompiler().compile("lines/FlexibleLine and lines/FlexibleLine[not(" + bookingProperty + ")]").load();
+            XPathSelector missingFieldSelector = validationContext.getNetexXMLParser().getXPathCompiler().compile("lines/FlexibleLine and lines/FlexibleLine[not(" + bookingProperty + ")]").load();
             missingFieldSelector.setContextItem(validationContext.getXmlNode());
             boolean missingField = missingFieldSelector.effectiveBooleanValue();
             if (missingField) {
-                XPathSelector selector = validationContext.getXPathCompiler().compile("journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/" + bookingProperty + ")]]").load();
+                XPathSelector selector = validationContext.getNetexXMLParser().getXPathCompiler().compile("journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/" + bookingProperty + ")]]").load();
                 selector.setContextItem(validationContext.getXmlNode());
                 XdmValue nodes = selector.evaluate();
 
@@ -48,7 +48,7 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
                         String id = node.getAttributeValue(QName.fromEQName("id"));
                         String version = node.getAttributeValue(QName.fromEQName("version"));
 
-                        XPathSelector sjSelector = validationContext.getXPathCompiler().compile("//vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or not(FlexibleServiceProperties/" + bookingProperty + ")) and JourneyPatternRef/@ref='" + id + "' and @version='" + version + "']").load();
+                        XPathSelector sjSelector = validationContext.getNetexXMLParser().getXPathCompiler().compile("//vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or not(FlexibleServiceProperties/" + bookingProperty + ")) and JourneyPatternRef/@ref='" + id + "' and @version='" + version + "']").load();
                         sjSelector.setContextItem(validationContext.getXmlNode());
                         XdmValue errorsForJP = sjSelector.evaluate();
                         if (errorsForJP.size() > 0) {

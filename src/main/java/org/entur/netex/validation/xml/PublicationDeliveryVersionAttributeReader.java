@@ -31,7 +31,7 @@ public final class PublicationDeliveryVersionAttributeReader {
 
         String versionAttribute = null;
         try {
-            XMLInputFactory inputFactory = XMLParserUtil.getSecureXmlInputFactory();
+            XMLInputFactory inputFactory = NetexXMLParser.getSecureXmlInputFactory();
             InputStream in = new ByteArrayInputStream(content);
             XMLEventReader eventReader = inputFactory.createXMLEventReader(new BufferedInputStream(in));
             while (versionAttribute == null && eventReader.hasNext()) {

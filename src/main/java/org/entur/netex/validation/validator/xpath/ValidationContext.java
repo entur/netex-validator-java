@@ -1,8 +1,8 @@
 package org.entur.netex.validation.validator.xpath;
 
-import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.id.IdVersion;
+import org.entur.netex.validation.xml.NetexXMLParser;
 
 import java.util.List;
 import java.util.Set;
@@ -13,8 +13,7 @@ import java.util.Set;
 public class ValidationContext {
 
     private final XdmNode xmlNode;
-    private final XPathCompiler xPathCompiler;
-
+    private final NetexXMLParser netexXMLParser;
     private final String codespace;
     private final String fileName;
     private final Set<IdVersion> localIds;
@@ -23,15 +22,15 @@ public class ValidationContext {
     /**
      * Build the validation context for a validation run
      * @param document the document being analyzed.
-     * @param xPathCompiler the XPath compiler.
+     * @param netexXMLParser the NeTEx parser.
      * @param codespace the current codespace.
      * @param fileName the name of the file being analyzed
      * @param localIds the set of NeTEx ids declared in the file.
      * @param localRefs the set of references to other NeTEx objects. They may refer to object in the same file or to external sources.
      */
-    public ValidationContext(XdmNode document, XPathCompiler xPathCompiler, String codespace, String fileName, Set<IdVersion> localIds, List<IdVersion> localRefs) {
+    public ValidationContext(XdmNode document, NetexXMLParser netexXMLParser, String codespace, String fileName, Set<IdVersion> localIds, List<IdVersion> localRefs) {
         this.xmlNode = document;
-        this.xPathCompiler = xPathCompiler;
+        this.netexXMLParser = netexXMLParser;
         this.codespace = codespace;
         this.fileName = fileName;
         this.localIds = localIds;
@@ -40,10 +39,6 @@ public class ValidationContext {
 
     public XdmNode getXmlNode() {
         return xmlNode;
-    }
-
-    public XPathCompiler getxPathCompiler() {
-        return xPathCompiler;
     }
 
     public String getFileName() {
@@ -66,4 +61,9 @@ public class ValidationContext {
     public boolean isCommonFile() {
         return fileName.startsWith("_");
     }
+
+    public NetexXMLParser getNetexXMLParser() {
+        return netexXMLParser;
+    }
+
 }

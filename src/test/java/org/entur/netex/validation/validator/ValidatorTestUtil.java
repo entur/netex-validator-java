@@ -1,19 +1,22 @@
 package org.entur.netex.validation.validator;
 
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
+import org.entur.netex.validation.xml.NetexXMLParser;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public class ValidatorTestUtil {
 
     public static ValidationReport getReport(String codespace, String reportId, String fileName, NetexValidator netexValidator) throws IOException {
+        NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
         NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
-        NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(netexSchemaValidator, List.of(netexValidator));
+        NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(netexXMLParser, netexSchemaValidator, List.of(netexValidator));
         ValidationReport aggregatedValidationReport = new ValidationReport(codespace, reportId);
 
         URL dataset = ValidatorTestUtil.class.getResource('/' + fileName);
