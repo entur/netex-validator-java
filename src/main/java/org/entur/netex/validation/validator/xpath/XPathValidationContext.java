@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath;
 
-import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.xml.NetexXMLParser;
 
 /**
  * The validation context for an XPath validation rule.
@@ -9,21 +9,20 @@ import net.sf.saxon.s9api.XdmNode;
 public class XPathValidationContext {
 
     private final XdmNode xmlNode;
-    private final XPathCompiler xPathCompiler;
-
+    private final NetexXMLParser netexXMLParser;
     private final String codespace;
     private final String fileName;
 
     /**
      *
      * @param document the NeTEx document or NeTEx document part.
-     * @param xPathCompiler the XPath compiler.
+     * @param netexXMLParser the NeTEx parser.
      * @param codespace the current codespace.
      * @param fileName the current filename.
      */
-    public XPathValidationContext(XdmNode document, XPathCompiler xPathCompiler, String codespace, String fileName) {
+    public XPathValidationContext(XdmNode document, NetexXMLParser netexXMLParser, String codespace, String fileName) {
         this.xmlNode = document;
-        this.xPathCompiler = xPathCompiler;
+        this.netexXMLParser = netexXMLParser;
         this.codespace = codespace;
         this.fileName = fileName;
     }
@@ -32,15 +31,15 @@ public class XPathValidationContext {
         return xmlNode;
     }
 
-    public XPathCompiler getXPathCompiler() {
-        return xPathCompiler;
-    }
-
     public String getFileName() {
         return fileName;
     }
 
     public String getCodespace() {
         return codespace;
+    }
+
+    public NetexXMLParser getNetexXMLParser() {
+        return netexXMLParser;
     }
 }

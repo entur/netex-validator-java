@@ -13,7 +13,6 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateMandatoryBooking
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportMode;
 import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportSubMode;
-import org.entur.netex.validation.xml.XMLParserUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
 
     protected ValidationTree getSingleFramesValidationTreeForCommonFile() {
         ValidationTree validationTree = new ValidationTree("Single frames in common file", "PublicationDelivery/dataObjects",
-                validationContext -> XMLParserUtil.selectNodeSet("CompositeFrame", validationContext.getXPathCompiler(), validationContext.getXmlNode()).isEmpty());
+                validationContext -> validationContext.getNetexXMLParser().selectNodeSet("CompositeFrame", validationContext.getXmlNode()).isEmpty());
 
 
         validationTree.addValidationRule(new ValidateNotExist("SiteFrame", "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_COMMON_FILE", ValidationReportEntrySeverity.WARNING));
@@ -88,7 +87,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     protected ValidationTree getSingleFramesValidationTreeForLineFile() {
         ValidationTree validationTree = new ValidationTree("Single frames in line file", "PublicationDelivery/dataObjects",
                 validationContext ->
-                        XMLParserUtil.selectNodeSet("CompositeFrame", validationContext.getXPathCompiler(), validationContext.getXmlNode()).isEmpty());
+                        validationContext.getNetexXMLParser().selectNodeSet("CompositeFrame", validationContext.getXmlNode()).isEmpty());
 
         validationTree.addValidationRule(new ValidateExactlyOne("ResourceFrame", "Exactly one ResourceFrame should be present", "RESOURCE_FRAME_IN_LINE_FILE", ValidationReportEntrySeverity.ERROR));
         validationTree.addValidationRule(new ValidateNotExist("SiteFrame", "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_LINE_FILE", ValidationReportEntrySeverity.WARNING));

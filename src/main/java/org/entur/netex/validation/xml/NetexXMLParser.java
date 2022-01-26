@@ -17,26 +17,37 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.stax.StAXSource;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.util.Collections;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * NeTEx parsing utility class.
  */
-public final class XMLParserUtil {
+public class NetexXMLParser {
 
     private static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
     private static final String SIRI_NAMESPACE = "http://www.siri.org.uk/siri";
     private static final String OPENGIS_NAMESPACE = "http://www.opengis.net/gml/3.2";
 
-    private static XPathCompiler xpathCompiler;
-    private static final Processor processor = new Processor(false);
+    private final XPathCompiler xpathCompiler;
+    private final Processor processor;
+    private final Set<QName> ignorableNeTexElements;
 
-    private XMLParserUtil() {
+    public NetexXMLParser() {
+        this(Collections.emptySet());
+    }
+
+    public NetexXMLParser(Set<String> ignorableNetexElements) {
+        this.processor = new Processor(false);
+        this.xpathCompiler = buildXPathCompiler();
+        this.ignorableNeTexElements = ignorableNetexElements.stream().map(elementName -> new QName(Constants.NETEX_NAMESPACE, elementName)).collect(Collectors.toSet());
     }
 
     /**
      * Return a secure XMLInput factory.
      * Security-sensitive features are disabled.
+     *
      * @return a secure XMLInput factory
      */
     public static XMLInputFactory getSecureXmlInputFactory() {
@@ -49,35 +60,32 @@ public final class XMLParserUtil {
 
     /**
      * Return a shared, thread-safe, instance of XPathCompiler.
+     *
      * @return a shared XPathCompiler.
      */
-    public static synchronized XPathCompiler getXPathCompiler() {
+    private XPathCompiler buildXPathCompiler() {
 
-        if (xpathCompiler == null) {
-            xpathCompiler = processor.newXPathCompiler();
-            xpathCompiler.setCaching(true);
-            xpathCompiler.declareNamespace("", NETEX_NAMESPACE);
-            xpathCompiler.declareNamespace("n", NETEX_NAMESPACE);
-            xpathCompiler.declareNamespace("s", SIRI_NAMESPACE);
-            xpathCompiler.declareNamespace("g", OPENGIS_NAMESPACE);
-        }
-
-        return xpathCompiler;
+        XPathCompiler compiler = processor.newXPathCompiler();
+        compiler.setCaching(true);
+        compiler.declareNamespace("", NETEX_NAMESPACE);
+        compiler.declareNamespace("n", NETEX_NAMESPACE);
+        compiler.declareNamespace("s", SIRI_NAMESPACE);
+        compiler.declareNamespace("g", OPENGIS_NAMESPACE);
+        return compiler;
     }
 
     /**
      * Parse an XML file and return an XML nodes graph.
+     *
      * @param content the XML file.
      * @return an XML nodes graph representing the XML document.
      */
-    public static XdmNode parseFileToXdmNode(byte[] content) {
+    public XdmNode parseFileToXdmNode(byte[] content) {
         DocumentBuilder builder = processor.newDocumentBuilder();
         builder.setLineNumbering(true);
         builder.setWhitespaceStrippingPolicy(WhitespaceStrippingPolicy.ALL);
-        // ignore SiteFrame
-        Set<QName> elementsToSkip = Set.of(new QName(Constants.NETEX_NAMESPACE, "SiteFrame"));
         try {
-            return builder.build(new StAXSource(SkippingXMLStreamReaderFactory.newXMLStreamReader(new BufferedInputStream(new ByteArrayInputStream(content)), elementsToSkip)));
+            return builder.build(new StAXSource(SkippingXMLStreamReaderFactory.newXMLStreamReader(new BufferedInputStream(new ByteArrayInputStream(content)), ignorableNeTexElements)));
         } catch (SaxonApiException | XMLStreamException e) {
             throw new NetexValidationException("Exception while parsing the NeTex document", e);
         }
@@ -85,18 +93,22 @@ public final class XMLParserUtil {
 
     /**
      * Select a set of nodes according to an XPath expression.
-     * @param expression the XPath expression to evaluate.
-     * @param xPathCompiler the XPath compiler.
-     * @param document the XML document on which the XPath is evaluated.
+     *
+     * @param expression    the XPath expression to evaluate.
+     * @param document      the XML document on which the XPath is evaluated.
      * @return the nodes that match the XPath expression.
      */
-    public static XdmValue selectNodeSet(String expression, XPathCompiler xPathCompiler, XdmNode document) {
+    public XdmValue selectNodeSet(String expression, XdmNode document) {
         try {
-            XPathSelector selector = xPathCompiler.compile(expression).load();
+            XPathSelector selector = xpathCompiler.compile(expression).load();
             selector.setContextItem(document);
             return selector.evaluate();
         } catch (SaxonApiException e) {
             throw new NetexValidationException("Exception while selecting node with xPath " + expression, e);
         }
+    }
+
+    public XPathCompiler getXPathCompiler() {
+        return xpathCompiler;
     }
 }

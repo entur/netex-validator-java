@@ -4,7 +4,6 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.xml.XMLParserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,9 +58,9 @@ public class ValidationTree {
             validationReportEntries.addAll(validationRule.validate(validationContext));
         }
         for (ValidationTree validationSubTree : subTrees) {
-            XdmValue subContextNodes = XMLParserUtil.selectNodeSet(validationSubTree.getContext(), validationContext.getXPathCompiler(), validationContext.getXmlNode());
+            XdmValue subContextNodes = validationContext.getNetexXMLParser().selectNodeSet(validationSubTree.getContext(), validationContext.getXmlNode());
             for (XdmItem xdmItem : subContextNodes) {
-                XPathValidationContext validationSubContext = new XPathValidationContext((XdmNode) xdmItem, validationContext.getXPathCompiler(), validationContext.getCodespace(), validationContext.getFileName());
+                XPathValidationContext validationSubContext = new XPathValidationContext((XdmNode) xdmItem, validationContext.getNetexXMLParser(), validationContext.getCodespace(), validationContext.getFileName());
                 if (validationSubTree.executionCondition.test(validationSubContext)) {
                     LOGGER.debug("Running validation subtree '{}'/'{}'", name, validationSubTree.getName());
                     validationReportEntries.addAll(validationSubTree.validate(validationSubContext));

@@ -1,10 +1,10 @@
 package org.entur.netex.validation.validator.xpath;
 
-import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.NetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
+import org.entur.netex.validation.xml.NetexXMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +27,12 @@ public class XPathValidator implements NetexValidator {
     @Override
     public void validate(ValidationReport validationReport, ValidationContext validationContext) {
         LOGGER.debug("Validating file {} in report {}", validationContext.getFileName(), validationReport.getValidationReportId());
-        List<ValidationReportEntry> validationReportEntries = validate(validationReport.getCodespace(), validationContext.getFileName(), validationContext.getXmlNode(), validationContext.getxPathCompiler());
+        List<ValidationReportEntry> validationReportEntries = validate(validationReport.getCodespace(), validationContext.getFileName(), validationContext.getXmlNode(), validationContext.getNetexXMLParser());
         validationReport.addAllValidationReportEntries(validationReportEntries);
     }
 
-    protected List<ValidationReportEntry> validate(String codespace, String fileName, XdmNode document, XPathCompiler xPathCompiler) {
-        XPathValidationContext validationContext = new XPathValidationContext(document, xPathCompiler, codespace, fileName);
+    protected List<ValidationReportEntry> validate(String codespace, String fileName, XdmNode document, NetexXMLParser netexXMLParser) {
+        XPathValidationContext validationContext = new XPathValidationContext(document, netexXMLParser, codespace, fileName);
         return this.validate(validationContext);
 
     }

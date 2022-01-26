@@ -2,7 +2,7 @@ package org.entur.netex.validation.validator.xpath;
 
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.xml.XMLParserUtil;
+import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -22,6 +23,7 @@ class XpathValidatorTest {
 
         ValidationTreeFactory validationTreeFactory = new DefaultValidationTreeFactory();
         XPathValidator xPathValidator = new XPathValidator(validationTreeFactory);
+        NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
 
         InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
         assert testDatasetAsStream != null;
@@ -33,8 +35,8 @@ class XpathValidatorTest {
             ZipEntry zipEntry = zipInputStream.getNextEntry();
             while (zipEntry != null) {
                 byte[] content = zipInputStream.readAllBytes();
-                XdmNode document = XMLParserUtil.parseFileToXdmNode(content);
-                XPathValidationContext xPathValidationContext = new XPathValidationContext(document, XMLParserUtil.getXPathCompiler(), "FLB", zipEntry.getName());
+                XdmNode document = netexXMLParser.parseFileToXdmNode(content);
+                XPathValidationContext xPathValidationContext = new XPathValidationContext(document, netexXMLParser, "FLB", zipEntry.getName());
                 validationReportEntries.addAll(xPathValidator.validate(xPathValidationContext));
                 zipEntry = zipInputStream.getNextEntry();
             }
