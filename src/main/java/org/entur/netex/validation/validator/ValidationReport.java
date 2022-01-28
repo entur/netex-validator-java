@@ -28,7 +28,7 @@ public class ValidationReport {
         this.codespace = codespace;
         this.validationReportId = validationReportId;
         this.creationDate = LocalDateTime.now();
-        this.validationReportEntries = validationReportEntries;
+        this.validationReportEntries = new ArrayList<>(validationReportEntries);
     }
 
     public boolean hasError() {
