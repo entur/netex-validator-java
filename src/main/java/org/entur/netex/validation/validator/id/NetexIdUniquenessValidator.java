@@ -1,9 +1,9 @@
 package org.entur.netex.validation.validator.id;
 
-import org.entur.netex.validation.validator.NetexValidator;
+import org.entur.netex.validation.validator.AbstractNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.xpath.ValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Verify that NeTEx ids in the current file are not present in one of the files already validated.
  */
-public class NetexIdUniquenessValidator implements NetexValidator {
+public class NetexIdUniquenessValidator extends AbstractNetexValidator {
 
     /**
      * Set of NeTEx elements for which id-uniqueness across lines is not verified.
@@ -36,7 +36,9 @@ public class NetexIdUniquenessValidator implements NetexValidator {
 
     private final NetexIdRepository netexIdRepository;
 
-    public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository) {
+
+    public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository, ValidationReportEntryFactory validationReportEntryFactory) {
+        super(validationReportEntryFactory);
         this.netexIdRepository = netexIdRepository;
     }
 
@@ -64,14 +66,11 @@ public class NetexIdUniquenessValidator implements NetexValidator {
         if (!duplicateIds.isEmpty()) {
             for (String id : duplicateIds) {
                 String validationReportEntryMessage = getIdVersionLocation(netexIds.get(id)) + MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES;
-                validationReportEntries.add(new ValidationReportEntry(validationReportEntryMessage, "NETEX_ID_1", ValidationReportEntrySeverity.ERROR, fileName));
+                validationReportEntries.add(createValidationReportEntry("NETEX_ID_1", fileName, validationReportEntryMessage));
             }
         }
         return validationReportEntries;
     }
 
-    private String getIdVersionLocation(IdVersion id) {
-        return "[Line " + id.getLineNumber() + ", Column " + id.getColumnNumber() + ", Id " + id.getId() + "] ";
-    }
 
 }

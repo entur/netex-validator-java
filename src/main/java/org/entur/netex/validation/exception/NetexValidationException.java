@@ -30,4 +30,8 @@ public class NetexValidationException extends RuntimeException {
     public NetexValidationException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public NetexValidationException(String message) {
+        super(message);
+    }
 }

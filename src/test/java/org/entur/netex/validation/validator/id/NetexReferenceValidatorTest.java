@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
+import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
+import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,6 @@ class NetexReferenceValidatorTest {
     private NeTexReferenceValidator createValidator() {
         NetexIdRepository netexIdRepository = new DefaultNetexIdRepository();
         ExternalReferenceValidator acceptAllStopPlacesAndQuays = externalIdsToValidate -> externalIdsToValidate.stream().filter(e -> e.getId().contains(":Quay:") || e.getId().contains(":StopPlace:")).collect(Collectors.toSet());
-        return new NeTexReferenceValidator(netexIdRepository, List.of(acceptAllStopPlacesAndQuays));
+        return new NeTexReferenceValidator(netexIdRepository, List.of(acceptAllStopPlacesAndQuays), new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
     }
 }

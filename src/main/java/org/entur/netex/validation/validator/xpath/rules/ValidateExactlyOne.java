@@ -4,10 +4,9 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.entur.netex.validation.validator.xpath.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,26 +16,24 @@ import java.util.List;
  */
 public class ValidateExactlyOne implements ValidationRule {
 
-    private final String name;
+    private final String code;
     private final String xpath;
     private final String message;
-    private final ValidationReportEntrySeverity severity;
 
-    public ValidateExactlyOne(String xpath, String message, String name, ValidationReportEntrySeverity validationReportEntrySeverity) {
+    public ValidateExactlyOne(String xpath, String message, String code) {
         this.xpath = xpath;
         this.message = message;
-        this.name = name;
-        this.severity = validationReportEntrySeverity;
+        this.code = code;
     }
 
     @Override
-    public List<ValidationReportEntry> validate(XPathValidationContext validationContext)  {
+    public List<XPathValidationReportEntry> validate(XPathValidationContext validationContext) {
         try {
             XPathSelector selector = validationContext.getNetexXMLParser().getXPathCompiler().compile(xpath).load();
             selector.setContextItem(validationContext.getXmlNode());
             XdmValue nodes = selector.evaluate();
             if (nodes.size() != 1) {
-                return List.of(new ValidationReportEntry(message, name, severity, validationContext.getFileName()));
+                return List.of(new XPathValidationReportEntry(message, code, validationContext.getFileName()));
             }
             return Collections.emptyList();
         } catch (SaxonApiException e) {
@@ -50,12 +47,8 @@ public class ValidateExactlyOne implements ValidationRule {
     }
 
     @Override
-    public String getName() {
-        return name;
+    public String getCode() {
+        return code;
     }
 
-    @Override
-    public ValidationReportEntrySeverity getSeverity() {
-        return severity;
-    }
 }

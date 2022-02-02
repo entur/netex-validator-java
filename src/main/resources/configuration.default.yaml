@@ -1,0 +1,384 @@
+validationRuleConfigs:
+  # NeTEX id and reference rules
+  - code: NETEX_ID_1
+    name: NETEX_ID_1
+    severity: ERROR
+  - code: NETEX_ID_5
+    name: NETEX_ID_5
+    severity: ERROR
+  - code: NETEX_ID_6
+    name: NETEX_ID_6
+    severity: ERROR
+  - code: NETEX_ID_7
+    name: NETEX_ID_7
+    severity: ERROR
+  - code: NETEX_ID_8
+    name: NETEX_ID_8
+    severity: ERROR
+
+  # XPath rules
+  - code: AUTHORITY_1
+    name: AUTHORITY_1
+    severity: INFO
+  - code: AUTHORITY_2
+    name: AUTHORITY_2
+    severity: ERROR
+  - code: AUTHORITY_3
+    name: AUTHORITY_3
+    severity: INFO
+  - code: AUTHORITY_4
+    name: AUTHORITY_4
+    severity: ERROR
+  - code: AUTHORITY_5
+    name: AUTHORITY_5
+    severity: ERROR
+  - code: BLOCK_1
+    name: BLOCK_1
+    severity: ERROR
+  - code: BLOCK_2
+    name: BLOCK_2
+    severity: ERROR
+  - code: BLOCK_3
+    name: BLOCK_3
+    severity: ERROR
+  - code: BOOKING_1
+    name: BOOKING_1
+    severity: ERROR
+  - code: BOOKING_2
+    name: BOOKING_2
+    severity: ERROR
+  - code: BOOKING_3
+    name: BOOKING_3
+    severity: ERROR
+  - code: BOOKING_4
+    name: BOOKING_4
+    severity: ERROR
+  - code: BUY_WHEN_1
+    name: BUY_WHEN_1
+    severity: ERROR
+  - code: COMPOSITE_FRAME_1
+    name: COMPOSITE_FRAME_1
+    severity: ERROR
+  - code: COMPOSITE_FRAME_2
+    name: COMPOSITE_FRAME_2
+    severity: WARNING
+  - code: COMPOSITE_FRAME_3
+    name: COMPOSITE_FRAME_3
+    severity: ERROR
+  - code: COMPOSITE_FRAME_4
+    name: COMPOSITE_FRAME_4
+    severity: ERROR
+  - code: COMPOSITE_FRAME_5
+    name: COMPOSITE_FRAME_5
+    severity: ERROR
+  - code: COMPOSITE_SITE_FRAME_IN_COMMON_FILE
+    name: COMPOSITE_SITE_FRAME_IN_COMMON_FILE
+    severity: WARNING
+  - code: COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE
+    name: COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE
+    severity: ERROR
+  - code: DATED_SERVICE_JOURNEY_1
+    name: DATED_SERVICE_JOURNEY_1
+    severity: ERROR
+  - code: DATED_SERVICE_JOURNEY_2
+    name: DATED_SERVICE_JOURNEY_2
+    severity: ERROR
+  - code: DATED_SERVICE_JOURNEY_3
+    name: DATED_SERVICE_JOURNEY_3
+    severity: ERROR
+  - code: DATED_SERVICE_JOURNEY_4
+    name: DATED_SERVICE_JOURNEY_4
+    severity: WARNING
+  - code: DEAD_RUN_1
+    name: DEAD_RUN_1
+    severity: INFO
+  - code: DEAD_RUN_2
+    name: DEAD_RUN_2
+    severity: ERROR
+  - code: DEAD_RUN_3
+    name: DEAD_RUN_3
+    severity: ERROR
+  - code: DESTINATION_DISPLAY_1
+    name: DESTINATION_DISPLAY_1
+    severity: ERROR
+  - code: DESTINATION_DISPLAY_2
+    name: DESTINATION_DISPLAY_2
+    severity: ERROR
+  - code: FLEXIBLE_LINE_1
+    name: FLEXIBLE_LINE_1
+    severity: ERROR
+  - code: FLEXIBLE_LINE_8
+    name: FLEXIBLE_LINE_8
+    severity: ERROR
+  - code: FLEXIBLE_LINE_9
+    name: FLEXIBLE_LINE_9
+    severity: ERROR
+  - code: FLEXIBLE_SERVICE_1
+    name: FLEXIBLE_SERVICE_1
+    severity: ERROR
+  - code: FLEXIBLE_SERVICE_2
+    name: FLEXIBLE_SERVICE_2
+    severity: ERROR
+  - code: INTERCHANGE_1
+    name: INTERCHANGE_1
+    severity: WARNING
+  - code: INTERCHANGE_3
+    name: INTERCHANGE_3
+    severity: WARNING
+  - code: JOURNEY_PATTERN_1
+    name: JOURNEY_PATTERN_1
+    severity: ERROR
+  - code: JOURNEY_PATTERN_2
+    name: JOURNEY_PATTERN_2
+    severity: ERROR
+  - code: JOURNEY_PATTERN_3
+    name: JOURNEY_PATTERN_3
+    severity: ERROR
+  - code: JOURNEY_PATTERN_4
+    name: JOURNEY_PATTERN_4
+    severity: WARNING
+  - code: JOURNEY_PATTERN_5
+    name: JOURNEY_PATTERN_5
+    severity: WARNING
+  - code: JOURNEY_PATTERN_6
+    name: JOURNEY_PATTERN_6
+    severity: WARNING
+  - code: JOURNEY_PATTERN_7
+    name: JOURNEY_PATTERN_7
+    severity: ERROR
+  - code: LINE_1
+    name: LINE_1
+    severity: ERROR
+  - code: LINE_2
+    name: LINE_2
+    severity: ERROR
+  - code: LINE_3
+    name: LINE_3
+    severity: WARNING
+  - code: LINE_4
+    name: LINE_4
+    severity: ERROR
+  - code: LINE_5
+    name: LINE_5
+    severity: WARNING
+  - code: LINE_6
+    name: LINE_6
+    severity: ERROR
+  - code: LINE_7
+    name: LINE_7
+    severity: ERROR
+  - code: NETWORK_1
+    name: NETWORK_1
+    severity: ERROR
+  - code: NETWORK_2
+    name: NETWORK_2
+    severity: ERROR
+  - code: NETWORK_3
+    name: NETWORK_3
+    severity: ERROR
+  - code: NOTICE_1
+    name: NOTICE_1
+    severity: ERROR
+  - code: NOTICE_2
+    name: NOTICE_2
+    severity: ERROR
+  - code: NOTICE_3
+    name: NOTICE_3
+    severity: ERROR
+  - code: NOTICE_4
+    name: NOTICE_4
+    severity: ERROR
+  - code: NOTICE_5
+    name: NOTICE_5
+    severity: WARNING
+  - code: OPERATOR_1
+    name: OPERATOR_1
+    severity: INFO
+  - code: OPERATOR_2
+    name: OPERATOR_2
+    severity: ERROR
+  - code: OPERATOR_3
+    name: OPERATOR_3
+    severity: INFO
+  - code: OPERATOR_4
+    name: OPERATOR_4
+    severity: WARNING
+  - code: OPERATOR_5
+    name: OPERATOR_5
+    severity: WARNING
+  - code: OPERATOR_6
+    name: OPERATOR_6
+    severity: WARNING
+  - code: OPERATOR_7
+    name: OPERATOR_7
+    severity: WARNING
+  - code: PASSENGER_STOP_ASSIGNMENT_1
+    name: PASSENGER_STOP_ASSIGNMENT_1
+    severity: ERROR
+  - code: PASSENGER_STOP_ASSIGNMENT_2
+    name: PASSENGER_STOP_ASSIGNMENT_2
+    severity: ERROR
+  - code: PASSENGER_STOP_ASSIGNMENT_3
+    name: PASSENGER_STOP_ASSIGNMENT_3
+    severity: WARNING
+  - code: RESOURCE_FRAME_IN_LINE_FILE
+    name: RESOURCE_FRAME_IN_LINE_FILE
+    severity: ERROR
+  - code: ROUTE_1
+    name: ROUTE_1
+    severity: ERROR
+  - code: ROUTE_2
+    name: ROUTE_2
+    severity: ERROR
+  - code: ROUTE_3
+    name: ROUTE_3
+    severity: ERROR
+  - code: ROUTE_4
+    name: ROUTE_4
+    severity: ERROR
+  - code: ROUTE_5
+    name: ROUTE_5
+    severity: WARNING
+  - code: ROUTE_6
+    name: ROUTE_6
+    severity: WARNING
+  - code: SERVICE_CALENDAR_1
+    name: SERVICE_CALENDAR_1
+    severity: WARNING
+  - code: SERVICE_CALENDAR_2
+    name: SERVICE_CALENDAR_2
+    severity: WARNING
+  - code: SERVICE_CALENDAR_3
+    name: SERVICE_CALENDAR_3
+    severity: WARNING
+  - code: SERVICE_CALENDAR_4
+    name: SERVICE_CALENDAR_4
+    severity: WARNING
+  - code: SERVICE_CALENDAR_5
+    name: SERVICE_CALENDAR_5
+    severity: ERROR
+  - code: SERVICE_FRAME_1
+    name: SERVICE_FRAME_1
+    severity: ERROR
+  - code: SERVICE_FRAME_2
+    name: SERVICE_FRAME_2
+    severity: WARNING
+  - code: SERVICE_FRAME_3
+    name: SERVICE_FRAME_3
+    severity: ERROR
+  - code: SERVICE_FRAME_IN_COMMON_FILE_1
+    name: SERVICE_FRAME_IN_COMMON_FILE_1
+    severity: ERROR
+  - code: SERVICE_FRAME_IN_COMMON_FILE_2
+    name: SERVICE_FRAME_IN_COMMON_FILE_2
+    severity: ERROR
+  - code: SERVICE_FRAME_IN_COMMON_FILE_3
+    name: SERVICE_FRAME_IN_COMMON_FILE_3
+    severity: ERROR
+  - code: SERVICE_JOURNEY_1
+    name: SERVICE_JOURNEY_1
+    severity: ERROR
+  - code: SERVICE_JOURNEY_10
+    name: SERVICE_JOURNEY_10
+    severity: ERROR
+  - code: SERVICE_JOURNEY_11
+    name: SERVICE_JOURNEY_11
+    severity: WARNING
+  - code: SERVICE_JOURNEY_12
+    name: SERVICE_JOURNEY_12
+    severity: ERROR
+  - code: SERVICE_JOURNEY_13
+    name: SERVICE_JOURNEY_13
+    severity: ERROR
+  - code: SERVICE_JOURNEY_14
+    name: SERVICE_JOURNEY_14
+    severity: ERROR
+  - code: SERVICE_JOURNEY_15
+    name: SERVICE_JOURNEY_15
+    severity: ERROR
+  - code: SERVICE_JOURNEY_16
+    name: SERVICE_JOURNEY_16
+    severity: WARNING
+  - code: SERVICE_JOURNEY_2
+    name: SERVICE_JOURNEY_2
+    severity: ERROR
+  - code: SERVICE_JOURNEY_3
+    name: SERVICE_JOURNEY_3
+    severity: ERROR
+  - code: SERVICE_JOURNEY_4
+    name: SERVICE_JOURNEY_4
+    severity: ERROR
+  - code: SERVICE_JOURNEY_5
+    name: SERVICE_JOURNEY_5
+    severity: ERROR
+  - code: SERVICE_JOURNEY_6
+    name: SERVICE_JOURNEY_6
+    severity: ERROR
+  - code: SERVICE_JOURNEY_7
+    name: SERVICE_JOURNEY_7
+    severity: WARNING
+  - code: SERVICE_JOURNEY_8
+    name: SERVICE_JOURNEY_8
+    severity: WARNING
+  - code: SERVICE_JOURNEY_9
+    name: SERVICE_JOURNEY_9
+    severity: WARNING
+  - code: SERVICE_LINK_1
+    name: SERVICE_LINK_1
+    severity: ERROR
+  - code: SERVICE_LINK_2
+    name: SERVICE_LINK_2
+    severity: ERROR
+  - code: SERVICE_LINK_3
+    name: SERVICE_LINK_3
+    severity: ERROR
+  - code: SITE_FRAME_IN_COMMON_FILE
+    name: SITE_FRAME_IN_COMMON_FILE
+    severity: WARNING
+  - code: SITE_FRAME_IN_LINE_FILE
+    name: SITE_FRAME_IN_LINE_FILE
+    severity: WARNING
+  - code: TIMETABLE_FRAME_IN_COMMON_FILE
+    name: TIMETABLE_FRAME_IN_COMMON_FILE
+    severity: ERROR
+  - code: TINTERCHANGE_2
+    name: TINTERCHANGE_2
+    severity: WARNING
+  - code: TRANSPORT_MODE
+    name: TRANSPORT_MODE
+    severity: ERROR
+  - code: TRANSPORT_SUB_MODE
+    name: TRANSPORT_SUB_MODE
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_1
+    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_1
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_2
+    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_2
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_3
+    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_3
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_4
+    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_4
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_LINE_FILE_1
+    name: VALIDITY_CONDITIONS_IN_LINE_FILE_1
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_LINE_FILE_2
+    name: VALIDITY_CONDITIONS_IN_LINE_FILE_2
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_LINE_FILE_3
+    name: VALIDITY_CONDITIONS_IN_LINE_FILE_3
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_LINE_FILE_4
+    name: VALIDITY_CONDITIONS_IN_LINE_FILE_4
+    severity: ERROR
+  - code: VALIDITY_CONDITIONS_IN_LINE_FILE_5
+    name: VALIDITY_CONDITIONS_IN_LINE_FILE_5
+    severity: ERROR
+
+
+
+
+

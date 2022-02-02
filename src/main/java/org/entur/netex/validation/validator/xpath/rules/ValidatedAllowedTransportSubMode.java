@@ -1,7 +1,5 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
-
 /**
  * Validate the transport sub-mode against the Nordic NeTEx profile.
  */
@@ -50,6 +48,6 @@ public class ValidatedAllowedTransportSubMode extends ValidateNotExist {
     private static final String MESSAGE = "Illegal TransportSubMode";
 
     public ValidatedAllowedTransportSubMode() {
-        super("lines/*[self::Line or self::FlexibleLine]/TransportSubmode[not(. = (" + VALID_TRANSPORT_SUBMODES + "))]", MESSAGE, "TRANSPORT_SUB_MODE", ValidationReportEntrySeverity.ERROR);
+        super("lines/*[self::Line or self::FlexibleLine]/TransportSubmode[not(. = (" + VALID_TRANSPORT_SUBMODES + "))]", MESSAGE, "TRANSPORT_SUB_MODE");
     }
 }

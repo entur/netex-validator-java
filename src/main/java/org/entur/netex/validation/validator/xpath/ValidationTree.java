@@ -3,7 +3,6 @@ package org.entur.netex.validation.validator.xpath;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
-import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,11 +50,11 @@ public class ValidationTree {
         this.subTrees = new ArrayList<>();
     }
 
-    public List<ValidationReportEntry> validate(XPathValidationContext validationContext) {
-        List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    public List<XPathValidationReportEntry> validate(XPathValidationContext validationContext) {
+        List<XPathValidationReportEntry> xPathValidationReportEntries = new ArrayList<>();
         for (ValidationRule validationRule : validationRules) {
             LOGGER.debug("Running validation rule '{}'/'{}'", name, validationRule.getMessage());
-            validationReportEntries.addAll(validationRule.validate(validationContext));
+            xPathValidationReportEntries.addAll(validationRule.validate(validationContext));
         }
         for (ValidationTree validationSubTree : subTrees) {
             XdmValue subContextNodes = validationContext.getNetexXMLParser().selectNodeSet(validationSubTree.getContext(), validationContext.getXmlNode());
@@ -63,7 +62,7 @@ public class ValidationTree {
                 XPathValidationContext validationSubContext = new XPathValidationContext((XdmNode) xdmItem, validationContext.getNetexXMLParser(), validationContext.getCodespace(), validationContext.getFileName());
                 if (validationSubTree.executionCondition.test(validationSubContext)) {
                     LOGGER.debug("Running validation subtree '{}'/'{}'", name, validationSubTree.getName());
-                    validationReportEntries.addAll(validationSubTree.validate(validationSubContext));
+                    xPathValidationReportEntries.addAll(validationSubTree.validate(validationSubContext));
                 } else {
                     LOGGER.debug("Skipping validation subtree '{}'/'{}'", name, validationSubTree.getName());
                 }
@@ -71,7 +70,7 @@ public class ValidationTree {
 
         }
 
-        return validationReportEntries;
+        return xPathValidationReportEntries;
 
     }
 
@@ -91,10 +90,7 @@ public class ValidationTree {
         for (ValidationRule validationRule : validationRules) {
             builder.append(spaces)
                     .append("[")
-                    .append(validationRule.getName())
-                    .append("] ")
-                    .append("[")
-                    .append(validationRule.getSeverity())
+                    .append(validationRule.getCode())
                     .append("] ")
                     .append(validationRule.getMessage())
                     .append("\n");
@@ -108,7 +104,7 @@ public class ValidationTree {
     public Set<String> getRuleMessages() {
         Set<String> rules = new HashSet<>();
         for (ValidationRule validationRule : validationRules) {
-            rules.add("[" + validationRule.getName() + "] " + validationRule.getMessage());
+            rules.add("[" + validationRule.getCode() + "] " + validationRule.getMessage());
         }
         for (ValidationTree validationTree : subTrees) {
             rules.addAll(validationTree.getRuleMessages());

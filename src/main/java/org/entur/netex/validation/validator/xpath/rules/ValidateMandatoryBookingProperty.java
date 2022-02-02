@@ -7,10 +7,9 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,6 @@ import java.util.List;
 public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRule {
 
     private static final String MESSAGE_FORMAT = "Mandatory booking property %s not specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns";
-    public static final ValidationReportEntrySeverity SEVERITY = ValidationReportEntrySeverity.ERROR;
     public static final String RULE_NAME = "BOOKING_4";
 
     private final String bookingProperty;
@@ -31,7 +29,7 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
     }
 
     @Override
-    public List<ValidationReportEntry> validate(XPathValidationContext validationContext) {
+    public List<XPathValidationReportEntry> validate(XPathValidationContext validationContext) {
         try {
             List<XdmValue> errorNodes = new ArrayList<>();
             XPathSelector missingFieldSelector = validationContext.getNetexXMLParser().getXPathCompiler().compile("lines/FlexibleLine and lines/FlexibleLine[not(" + bookingProperty + ")]").load();
@@ -57,15 +55,14 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
                     }
                 }
             }
-            List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+            List<XPathValidationReportEntry> validationReportEntries = new ArrayList<>();
 
             for (XdmValue errorNode : errorNodes) {
                 for (XdmItem item : errorNode) {
                     XdmNode xdmNode = (XdmNode) item;
                     String message = getXdmNodeLocation(xdmNode) + String.format(MESSAGE_FORMAT, bookingProperty);
-                    validationReportEntries.add(new ValidationReportEntry(message,
+                    validationReportEntries.add(new XPathValidationReportEntry(message,
                             RULE_NAME,
-                            SEVERITY,
                             validationContext.getFileName()));
                 }
 
@@ -83,12 +80,7 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
     }
 
     @Override
-    public String getName() {
+    public String getCode() {
         return RULE_NAME;
-    }
-
-    @Override
-    public ValidationReportEntrySeverity getSeverity() {
-        return SEVERITY;
     }
 }

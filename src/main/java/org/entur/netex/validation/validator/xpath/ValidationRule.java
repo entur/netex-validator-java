@@ -1,7 +1,6 @@
 package org.entur.netex.validation.validator.xpath;
 
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 
 import java.util.List;
 
@@ -16,14 +15,14 @@ public interface ValidationRule {
      * @param validationContext the current validation context.
      * @return a list of validation entries for the current context.
      */
-    List<ValidationReportEntry> validate(XPathValidationContext validationContext);
+    List<XPathValidationReportEntry> validate(XPathValidationContext validationContext);
 
     /**
      * The name of the validation rule.
      *
      * @return the name of the validation rule.
      */
-    String getName();
+    String getCode();
 
     /**
      * The context specific validation message
@@ -31,12 +30,4 @@ public interface ValidationRule {
      * @return the context-specific validation message
      */
     String getMessage();
-
-
-    /**
-     * The rule severity.
-     *
-     * @return the rule severity.
-     */
-    ValidationReportEntrySeverity getSeverity();
 }
