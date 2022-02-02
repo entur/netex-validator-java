@@ -1,9 +1,9 @@
 package org.entur.netex.validation.validator.id;
 
-import org.entur.netex.validation.validator.NetexValidator;
+import org.entur.netex.validation.validator.AbstractNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.xpath.ValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,17 +18,21 @@ import java.util.Set;
 /**
  * Validate that NeTEX references point to a valid element type.
  */
-public class ReferenceToValidEntityTypeValidator implements NetexValidator {
+public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator {
 
     private static final String MESSAGE_FORMAT_INVALID_REFERENCE = "Reference to %s is not allowed from element %s. Generally an element named XXXXRef may only reference elements if type XXXX";
     private static final String MESSAGE_FORMAT_INVALID_ID_STRUCTURE = "Invalid id structure on element";
+
+    private static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
+    private static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceToValidEntityTypeValidator.class);
 
 
     private final Map<String, Set<String>> allowedSubstitutions;
 
-    public ReferenceToValidEntityTypeValidator() {
+    public ReferenceToValidEntityTypeValidator(ValidationReportEntryFactory validationReportEntryFactory) {
+        super(validationReportEntryFactory);
         this.allowedSubstitutions = getAllowedSubstitutions();
     }
 
@@ -52,11 +56,11 @@ public class ReferenceToValidEntityTypeValidator implements NetexValidator {
                         && !("Default" + referencedElement + "Ref").equals(referencingElement)
                         && !canSubstitute(referencingElement, referencedElement)) {
                     String validationReportEntryMessage = getIdVersionLocation(id) + String.format(MESSAGE_FORMAT_INVALID_REFERENCE, referencedElement, referencingElement);
-                    validationReportEntries.add(new ValidationReportEntry(validationReportEntryMessage, "NETEX_ID_6", ValidationReportEntrySeverity.ERROR, id.getFilename()));
+                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_6,  id.getFilename(), validationReportEntryMessage));
                 }
             } else {
                 String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_INVALID_ID_STRUCTURE;
-                validationReportEntries.add(new ValidationReportEntry(validationReportEntryMessage, "NETEX_ID_7", ValidationReportEntrySeverity.ERROR, id.getFilename()));
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_7,  id.getFilename(), validationReportEntryMessage));
             }
         }
         return validationReportEntries;
@@ -133,8 +137,9 @@ public class ReferenceToValidEntityTypeValidator implements NetexValidator {
         return substitutions;
     }
 
-    private String getIdVersionLocation(IdVersion id) {
-        return "[Line " + id.getLineNumber() + ", Column " + id.getColumnNumber() + ", Id " + id.getId() + "] ";
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_6, MESSAGE_FORMAT_INVALID_REFERENCE), createRuleDescription(RULE_CODE_NETEX_ID_7, MESSAGE_FORMAT_INVALID_ID_STRUCTURE));
     }
 
 }

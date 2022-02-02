@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
+import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
+import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,6 @@ class NetexIdUniquenessValidatorTest {
     }
 
     private NetexIdUniquenessValidator createValidator() {
-        return new NetexIdUniquenessValidator(new DefaultNetexIdRepository());
+        return new NetexIdUniquenessValidator(new DefaultNetexIdRepository(), new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
     }
 }

@@ -1,9 +1,9 @@
 package org.entur.netex.validation.validator.id;
 
-import org.entur.netex.validation.validator.NetexValidator;
+import org.entur.netex.validation.validator.AbstractNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.xpath.ValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,17 @@ import java.util.Set;
 /**
  * Validate that references refer to an existing element.
  */
-public class NeTexReferenceValidator implements NetexValidator {
+public class NeTexReferenceValidator extends AbstractNetexValidator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NeTexReferenceValidator.class);
 
     private static final String MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE = "Unresolved reference to external reference data";
+    private static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
     private final List<ExternalReferenceValidator> externalReferenceValidators;
     private final NetexIdRepository netexIdRepository;
 
-    public NeTexReferenceValidator(NetexIdRepository netexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators) {
+    public NeTexReferenceValidator(NetexIdRepository netexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators, ValidationReportEntryFactory validationReportEntryFactory) {
+        super(validationReportEntryFactory);
         this.netexIdRepository = netexIdRepository;
         this.externalReferenceValidators = externalReferenceValidators;
     }
@@ -59,7 +61,7 @@ public class NeTexReferenceValidator implements NetexValidator {
             }
         }
 
-        if(isCommonFile){
+        if (isCommonFile) {
             netexIdRepository.addSharedNetexIds(reportId, localIds);
         }
 
@@ -68,12 +70,12 @@ public class NeTexReferenceValidator implements NetexValidator {
 
     private ValidationReportEntry createValidationReportEntry(IdVersion id) {
         String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE;
-        return new ValidationReportEntry(validationReportEntryMessage, "NETEX_ID_5", ValidationReportEntrySeverity.ERROR, id.getFilename());
+        return createValidationReportEntry(RULE_CODE_NETEX_ID_5, id.getFilename(), validationReportEntryMessage);
     }
 
-
-    private String getIdVersionLocation(IdVersion id) {
-        return "[Line " + id.getLineNumber() + ", Column " + id.getColumnNumber() + ", Id " + id.getId() + "] ";
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_5, MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE));
     }
 
 }

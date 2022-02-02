@@ -1,26 +1,29 @@
 package org.entur.netex.validation.validator.xpath;
 
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.NetexValidator;
+import org.entur.netex.validation.validator.AbstractNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
+import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathValidator implements NetexValidator {
+public class XPathValidator extends AbstractNetexValidator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XPathValidator.class);
 
     private final ValidationTree topLevelValidationTree;
 
-    public XPathValidator(ValidationTreeFactory validationTreeFactory) {
+    public XPathValidator(ValidationTreeFactory validationTreeFactory, ValidationReportEntryFactory validationReportEntryFactory) {
+        super(validationReportEntryFactory);
         this.topLevelValidationTree = validationTreeFactory.buildValidationTree();
     }
 
@@ -38,14 +41,20 @@ public class XPathValidator implements NetexValidator {
     }
 
     public List<ValidationReportEntry> validate(XPathValidationContext validationContext) {
-        return topLevelValidationTree.validate(validationContext);
+        List<XPathValidationReportEntry> xPathValidationReportEntries = topLevelValidationTree.validate(validationContext);
+        return xPathValidationReportEntries.stream().map(this::createValidationReportEntry).collect(Collectors.toList());
+    }
+
+    private ValidationReportEntry createValidationReportEntry(XPathValidationReportEntry xPathValidationReportEntry) {
+        return createValidationReportEntry(xPathValidationReportEntry.getCode(), xPathValidationReportEntry.getFileName(), xPathValidationReportEntry.getMessage());
     }
 
     public String describe() {
         return topLevelValidationTree.describe();
     }
 
-    public Set<String> getRuleMessages() {
+    @Override
+    public Set<String> getRuleDescriptions() {
         return topLevelValidationTree.getRuleMessages();
     }
 

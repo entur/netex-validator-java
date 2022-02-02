@@ -1,6 +1,5 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.rutebanken.netex.model.BookingMethodEnumeration;
 
 /**
@@ -20,6 +19,6 @@ public class ValidateAllowedBookingAccessProperty extends ValidateNotExist {
     private static final String MESSAGE = "Illegal value for BookingAccess";
 
     public ValidateAllowedBookingAccessProperty(String context) {
-        super(context + "/BookingAccess[not(. = (" + VALID_BOOKING_ACCESS_PROPERTIES + "))]", MESSAGE, "BOOKING_1", ValidationReportEntrySeverity.ERROR);
+        super(context + "/BookingAccess[not(. = (" + VALID_BOOKING_ACCESS_PROPERTIES + "))]", MESSAGE, "BOOKING_1");
     }
 }

@@ -1,7 +1,9 @@
 package org.entur.netex.validation.validator.xpath;
 
 import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
 import org.entur.netex.validation.validator.ValidationReportEntry;
+import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +24,7 @@ class XpathValidatorTest {
     void testValidator() throws IOException {
 
         ValidationTreeFactory validationTreeFactory = new DefaultValidationTreeFactory();
-        XPathValidator xPathValidator = new XPathValidator(validationTreeFactory);
+        XPathValidator xPathValidator = new XPathValidator(validationTreeFactory, new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
         NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
 
         InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
@@ -41,7 +43,8 @@ class XpathValidatorTest {
                 zipEntry = zipInputStream.getNextEntry();
             }
             Assertions.assertFalse(validationReportEntries.isEmpty());
+            Assertions.assertTrue(validationReportEntries.stream().allMatch(validationReportEntry -> validationReportEntry.getFileName().endsWith(".xml")));
+
         }
     }
-
 }

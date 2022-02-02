@@ -8,9 +8,11 @@ import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
 import org.entur.netex.validation.validator.xpath.ValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -49,6 +51,10 @@ public class NetexValidatorsRunner {
 
         return validationReport;
 
+    }
+
+    public Set<String> getRuleDescriptions() {
+        return netexValidators.stream().map(NetexValidator::getRuleDescriptions).flatMap(Collection::stream).collect(Collectors.toSet());
     }
 
 }
