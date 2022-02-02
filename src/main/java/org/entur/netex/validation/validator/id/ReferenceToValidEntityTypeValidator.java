@@ -23,6 +23,9 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
     private static final String MESSAGE_FORMAT_INVALID_REFERENCE = "Reference to %s is not allowed from element %s. Generally an element named XXXXRef may only reference elements if type XXXX";
     private static final String MESSAGE_FORMAT_INVALID_ID_STRUCTURE = "Invalid id structure on element";
 
+    private static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
+    private static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceToValidEntityTypeValidator.class);
 
 
@@ -53,11 +56,11 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
                         && !("Default" + referencedElement + "Ref").equals(referencingElement)
                         && !canSubstitute(referencingElement, referencedElement)) {
                     String validationReportEntryMessage = getIdVersionLocation(id) + String.format(MESSAGE_FORMAT_INVALID_REFERENCE, referencedElement, referencingElement);
-                    validationReportEntries.add(createValidationReportEntry("NETEX_ID_6",  id.getFilename(), validationReportEntryMessage));
+                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_6,  id.getFilename(), validationReportEntryMessage));
                 }
             } else {
                 String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_INVALID_ID_STRUCTURE;
-                validationReportEntries.add(createValidationReportEntry("NETEX_ID_7",  id.getFilename(), validationReportEntryMessage));
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_7,  id.getFilename(), validationReportEntryMessage));
             }
         }
         return validationReportEntries;
@@ -132,6 +135,11 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
         toStopPointRefSubstitutions.add("ScheduledStopPoint");
         substitutions.put("ToStopPointRef", toStopPointRefSubstitutions);
         return substitutions;
+    }
+
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_6, MESSAGE_FORMAT_INVALID_REFERENCE), createRuleDescription(RULE_CODE_NETEX_ID_7, MESSAGE_FORMAT_INVALID_ID_STRUCTURE));
     }
 
 }

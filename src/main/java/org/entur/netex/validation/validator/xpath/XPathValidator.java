@@ -53,7 +53,8 @@ public class XPathValidator extends AbstractNetexValidator {
         return topLevelValidationTree.describe();
     }
 
-    public Set<String> getRuleMessages() {
+    @Override
+    public Set<String> getRuleDescriptions() {
         return topLevelValidationTree.getRuleMessages();
     }
 

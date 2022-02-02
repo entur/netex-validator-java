@@ -32,6 +32,7 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES = "Duplicate element identifiers across files";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NetexIdUniquenessValidator.class);
+    private static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
 
 
     private final NetexIdRepository netexIdRepository;
@@ -66,11 +67,15 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
         if (!duplicateIds.isEmpty()) {
             for (String id : duplicateIds) {
                 String validationReportEntryMessage = getIdVersionLocation(netexIds.get(id)) + MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES;
-                validationReportEntries.add(createValidationReportEntry("NETEX_ID_1", fileName, validationReportEntryMessage));
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_1, fileName, validationReportEntryMessage));
             }
         }
         return validationReportEntries;
     }
 
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_1, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES));
+    }
 
 }

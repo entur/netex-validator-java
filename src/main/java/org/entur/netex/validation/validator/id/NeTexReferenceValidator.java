@@ -21,6 +21,7 @@ public class NeTexReferenceValidator extends AbstractNetexValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(NeTexReferenceValidator.class);
 
     private static final String MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE = "Unresolved reference to external reference data";
+    private static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
     private final List<ExternalReferenceValidator> externalReferenceValidators;
     private final NetexIdRepository netexIdRepository;
 
@@ -69,8 +70,12 @@ public class NeTexReferenceValidator extends AbstractNetexValidator {
 
     private ValidationReportEntry createValidationReportEntry(IdVersion id) {
         String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE;
-        return createValidationReportEntry("NETEX_ID_5", id.getFilename(), validationReportEntryMessage);
+        return createValidationReportEntry(RULE_CODE_NETEX_ID_5, id.getFilename(), validationReportEntryMessage);
     }
 
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_5, MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE));
+    }
 
 }

@@ -21,6 +21,7 @@ public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
     private static final Logger LOGGER = LoggerFactory.getLogger(VersionOnLocalNetexIdValidator.class);
 
     private static final String MESSAGE_FORMAT_MISSING_VERSION = "Missing version attribute on elements with id attribute";
+    private static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
 
     public VersionOnLocalNetexIdValidator(ValidationReportEntryFactory validationReportEntryFactory) {
         super(validationReportEntryFactory);
@@ -38,12 +39,17 @@ public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
         if (!nonVersionedLocalIds.isEmpty()) {
             for (IdVersion id : nonVersionedLocalIds) {
                 String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_MISSING_VERSION;
-                validationReportEntries.add(createValidationReportEntry("NETEX_ID_8",id.getFilename(), validationReportEntryMessage));
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_8, id.getFilename(), validationReportEntryMessage));
                 LOGGER.debug("Id {} does not have version attribute set", id.getId());
             }
         }
         return validationReportEntries;
 
+    }
+
+    @Override
+    public Set<String> getRuleDescriptions() {
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_8, MESSAGE_FORMAT_MISSING_VERSION));
     }
 
 }

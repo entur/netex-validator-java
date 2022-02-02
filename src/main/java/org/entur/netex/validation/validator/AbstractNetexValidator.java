@@ -26,4 +26,14 @@ public abstract class AbstractNetexValidator implements NetexValidator {
     protected String getIdVersionLocation(IdVersion id) {
         return "[Line " + id.getLineNumber() + ", Column " + id.getColumnNumber() + ", Id " + id.getId() + "] ";
     }
+
+    /**
+     * Create a textual description of the rule.
+     * @param code
+     * @param message
+     * @return a textual description of the rule
+     */
+    protected String createRuleDescription(String code, String message) {
+        return '[' + code + "] " + message;
+    }
 }
