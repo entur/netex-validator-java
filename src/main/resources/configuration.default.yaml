@@ -15,6 +15,9 @@ validationRuleConfigs:
   - code: NETEX_ID_8
     name: NETEX_ID_8
     severity: ERROR
+  - code: NETEX_ID_9
+    name: NETEX_ID_9
+    severity: ERROR
 
   # XPath rules
   - code: AUTHORITY_1
