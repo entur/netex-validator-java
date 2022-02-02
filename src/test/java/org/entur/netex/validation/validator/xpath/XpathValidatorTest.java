@@ -43,6 +43,8 @@ class XpathValidatorTest {
                 zipEntry = zipInputStream.getNextEntry();
             }
             Assertions.assertFalse(validationReportEntries.isEmpty());
+            Assertions.assertTrue(validationReportEntries.stream().allMatch(validationReportEntry -> validationReportEntry.getFileName().endsWith(".xml")));
+
         }
     }
 }

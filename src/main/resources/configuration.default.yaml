@@ -18,19 +18,19 @@ validationRuleConfigs:
 
   # XPath rules
   - code: AUTHORITY_1
-    name: AUTHORITY_1
+    name: Authority CompanyNumber
     severity: INFO
   - code: AUTHORITY_2
-    name: AUTHORITY_2
+    name: Authority Name
     severity: ERROR
   - code: AUTHORITY_3
-    name: AUTHORITY_3
+    name: Authority LegalName
     severity: INFO
   - code: AUTHORITY_4
-    name: AUTHORITY_4
+    name: Authority ContactDetails
     severity: ERROR
   - code: AUTHORITY_5
-    name: AUTHORITY_5
+    name: Authority URL
     severity: ERROR
   - code: BLOCK_1
     name: BLOCK_1
@@ -42,16 +42,16 @@ validationRuleConfigs:
     name: BLOCK_3
     severity: ERROR
   - code: BOOKING_1
-    name: BOOKING_1
+    name: Booking BookingAccess
     severity: ERROR
   - code: BOOKING_2
-    name: BOOKING_2
+    name: Booking BookingMethod
     severity: ERROR
   - code: BOOKING_3
-    name: BOOKING_3
+    name: Booking BookWhen
     severity: ERROR
   - code: BOOKING_4
-    name: BOOKING_4
+    name: Booking booking properties
     severity: ERROR
   - code: BUY_WHEN_1
     name: BUY_WHEN_1
@@ -105,13 +105,13 @@ validationRuleConfigs:
     name: DESTINATION_DISPLAY_2
     severity: ERROR
   - code: FLEXIBLE_LINE_1
-    name: FLEXIBLE_LINE_1
+    name: FlexibleLine Missing type
     severity: ERROR
   - code: FLEXIBLE_LINE_8
-    name: FLEXIBLE_LINE_8
+    name: FlexibleLine Illegal FlexibleLineType
     severity: ERROR
   - code: FLEXIBLE_LINE_9
-    name: FLEXIBLE_LINE_9
+    name: FlexibleLine Illegal FlexibleServiceType
     severity: ERROR
   - code: FLEXIBLE_SERVICE_1
     name: FLEXIBLE_SERVICE_1
@@ -192,22 +192,22 @@ validationRuleConfigs:
     name: NOTICE_5
     severity: WARNING
   - code: OPERATOR_1
-    name: OPERATOR_1
+    name: Operator CompanyNumber
     severity: INFO
   - code: OPERATOR_2
-    name: OPERATOR_2
+    name: Operator Name
     severity: ERROR
   - code: OPERATOR_3
-    name: OPERATOR_3
+    name: Operator LegalName
     severity: INFO
   - code: OPERATOR_4
-    name: OPERATOR_4
+    name: Operator ContactDetails
     severity: WARNING
   - code: OPERATOR_5
-    name: OPERATOR_5
+    name: Operator URL
     severity: WARNING
   - code: OPERATOR_6
-    name: OPERATOR_6
+    name: Operator CustomerServiceDetails
     severity: WARNING
   - code: OPERATOR_7
     name: OPERATOR_7
@@ -300,7 +300,7 @@ validationRuleConfigs:
     name: SERVICE_JOURNEY_16
     severity: WARNING
   - code: SERVICE_JOURNEY_2
-    name: SERVICE_JOURNEY_2
+    name: ServiceJourney Call
     severity: ERROR
   - code: SERVICE_JOURNEY_3
     name: SERVICE_JOURNEY_3
@@ -360,7 +360,7 @@ validationRuleConfigs:
     name: VALIDITY_CONDITIONS_IN_COMMON_FILE_3
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_4
-    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_4
+    name: ValidityConditions Empty
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_1
     name: VALIDITY_CONDITIONS_IN_LINE_FILE_1
