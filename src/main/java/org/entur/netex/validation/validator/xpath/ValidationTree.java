@@ -120,6 +120,10 @@ public class ValidationTree {
         this.validationRules.addAll(validationRules);
     }
 
+    public boolean removeValidationRule(String ruleCode) {
+        return this.validationRules.removeIf(validationRule -> validationRule.getCode().equals(ruleCode));
+    }
+
     public void addSubTree(ValidationTree validationTree) {
         subTrees.add(validationTree);
     }
