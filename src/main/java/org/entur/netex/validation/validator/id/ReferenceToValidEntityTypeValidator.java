@@ -134,6 +134,11 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
         Set<String> toStopPointRefSubstitutions = new HashSet<>();
         toStopPointRefSubstitutions.add("ScheduledStopPoint");
         substitutions.put("ToStopPointRef", toStopPointRefSubstitutions);
+
+        Set<String> organisationRefSubstitutions = new HashSet<>();
+        organisationRefSubstitutions.add("Authority");
+        substitutions.put("OrganisationRef", organisationRefSubstitutions);
+
         return substitutions;
     }
 
