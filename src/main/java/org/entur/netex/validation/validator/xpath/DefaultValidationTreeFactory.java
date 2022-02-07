@@ -314,7 +314,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]", "Missing TransportSubmode on Line", "LINE_5"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/routes/Route", "Routes should not be defined within a Line or FlexibleLine", "LINE_6"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]", "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef", "LINE_7"));
-        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode());
+        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode(ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES));
         serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
 
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));
