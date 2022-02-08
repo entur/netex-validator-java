@@ -7,6 +7,7 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
@@ -60,10 +61,11 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
             for (XdmValue errorNode : errorNodes) {
                 for (XdmItem item : errorNode) {
                     XdmNode xdmNode = (XdmNode) item;
-                    String message = getXdmNodeLocation(xdmNode) + String.format(MESSAGE_FORMAT, bookingProperty);
+                    DataLocation dataLocation = getXdmNodeLocation(validationContext.getFileName(), xdmNode);
+                    String message = String.format(MESSAGE_FORMAT, bookingProperty);
                     validationReportEntries.add(new XPathValidationReportEntry(message,
                             RULE_NAME,
-                            validationContext.getFileName()));
+                            dataLocation));
                 }
 
 

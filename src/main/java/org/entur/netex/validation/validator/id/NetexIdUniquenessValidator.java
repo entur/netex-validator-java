@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
 import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -66,8 +67,8 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
         Set<String> duplicateIds = netexIdRepository.getDuplicateNetexIds(reportId, fileName, netexIds.keySet());
         if (!duplicateIds.isEmpty()) {
             for (String id : duplicateIds) {
-                String validationReportEntryMessage = getIdVersionLocation(netexIds.get(id)) + MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES;
-                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_1, fileName, validationReportEntryMessage));
+                DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_1, dataLocation, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES));
             }
         }
         return validationReportEntries;

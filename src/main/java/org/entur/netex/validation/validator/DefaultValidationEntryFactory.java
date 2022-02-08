@@ -17,11 +17,11 @@ public class DefaultValidationEntryFactory implements ValidationReportEntryFacto
     }
 
     @Override
-    public ValidationReportEntry createValidationReportEntry(String code, String validationReportEntryMessage, String fileName) {
+    public ValidationReportEntry createValidationReportEntry(String code, String validationReportEntryMessage, DataLocation dataLocation) {
         ValidationRuleConfig validationRuleConfig = validationConfigLoader.getValidationRuleConfigs().get(code);
         if(validationRuleConfig == null) {
             throw new NetexValidationException("Configuration not found for rule " + code);
         }
-        return new ValidationReportEntry(validationReportEntryMessage, validationRuleConfig.getName(), validationRuleConfig.getSeverity(), fileName);
+        return new ValidationReportEntry(validationReportEntryMessage, validationRuleConfig.getName(), validationRuleConfig.getSeverity(), dataLocation);
     }
 }

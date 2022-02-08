@@ -4,7 +4,8 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.entur.netex.validation.validator.xpath.ValidationRule;
+import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * Validate that exactly one node is returned by the XPath query.
  */
-public class ValidateExactlyOne implements ValidationRule {
+public class ValidateExactlyOne extends AbstractXPathValidationRule {
 
     private final String code;
     private final String xpath;
@@ -33,7 +34,8 @@ public class ValidateExactlyOne implements ValidationRule {
             selector.setContextItem(validationContext.getXmlNode());
             XdmValue nodes = selector.evaluate();
             if (nodes.size() != 1) {
-                return List.of(new XPathValidationReportEntry(message, code, validationContext.getFileName()));
+                DataLocation dataLocation = new DataLocation(null, validationContext.getFileName(), null, null);
+                return List.of(new XPathValidationReportEntry(message, code, dataLocation));
             }
             return Collections.emptyList();
         } catch (SaxonApiException e) {

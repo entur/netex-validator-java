@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
 import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -38,8 +39,8 @@ public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
         Set<IdVersion> nonVersionedLocalIds = localIds.stream().filter(e -> e.getVersion() == null).collect(Collectors.toSet());
         if (!nonVersionedLocalIds.isEmpty()) {
             for (IdVersion id : nonVersionedLocalIds) {
-                String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_MISSING_VERSION;
-                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_8, id.getFilename(), validationReportEntryMessage));
+                DataLocation dataLocation = getIdVersionLocation(id);
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_8, dataLocation, MESSAGE_FORMAT_MISSING_VERSION));
                 LOGGER.debug("Id {} does not have version attribute set", id.getId());
             }
         }

@@ -4,6 +4,7 @@ import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.xpath.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
@@ -33,7 +34,7 @@ public class ValidateAtLeastOne implements ValidationRule {
             selector.setContextItem(validationContext.getXmlNode());
             XdmValue nodes = selector.evaluate();
             if (nodes.isEmpty()) {
-                return List.of(new XPathValidationReportEntry(message, code, validationContext.getFileName()));
+                return List.of(new XPathValidationReportEntry(message, code, new DataLocation(null, validationContext.getFileName(), null, null)));
             }
             return Collections.emptyList();
         } catch (SaxonApiException e) {
