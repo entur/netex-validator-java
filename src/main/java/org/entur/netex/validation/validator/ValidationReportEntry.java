@@ -13,7 +13,7 @@ public class ValidationReportEntry {
     private String fileName;
     private Integer lineNumber;
 
-    private Integer columNumber;
+    private Integer columnNumber;
 
     public ValidationReportEntry() {
     }
@@ -29,7 +29,7 @@ public class ValidationReportEntry {
         this.objectId = dataLocation.getObjectId();
         this.fileName = dataLocation.getFileName();
         this.lineNumber = dataLocation.getLineNumber();
-        this.columNumber = dataLocation.getColumNumber();
+        this.columnNumber = dataLocation.getColumNumber();
     }
 
     public String getMessage() {
@@ -56,8 +56,8 @@ public class ValidationReportEntry {
         return lineNumber;
     }
 
-    public Integer getColumNumber() {
-        return columNumber;
+    public Integer getColumnNumber() {
+        return columnNumber;
     }
 
 }
