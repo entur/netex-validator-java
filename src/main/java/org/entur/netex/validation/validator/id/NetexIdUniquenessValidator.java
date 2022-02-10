@@ -31,9 +31,11 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
     private static final HashSet<String> IGNORABLE_ELEMENTS = new HashSet<>(Arrays.asList("ResourceFrame", "SiteFrame", "CompositeFrame", "TimetableFrame", "ServiceFrame", "ServiceCalendarFrame", "VehicleScheduleFrame", "Block", "RoutePoint", "PointProjection", "ScheduledStopPoint", "PassengerStopAssignment", "NoticeAssignment"));
 
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES = "Duplicate element identifiers across files";
+    private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES = "Duplicate element identifiers across common files";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NetexIdUniquenessValidator.class);
     private static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
+    private static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";
 
 
     private final NetexIdRepository netexIdRepository;
@@ -47,10 +49,10 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
     @Override
     public void validate(ValidationReport validationReport, ValidationContext validationContext) {
         LOGGER.debug("Validating file {} in report {}", validationContext.getFileName(), validationReport.getValidationReportId());
-        validationReport.addAllValidationReportEntries(validate(validationReport.getValidationReportId(), validationContext.getFileName(), validationContext.getLocalIds()));
+        validationReport.addAllValidationReportEntries(validate(validationReport.getValidationReportId(), validationContext.getFileName(), validationContext.getLocalIds(), validationContext.isCommonFile()));
     }
 
-    protected List<ValidationReportEntry> validate(String reportId, String fileName, Set<IdVersion> netexFileLocalIds) {
+    protected List<ValidationReportEntry> validate(String reportId, String fileName, Set<IdVersion> netexFileLocalIds, boolean isCommonFile) {
         List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
         final Map<String, IdVersion> netexIds;
         if (netexFileLocalIds == null) {
@@ -66,17 +68,25 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
         }
         Set<String> duplicateIds = netexIdRepository.getDuplicateNetexIds(reportId, fileName, netexIds.keySet());
         if (!duplicateIds.isEmpty()) {
-            for (String id : duplicateIds) {
-                DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
-                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_1, dataLocation, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES));
+            if (isCommonFile) {
+                for (String id : duplicateIds) {
+                    DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
+                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_10, dataLocation, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES));
+                }
+            } else {
+                for (String id : duplicateIds) {
+                    DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
+                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_1, dataLocation, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES));
+                }
             }
+
         }
         return validationReportEntries;
     }
 
     @Override
     public Set<String> getRuleDescriptions() {
-        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_1, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES));
+        return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_1, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES), createRuleDescription(RULE_CODE_NETEX_ID_10, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES));
     }
 
 }

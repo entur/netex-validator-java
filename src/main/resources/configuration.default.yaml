@@ -18,6 +18,10 @@ validationRuleConfigs:
   - code: NETEX_ID_9
     name: NETEX_ID_9
     severity: ERROR
+  - code: NETEX_ID_10
+    name: Duplicate NeTEx ID across common files
+    severity: WARNING
+
 
   # XPath rules
   - code: AUTHORITY_1
