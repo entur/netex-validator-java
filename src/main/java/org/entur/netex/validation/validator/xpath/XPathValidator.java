@@ -46,7 +46,7 @@ public class XPathValidator extends AbstractNetexValidator {
     }
 
     private ValidationReportEntry createValidationReportEntry(XPathValidationReportEntry xPathValidationReportEntry) {
-        return createValidationReportEntry(xPathValidationReportEntry.getCode(), xPathValidationReportEntry.getFileName(), xPathValidationReportEntry.getMessage());
+        return createValidationReportEntry(xPathValidationReportEntry.getCode(), xPathValidationReportEntry.getDataLocation(), xPathValidationReportEntry.getMessage());
     }
 
     public String describe() {

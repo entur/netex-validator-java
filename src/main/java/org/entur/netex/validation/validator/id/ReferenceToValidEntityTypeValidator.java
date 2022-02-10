@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
 import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -55,12 +56,13 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
                 if (!(referencedElement + "Ref").equals(referencingElement)
                         && !("Default" + referencedElement + "Ref").equals(referencingElement)
                         && !canSubstitute(referencingElement, referencedElement)) {
-                    String validationReportEntryMessage = getIdVersionLocation(id) + String.format(MESSAGE_FORMAT_INVALID_REFERENCE, referencedElement, referencingElement);
-                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_6,  id.getFilename(), validationReportEntryMessage));
+                    String validationReportEntryMessage = String.format(MESSAGE_FORMAT_INVALID_REFERENCE, referencedElement, referencingElement);
+                    DataLocation dataLocation = getIdVersionLocation(id);
+                    validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_6, dataLocation, validationReportEntryMessage));
                 }
             } else {
-                String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_INVALID_ID_STRUCTURE;
-                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_7,  id.getFilename(), validationReportEntryMessage));
+                DataLocation dataLocation = getIdVersionLocation(id);
+                validationReportEntries.add(createValidationReportEntry(RULE_CODE_NETEX_ID_7, dataLocation, MESSAGE_FORMAT_INVALID_ID_STRUCTURE));
             }
         }
         return validationReportEntries;
