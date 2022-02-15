@@ -150,7 +150,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("vehicleJourneys/ServiceJourney/FlexibleServiceProperties"));
 
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Advertised or Planned]", "The 'Planned' and 'Advertised' properties of an Interchange should not be specified", "INTERCHANGE_1"));
-        validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]", "Guaranteed Interchange should not have a maximum wait time value of zero", "TINTERCHANGE_2"));
+        validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]", "Guaranteed Interchange should not have a maximum wait time value of zero", "INTERCHANGE_2"));
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[MaximumWaitTime > xs:dayTimeDuration('PT1H')]", "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour", "INTERCHANGE_3"));
 
         validationTree.addSubTree(getNoticesValidationTree());
