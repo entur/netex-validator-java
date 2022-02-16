@@ -47,4 +47,9 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
         return validationRuleConfigs;
     }
 
+    @Override
+    public ValidationRuleConfig getValidationRuleConfig(String ruleCode) {
+        return validationRuleConfigs.get(ruleCode);
+    }
+
 }
