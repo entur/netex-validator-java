@@ -177,6 +177,12 @@ validationRuleConfigs:
   - code: LINE_7
     name: Line missing Network or GroupOfLines
     severity: ERROR
+  - code: LINE_8
+    name: Invalid color coding length on Presentation
+    severity: WARNING
+  - code: LINE_9
+    name: Invalid color coding value on Presentation
+    severity: WARNING
   - code: NETWORK_1
     name: Network missing AuthorityRef
     severity: ERROR

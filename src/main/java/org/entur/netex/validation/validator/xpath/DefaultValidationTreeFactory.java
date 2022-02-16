@@ -314,6 +314,10 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]", "Missing TransportSubmode on Line", "LINE_5"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/routes/Route", "Routes should not be defined within a Line or FlexibleLine", "LINE_6"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]", "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef", "LINE_7"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][string-length(text())!=6]", "Line colour should be encoded with 6 hexadecimal digits", "LINE_8"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][not(matches(text(),'[0-9A-Fa-f]{6}'))]", "Line colour should be encoded with valid hexadecimal digits", "LINE_9"));
+
         serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode(ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES));
         serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
 

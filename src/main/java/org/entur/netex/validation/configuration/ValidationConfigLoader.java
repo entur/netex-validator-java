@@ -12,4 +12,11 @@ public interface ValidationConfigLoader {
      * @return a mapping of rule configuration by rule code.
      */
     Map<String, ValidationRuleConfig> getValidationRuleConfigs();
+
+    /**
+     * Return a validation rule configuration for a given rule code.
+     * @param ruleCode
+     * @return
+     */
+    ValidationRuleConfig getValidationRuleConfig(String ruleCode);
 }

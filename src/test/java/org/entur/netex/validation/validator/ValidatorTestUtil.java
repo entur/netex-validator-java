@@ -1,15 +1,21 @@
 package org.entur.netex.validation.validator;
 
+import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidator;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 public class ValidatorTestUtil {
 
@@ -39,5 +45,24 @@ public class ValidatorTestUtil {
         }
         ValidationReport validationReport = netexValidatorsRunner.validate(codespace, reportId, zipEntry.getName(), content);
         aggregatedValidationReport.addAllValidationReportEntries(validationReport.getValidationReportEntries());
+    }
+
+
+    public static List<ValidationReportEntry> validateXPath(String codespace, XPathValidator xPathValidator, NetexXMLParser netexXMLParser, InputStream testDatasetAsStream) throws IOException {
+        assert testDatasetAsStream != null;
+        List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+
+        try (ZipInputStream zipInputStream = new ZipInputStream(testDatasetAsStream)) {
+
+            ZipEntry zipEntry = zipInputStream.getNextEntry();
+            while (zipEntry != null) {
+                byte[] content = zipInputStream.readAllBytes();
+                XdmNode document = netexXMLParser.parseFileToXdmNode(content);
+                XPathValidationContext xPathValidationContext = new XPathValidationContext(document, netexXMLParser, codespace, zipEntry.getName());
+                validationReportEntries.addAll(xPathValidator.validate(xPathValidationContext));
+                zipEntry = zipInputStream.getNextEntry();
+            }
+        }
+        return validationReportEntries;
     }
 }

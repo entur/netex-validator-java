@@ -1,50 +1,64 @@
 package org.entur.netex.validation.validator.xpath;
 
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
-import org.entur.netex.validation.validator.ValidationReportEntry;
+import org.entur.netex.validation.configuration.ValidationConfigLoader;
 import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
+import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+
+import static org.entur.netex.validation.validator.ValidatorTestUtil.validateXPath;
 
 class XpathValidatorTest {
 
     private static final String TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME = "rb_flb-aggregated-netex.zip";
+    private static final String TEST_DATASET_COLOUR_VALID_CODING_FILE_NAME = "test-colour-valid-coding.zip";
+    private static final String TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME = "test-colour-invalid-coding-length.zip";
+    private static final String TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME = "test-colour-invalid-coding-value.zip";
+
+    private final ValidationTreeFactory validationTreeFactory = new DefaultValidationTreeFactory();
+    private final ValidationConfigLoader validationConfigLoader = new DefaultValidationConfigLoader();
+    private final XPathValidator xPathValidator = new XPathValidator(validationTreeFactory, new DefaultValidationEntryFactory(validationConfigLoader));
+    private final NetexXMLParser netexXMLParser = new NetexXMLParser();
 
     @Test
-    void testValidator() throws IOException {
-
-        ValidationTreeFactory validationTreeFactory = new DefaultValidationTreeFactory();
-        XPathValidator xPathValidator = new XPathValidator(validationTreeFactory, new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
-        NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
-
+    void testXPathValidator() throws IOException {
         InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
-        assert testDatasetAsStream != null;
-
-        List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
-
-        try (ZipInputStream zipInputStream = new ZipInputStream(testDatasetAsStream)) {
-
-            ZipEntry zipEntry = zipInputStream.getNextEntry();
-            while (zipEntry != null) {
-                byte[] content = zipInputStream.readAllBytes();
-                XdmNode document = netexXMLParser.parseFileToXdmNode(content);
-                XPathValidationContext xPathValidationContext = new XPathValidationContext(document, netexXMLParser, "FLB", zipEntry.getName());
-                validationReportEntries.addAll(xPathValidator.validate(xPathValidationContext));
-                zipEntry = zipInputStream.getNextEntry();
-            }
-            Assertions.assertFalse(validationReportEntries.isEmpty());
-            Assertions.assertTrue(validationReportEntries.stream().allMatch(validationReportEntry -> validationReportEntry.getFileName().endsWith(".xml")));
-
-        }
+        List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().allMatch(validationReportEntry -> validationReportEntry.getFileName().endsWith(".xml")));
     }
+
+    @Test
+    void testValidColourCoding() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_COLOUR_VALID_CODING_FILE_NAME);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("ENT", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertTrue(validationReportEntries.stream().noneMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_8").getName())));
+        Assertions.assertTrue(validationReportEntries.stream().noneMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_9").getName())));
+
+    }
+
+    @Test
+    void testInvalidColourCodingLength() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("ENT", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_8").getName())));
+        Assertions.assertTrue(validationReportEntries.stream().noneMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_9").getName())));
+    }
+
+    @Test
+    void testInvalidColourCodingValue() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("ENT", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_9").getName())));
+        Assertions.assertTrue(validationReportEntries.stream().noneMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("LINE_8").getName())));
+    }
+
 }
