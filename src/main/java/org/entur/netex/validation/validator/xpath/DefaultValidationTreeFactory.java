@@ -135,6 +135,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[not(ServiceJourneyRef)]", "Missing ServiceJourneyRef on DatedServiceJourney", "DATED_SERVICE_JOURNEY_2"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[count(ServiceJourneyRef) > 1]", "Multiple ServiceJourneyRef on DatedServiceJourney", "DATED_SERVICE_JOURNEY_3"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[@id = preceding-sibling::DatedServiceJourney/@id]", "DatedServiceJourney is repeated with a different version", "DATED_SERVICE_JOURNEY_4"));
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney/DatedServiceJourneyRef[@ref = preceding-sibling::DatedServiceJourneyRef/@ref]", "Multiple references from a DatedServiceJourney to the same DatedServiceJourney", "DATED_SERVICE_JOURNEY_5"));
 
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DeadRun[not(passingTimes)]", "The Dead run does not reference passing times", "DEAD_RUN_1"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DeadRun[not(JourneyPatternRef)]", "The Dead run does not reference a journey pattern", "DEAD_RUN_2"));
