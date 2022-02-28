@@ -96,6 +96,9 @@ validationRuleConfigs:
   - code: DATED_SERVICE_JOURNEY_4
     name: DatedServiceJourney multiple versions
     severity: WARNING
+  - code: DATED_SERVICE_JOURNEY_5
+    name: DatedServiceJourney multiple references to the same DatedServiceJourney
+    severity: ERROR
   - code: DEAD_RUN_1
     name: DeadRun missing PassingTime references
     severity: INFO
