@@ -49,7 +49,7 @@ public class NeTexReferenceValidator extends AbstractNetexValidator {
         if (!possibleExternalReferences.isEmpty()) {
             // Remove references that are found in the common files, comparing only by id, not by id and version
             Set<String> commonIds = netexIdRepository.getSharedNetexIds(reportId);
-            possibleExternalReferences.removeIf(ref -> commonIds.stream().anyMatch(commonId -> commonId.equals(ref.getId())));
+            possibleExternalReferences.removeIf(ref -> commonIds.contains(ref.getId()));
             if (!possibleExternalReferences.isEmpty()) {
                 // Remove references that are valid according to the external id validators
                 externalReferenceValidators.forEach(validator -> possibleExternalReferences.removeAll(validator.validateReferenceIds(possibleExternalReferences)));
