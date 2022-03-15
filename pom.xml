@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>0.0.15-SNAPSHOT</version>
+    <version>0.0.15</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -25,7 +25,7 @@
         <connection>scm:git:ssh://git@github.com:entur/netex-validator-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/entur/netex-validator-java.git</developerConnection>
         <url>https://github.com/entur/netex-validator-java/tree/main</url>
-    <tag>HEAD</tag>
+    <tag>netex-validator-java-0.0.15</tag>
   </scm>
     <distributionManagement>
         <repository>
