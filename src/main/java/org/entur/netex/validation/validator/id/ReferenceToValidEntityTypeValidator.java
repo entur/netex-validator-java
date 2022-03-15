@@ -141,6 +141,15 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
         organisationRefSubstitutions.add("Authority");
         substitutions.put("OrganisationRef", organisationRefSubstitutions);
 
+        Set<String> placeRefSubstitutions = new HashSet<>();
+        placeRefSubstitutions.add("StopPlace");
+        placeRefSubstitutions.add("Quay");
+        substitutions.put("PlaceRef", placeRefSubstitutions);
+
+        Set<String> equipmentRefSubstitutions = new HashSet<>();
+        equipmentRefSubstitutions.add("AccessVehicleEquipment");
+        substitutions.put("EquipmentRef", equipmentRefSubstitutions);
+
         return substitutions;
     }
 
