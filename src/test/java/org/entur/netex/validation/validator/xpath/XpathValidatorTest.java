@@ -17,6 +17,8 @@ import static org.entur.netex.validation.validator.ValidatorTestUtil.validateXPa
 class XpathValidatorTest {
 
     private static final String TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME = "rb_flb-aggregated-netex.zip";
+    private static final String TEST_DATASET_DAY_TYPE_NOT_ASSIGNED = "rb_flb-aggregated-netex-daytype-not-assigned.zip";
+
     private static final String TEST_DATASET_COLOUR_VALID_CODING_FILE_NAME = "test-colour-valid-coding.zip";
     private static final String TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME = "test-colour-invalid-coding-length.zip";
     private static final String TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME = "test-colour-invalid-coding-value.zip";
@@ -33,6 +35,22 @@ class XpathValidatorTest {
         List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
         Assertions.assertFalse(validationReportEntries.isEmpty());
         Assertions.assertTrue(validationReportEntries.stream().allMatch(validationReportEntry -> validationReportEntry.getFileName().endsWith(".xml")));
+    }
+
+    @Test
+    void testDayTypeAllAssigned() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertTrue(validationReportEntries.stream().noneMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("SERVICE_CALENDAR_1").getName())));
+
+    }
+
+    @Test
+    void testDayTypeNotAssigned() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_DATASET_DAY_TYPE_NOT_ASSIGNED);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("SERVICE_CALENDAR_1").getName())));
     }
 
     @Test
