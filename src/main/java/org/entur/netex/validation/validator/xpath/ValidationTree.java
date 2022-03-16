@@ -3,6 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
+import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +55,11 @@ public class ValidationTree {
         List<XPathValidationReportEntry> xPathValidationReportEntries = new ArrayList<>();
         for (ValidationRule validationRule : validationRules) {
             LOGGER.debug("Running validation rule '{}'/'{}'", name, validationRule.getMessage());
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             xPathValidationReportEntries.addAll(validationRule.validate(validationContext));
+            stopWatch.stop();
+            LOGGER.debug("Validated rule '{}'/'{}' in {} ms", name, validationRule.getMessage(), stopWatch.getTime());
         }
         for (ValidationTree validationSubTree : subTrees) {
             XdmValue subContextNodes = validationContext.getNetexXMLParser().selectNodeSet(validationSubTree.getContext(), validationContext.getXmlNode());
