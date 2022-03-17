@@ -47,7 +47,7 @@ validationRuleConfigs:
     severity: ERROR
   - code: BLOCK_3
     name: Block missing DayType
-    severity: ERROR
+    severity: WARNING
   - code: BOOKING_1
     name: Booking illegal BookingAccess
     severity: ERROR

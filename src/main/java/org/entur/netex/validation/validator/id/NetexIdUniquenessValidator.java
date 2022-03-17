@@ -28,7 +28,7 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
      * Set of NeTEx elements for which id-uniqueness across lines is not verified.
      * These IDs need not be stored.
      */
-    private static final HashSet<String> IGNORABLE_ELEMENTS = new HashSet<>(Arrays.asList("ResourceFrame", "SiteFrame", "CompositeFrame", "TimetableFrame", "ServiceFrame", "ServiceCalendarFrame", "VehicleScheduleFrame", "Block", "RoutePoint", "PointProjection", "ScheduledStopPoint", "PassengerStopAssignment", "NoticeAssignment"));
+    private static final HashSet<String> IGNORABLE_ELEMENTS = new HashSet<>(Arrays.asList("ResourceFrame", "SiteFrame", "CompositeFrame", "TimetableFrame", "ServiceFrame", "ServiceCalendarFrame", "VehicleScheduleFrame", "Block", "RoutePoint", "PointProjection", "ScheduledStopPoint", "PassengerStopAssignment", "NoticeAssignment", "ServiceLinkInJourneyPattern"));
 
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES = "Duplicate element identifiers across files";
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES = "Duplicate element identifiers across common files";
