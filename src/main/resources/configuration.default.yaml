@@ -149,7 +149,7 @@ validationRuleConfigs:
     severity: ERROR
   - code: JOURNEY_PATTERN_4
     name: JourneyPattern missing DestinationDisplayRef on first stop point
-    severity: WARNING
+    severity: ERROR
   - code: JOURNEY_PATTERN_5
     name: JourneyPattern illegal DestinationDisplayRef on last stop point
     severity: WARNING
