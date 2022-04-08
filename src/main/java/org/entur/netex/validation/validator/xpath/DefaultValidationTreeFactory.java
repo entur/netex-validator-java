@@ -247,7 +247,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     protected ValidationTree getVehicleScheduleFrameValidationTree(String path) {
         ValidationTree serviceCalendarFrameValidationTree = new ValidationTree("Vehicle Schedule frame", path);
 
-        serviceCalendarFrameValidationTree.addValidationRule(new ValidateAtLeastOne("blocks/Block", "At least one Block required in VehicleScheduleFrame", "BLOCK_1"));
+        serviceCalendarFrameValidationTree.addValidationRule(new ValidateAtLeastOne("blocks/Block | blocks/TrainBlock", "At least one Block or TrainBlock required in VehicleScheduleFrame", "BLOCK_1"));
         serviceCalendarFrameValidationTree.addValidationRule(new ValidateNotExist("blocks/Block[not(journeys)]", "At least one Journey must be defined for Block", "BLOCK_2"));
         serviceCalendarFrameValidationTree.addValidationRule(new ValidateNotExist("blocks/Block[not(dayTypes)]", "At least one DayType must be defined for Block", "BLOCK_3"));
 
