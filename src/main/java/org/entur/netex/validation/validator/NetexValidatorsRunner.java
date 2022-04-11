@@ -39,12 +39,22 @@ public class NetexValidatorsRunner {
     }
 
     public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent) {
+        return validate(codespace, validationReportId, filename, fileContent, false);
+    }
+
+    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation) {
         ValidationReport validationReport = new ValidationReport(codespace, validationReportId);
-        StopWatch xmlSchemValidationStopWatch = new StopWatch();
-        xmlSchemValidationStopWatch.start();
-        validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
-        xmlSchemValidationStopWatch.stop();
-        LOGGER.debug("XMLSchema validation for {}/{}/{} completed in {} ms", codespace, validationReportId, filename, xmlSchemValidationStopWatch.getTime());
+
+        if(skipSchemaValidation) {
+            LOGGER.info("Skipping schema validation");
+        } else {
+            StopWatch xmlSchemValidationStopWatch = new StopWatch();
+            xmlSchemValidationStopWatch.start();
+            validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
+            xmlSchemValidationStopWatch.stop();
+            LOGGER.debug("XMLSchema validation for {}/{}/{} completed in {} ms", codespace, validationReportId, filename, xmlSchemValidationStopWatch.getTime());
+        }
+
         if (validationReport.hasError()) {
             // do not run subsequent validators if the XML Schema validation fails
             return validationReport;
