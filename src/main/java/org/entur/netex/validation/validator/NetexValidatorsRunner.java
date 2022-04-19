@@ -39,10 +39,10 @@ public class NetexValidatorsRunner {
     }
 
     public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent) {
-        return validate(codespace, validationReportId, filename, fileContent, false);
+        return validate(codespace, validationReportId, filename, fileContent, false, false);
     }
 
-    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation) {
+    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation, boolean skipValidators) {
         ValidationReport validationReport = new ValidationReport(codespace, validationReportId);
 
         if(skipSchemaValidation) {
@@ -57,6 +57,11 @@ public class NetexValidatorsRunner {
 
         if (validationReport.hasError()) {
             // do not run subsequent validators if the XML Schema validation fails
+            return validationReport;
+        }
+
+        if(skipValidators) {
+            LOGGER.info("Skipping NeTEx validators");
             return validationReport;
         }
 
