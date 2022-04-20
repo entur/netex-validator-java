@@ -25,6 +25,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     @Override
     public ValidationTree buildValidationTree() {
         ValidationTree validationTree = new ValidationTree("PublicationDelivery", "/");
+        validationTree.addValidationRule(new ValidateNotExist("PublicationDelivery//*[number(@version) != number(@version)  and @version != 'any']", "Non-numeric NeTEx version", "VERSION_NON_NUMERIC"));
         validationTree.addSubTree(getCommonFileValidationTree());
         validationTree.addSubTree(getLineFileValidationTree());
         return validationTree;
