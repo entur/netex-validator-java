@@ -24,6 +24,9 @@ validationRuleConfigs:
 
 
   # XPath rules
+  - code: VERSION_NON_NUMERIC
+    name: Non-numeric NeTEx version
+    severity: WARNING
   - code: AUTHORITY_1
     name: Authority missing CompanyNumber
     severity: INFO

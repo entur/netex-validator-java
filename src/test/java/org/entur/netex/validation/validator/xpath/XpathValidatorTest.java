@@ -23,6 +23,8 @@ class XpathValidatorTest {
     private static final String TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME = "test-colour-invalid-coding-length.zip";
     private static final String TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME = "test-colour-invalid-coding-value.zip";
     private static final String TEST_DSJ_MULTIPLE_REFERENCE_TO_SAME_DSJ = "test-multiple-references-to-same-dsj.zip";
+    private static final String TEST_NON_NUMERIC_NETEX_VERSION = "rb_flb-aggregated-netex-non-numeric-version.zip";
+
 
     private final ValidationTreeFactory validationTreeFactory = new DefaultValidationTreeFactory();
     private final ValidationConfigLoader validationConfigLoader = new DefaultValidationConfigLoader();
@@ -86,6 +88,14 @@ class XpathValidatorTest {
         List<ValidationReportEntry> validationReportEntries = validateXPath("ENT", xPathValidator, netexXMLParser, testDatasetAsStream);
         Assertions.assertFalse(validationReportEntries.isEmpty());
         Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("DATED_SERVICE_JOURNEY_5").getName())));
+    }
+
+    @Test
+    void testNonNumericNetexVersion() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_NON_NUMERIC_NETEX_VERSION);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("VERSION_NON_NUMERIC").getName())));
     }
 
 }
