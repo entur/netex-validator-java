@@ -39,16 +39,17 @@ public class NetexValidatorsRunner {
     }
 
     public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent) {
-        return validate(codespace, validationReportId, filename, fileContent, false, false);
+        return validate(codespace, validationReportId, filename, fileContent, false, false, new NoopNetexValidationCallBack());
     }
 
-    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation, boolean skipValidators) {
+    public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation, boolean skipValidators, NetexValidationProgressCallBack netexValidationProgressCallBack) {
         ValidationReport validationReport = new ValidationReport(codespace, validationReportId);
 
-        if(skipSchemaValidation) {
+        if (skipSchemaValidation) {
             LOGGER.info("Skipping schema validation");
         } else {
             StopWatch xmlSchemValidationStopWatch = new StopWatch();
+            netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
             xmlSchemValidationStopWatch.start();
             validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
             xmlSchemValidationStopWatch.stop();
@@ -60,7 +61,7 @@ public class NetexValidatorsRunner {
             return validationReport;
         }
 
-        if(skipValidators) {
+        if (skipValidators) {
             LOGGER.info("Skipping NeTEx validators");
             return validationReport;
         }
@@ -73,6 +74,7 @@ public class NetexValidatorsRunner {
         ValidationContext validationContext = new ValidationContext(document, netexXMLParser, codespace, filename, localIds, localRefs);
 
         for (NetexValidator netexValidator : netexValidators) {
+            netexValidationProgressCallBack.notifyProgress("Running validator " + netexValidator.getClass().getName());
             StopWatch netexValidatorStopWatch = new StopWatch();
             netexValidatorStopWatch.start();
             netexValidator.validate(validationReport, validationContext);
