@@ -3,6 +3,8 @@ package org.entur.netex.validation.validator;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.apache.commons.lang3.time.StopWatch;
+import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex.validation.exception.RetryableNetexValidationException;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.id.NetexIdExtractorHelper;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
@@ -15,6 +17,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 
@@ -26,6 +30,7 @@ import java.util.stream.Collectors;
 public class NetexValidatorsRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NetexValidatorsRunner.class);
+    private static final int VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS = 10000;
 
 
     private final NetexSchemaValidator netexSchemaValidator;
@@ -49,9 +54,32 @@ public class NetexValidatorsRunner {
             LOGGER.info("Skipping schema validation");
         } else {
             StopWatch xmlSchemValidationStopWatch = new StopWatch();
-            netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
+            netexValidationProgressCallBack.notifyProgress("Starting NeTEx Schema validation");
             xmlSchemValidationStopWatch.start();
-            validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
+
+            CompletableFuture<List<ValidationReportEntry>> futureValidationReportEntries = CompletableFuture.supplyAsync(() -> netexSchemaValidator.validateSchema(filename, fileContent));
+
+            CompletableFuture.supplyAsync(() -> {
+                while (!futureValidationReportEntries.isDone()) {
+                    netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
+                    try {
+                        Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                }
+                return null;
+            });
+
+            try {
+                validationReport.addAllValidationReportEntries(futureValidationReportEntries.get());
+            } catch (ExecutionException e) {
+                throw new NetexValidationException("Exception while running NeTEx schema validation", e);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RetryableNetexValidationException(e);
+            }
             xmlSchemValidationStopWatch.stop();
             LOGGER.debug("XMLSchema validation for {}/{}/{} completed in {} ms", codespace, validationReportId, filename, xmlSchemValidationStopWatch.getTime());
         }
@@ -79,7 +107,11 @@ public class NetexValidatorsRunner {
             netexValidatorStopWatch.start();
             netexValidator.validate(validationReport, validationContext);
             netexValidatorStopWatch.stop();
-            LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+            if(netexValidatorStopWatch.getTime() > 30000) {
+                LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+            } else {
+                LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+            }
         }
 
         return validationReport;
