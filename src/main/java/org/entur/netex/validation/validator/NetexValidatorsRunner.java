@@ -133,15 +133,42 @@ public class NetexValidatorsRunner {
         ValidationContext validationContext = new ValidationContext(document, netexXMLParser, codespace, filename, localIds, localRefs);
 
         for (NetexValidator netexValidator : netexValidators) {
-            netexValidationProgressCallBack.notifyProgress("Running validator " + netexValidator.getClass().getName());
+            String netexValidatorName = netexValidator.getClass().getName();
+            netexValidationProgressCallBack.notifyProgress("Starting validator " + netexValidatorName);
             StopWatch netexValidatorStopWatch = new StopWatch();
             netexValidatorStopWatch.start();
-            netexValidator.validate(validationReport, validationContext);
+
+            // Periodically notify progress in a separate thread
+            AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
+            CompletableFuture.supplyAsync(() -> {
+                int counter = 0;
+                while (!netexValidatorComplete.get() && counter < MAX_WAITING_LOOPS) {
+                    counter++;
+                    netexValidationProgressCallBack.notifyProgress("Running NeTEx Validator " + netexValidatorName);
+                    try {
+                        Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        throw new RuntimeException(e);
+                    }
+                }
+                if (counter >= MAX_WAITING_LOOPS) {
+                    LOGGER.warn("Netex validator {} still running after {} milliseconds", netexValidatorName, counter * VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+                }
+                return null;
+            });
+
+            try {
+                netexValidator.validate(validationReport, validationContext);
+            } finally {
+                netexValidatorComplete.set(true);
+            }
+
             netexValidatorStopWatch.stop();
             if (netexValidatorStopWatch.getTime() > 30000) {
-                LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+                LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidatorName, codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             } else {
-                LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+                LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidatorName, codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             }
         }
     }
