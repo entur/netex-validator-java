@@ -85,25 +85,8 @@ public class NetexValidatorsRunner {
         netexValidationProgressCallBack.notifyProgress("Starting NeTEx Schema validation");
         xmlSchemaValidationStopWatch.start();
 
-        // Periodically notify progress in a separate thread
         AtomicBoolean schemaValidationComplete = new AtomicBoolean(false);
-        CompletableFuture.supplyAsync(() -> {
-            int counter = 0;
-            while (!schemaValidationComplete.get() && counter < MAX_WAITING_LOOPS) {
-                counter++;
-                netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
-                try {
-                    Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new RuntimeException(e);
-                }
-            }
-            if (counter >= MAX_WAITING_LOOPS) {
-                LOGGER.warn("Schema validation still running after {} milliseconds", counter * VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
-            }
-            return null;
-        });
+        notifyProgressAsync(netexValidationProgressCallBack, "NeTEx Schema validation", schemaValidationComplete);
 
         try {
             validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
@@ -133,17 +116,53 @@ public class NetexValidatorsRunner {
         ValidationContext validationContext = new ValidationContext(document, netexXMLParser, codespace, filename, localIds, localRefs);
 
         for (NetexValidator netexValidator : netexValidators) {
-            netexValidationProgressCallBack.notifyProgress("Running validator " + netexValidator.getClass().getName());
+            String netexValidatorName = netexValidator.getClass().getName();
+            netexValidationProgressCallBack.notifyProgress("Starting validator " + netexValidatorName);
             StopWatch netexValidatorStopWatch = new StopWatch();
             netexValidatorStopWatch.start();
-            netexValidator.validate(validationReport, validationContext);
+
+            AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
+            notifyProgressAsync(netexValidationProgressCallBack, netexValidatorName, netexValidatorComplete);
+
+            try {
+                netexValidator.validate(validationReport, validationContext);
+            } finally {
+                netexValidatorComplete.set(true);
+            }
+
             netexValidatorStopWatch.stop();
             if (netexValidatorStopWatch.getTime() > 30000) {
-                LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+                LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidatorName, codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             } else {
-                LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
+                LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidatorName, codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             }
         }
+    }
+
+    /**
+     * Notify a validation task progress in a separate thread.
+     * @param netexValidationProgressCallBack
+     * @param taskName
+     * @param taskComplete
+     */
+    private void notifyProgressAsync(NetexValidationProgressCallBack netexValidationProgressCallBack, String taskName, AtomicBoolean taskComplete) {
+        CompletableFuture.supplyAsync(() -> {
+            int counter = 0;
+            while (!taskComplete.get() && counter < MAX_WAITING_LOOPS) {
+                counter++;
+                netexValidationProgressCallBack.notifyProgress("Running " + taskName);
+                try {
+                    Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+            }
+            if (counter >= MAX_WAITING_LOOPS) {
+                LOGGER.warn("Task {} still running after {} milliseconds", taskName, counter * VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+            }
+            return null;
+        });
     }
 
 
