@@ -3,8 +3,6 @@ package org.entur.netex.validation.validator;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.apache.commons.lang3.time.StopWatch;
-import org.entur.netex.validation.exception.NetexValidationException;
-import org.entur.netex.validation.exception.RetryableNetexValidationException;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.id.NetexIdExtractorHelper;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
@@ -18,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 
@@ -31,6 +29,7 @@ public class NetexValidatorsRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NetexValidatorsRunner.class);
     private static final int VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS = 10000;
+    private static final int MAX_WAITING_LOOPS = 180;
 
 
     private final NetexSchemaValidator netexSchemaValidator;
@@ -53,35 +52,7 @@ public class NetexValidatorsRunner {
         if (skipSchemaValidation) {
             LOGGER.info("Skipping schema validation");
         } else {
-            StopWatch xmlSchemValidationStopWatch = new StopWatch();
-            netexValidationProgressCallBack.notifyProgress("Starting NeTEx Schema validation");
-            xmlSchemValidationStopWatch.start();
-
-            CompletableFuture<List<ValidationReportEntry>> futureValidationReportEntries = CompletableFuture.supplyAsync(() -> netexSchemaValidator.validateSchema(filename, fileContent));
-
-            CompletableFuture.supplyAsync(() -> {
-                while (!futureValidationReportEntries.isDone()) {
-                    netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
-                    try {
-                        Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        throw new RuntimeException(e);
-                    }
-                }
-                return null;
-            });
-
-            try {
-                validationReport.addAllValidationReportEntries(futureValidationReportEntries.get());
-            } catch (ExecutionException e) {
-                throw new NetexValidationException("Exception while running NeTEx schema validation", e);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new RetryableNetexValidationException(e);
-            }
-            xmlSchemValidationStopWatch.stop();
-            LOGGER.debug("XMLSchema validation for {}/{}/{} completed in {} ms", codespace, validationReportId, filename, xmlSchemValidationStopWatch.getTime());
+            runSchemaValidation(codespace, validationReportId, filename, fileContent, netexValidationProgressCallBack, validationReport);
         }
 
         if (validationReport.hasError()) {
@@ -94,6 +65,66 @@ public class NetexValidatorsRunner {
             return validationReport;
         }
 
+        runNetexValidators(codespace, validationReportId, filename, fileContent, netexValidationProgressCallBack, validationReport);
+
+        return validationReport;
+    }
+
+    /**
+     * Run the XML schema validation.
+     *
+     * @param codespace
+     * @param validationReportId
+     * @param filename
+     * @param fileContent
+     * @param netexValidationProgressCallBack
+     * @param validationReport
+     */
+    private void runSchemaValidation(String codespace, String validationReportId, String filename, byte[] fileContent, NetexValidationProgressCallBack netexValidationProgressCallBack, ValidationReport validationReport) {
+        StopWatch xmlSchemaValidationStopWatch = new StopWatch();
+        netexValidationProgressCallBack.notifyProgress("Starting NeTEx Schema validation");
+        xmlSchemaValidationStopWatch.start();
+
+        // Periodically notify progress in a separate thread
+        AtomicBoolean schemaValidationComplete = new AtomicBoolean(false);
+        CompletableFuture.supplyAsync(() -> {
+            int counter = 0;
+            while (!schemaValidationComplete.get() && counter < MAX_WAITING_LOOPS) {
+                counter++;
+                netexValidationProgressCallBack.notifyProgress("Running NeTEx Schema validation");
+                try {
+                    Thread.sleep(VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw new RuntimeException(e);
+                }
+            }
+            if (counter >= MAX_WAITING_LOOPS) {
+                LOGGER.warn("Schema validation still running after {} milliseconds", counter * VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS);
+            }
+            return null;
+        });
+
+        try {
+            validationReport.addAllValidationReportEntries(netexSchemaValidator.validateSchema(filename, fileContent));
+        } finally {
+            schemaValidationComplete.set(true);
+        }
+        xmlSchemaValidationStopWatch.stop();
+        LOGGER.debug("XMLSchema validation for {}/{}/{} completed in {} ms", codespace, validationReportId, filename, xmlSchemaValidationStopWatch.getTime());
+    }
+
+    /**
+     * Run the NeTEx validators.
+     *
+     * @param codespace
+     * @param validationReportId
+     * @param filename
+     * @param fileContent
+     * @param netexValidationProgressCallBack
+     * @param validationReport
+     */
+    private void runNetexValidators(String codespace, String validationReportId, String filename, byte[] fileContent, NetexValidationProgressCallBack netexValidationProgressCallBack, ValidationReport validationReport) {
         XdmNode document = netexXMLParser.parseFileToXdmNode(fileContent);
         XPathCompiler xPathCompiler = netexXMLParser.getXPathCompiler();
         Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentifiers(document, xPathCompiler, filename, Set.of("Codespace")));
@@ -107,16 +138,14 @@ public class NetexValidatorsRunner {
             netexValidatorStopWatch.start();
             netexValidator.validate(validationReport, validationContext);
             netexValidatorStopWatch.stop();
-            if(netexValidatorStopWatch.getTime() > 30000) {
+            if (netexValidatorStopWatch.getTime() > 30000) {
                 LOGGER.warn("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             } else {
                 LOGGER.debug("Validator {} for {}/{}/{} completed in {} ms", netexValidator.getClass().getName(), codespace, validationReportId, filename, netexValidatorStopWatch.getTime());
             }
         }
-
-        return validationReport;
-
     }
+
 
     public Set<String> getRuleDescriptions() {
         return netexValidators.stream().map(NetexValidator::getRuleDescriptions).flatMap(Collection::stream).collect(Collectors.toSet());
