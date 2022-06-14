@@ -6,6 +6,7 @@ import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
@@ -37,8 +38,8 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
             List<XPathValidationReportEntry> validationReportEntries = new ArrayList<>();
             for (XdmItem item : nodes) {
                 XdmNode xdmNode = (XdmNode) item;
-                String validationReportEntryMessage = getXdmNodeLocation(xdmNode) + message;
-                validationReportEntries.add(new XPathValidationReportEntry(validationReportEntryMessage, code, validationContext.getFileName()));
+                DataLocation dataLocation = getXdmNodeLocation(validationContext.getFileName(), xdmNode);
+                validationReportEntries.add(new XPathValidationReportEntry(message, code, dataLocation));
             }
             return validationReportEntries;
         } catch (SaxonApiException e) {

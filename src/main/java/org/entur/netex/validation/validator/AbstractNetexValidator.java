@@ -14,8 +14,8 @@ public abstract class AbstractNetexValidator implements NetexValidator {
     }
 
 
-    protected ValidationReportEntry createValidationReportEntry(String code, String fileName, String validationReportEntryMessage) {
-        return validationReportEntryFactory.createValidationReportEntry(code, validationReportEntryMessage, fileName);
+    protected ValidationReportEntry createValidationReportEntry(String code, DataLocation dataLocation, String validationReportEntryMessage) {
+        return validationReportEntryFactory.createValidationReportEntry(code, validationReportEntryMessage, dataLocation);
     }
 
     /**
@@ -23,8 +23,8 @@ public abstract class AbstractNetexValidator implements NetexValidator {
      * @param id
      * @return
      */
-    protected String getIdVersionLocation(IdVersion id) {
-        return "[Line " + id.getLineNumber() + ", Column " + id.getColumnNumber() + ", Id " + id.getId() + "] ";
+    protected DataLocation getIdVersionLocation(IdVersion id) {
+        return new DataLocation(id.getId(), id.getFilename(), id.getLineNumber(), id.getColumnNumber());
     }
 
     /**

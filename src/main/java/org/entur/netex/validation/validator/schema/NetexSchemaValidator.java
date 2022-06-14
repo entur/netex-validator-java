@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.schema;
 
 import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.entur.netex.validation.xml.NetexSchemaRepository;
@@ -71,8 +72,9 @@ public class NetexSchemaValidator {
 
                 private void addValidationReportEntry(String fileName, SAXParseException saxParseException, ValidationReportEntrySeverity severity) throws SAXParseException {
                     if (errorCount < maxValidationReportEntries) {
-                        String message = "Line " + saxParseException.getLineNumber() + ", Column " + saxParseException.getColumnNumber() + ": " + saxParseException.getMessage();
-                        validationReportEntries.add(new ValidationReportEntry(message, "NETEX_SCHEMA", severity, fileName));
+                        String message = saxParseException.getMessage();
+                        DataLocation dataLocation = getErrorLocation(fileName, saxParseException);
+                        validationReportEntries.add(new ValidationReportEntry(message, "NETEX_SCHEMA", severity, dataLocation));
                     } else {
                         LOGGER.warn("File {} has too many schema validation errors (max is {}). Additional errors will not be reported.", fileName, maxValidationReportEntries);
                         throw saxParseException;
@@ -90,6 +92,10 @@ public class NetexSchemaValidator {
         }
 
         return validationReportEntries;
+    }
+
+    private DataLocation getErrorLocation(String fileName, SAXParseException saxParseException) {
+        return new DataLocation(null, fileName, saxParseException.getLineNumber(), saxParseException.getColumnNumber());
     }
 
 

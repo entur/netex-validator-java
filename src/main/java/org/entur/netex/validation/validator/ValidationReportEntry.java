@@ -5,23 +5,31 @@ package org.entur.netex.validation.validator;
  */
 public class ValidationReportEntry {
 
+
     private String name;
     private String message;
     private ValidationReportEntrySeverity severity;
+    private String objectId;
     private String fileName;
+    private Integer lineNumber;
+
+    private Integer columnNumber;
 
     public ValidationReportEntry() {
     }
 
     public ValidationReportEntry(String message, String name, ValidationReportEntrySeverity severity) {
-        this(message, name, severity, "");
+        this(message, name, severity, DataLocation.EMPTY_LOCATION);
     }
 
-    public ValidationReportEntry(String message, String name, ValidationReportEntrySeverity severity, String fileName) {
+    public ValidationReportEntry(String message, String name, ValidationReportEntrySeverity severity, DataLocation dataLocation) {
         this.message = message;
         this.name = name;
         this.severity = severity;
-        this.fileName = fileName;
+        this.objectId = dataLocation.getObjectId();
+        this.fileName = dataLocation.getFileName();
+        this.lineNumber = dataLocation.getLineNumber();
+        this.columnNumber = dataLocation.getColumNumber();
     }
 
     public String getMessage() {
@@ -39,4 +47,17 @@ public class ValidationReportEntry {
     public String getFileName() {
         return fileName;
     }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public Integer getLineNumber() {
+        return lineNumber;
+    }
+
+    public Integer getColumnNumber() {
+        return columnNumber;
+    }
+
 }

@@ -4,6 +4,8 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
 import java.io.InputStream;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -19,12 +21,16 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
     private final Map<String, ValidationRuleConfig> validationRuleConfigs;
 
     public DefaultValidationConfigLoader() {
-        this(null);
+        this(Collections.emptyList());
     }
 
     public DefaultValidationConfigLoader(String configurationFile) {
+        this(List.of(configurationFile));
+    }
+
+    public DefaultValidationConfigLoader(List<String> configurationFiles) {
         this.validationRuleConfigs = loadConfigurationFile(DEFAULT_VALIDATION_CONFIG_FILE);
-        if (configurationFile != null) {
+        for (String configurationFile : configurationFiles) {
             this.validationRuleConfigs.putAll(loadConfigurationFile(configurationFile));
         }
     }
@@ -39,6 +45,11 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
     @Override
     public Map<String, ValidationRuleConfig> getValidationRuleConfigs() {
         return validationRuleConfigs;
+    }
+
+    @Override
+    public ValidationRuleConfig getValidationRuleConfig(String ruleCode) {
+        return validationRuleConfigs.get(ruleCode);
     }
 
 }

@@ -25,6 +25,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     @Override
     public ValidationTree buildValidationTree() {
         ValidationTree validationTree = new ValidationTree("PublicationDelivery", "/");
+        validationTree.addValidationRule(new ValidateNotExist("PublicationDelivery//*[number(@version) != number(@version)  and @version != 'any']", "Non-numeric NeTEx version", "VERSION_NON_NUMERIC"));
         validationTree.addSubTree(getCommonFileValidationTree());
         validationTree.addSubTree(getLineFileValidationTree());
         return validationTree;
@@ -135,6 +136,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[not(ServiceJourneyRef)]", "Missing ServiceJourneyRef on DatedServiceJourney", "DATED_SERVICE_JOURNEY_2"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[count(ServiceJourneyRef) > 1]", "Multiple ServiceJourneyRef on DatedServiceJourney", "DATED_SERVICE_JOURNEY_3"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney[@id = preceding-sibling::DatedServiceJourney/@id]", "DatedServiceJourney is repeated with a different version", "DATED_SERVICE_JOURNEY_4"));
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DatedServiceJourney/DatedServiceJourneyRef[@ref = preceding-sibling::DatedServiceJourneyRef/@ref]", "Multiple references from a DatedServiceJourney to the same DatedServiceJourney", "DATED_SERVICE_JOURNEY_5"));
 
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DeadRun[not(passingTimes)]", "The Dead run does not reference passing times", "DEAD_RUN_1"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/DeadRun[not(JourneyPatternRef)]", "The Dead run does not reference a journey pattern", "DEAD_RUN_2"));
@@ -150,7 +152,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("vehicleJourneys/ServiceJourney/FlexibleServiceProperties"));
 
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Advertised or Planned]", "The 'Planned' and 'Advertised' properties of an Interchange should not be specified", "INTERCHANGE_1"));
-        validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]", "Guaranteed Interchange should not have a maximum wait time value of zero", "TINTERCHANGE_2"));
+        validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]", "Guaranteed Interchange should not have a maximum wait time value of zero", "INTERCHANGE_2"));
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[MaximumWaitTime > xs:dayTimeDuration('PT1H')]", "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour", "INTERCHANGE_3"));
 
         validationTree.addSubTree(getNoticesValidationTree());
@@ -246,7 +248,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     protected ValidationTree getVehicleScheduleFrameValidationTree(String path) {
         ValidationTree serviceCalendarFrameValidationTree = new ValidationTree("Vehicle Schedule frame", path);
 
-        serviceCalendarFrameValidationTree.addValidationRule(new ValidateAtLeastOne("blocks/Block", "At least one Block required in VehicleScheduleFrame", "BLOCK_1"));
+        serviceCalendarFrameValidationTree.addValidationRule(new ValidateAtLeastOne("blocks/Block | blocks/TrainBlock", "At least one Block or TrainBlock required in VehicleScheduleFrame", "BLOCK_1"));
         serviceCalendarFrameValidationTree.addValidationRule(new ValidateNotExist("blocks/Block[not(journeys)]", "At least one Journey must be defined for Block", "BLOCK_2"));
         serviceCalendarFrameValidationTree.addValidationRule(new ValidateNotExist("blocks/Block[not(dayTypes)]", "At least one DayType must be defined for Block", "BLOCK_3"));
 
@@ -314,7 +316,11 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]", "Missing TransportSubmode on Line", "LINE_5"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/routes/Route", "Routes should not be defined within a Line or FlexibleLine", "LINE_6"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]", "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef", "LINE_7"));
-        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][string-length(text())!=6]", "Line colour should be encoded with 6 hexadecimal digits", "LINE_8"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][not(matches(text(),'[0-9A-Fa-f]{6}'))]", "Line colour should be encoded with valid hexadecimal digits", "LINE_9"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode(ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES));
         serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
 
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));

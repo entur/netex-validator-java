@@ -1,384 +1,400 @@
 validationRuleConfigs:
   # NeTEX id and reference rules
   - code: NETEX_ID_1
-    name: NETEX_ID_1
+    name: NeTEx ID duplicated across files
     severity: ERROR
   - code: NETEX_ID_5
-    name: NETEX_ID_5
+    name: NeTEx ID unresolved reference
     severity: ERROR
   - code: NETEX_ID_6
-    name: NETEX_ID_6
+    name: NeTEx ID reference to invalid element
     severity: ERROR
   - code: NETEX_ID_7
-    name: NETEX_ID_7
+    name: NeTEx ID invalid value
     severity: ERROR
   - code: NETEX_ID_8
-    name: NETEX_ID_8
+    name: NeTEx ID missing version on elements
     severity: ERROR
   - code: NETEX_ID_9
-    name: NETEX_ID_9
+    name: NeTEx ID missing version on reference
     severity: ERROR
+  - code: NETEX_ID_10
+    name: Duplicate NeTEx ID across common files
+    severity: WARNING
+
 
   # XPath rules
+  - code: VERSION_NON_NUMERIC
+    name: Non-numeric NeTEx version
+    severity: WARNING
   - code: AUTHORITY_1
-    name: Authority CompanyNumber
+    name: Authority missing CompanyNumber
     severity: INFO
   - code: AUTHORITY_2
-    name: Authority Name
+    name: Authority missing Name
     severity: ERROR
   - code: AUTHORITY_3
-    name: Authority LegalName
+    name: Authority missing LegalName
     severity: INFO
   - code: AUTHORITY_4
-    name: Authority ContactDetails
+    name: Authority missing ContactDetails
     severity: ERROR
   - code: AUTHORITY_5
-    name: Authority URL
+    name: Authority missing Url for ContactDetails
     severity: ERROR
   - code: BLOCK_1
-    name: BLOCK_1
+    name: Block missing VehicleScheduleFrame
     severity: ERROR
   - code: BLOCK_2
-    name: BLOCK_2
+    name: Block missing Journey
     severity: ERROR
   - code: BLOCK_3
-    name: BLOCK_3
-    severity: ERROR
+    name: Block missing DayType
+    severity: WARNING
   - code: BOOKING_1
-    name: Booking BookingAccess
+    name: Booking illegal BookingAccess
     severity: ERROR
   - code: BOOKING_2
-    name: Booking BookingMethod
+    name: Booking illegal BookingMethod
     severity: ERROR
   - code: BOOKING_3
-    name: Booking BookWhen
+    name: Booking illegal BookWhen
     severity: ERROR
   - code: BOOKING_4
-    name: Booking booking properties
+    name: Booking property
     severity: ERROR
   - code: BUY_WHEN_1
-    name: BUY_WHEN_1
+    name: BuyWhen illegal value
     severity: ERROR
   - code: COMPOSITE_FRAME_1
-    name: COMPOSITE_FRAME_1
+    name: CompositeFrame missing ValidityCondition
     severity: ERROR
   - code: COMPOSITE_FRAME_2
-    name: COMPOSITE_FRAME_2
+    name: CompositeFrame invalid nested ValidityCondition
     severity: WARNING
   - code: COMPOSITE_FRAME_3
-    name: COMPOSITE_FRAME_3
+    name: CompositeFrame missing ValidBetween
     severity: ERROR
   - code: COMPOSITE_FRAME_4
-    name: COMPOSITE_FRAME_4
+    name: CompositeFrame invalid ValidBetween
     severity: ERROR
   - code: COMPOSITE_FRAME_5
-    name: COMPOSITE_FRAME_5
+    name: CompositeFrame invalid AvailabilityCondition
     severity: ERROR
   - code: COMPOSITE_SITE_FRAME_IN_COMMON_FILE
-    name: COMPOSITE_SITE_FRAME_IN_COMMON_FILE
+    name: CompositeFrame unexpected SiteFrame
     severity: WARNING
   - code: COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE
-    name: COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE
+    name: CompositeFrame illegal Timetable
     severity: ERROR
   - code: DATED_SERVICE_JOURNEY_1
-    name: DATED_SERVICE_JOURNEY_1
+    name: DatedServiceJourney missing OperatingDayRef
     severity: ERROR
   - code: DATED_SERVICE_JOURNEY_2
-    name: DATED_SERVICE_JOURNEY_2
+    name: DatedServiceJourney missing ServiceJourneyRef
     severity: ERROR
   - code: DATED_SERVICE_JOURNEY_3
-    name: DATED_SERVICE_JOURNEY_3
+    name: DatedServiceJourney multiple ServiceJourneyRef
     severity: ERROR
   - code: DATED_SERVICE_JOURNEY_4
-    name: DATED_SERVICE_JOURNEY_4
+    name: DatedServiceJourney multiple versions
     severity: WARNING
+  - code: DATED_SERVICE_JOURNEY_5
+    name: DatedServiceJourney multiple references to the same DatedServiceJourney
+    severity: ERROR
   - code: DEAD_RUN_1
-    name: DEAD_RUN_1
+    name: DeadRun missing PassingTime references
     severity: INFO
   - code: DEAD_RUN_2
-    name: DEAD_RUN_2
+    name: DeadRun missing JourneyPattern references
     severity: ERROR
   - code: DEAD_RUN_3
-    name: DEAD_RUN_3
+    name: DeadRun missing DayType references
     severity: ERROR
   - code: DESTINATION_DISPLAY_1
-    name: DESTINATION_DISPLAY_1
+    name: DestinationDisplay missing FrontText
     severity: ERROR
   - code: DESTINATION_DISPLAY_2
-    name: DESTINATION_DISPLAY_2
+    name: DestinationDisplay missing DestinationDisplayRef on Via
     severity: ERROR
   - code: FLEXIBLE_LINE_1
-    name: FlexibleLine Missing type
+    name: FlexibleLine missing FlexibleLineType
     severity: ERROR
   - code: FLEXIBLE_LINE_8
-    name: FlexibleLine Illegal FlexibleLineType
+    name: FlexibleLine illegal FlexibleLineType
     severity: ERROR
   - code: FLEXIBLE_LINE_9
-    name: FlexibleLine Illegal FlexibleServiceType
+    name: FlexibleLine illegal FlexibleServiceType
     severity: ERROR
   - code: FLEXIBLE_SERVICE_1
-    name: FLEXIBLE_SERVICE_1
+    name: FlexibleService missing Id
     severity: ERROR
   - code: FLEXIBLE_SERVICE_2
-    name: FLEXIBLE_SERVICE_2
+    name: FlexibleService missing version on FlexibleServiceProperties
     severity: ERROR
   - code: INTERCHANGE_1
-    name: INTERCHANGE_1
+    name: Interchange invalid properties
+    severity: WARNING
+  - code: INTERCHANGE_2
+    name: Interchange unexpected MaximumWaitTime
     severity: WARNING
   - code: INTERCHANGE_3
-    name: INTERCHANGE_3
+    name: Interchange excessive MaximumWaitTime
     severity: WARNING
   - code: JOURNEY_PATTERN_1
-    name: JOURNEY_PATTERN_1
+    name: JourneyPattern illegal element ServiceJourneyPattern
     severity: ERROR
   - code: JOURNEY_PATTERN_2
-    name: JOURNEY_PATTERN_2
+    name: JourneyPattern missing JourneyPattern
     severity: ERROR
   - code: JOURNEY_PATTERN_3
-    name: JOURNEY_PATTERN_3
+    name: JourneyPattern missing RouteRef
     severity: ERROR
   - code: JOURNEY_PATTERN_4
-    name: JOURNEY_PATTERN_4
-    severity: WARNING
+    name: JourneyPattern missing DestinationDisplayRef on first stop point
+    severity: ERROR
   - code: JOURNEY_PATTERN_5
-    name: JOURNEY_PATTERN_5
+    name: JourneyPattern illegal DestinationDisplayRef on last stop point
     severity: WARNING
   - code: JOURNEY_PATTERN_6
-    name: JOURNEY_PATTERN_6
+    name: JourneyPattern stop point without boarding or alighting
     severity: WARNING
   - code: JOURNEY_PATTERN_7
-    name: JOURNEY_PATTERN_7
+    name: JourneyPattern illegal repetition of DestinationDisplay
     severity: ERROR
   - code: LINE_1
-    name: LINE_1
+    name: Line missing Line or FlexibleLine
     severity: ERROR
   - code: LINE_2
-    name: LINE_2
+    name: Line missing Name
     severity: ERROR
   - code: LINE_3
-    name: LINE_3
+    name: Line missing PublicCode
     severity: WARNING
   - code: LINE_4
-    name: LINE_4
+    name: Line missing TransportMode
     severity: ERROR
   - code: LINE_5
-    name: LINE_5
+    name: Line missing TransportSubmode
     severity: WARNING
   - code: LINE_6
-    name: LINE_6
+    name: Line with incorrect use of Route
     severity: ERROR
   - code: LINE_7
-    name: LINE_7
+    name: Line missing Network or GroupOfLines
     severity: ERROR
+  - code: LINE_8
+    name: Invalid color coding length on Presentation
+    severity: WARNING
+  - code: LINE_9
+    name: Invalid color coding value on Presentation
+    severity: WARNING
   - code: NETWORK_1
-    name: NETWORK_1
+    name: Network missing AuthorityRef
     severity: ERROR
   - code: NETWORK_2
-    name: NETWORK_2
+    name: Network missing Name on Network
     severity: ERROR
   - code: NETWORK_3
-    name: NETWORK_3
+    name: Network missing Name on GroupOfLines
     severity: ERROR
   - code: NOTICE_1
-    name: NOTICE_1
+    name: Notice missing Text
     severity: ERROR
   - code: NOTICE_2
-    name: NOTICE_2
+    name: Notice missing Text with alternative text
     severity: ERROR
   - code: NOTICE_3
-    name: NOTICE_3
+    name: Notice missing language with alternative text
     severity: ERROR
   - code: NOTICE_4
-    name: NOTICE_4
+    name: Notice duplicated alternative texts
     severity: ERROR
   - code: NOTICE_5
-    name: NOTICE_5
+    name: Notice duplicated assignment
     severity: WARNING
   - code: OPERATOR_1
-    name: Operator CompanyNumber
+    name: Operator missing CompanyNumber
     severity: INFO
   - code: OPERATOR_2
-    name: Operator Name
+    name: Operator missing Name
     severity: ERROR
   - code: OPERATOR_3
-    name: Operator LegalName
+    name: Operator missing LegalName
     severity: INFO
   - code: OPERATOR_4
-    name: Operator ContactDetails
+    name: Operator missing ContactDetails
     severity: WARNING
   - code: OPERATOR_5
-    name: Operator URL
+    name: Operator missing Url for ContactDetails
     severity: WARNING
   - code: OPERATOR_6
-    name: Operator CustomerServiceDetails
+    name: Operator missing CustomerServiceContactDetails
     severity: WARNING
   - code: OPERATOR_7
-    name: OPERATOR_7
+    name: Operator missing Url for CustomerServiceContactDetails
     severity: WARNING
   - code: PASSENGER_STOP_ASSIGNMENT_1
-    name: PASSENGER_STOP_ASSIGNMENT_1
+    name: PassengerStopAssignment missing ScheduledStopPointRef
     severity: ERROR
   - code: PASSENGER_STOP_ASSIGNMENT_2
-    name: PASSENGER_STOP_ASSIGNMENT_2
+    name: PassengerStopAssignment missing QuayRef
     severity: ERROR
   - code: PASSENGER_STOP_ASSIGNMENT_3
-    name: PASSENGER_STOP_ASSIGNMENT_3
+    name: PassengerStopAssignment duplicated Quay assignment
     severity: WARNING
   - code: RESOURCE_FRAME_IN_LINE_FILE
-    name: RESOURCE_FRAME_IN_LINE_FILE
+    name: ResourceFrame must be exactly one
     severity: ERROR
   - code: ROUTE_1
-    name: ROUTE_1
+    name: Route missing
     severity: ERROR
   - code: ROUTE_2
-    name: ROUTE_2
+    name: Route missing Name
     severity: ERROR
   - code: ROUTE_3
-    name: ROUTE_3
+    name: Route missing LineRef
     severity: ERROR
   - code: ROUTE_4
-    name: ROUTE_4
+    name: Route missing pointsInSequence
     severity: ERROR
   - code: ROUTE_5
-    name: ROUTE_5
+    name: Route illegal DirectionRef
     severity: WARNING
   - code: ROUTE_6
-    name: ROUTE_6
+    name: Route duplicated order
     severity: WARNING
   - code: SERVICE_CALENDAR_1
-    name: SERVICE_CALENDAR_1
+    name: ServiceCalendar unused DayType
     severity: WARNING
   - code: SERVICE_CALENDAR_2
-    name: SERVICE_CALENDAR_2
+    name: ServiceCalendar empty ServiceCalendar
     severity: WARNING
   - code: SERVICE_CALENDAR_3
-    name: SERVICE_CALENDAR_3
+    name: ServiceCalendar missing ToDate
     severity: WARNING
   - code: SERVICE_CALENDAR_4
-    name: SERVICE_CALENDAR_4
+    name: ServiceCalendar missing FromDate
     severity: WARNING
   - code: SERVICE_CALENDAR_5
-    name: SERVICE_CALENDAR_5
+    name: ServiceCalendar invalid time interval
     severity: ERROR
   - code: SERVICE_FRAME_1
-    name: SERVICE_FRAME_1
+    name: ServiceFrame unexpected element GroupOfLines
     severity: ERROR
   - code: SERVICE_FRAME_2
-    name: SERVICE_FRAME_2
+    name: ServiceFrame unexpected element timingPoints
     severity: WARNING
   - code: SERVICE_FRAME_3
-    name: SERVICE_FRAME_3
+    name: ServiceFrame missing Projection on RoutePoint
     severity: ERROR
   - code: SERVICE_FRAME_IN_COMMON_FILE_1
-    name: SERVICE_FRAME_IN_COMMON_FILE_1
+    name: ServiceFrame unexpected element Line
     severity: ERROR
   - code: SERVICE_FRAME_IN_COMMON_FILE_2
-    name: SERVICE_FRAME_IN_COMMON_FILE_2
+    name: ServiceFrame unexpected element Route
     severity: ERROR
   - code: SERVICE_FRAME_IN_COMMON_FILE_3
-    name: SERVICE_FRAME_IN_COMMON_FILE_3
+    name: ServiceFrame unexpected element JourneyPattern
     severity: ERROR
   - code: SERVICE_JOURNEY_1
-    name: SERVICE_JOURNEY_1
+    name: ServiceJourney must exist
     severity: ERROR
   - code: SERVICE_JOURNEY_10
-    name: SERVICE_JOURNEY_10
+    name: ServiceJourney missing reference to JourneyPattern
     severity: ERROR
   - code: SERVICE_JOURNEY_11
-    name: SERVICE_JOURNEY_11
+    name: ServiceJourney invalid overriding of transport modes
     severity: WARNING
   - code: SERVICE_JOURNEY_12
-    name: SERVICE_JOURNEY_12
+    name: ServiceJourney missing OperatorRef
     severity: ERROR
   - code: SERVICE_JOURNEY_13
-    name: SERVICE_JOURNEY_13
+    name: ServiceJourney missing reference to calendar data
     severity: ERROR
   - code: SERVICE_JOURNEY_14
-    name: SERVICE_JOURNEY_14
+    name: ServiceJourney duplicated reference to calendar data
     severity: ERROR
   - code: SERVICE_JOURNEY_15
-    name: SERVICE_JOURNEY_15
+    name: ServiceJourney missing some passing times
     severity: ERROR
   - code: SERVICE_JOURNEY_16
-    name: SERVICE_JOURNEY_16
+    name: ServiceJourney multiple versions
     severity: WARNING
   - code: SERVICE_JOURNEY_2
-    name: ServiceJourney Call
+    name: ServiceJourney illegal element Call
     severity: ERROR
   - code: SERVICE_JOURNEY_3
-    name: SERVICE_JOURNEY_3
+    name: ServiceJourney missing element PassingTimes
     severity: ERROR
   - code: SERVICE_JOURNEY_4
-    name: SERVICE_JOURNEY_4
+    name: ServiceJourney missing arrival and departure
     severity: ERROR
   - code: SERVICE_JOURNEY_5
-    name: SERVICE_JOURNEY_5
+    name: ServiceJourney missing departure times
     severity: ERROR
   - code: SERVICE_JOURNEY_6
-    name: SERVICE_JOURNEY_6
+    name: ServiceJourney missing arrival time for last stop
     severity: ERROR
   - code: SERVICE_JOURNEY_7
-    name: SERVICE_JOURNEY_7
+    name: ServiceJourney identical arrival and departure
     severity: WARNING
   - code: SERVICE_JOURNEY_8
-    name: SERVICE_JOURNEY_8
+    name: ServiceJourney missing id on TimetabledPassingTime
     severity: WARNING
   - code: SERVICE_JOURNEY_9
-    name: SERVICE_JOURNEY_9
+    name: ServiceJourney missing version on TimetabledPassingTime
     severity: WARNING
   - code: SERVICE_LINK_1
-    name: SERVICE_LINK_1
+    name: ServiceLink missing FromPointRef
     severity: ERROR
   - code: SERVICE_LINK_2
-    name: SERVICE_LINK_2
+    name: ServiceLink missing ToPointRef
     severity: ERROR
   - code: SERVICE_LINK_3
-    name: SERVICE_LINK_3
+    name: ServiceLink missing element Projections
     severity: ERROR
   - code: SITE_FRAME_IN_COMMON_FILE
-    name: SITE_FRAME_IN_COMMON_FILE
+    name: SiteFrame unexpected SiteFrame in Common file
     severity: WARNING
   - code: SITE_FRAME_IN_LINE_FILE
-    name: SITE_FRAME_IN_LINE_FILE
+    name: SiteFrame unexpected SiteFrame in Line file
     severity: WARNING
   - code: TIMETABLE_FRAME_IN_COMMON_FILE
-    name: TIMETABLE_FRAME_IN_COMMON_FILE
+    name: TimetableFrame illegal in Common file
     severity: ERROR
-  - code: TINTERCHANGE_2
-    name: TINTERCHANGE_2
-    severity: WARNING
   - code: TRANSPORT_MODE
-    name: TRANSPORT_MODE
+    name: TransportMode illegal value
     severity: ERROR
   - code: TRANSPORT_SUB_MODE
-    name: TRANSPORT_SUB_MODE
+    name: TransportSubmode illegal value
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_1
-    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_1
+    name: ValidityConditions missing in ServiceFrame or ServiceCalendarFrame
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_2
-    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_2
+    name: ValidityConditions missing in ResourceFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_3
-    name: VALIDITY_CONDITIONS_IN_COMMON_FILE_3
+    name: ValidityConditions missing in ServiceFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_COMMON_FILE_4
-    name: ValidityConditions Empty
+    name: ValidityConditions missing in ServiceCalendarFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_1
-    name: VALIDITY_CONDITIONS_IN_LINE_FILE_1
+    name: ValidityConditions missing in all frames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_2
-    name: VALIDITY_CONDITIONS_IN_LINE_FILE_2
+    name: ValidityConditions missing in ServiceFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_3
-    name: VALIDITY_CONDITIONS_IN_LINE_FILE_3
+    name: ValidityConditions missing in ServiceCalendarFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_4
-    name: VALIDITY_CONDITIONS_IN_LINE_FILE_4
+    name: ValidityConditions missing in TimeTableFrames
     severity: ERROR
   - code: VALIDITY_CONDITIONS_IN_LINE_FILE_5
-    name: VALIDITY_CONDITIONS_IN_LINE_FILE_5
+    name: ValidityConditions missing in VehicleScheduleFrame
     severity: ERROR
 
 

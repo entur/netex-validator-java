@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.xpath;
 
+import org.entur.netex.validation.validator.DataLocation;
+
 /**
  * A validation finding returned by an XPath validation rule.
  */
@@ -7,12 +9,12 @@ public class XPathValidationReportEntry {
 
     private final String code;
     private final String message;
-    private final String fileName;
+    private final DataLocation dataLocation;
 
-    public XPathValidationReportEntry(String message, String code, String fileName) {
+    public XPathValidationReportEntry(String message, String code, DataLocation dataLocation) {
         this.code = code;
         this.message = message;
-        this.fileName = fileName;
+        this.dataLocation = dataLocation;
     }
 
     public String getCode() {
@@ -23,7 +25,7 @@ public class XPathValidationReportEntry {
         return message;
     }
 
-    public String getFileName() {
-        return fileName;
+    public DataLocation getDataLocation() {
+        return dataLocation;
     }
 }

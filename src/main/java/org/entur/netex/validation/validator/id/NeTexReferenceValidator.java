@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.id;
 
 import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -48,7 +49,7 @@ public class NeTexReferenceValidator extends AbstractNetexValidator {
         if (!possibleExternalReferences.isEmpty()) {
             // Remove references that are found in the common files, comparing only by id, not by id and version
             Set<String> commonIds = netexIdRepository.getSharedNetexIds(reportId);
-            possibleExternalReferences.removeIf(ref -> commonIds.stream().anyMatch(commonId -> commonId.equals(ref.getId())));
+            possibleExternalReferences.removeIf(ref -> commonIds.contains(ref.getId()));
             if (!possibleExternalReferences.isEmpty()) {
                 // Remove references that are valid according to the external id validators
                 externalReferenceValidators.forEach(validator -> possibleExternalReferences.removeAll(validator.validateReferenceIds(possibleExternalReferences)));
@@ -69,8 +70,8 @@ public class NeTexReferenceValidator extends AbstractNetexValidator {
     }
 
     private ValidationReportEntry createValidationReportEntry(IdVersion id) {
-        String validationReportEntryMessage = getIdVersionLocation(id) + MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE;
-        return createValidationReportEntry(RULE_CODE_NETEX_ID_5, id.getFilename(), validationReportEntryMessage);
+        DataLocation dataLocation = getIdVersionLocation(id);
+        return createValidationReportEntry(RULE_CODE_NETEX_ID_5, dataLocation, MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE);
     }
 
     @Override

@@ -5,7 +5,7 @@ package org.entur.netex.validation.validator.xpath.rules;
  */
 public class ValidatedAllowedTransportMode extends ValidateNotExist {
 
-    private static final String VALID_TRANSPORT_MODES = "'" + String.join("','",
+    public static final String DEFAULT_VALID_TRANSPORT_MODES = "'" + String.join("','",
             "coach",
             "bus",
             "tram",
@@ -20,7 +20,8 @@ public class ValidatedAllowedTransportMode extends ValidateNotExist {
 
     private static final String MESSAGE = "Illegal TransportMode";
 
-    public ValidatedAllowedTransportMode() {
-        super("lines/*[self::Line or self::FlexibleLine]/TransportMode[not(. = (" + VALID_TRANSPORT_MODES + "))]", MESSAGE, "TRANSPORT_MODE");
+    public ValidatedAllowedTransportMode(String validTransportModes) {
+        super("lines/*[self::Line or self::FlexibleLine]/TransportMode[not(. = (" + validTransportModes + "))]", MESSAGE, "TRANSPORT_MODE");
     }
+
 }
