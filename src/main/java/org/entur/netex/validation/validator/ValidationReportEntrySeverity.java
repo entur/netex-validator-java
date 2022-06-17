@@ -6,5 +6,6 @@ package org.entur.netex.validation.validator;
 public enum ValidationReportEntrySeverity {
     INFO,
     WARNING,
-    ERROR
+    ERROR,
+    CRITICAL
 }

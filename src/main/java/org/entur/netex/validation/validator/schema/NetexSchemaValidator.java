@@ -61,7 +61,7 @@ public class NetexSchemaValidator {
 
                 @Override
                 public void error(SAXParseException exception) throws SAXParseException {
-                    addValidationReportEntry(fileName, exception, ValidationReportEntrySeverity.ERROR);
+                    addValidationReportEntry(fileName, exception, ValidationReportEntrySeverity.CRITICAL);
                     errorCount++;
                 }
 
