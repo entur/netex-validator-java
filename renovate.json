@@ -6,21 +6,6 @@
   "separateMinorPatch": true,
   "packageRules": [
     {
-      "description": "Automerge only stable releases",
-      "matchDatasources": [
-        "maven"
-      ],
-      "matchUpdateTypes": [
-        "major",
-        "minor",
-        "patch",
-        "pin",
-        "digest"
-      ],
-      "matchCurrentVersion": "<1.0.0",
-      "automerge": false
-    },
-    {
       "description": "Automerge major stable releases for Maven test dependencies",
       "matchUpdateTypes": [
         "major"
