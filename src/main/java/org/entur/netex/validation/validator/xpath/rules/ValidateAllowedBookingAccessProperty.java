@@ -1,6 +1,6 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import org.rutebanken.netex.model.BookingMethodEnumeration;
+import org.rutebanken.netex.model.BookingAccessEnumeration;
 
 /**
  * Validate the booking access properties against the Nordic NeTEx profile.
@@ -8,12 +8,9 @@ import org.rutebanken.netex.model.BookingMethodEnumeration;
 public class ValidateAllowedBookingAccessProperty extends ValidateNotExist {
 
     private static final String VALID_BOOKING_ACCESS_PROPERTIES = "'" + String.join("','",
-            BookingMethodEnumeration.CALL_DRIVER.value(),
-            BookingMethodEnumeration.CALL_OFFICE.value(),
-            BookingMethodEnumeration.ONLINE.value(),
-            BookingMethodEnumeration.OTHER.value(),
-            BookingMethodEnumeration.PHONE_AT_STOP.value(),
-            BookingMethodEnumeration.TEXT.value())
+            BookingAccessEnumeration.PUBLIC.value(),
+            BookingAccessEnumeration.AUTHORISED_PUBLIC.value(),
+            BookingAccessEnumeration.STAFF.value())
             + "'";
 
     private static final String MESSAGE = "Illegal value for BookingAccess";
