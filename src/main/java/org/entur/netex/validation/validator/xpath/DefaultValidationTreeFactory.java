@@ -123,6 +123,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[not(@id)]", "Missing id on TimetabledPassingTime", "SERVICE_JOURNEY_8"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[not(@version)]", "Missing version on TimetabledPassingTime", "SERVICE_JOURNEY_9"));
 
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[EarliestDepartureTime < preceding-sibling::TimetabledPassingTime/EarliestDepartureTime]", "EarliestDepartureTime should increase along the ServiceJourney", "SERVICE_JOURNEY_17"));
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[LatestArrivalTime < preceding-sibling::TimetabledPassingTime/LatestArrivalTime]", "LatestArrivalTime should increase along the ServiceJourney", "SERVICE_JOURNEY_18"));
+
 
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney[not(JourneyPatternRef)]", "The ServiceJourney does not refer to a JourneyPattern", "SERVICE_JOURNEY_10"));
         validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney[(TransportMode and not(TransportSubmode))  or (not(TransportMode) and TransportSubmode)]", "If overriding Line TransportMode or TransportSubmode on a ServiceJourney, both elements must be present", "SERVICE_JOURNEY_11"));

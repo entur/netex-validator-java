@@ -320,6 +320,10 @@ validationRuleConfigs:
     severity: ERROR
   - code: SERVICE_JOURNEY_16
     name: ServiceJourney multiple versions
+  - code: SERVICE_JOURNEY_17
+    name: ServiceJourney non-increasing EarliestDepartureTime
+  - code: SERVICE_JOURNEY_18
+    name: ServiceJourney non-increasing LatestArrivalTime
     severity: WARNING
   - code: SERVICE_JOURNEY_2
     name: ServiceJourney illegal element Call

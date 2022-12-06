@@ -37,6 +37,9 @@ class XpathValidatorTest {
 
     private static final String TEST_LINE_MISSING_LAST_ARRIVAL_TIME = "rb_flb-aggregated-netex-missing-last-arrival-time.zip";
 
+    private static final String TEST_LINE_NON_INCREASING_EARLIEST_DEPARTURE_TIMES = "rb_bra-flexible-lines-non-increasing-earliest-departure-times.zip";
+    private static final String TEST_LINE_NON_INCREASING_LATEST_ARRIVAL_TIMES = "rb_bra-flexible-lines-non-increasing-latest-arrival-times.zip";
+
 
 
 
@@ -147,7 +150,23 @@ class XpathValidatorTest {
     }
 
     @Test
-    void testInValidineMissingDepartureAndArrivalTime() throws IOException {
+    void testInvalidFlexibleLineNonIncreasingEarliestDepartureTimes() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_LINE_NON_INCREASING_EARLIEST_DEPARTURE_TIMES);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("BRA", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("SERVICE_JOURNEY_17").getName())));
+    }
+
+    @Test
+    void testInvalidFlexibleLineNonIncreasingLatestArrivalTimes() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_LINE_NON_INCREASING_LATEST_ARRIVAL_TIMES);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("BRA", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("SERVICE_JOURNEY_18").getName())));
+    }
+
+    @Test
+    void testInvalidLineMissingDepartureAndArrivalTime() throws IOException {
         InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES);
         List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
         Assertions.assertFalse(validationReportEntries.isEmpty());
