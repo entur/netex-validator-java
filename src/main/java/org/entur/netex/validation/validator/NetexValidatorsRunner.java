@@ -36,6 +36,11 @@ public class NetexValidatorsRunner {
     private final List<NetexValidator> netexValidators;
     private final NetexXMLParser netexXMLParser;
 
+
+    public NetexValidatorsRunner(NetexXMLParser netexXMLParser, List<NetexValidator> netexValidators) {
+        this(netexXMLParser,null, netexValidators);
+    }
+
     public NetexValidatorsRunner(NetexXMLParser netexXMLParser, NetexSchemaValidator netexSchemaValidator, List<NetexValidator> netexValidators) {
         this.netexSchemaValidator = netexSchemaValidator;
         this.netexValidators = netexValidators;
@@ -49,7 +54,7 @@ public class NetexValidatorsRunner {
     public ValidationReport validate(String codespace, String validationReportId, String filename, byte[] fileContent, boolean skipSchemaValidation, boolean skipValidators, NetexValidationProgressCallBack netexValidationProgressCallBack) {
         ValidationReport validationReport = new ValidationReport(codespace, validationReportId);
 
-        if (skipSchemaValidation) {
+        if (netexSchemaValidator == null || skipSchemaValidation) {
             LOGGER.info("Skipping schema validation");
         } else {
             runSchemaValidation(codespace, validationReportId, filename, fileContent, netexValidationProgressCallBack, validationReport);
