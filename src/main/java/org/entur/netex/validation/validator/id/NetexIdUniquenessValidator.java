@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,7 +27,7 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
      * Set of NeTEx elements for which id-uniqueness across lines is not verified.
      * These IDs need not be stored.
      */
-    private static final HashSet<String> IGNORABLE_ELEMENTS = new HashSet<>(Arrays.asList("ResourceFrame", "SiteFrame", "CompositeFrame", "TimetableFrame", "ServiceFrame", "ServiceCalendarFrame", "VehicleScheduleFrame", "Block", "RoutePoint", "PointProjection", "ScheduledStopPoint", "PassengerStopAssignment", "NoticeAssignment", "ServiceLinkInJourneyPattern"));
+    private static final Set<String> DEFAULT_IGNORABLE_ELEMENTS = Set.copyOf(Arrays.asList("ResourceFrame", "SiteFrame", "CompositeFrame", "TimetableFrame", "ServiceFrame", "ServiceCalendarFrame", "VehicleScheduleFrame", "Block", "RoutePoint", "PointProjection", "ScheduledStopPoint", "PassengerStopAssignment", "NoticeAssignment", "ServiceLinkInJourneyPattern"));
 
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES = "Duplicate element identifiers across files";
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES = "Duplicate element identifiers across common files";
@@ -39,11 +38,17 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
 
 
     private final NetexIdRepository netexIdRepository;
+    private final Set<String> ignorableElements;
 
 
     public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository, ValidationReportEntryFactory validationReportEntryFactory) {
+        this(netexIdRepository, validationReportEntryFactory, DEFAULT_IGNORABLE_ELEMENTS);
+    }
+
+    public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository, ValidationReportEntryFactory validationReportEntryFactory, Set<String> ignorableElements) {
         super(validationReportEntryFactory);
         this.netexIdRepository = netexIdRepository;
+        this.ignorableElements = ignorableElements;
     }
 
     @Override
@@ -63,7 +68,7 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
             // collect the subset of NeTEx ids for which duplicate check is performed.
             // if the file contains several times the same id with a different version, only one is kept
             netexIds = netexFileLocalIds.stream()
-                    .filter(idVersion -> !IGNORABLE_ELEMENTS.contains(idVersion.getElementName()))
+                    .filter(idVersion -> !ignorableElements.contains(idVersion.getElementName()))
                     .collect(Collectors.toMap(IdVersion::getId, Function.identity(), (idVersion, idVersionDuplicate) -> idVersion));
         }
         Set<String> duplicateIds = netexIdRepository.getDuplicateNetexIds(reportId, fileName, netexIds.keySet());
@@ -87,6 +92,10 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
     @Override
     public Set<String> getRuleDescriptions() {
         return Set.of(createRuleDescription(RULE_CODE_NETEX_ID_1, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES), createRuleDescription(RULE_CODE_NETEX_ID_10, MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES));
+    }
+
+    public static Set<String> getDefaultIgnorableElements() {
+        return DEFAULT_IGNORABLE_ELEMENTS;
     }
 
 }
