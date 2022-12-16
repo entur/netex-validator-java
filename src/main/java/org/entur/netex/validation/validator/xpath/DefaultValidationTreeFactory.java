@@ -9,6 +9,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedFlexibleS
 import org.entur.netex.validation.validator.xpath.rules.ValidateAtLeastOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateExactlyOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateMandatoryBookingProperty;
+import org.entur.netex.validation.validator.xpath.rules.ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportMode;
 import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportSubMode;
@@ -150,6 +151,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("vehicleJourneys/ServiceJourney/FlexibleServiceProperties"));
         validationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("vehicleJourneys/ServiceJourney/FlexibleServiceProperties"));
         validationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("vehicleJourneys/ServiceJourney/FlexibleServiceProperties"));
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/FlexibleServiceProperties[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties", "FLEXIBLE_SERVICE_3"));
+        validationTree.addValidationRule(new ValidateNotExist("vehicleJourneys/ServiceJourney/FlexibleServiceProperties[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties", "FLEXIBLE_SERVICE_4"));
 
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Advertised or Planned]", "The 'Planned' and 'Advertised' properties of an Interchange should not be specified", "INTERCHANGE_1"));
         validationTree.addValidationRule(new ValidateNotExist("journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]", "Guaranteed Interchange should not have a maximum wait time value of zero", "INTERCHANGE_2"));
@@ -326,7 +329,12 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));
         serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods"));
         serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookWhen"));
+        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine", "FLEXIBLE_LINE_10"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on FlexibleLine", "FLEXIBLE_LINE_11"));
+
+
         serviceFrameValidationTree.addValidationRule(new ValidateAllowedFlexibleLineType());
         serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("lines/FlexibleLine"));
         serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("lines/FlexibleLine"));
@@ -350,10 +358,14 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[ForAlighting = 'false' and ForBoarding = 'false']", "StopPointInJourneyPattern neither allows boarding nor alighting", "JOURNEY_PATTERN_6"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[DestinationDisplayRef/@ref = preceding-sibling::StopPointInJourneyPattern[1]/DestinationDisplayRef/@ref and number(@order) >  number(preceding-sibling::StopPointInJourneyPattern[1]/@order)]", "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern", "JOURNEY_PATTERN_7"));
 
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern", "JOURNEY_PATTERN_8"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern", "JOURNEY_PATTERN_9"));
+
 
         serviceFrameValidationTree.addSubTree(getNoticesValidationTree());
         serviceFrameValidationTree.addSubTree(getNoticeAssignmentsValidationTree());

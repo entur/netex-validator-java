@@ -63,6 +63,9 @@ validationRuleConfigs:
   - code: BOOKING_4
     name: Booking property
     severity: ERROR
+  - code: BOOKING_5
+    name: Missing BookWhen or MinimumBookingPeriod
+    severity: WARNING
   - code: BUY_WHEN_1
     name: BuyWhen illegal value
     severity: ERROR
@@ -126,12 +129,24 @@ validationRuleConfigs:
   - code: FLEXIBLE_LINE_9
     name: FlexibleLine illegal FlexibleServiceType
     severity: ERROR
+  - code: FLEXIBLE_LINE_10
+    name: FlexibleLine illegal use of both BookWhen and MinimumBookingPeriod
+    severity: WARNING
+  - code: FLEXIBLE_LINE_11
+    name: FlexibleLine BookWhen without LatestBookingTime or LatestBookingTime without BookWhen
+    severity: WARNING
   - code: FLEXIBLE_SERVICE_1
     name: FlexibleService missing Id
     severity: ERROR
   - code: FLEXIBLE_SERVICE_2
     name: FlexibleService missing version on FlexibleServiceProperties
     severity: ERROR
+  - code: FLEXIBLE_SERVICE_3
+    name: FlexibleService illegal use of both BookWhen and MinimumBookingPeriod
+    severity: WARNING
+  - code: FLEXIBLE_SERVICE_4
+    name: FlexibleService BookWhen without LatestBookingTime or LatestBookingTime without BookWhen
+    severity: WARNING
   - code: INTERCHANGE_1
     name: Interchange invalid properties
     severity: WARNING
@@ -162,6 +177,12 @@ validationRuleConfigs:
   - code: JOURNEY_PATTERN_7
     name: JourneyPattern illegal repetition of DestinationDisplay
     severity: ERROR
+  - code: JOURNEY_PATTERN_8
+    name: JourneyPattern  illegal use of both BookWhen and MinimumBookingPeriod
+    severity: WARNING
+  - code: JOURNEY_PATTERN_9
+    name: JourneyPattern  BookWhen without LatestBookingTime or LatestBookingTime without BookWhen
+    severity: WARNING
   - code: LINE_1
     name: Line missing Line or FlexibleLine
     severity: ERROR
