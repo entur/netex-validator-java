@@ -39,9 +39,9 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty extends 
                 selector.setContextItem(validationContext.getXmlNode());
                 XdmValue nodes = selector.evaluate();
 
-                for (XdmValue value : nodes) {
-                    if (value instanceof XdmNode) {
-                        XdmNode node = (XdmNode) value;
+                for (XdmItem item : nodes) {
+                    if (item instanceof XdmNode) {
+                        XdmNode node = (XdmNode) item;
                         String id = node.getAttributeValue(QName.fromEQName("id"));
                         String version = node.getAttributeValue(QName.fromEQName("version"));
 
