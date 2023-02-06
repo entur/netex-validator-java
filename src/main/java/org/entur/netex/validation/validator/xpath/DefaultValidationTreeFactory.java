@@ -182,7 +182,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     /**
      * CompositeFrame validation rules that apply both to Line files and common files.
      *
-     * @return
      */
     protected List<ValidationRule> getCompositeFrameBaseValidationRules() {
         List<ValidationRule> validationRules = new ArrayList<>();
@@ -261,7 +260,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     /**
      * Validation rules that apply both to Line files and Common files.
      *
-     * @return
      */
     protected List<ValidationRule> getServiceFrameBaseValidationRules() {
         List<ValidationRule> validationRules = new ArrayList<>();
@@ -304,6 +302,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     protected ValidationTree getNoticeAssignmentsValidationTree() {
         ValidationTree noticesAssignmentsValidationTree = new ValidationTree("Notices Assignments", "noticeAssignments");
         noticesAssignmentsValidationTree.addValidationRule(new ValidateNotExist("NoticeAssignment[for $a in following-sibling::NoticeAssignment return if(NoticeRef/@ref= $a/NoticeRef/@ref and NoticedObjectRef/@ref= $a/NoticedObjectRef/@ref) then $a else ()]", "The notice is assigned multiple times to the same object", "NOTICE_5"));
+        noticesAssignmentsValidationTree.addValidationRule(new ValidateNotExist("NoticeAssignment[not(NoticedObjectRef)]", "The notice assignment does not reference an object", "NOTICE_6"));
+        noticesAssignmentsValidationTree.addValidationRule(new ValidateNotExist("NoticeAssignment[not(NoticeRef)]", "The notice assignment does not reference a notice", "NOTICE_7"));
 
         return noticesAssignmentsValidationTree;
     }
