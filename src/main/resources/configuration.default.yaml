@@ -234,6 +234,12 @@ validationRuleConfigs:
   - code: NOTICE_5
     name: Notice duplicated assignment
     severity: WARNING
+  - code: NOTICE_6
+    name: Notice assignment missing reference to noticed object
+    severity: ERROR
+  - code: NOTICE_7
+    name: Notice assignment missing reference to notice
+    severity: ERROR
   - code: OPERATOR_1
     name: Operator missing CompanyNumber
     severity: INFO

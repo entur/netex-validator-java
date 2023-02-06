@@ -30,6 +30,10 @@ class XpathValidatorTest {
     private static final String TEST_FLEXIBLE_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES = "rb_bra-flexible-lines-invalid-missing-departure-and-arrival-times.zip";
     private static final String TEST_FLEXIBLE_LINE_MISSING_EARLIEST_DEPARTURE_TIME = "rb_bra-flexible-lines-missing-departure-time.zip";
 
+    private static final String TEST_FLEXIBLE_LINE_MISSING_NOTICE_REF = "rb_bra-flexible-lines-missing-notice-ref.zip";
+
+    private static final String TEST_FLEXIBLE_LINE_MISSING_NOTICED_OBJECT_REF = "rb_bra-flexible-lines-missing-noticed-object-ref.zip";
+
     private static final String TEST_FLEXIBLE_LINE_MISSING_LAST_ARRIVAL_TIME = "rb_bra-flexible-lines-missing-last-arrival-time.zip";
     private static final String TEST_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES = "rb_flb-aggregated-netex-missing-departure-and-arrival-times.zip";
 
@@ -170,6 +174,23 @@ class XpathValidatorTest {
         List<ValidationReportEntry> validationReportEntries = validateXPath("FLB", xPathValidator, netexXMLParser, testDatasetAsStream);
         Assertions.assertFalse(validationReportEntries.isEmpty());
         Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("SERVICE_JOURNEY_6").getName())));
+    }
+
+
+    @Test
+    void testMissingNoticedObjectRef() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICED_OBJECT_REF);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("BRA", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("NOTICE_6").getName())));
+    }
+
+    @Test
+    void testMissingNoticeRef() throws IOException {
+        InputStream testDatasetAsStream = getClass().getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICE_REF);
+        List<ValidationReportEntry> validationReportEntries = validateXPath("BRA", xPathValidator, netexXMLParser, testDatasetAsStream);
+        Assertions.assertFalse(validationReportEntries.isEmpty());
+        Assertions.assertTrue(validationReportEntries.stream().anyMatch(validationReportEntry -> validationReportEntry.getName().equals(validationConfigLoader.getValidationRuleConfig("NOTICE_7").getName())));
     }
 
 }
