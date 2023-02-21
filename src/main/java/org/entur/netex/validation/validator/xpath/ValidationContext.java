@@ -5,6 +5,7 @@ import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -31,10 +32,10 @@ public class ValidationContext {
     public ValidationContext(XdmNode document, NetexXMLParser netexXMLParser, String codespace, String fileName, Set<IdVersion> localIds, List<IdVersion> localRefs) {
         this.xmlNode = document;
         this.netexXMLParser = netexXMLParser;
-        this.codespace = codespace;
+        this.codespace = Objects.requireNonNull(codespace);
         this.fileName = fileName;
-        this.localIds = localIds;
-        this.localRefs = localRefs;
+        this.localIds = Objects.requireNonNull(localIds);
+        this.localRefs = Objects.requireNonNull(localRefs);
     }
 
     public XdmNode getXmlNode() {

@@ -22,9 +22,9 @@ public class IdVersion {
     }
 
     public IdVersion(String id, String version, String elementName, List<String> parentElementNames, String filename, int lineNumber, int columnNumber) {
-        this.id = id;
+        this.id = Objects.requireNonNull(id);
         this.version = version;
-        this.elementName = elementName;
+        this.elementName = Objects.requireNonNull(elementName);
         this.parentElementNames = parentElementNames;
         this.filename = filename;
         this.columnNumber = columnNumber;
