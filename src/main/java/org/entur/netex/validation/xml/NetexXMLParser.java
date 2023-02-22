@@ -17,6 +17,8 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.stax.StAXSource;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -75,17 +77,29 @@ public class NetexXMLParser {
     }
 
     /**
-     * Parse an XML file and return an XML nodes graph.
-     *
-     * @param content the XML file.
-     * @return an XML nodes graph representing the XML document.
+     * Parse a string containing an XML document and return an XML nodes graph.
      */
-    public XdmNode parseFileToXdmNode(byte[] content) {
+    public XdmNode parseStringToXdmNode(String content) {
+        return parseByteArrayToXdmNode(content.getBytes(StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Parse a byte array containing an XML document and return an XML nodes graph.
+     */
+    public XdmNode parseByteArrayToXdmNode(byte[] content) {
+        return parseInputStreamToXdmNode((new ByteArrayInputStream(content)));
+    }
+
+
+    /**
+     * Parse an input stream containing an XML document and return an XML nodes graph.
+     */
+    public XdmNode parseInputStreamToXdmNode(InputStream inputStream) {
         DocumentBuilder builder = processor.newDocumentBuilder();
         builder.setLineNumbering(true);
         builder.setWhitespaceStrippingPolicy(WhitespaceStrippingPolicy.ALL);
         try {
-            return builder.build(new StAXSource(SkippingXMLStreamReaderFactory.newXMLStreamReader(new BufferedInputStream(new ByteArrayInputStream(content)), ignorableNeTexElements)));
+            return builder.build(new StAXSource(SkippingXMLStreamReaderFactory.newXMLStreamReader(new BufferedInputStream(inputStream), ignorableNeTexElements)));
         } catch (SaxonApiException | XMLStreamException e) {
             throw new NetexValidationException("Exception while parsing the NeTex document", e);
         }
@@ -94,8 +108,8 @@ public class NetexXMLParser {
     /**
      * Select a set of nodes according to an XPath expression.
      *
-     * @param expression    the XPath expression to evaluate.
-     * @param document      the XML document on which the XPath is evaluated.
+     * @param expression the XPath expression to evaluate.
+     * @param document   the XML document on which the XPath is evaluated.
      * @return the nodes that match the XPath expression.
      */
     public XdmValue selectNodeSet(String expression, XdmNode document) {

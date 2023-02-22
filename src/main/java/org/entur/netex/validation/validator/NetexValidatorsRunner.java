@@ -113,7 +113,7 @@ public class NetexValidatorsRunner {
      * @param validationReport
      */
     private void runNetexValidators(String codespace, String validationReportId, String filename, byte[] fileContent, NetexValidationProgressCallBack netexValidationProgressCallBack, ValidationReport validationReport) {
-        XdmNode document = netexXMLParser.parseFileToXdmNode(fileContent);
+        XdmNode document = netexXMLParser.parseByteArrayToXdmNode(fileContent);
         XPathCompiler xPathCompiler = netexXMLParser.getXPathCompiler();
         Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentifiers(document, xPathCompiler, filename, Set.of("Codespace")));
         List<IdVersion> localRefs = NetexIdExtractorHelper.collectEntityReferences(document, xPathCompiler, filename, null);

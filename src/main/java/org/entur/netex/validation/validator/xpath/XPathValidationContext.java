@@ -3,6 +3,8 @@ package org.entur.netex.validation.validator.xpath;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
+import java.util.Objects;
+
 /**
  * The validation context for an XPath validation rule.
  */
@@ -21,9 +23,9 @@ public class XPathValidationContext {
      * @param fileName the current filename.
      */
     public XPathValidationContext(XdmNode document, NetexXMLParser netexXMLParser, String codespace, String fileName) {
-        this.xmlNode = document;
-        this.netexXMLParser = netexXMLParser;
-        this.codespace = codespace;
+        this.xmlNode = Objects.requireNonNull(document);
+        this.netexXMLParser = Objects.requireNonNull(netexXMLParser);
+        this.codespace = Objects.requireNonNull(codespace);
         this.fileName = fileName;
     }
 

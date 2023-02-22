@@ -57,7 +57,7 @@ public class ValidatorTestUtil {
             ZipEntry zipEntry = zipInputStream.getNextEntry();
             while (zipEntry != null) {
                 byte[] content = zipInputStream.readAllBytes();
-                XdmNode document = netexXMLParser.parseFileToXdmNode(content);
+                XdmNode document = netexXMLParser.parseByteArrayToXdmNode(content);
                 XPathValidationContext xPathValidationContext = new XPathValidationContext(document, netexXMLParser, codespace, zipEntry.getName());
                 validationReportEntries.addAll(xPathValidator.validate(xPathValidationContext));
                 zipEntry = zipInputStream.getNextEntry();
