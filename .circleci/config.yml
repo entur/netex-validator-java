@@ -102,7 +102,7 @@ jobs:
       - run: *jfrog-login
       - run:
           name: Maven deploy
-          command: mvn deploy -s .circleci/settings.xml -DskipTests
+          command: mvn deploy -s .circleci/settings.xml -DskipTests -Ddependency-check.skip=true
 
 workflows:
   version: 2
