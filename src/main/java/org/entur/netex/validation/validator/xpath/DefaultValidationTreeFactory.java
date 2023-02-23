@@ -107,6 +107,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         compositeFrameValidationTree.addValidationRules(getCompositeFrameBaseValidationRules());
 
         compositeFrameValidationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty("frames/"));
+        compositeFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods", "frames/"));
+        compositeFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact", "frames/"));
 
 
         compositeFrameValidationTree.addSubTree(getResourceFrameValidationTree("frames/ResourceFrame"));
@@ -127,6 +129,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateExactlyOne("ResourceFrame", "Exactly one ResourceFrame should be present", "RESOURCE_FRAME_IN_LINE_FILE"));
         validationTree.addValidationRule(new ValidateNotExist("SiteFrame", "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_LINE_FILE"));
         validationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty(""));
+        validationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods", "frames/"));
+        validationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact", "frames/"));
 
         validationTree.addValidationRule(new ValidateAtLeastOne("ServiceFrame[validityConditions] | ServiceCalendarFrame[validityConditions] | TimetableFrame[validityConditions]", "Neither ServiceFrame, ServiceCalendarFrame nor TimetableFrame defines ValidityConditions", "VALIDITY_CONDITIONS_IN_LINE_FILE_1"));
 
@@ -165,8 +169,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
 
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact"));
 
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine", "FLEXIBLE_LINE_10"));
         serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on FlexibleLine", "FLEXIBLE_LINE_11"));
