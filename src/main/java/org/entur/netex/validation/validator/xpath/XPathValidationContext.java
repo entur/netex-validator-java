@@ -44,4 +44,8 @@ public class XPathValidationContext {
     public NetexXMLParser getNetexXMLParser() {
         return netexXMLParser;
     }
+
+    public boolean isCommonFile() {
+        return fileName != null && fileName.startsWith("_");
+    }
 }

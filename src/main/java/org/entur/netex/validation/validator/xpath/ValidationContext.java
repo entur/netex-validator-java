@@ -60,7 +60,7 @@ public class ValidationContext {
     }
 
     public boolean isCommonFile() {
-        return fileName.startsWith("_");
+        return fileName != null && fileName.startsWith("_");
     }
 
     public NetexXMLParser getNetexXMLParser() {
