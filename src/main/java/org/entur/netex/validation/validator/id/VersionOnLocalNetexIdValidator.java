@@ -19,10 +19,11 @@ import java.util.stream.Collectors;
  */
 public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
 
+    static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(VersionOnLocalNetexIdValidator.class);
 
     private static final String MESSAGE_FORMAT_MISSING_VERSION = "Missing version attribute on elements with id attribute";
-    private static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
 
     public VersionOnLocalNetexIdValidator(ValidationReportEntryFactory validationReportEntryFactory) {
         super(validationReportEntryFactory);

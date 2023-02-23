@@ -21,14 +21,12 @@ import java.util.Set;
  */
 public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator {
 
+    static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
+    static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";
+
     private static final String MESSAGE_FORMAT_INVALID_REFERENCE = "Reference to %s is not allowed from element %s. Generally an element named XXXXRef may only reference elements if type XXXX";
     private static final String MESSAGE_FORMAT_INVALID_ID_STRUCTURE = "Invalid id structure on element";
-
-    private static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
-    private static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ReferenceToValidEntityTypeValidator.class);
-
 
     private final Map<String, Set<String>> allowedSubstitutions;
 

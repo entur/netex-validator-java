@@ -1,10 +1,12 @@
 package org.entur.netex.validation.validator.id;
 
-import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
- * Mark references to Blocks as valid by default.
+ * Mark references from within a Block to a ServiceJourney or a DeadRun as valid by default.
+ * This can be used to prevent false positive when Blocks refer to elements out of the current PublicationDelivery.
  */
 public class BlockJourneyReferencesIgnorer implements ExternalReferenceValidator {
 
@@ -12,23 +14,13 @@ public class BlockJourneyReferencesIgnorer implements ExternalReferenceValidator
 
     @Override
     public Set<IdVersion> validateReferenceIds(Set<IdVersion> externalIdsToValidate) {
-
-        // All references of supported type should be returned as validated
-        Set<IdVersion> ignoredReferences = new HashSet<>(externalIdsToValidate);
-        ignoredReferences.retainAll(isOfSupportedTypes(externalIdsToValidate));
-
-        return ignoredReferences;
-
+        Objects.requireNonNull(externalIdsToValidate);
+        return externalIdsToValidate.stream().filter(BlockJourneyReferencesIgnorer::isIgnorableReferenceFromBlock).collect(Collectors.toUnmodifiableSet());
     }
 
-    private Set<IdVersion> isOfSupportedTypes(Set<IdVersion> references) {
-        Set<IdVersion> supportedTypes = new HashSet<>();
-        for (IdVersion ref : references) {
-            if (JOURNEY_REF_TYPES.contains(ref.getElementName()) && (ref.getId().contains("DeadRun") || ref.getId().contains("ServiceJourney")) && ref.getParentElementNames().contains("Block")) {
-                supportedTypes.add(ref);
-            }
-        }
-
-        return supportedTypes;
+    private static boolean isIgnorableReferenceFromBlock(IdVersion ref) {
+        return JOURNEY_REF_TYPES.contains(ref.getElementName())
+                && (ref.getId().contains("DeadRun") || ref.getId().contains("ServiceJourney"))
+                && (ref.getParentElementNames() != null && ref.getParentElementNames().contains("Block"));
     }
 }
