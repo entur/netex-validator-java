@@ -16,6 +16,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTranspor
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Build the tree of XPath validation rules.
@@ -33,20 +34,12 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     }
 
     protected ValidationTree getCommonFileValidationTree() {
-        ValidationTree commonFileValidationTree = new ValidationTree("Common file", "/", validationContext -> validationContext.getFileName().startsWith("_"));
+        ValidationTree commonFileValidationTree = new ValidationTree("Common file", "/", XPathValidationContext::isCommonFile);
         commonFileValidationTree.addSubTree(getCompositeFrameValidationTreeForCommonFile());
         commonFileValidationTree.addSubTree(getSingleFramesValidationTreeForCommonFile());
 
         return commonFileValidationTree;
     }
-
-    protected ValidationTree getLineFileValidationTree() {
-        ValidationTree lineFileValidationTree = new ValidationTree("Line file", "/", validationContext -> !validationContext.getFileName().startsWith("_"));
-        lineFileValidationTree.addSubTree(getCompositeFrameValidationTreeForLineFile());
-        lineFileValidationTree.addSubTree(getSingleFramesValidationTreeForLineFile());
-        return lineFileValidationTree;
-    }
-
     protected ValidationTree getSingleFramesValidationTreeForCommonFile() {
         ValidationTree validationTree = new ValidationTree("Single frames in common file", "PublicationDelivery/dataObjects",
                 validationContext -> validationContext.getNetexXMLParser().selectNodeSet("CompositeFrame", validationContext.getXmlNode()).isEmpty());
@@ -68,6 +61,44 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addSubTree(getVehicleScheduleFrameValidationTree("VehicleScheduleFrame"));
 
         return validationTree;
+    }
+
+
+    protected ValidationTree getCompositeFrameValidationTreeForCommonFile() {
+        ValidationTree compositeFrameValidationTree = new ValidationTree("Composite frame in common file", "PublicationDelivery/dataObjects/CompositeFrame");
+
+        compositeFrameValidationTree.addValidationRules(getCompositeFrameBaseValidationRules());
+        compositeFrameValidationTree.addValidationRule(new ValidateNotExist("frames/TimetableFrame", "Timetable frame not allowed in common files", "COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE"));
+
+        compositeFrameValidationTree.addSubTree(getResourceFrameValidationTree("frames/ResourceFrame"));
+        compositeFrameValidationTree.addSubTree(getServiceCalendarFrameValidationTree("frames/ServiceCalendarFrame"));
+        compositeFrameValidationTree.addSubTree(getVehicleScheduleFrameValidationTree("frames/VehicleScheduleFrame"));
+
+        compositeFrameValidationTree.addSubTree(getServiceFrameValidationTreeForCommonFile("frames/ServiceFrame"));
+
+        return compositeFrameValidationTree;
+    }
+
+    protected ValidationTree getServiceFrameValidationTreeForCommonFile(String path) {
+        ValidationTree serviceFrameValidationTree = new ValidationTree("Service frame in common file", path);
+        serviceFrameValidationTree.addValidationRules(getServiceFrameBaseValidationRules());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/Line", "Line not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_1"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route", "Route not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_2"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern | journeyPatterns/ServiceJourneyPattern", "JourneyPattern not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_3"));
+
+        serviceFrameValidationTree.addSubTree(getNoticesValidationTree());
+
+        return serviceFrameValidationTree;
+    }
+
+
+
+    protected ValidationTree getLineFileValidationTree() {
+        ValidationTree lineFileValidationTree = new ValidationTree("Line file", "/", Predicate.not(XPathValidationContext::isCommonFile));
+        lineFileValidationTree.addSubTree(getCompositeFrameValidationTreeForLineFile());
+        lineFileValidationTree.addSubTree(getSingleFramesValidationTreeForLineFile());
+        return lineFileValidationTree;
     }
 
     protected ValidationTree getCompositeFrameValidationTreeForLineFile() {
@@ -109,6 +140,70 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addSubTree(getServiceFrameValidationTreeForLineFile("ServiceFrame"));
 
         return validationTree;
+    }
+
+    protected ValidationTree getServiceFrameValidationTreeForLineFile(String path) {
+        ValidationTree serviceFrameValidationTree = new ValidationTree("Service frame in line file", path);
+        serviceFrameValidationTree.addValidationRules(getServiceFrameBaseValidationRules());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateExactlyOne("lines/*[self::Line or self::FlexibleLine]", "There must be either Lines or Flexible Lines", "LINE_1"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(Name) or normalize-space(Name) = '']", "Missing Name on Line", "LINE_2"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(PublicCode) or normalize-space(PublicCode) = '']", "Missing PublicCode on Line", "LINE_3"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportMode)]", "Missing TransportMode on Line", "LINE_4"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]", "Missing TransportSubmode on Line", "LINE_5"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/routes/Route", "Routes should not be defined within a Line or FlexibleLine", "LINE_6"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]", "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef", "LINE_7"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][string-length(text())!=6]", "Line colour should be encoded with 6 hexadecimal digits", "LINE_8"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][not(matches(text(),'[0-9A-Fa-f]{6}'))]", "Line colour should be encoded with valid hexadecimal digits", "LINE_9"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode(ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES));
+        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));
+        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods"));
+        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact"));
+        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty());
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine", "FLEXIBLE_LINE_10"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on FlexibleLine", "FLEXIBLE_LINE_11"));
+
+
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedFlexibleLineType());
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("lines/FlexibleLine"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("lines/FlexibleLine"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("lines/FlexibleLine"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("lines/FlexibleLine"));
+
+        serviceFrameValidationTree.addValidationRule((new ValidateAtLeastOne("routes/Route", "There should be at least one Route", "ROUTE_1")));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(Name) or normalize-space(Name) = '']", "Missing Name on Route", "ROUTE_2"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(LineRef) and not(FlexibleLineRef)]", "Missing lineRef on Route", "ROUTE_3"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(pointsInSequence)]", "Missing pointsInSequence on Route", "ROUTE_4"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route/DirectionRef", "DirectionRef not allowed on Route (use DirectionType)", "ROUTE_5"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route/pointsInSequence/PointOnRoute[@order = preceding-sibling::PointOnRoute/@order]", "Several points on route have the same order", "ROUTE_6"));
+
+        serviceFrameValidationTree.addValidationRule((new ValidateNotExist("journeyPatterns/ServiceJourneyPattern", "ServiceJourneyPattern not allowed", "JOURNEY_PATTERN_1")));
+        serviceFrameValidationTree.addValidationRule((new ValidateAtLeastOne("journeyPatterns/JourneyPattern", "No JourneyPattern defined in the Service Frame", "JOURNEY_PATTERN_2")));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern[not(RouteRef)]", "Missing RouteRef on JourneyPattern", "JOURNEY_PATTERN_3"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[1][not(DestinationDisplayRef)]", "Missing DestinationDisplayRef on first StopPointInJourneyPattern", "JOURNEY_PATTERN_4"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[last()][DestinationDisplayRef]", "DestinationDisplayRef not allowed on last StopPointInJourneyPattern", "JOURNEY_PATTERN_5"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[ForAlighting = 'false' and ForBoarding = 'false']", "StopPointInJourneyPattern neither allows boarding nor alighting", "JOURNEY_PATTERN_6"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[DestinationDisplayRef/@ref = preceding-sibling::StopPointInJourneyPattern[1]/DestinationDisplayRef/@ref and number(@order) >  number(preceding-sibling::StopPointInJourneyPattern[1]/@order)]", "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern", "JOURNEY_PATTERN_7"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
+
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern", "JOURNEY_PATTERN_8"));
+        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern", "JOURNEY_PATTERN_9"));
+
+
+        serviceFrameValidationTree.addSubTree(getNoticesValidationTree());
+        serviceFrameValidationTree.addSubTree(getNoticeAssignmentsValidationTree());
+        return serviceFrameValidationTree;
     }
 
     protected ValidationTree getTimetableFrameValidationTree(String path) {
@@ -164,20 +259,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         return validationTree;
     }
 
-    protected ValidationTree getCompositeFrameValidationTreeForCommonFile() {
-        ValidationTree compositeFrameValidationTree = new ValidationTree("Composite frame in common file", "PublicationDelivery/dataObjects/CompositeFrame");
-
-        compositeFrameValidationTree.addValidationRules(getCompositeFrameBaseValidationRules());
-        compositeFrameValidationTree.addValidationRule(new ValidateNotExist("frames/TimetableFrame", "Timetable frame not allowed in common files", "COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE"));
-
-        compositeFrameValidationTree.addSubTree(getResourceFrameValidationTree("frames/ResourceFrame"));
-        compositeFrameValidationTree.addSubTree(getServiceCalendarFrameValidationTree("frames/ServiceCalendarFrame"));
-        compositeFrameValidationTree.addSubTree(getVehicleScheduleFrameValidationTree("frames/VehicleScheduleFrame"));
-
-        compositeFrameValidationTree.addSubTree(getServiceFrameValidationTreeForCommonFile("frames/ServiceFrame"));
-
-        return compositeFrameValidationTree;
-    }
 
     /**
      * CompositeFrame validation rules that apply both to Line files and common files.
@@ -199,20 +280,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         return validationRules;
 
     }
-
-    protected ValidationTree getServiceFrameValidationTreeForCommonFile(String path) {
-        ValidationTree serviceFrameValidationTree = new ValidationTree("Service frame in common file", path);
-        serviceFrameValidationTree.addValidationRules(getServiceFrameBaseValidationRules());
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/Line", "Line not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_1"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route", "Route not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_2"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern | journeyPatterns/ServiceJourneyPattern", "JourneyPattern not allowed in common files", "SERVICE_FRAME_IN_COMMON_FILE_3"));
-
-        serviceFrameValidationTree.addSubTree(getNoticesValidationTree());
-
-        return serviceFrameValidationTree;
-    }
-
 
     protected ValidationTree getResourceFrameValidationTree(String path) {
         ValidationTree resourceFrameValidationTree = new ValidationTree("Resource frame", path);
@@ -308,67 +375,5 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         return noticesAssignmentsValidationTree;
     }
 
-    protected ValidationTree getServiceFrameValidationTreeForLineFile(String path) {
-        ValidationTree serviceFrameValidationTree = new ValidationTree("Service frame in line file", path);
-        serviceFrameValidationTree.addValidationRules(getServiceFrameBaseValidationRules());
 
-        serviceFrameValidationTree.addValidationRule(new ValidateExactlyOne("lines/*[self::Line or self::FlexibleLine]", "There must be either Lines or Flexible Lines", "LINE_1"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(Name) or normalize-space(Name) = '']", "Missing Name on Line", "LINE_2"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(PublicCode) or normalize-space(PublicCode) = '']", "Missing PublicCode on Line", "LINE_3"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportMode)]", "Missing TransportMode on Line", "LINE_4"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]", "Missing TransportSubmode on Line", "LINE_5"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/routes/Route", "Routes should not be defined within a Line or FlexibleLine", "LINE_6"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]", "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef", "LINE_7"));
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][string-length(text())!=6]", "Line colour should be encoded with 6 hexadecimal digits", "LINE_8"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][not(matches(text(),'[0-9A-Fa-f]{6}'))]", "Line colour should be encoded with valid hexadecimal digits", "LINE_9"));
-
-        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportMode(ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES));
-        serviceFrameValidationTree.addValidationRule(new ValidatedAllowedTransportSubMode());
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[not(FlexibleLineType)]", "Missing FlexibleLineType on FlexibleLine", "FLEXIBLE_LINE_1"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact"));
-        serviceFrameValidationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty());
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine", "FLEXIBLE_LINE_10"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("lines/FlexibleLine[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on FlexibleLine", "FLEXIBLE_LINE_11"));
-
-
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedFlexibleLineType());
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("lines/FlexibleLine"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("lines/FlexibleLine"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("lines/FlexibleLine"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("lines/FlexibleLine"));
-
-        serviceFrameValidationTree.addValidationRule((new ValidateAtLeastOne("routes/Route", "There should be at least one Route", "ROUTE_1")));
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(Name) or normalize-space(Name) = '']", "Missing Name on Route", "ROUTE_2"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(LineRef) and not(FlexibleLineRef)]", "Missing lineRef on Route", "ROUTE_3"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route[not(pointsInSequence)]", "Missing pointsInSequence on Route", "ROUTE_4"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route/DirectionRef", "DirectionRef not allowed on Route (use DirectionType)", "ROUTE_5"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("routes/Route/pointsInSequence/PointOnRoute[@order = preceding-sibling::PointOnRoute/@order]", "Several points on route have the same order", "ROUTE_6"));
-
-        serviceFrameValidationTree.addValidationRule((new ValidateNotExist("journeyPatterns/ServiceJourneyPattern", "ServiceJourneyPattern not allowed", "JOURNEY_PATTERN_1")));
-        serviceFrameValidationTree.addValidationRule((new ValidateAtLeastOne("journeyPatterns/JourneyPattern", "No JourneyPattern defined in the Service Frame", "JOURNEY_PATTERN_2")));
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern[not(RouteRef)]", "Missing RouteRef on JourneyPattern", "JOURNEY_PATTERN_3"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[1][not(DestinationDisplayRef)]", "Missing DestinationDisplayRef on first StopPointInJourneyPattern", "JOURNEY_PATTERN_4"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[last()][DestinationDisplayRef]", "DestinationDisplayRef not allowed on last StopPointInJourneyPattern", "JOURNEY_PATTERN_5"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[ForAlighting = 'false' and ForBoarding = 'false']", "StopPointInJourneyPattern neither allows boarding nor alighting", "JOURNEY_PATTERN_6"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[DestinationDisplayRef/@ref = preceding-sibling::StopPointInJourneyPattern[1]/DestinationDisplayRef/@ref and number(@order) >  number(preceding-sibling::StopPointInJourneyPattern[1]/@order)]", "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern", "JOURNEY_PATTERN_7"));
-
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBuyWhenProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingMethodProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
-        serviceFrameValidationTree.addValidationRule(new ValidateAllowedBookingAccessProperty("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements"));
-
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[BookWhen and MinimumBookingPeriod]", "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern", "JOURNEY_PATTERN_8"));
-        serviceFrameValidationTree.addValidationRule(new ValidateNotExist("journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]", "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern", "JOURNEY_PATTERN_9"));
-
-
-        serviceFrameValidationTree.addSubTree(getNoticesValidationTree());
-        serviceFrameValidationTree.addSubTree(getNoticeAssignmentsValidationTree());
-        return serviceFrameValidationTree;
-    }
 }

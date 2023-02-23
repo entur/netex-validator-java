@@ -28,8 +28,8 @@ The entry point **NetexValidatorsRunner** can be configured with a list of **Net
 
 The library offers default implementations for:
 - XPath validation
-- NeTEx id uniqueness
-- NeTEx reference consistency
+- NeTEx id uniqueness validation
+- NeTEx reference consistency check
 
 The library can be extended with custom NetexValidator implementations (see [Antu](https://github.com/entur/antu) for examples of Entur-specific validators)
 
@@ -37,3 +37,45 @@ The library can be extended with custom NetexValidator implementations (see [Ant
 The library is thread-safe and can execute validations in parallel within the same JVM, though some NetexValidator implementations may require synchronization.
 This is the case in particular for the NeTEx id uniqueness validation, since it checks uniqueness across several files.
 See [Antu](https://github.com/entur/antu) for examples of distributed validation across several Kubernetes pods.
+
+# Development guide
+
+## Adding new XPath validation rules
+Simple XPath validation rules can be implemented with the following generic ValidationRules:
+- ValidateNotExist
+- ValidateAtLeastOne
+- ValidateExactlyOne
+
+Example:
+```java
+ValidationRule rule = new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportMode)]", "Missing TransportMode on Line", "LINE_4")
+```
+
+More complex rules can be implemented by extending these generic ValidationRules or implementing the ValidationRule interface.
+
+## Registering an XPath validation rule
+XPath rules must be registered in a ValidationTree to be applied on a NeTEx document.
+The library comes with a default validation tree (see DefaultValidationTreeFactory) that can be extended with custom rules.
+
+## Implementing custom NeTEx validators
+Other types of NeTEx validators (non XPath-based) can be added by implementing the NetexValidator interface.
+See NetexIdUniquenessValidator for an example.
+
+## Registering validators
+Validators must be registered in a NetexValidatorsRunner.
+The method NetexValidatorsRunner.validate() is the entry point for running a validation.  
+It executes the registered NeTEx validators and returns a ValidationReport containing the validation findings.
+
+Example:
+```java
+// create a NeTEx XML Parser that ignores SiteFrame elements
+NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
+// create a NeTEx schema validator, limit the number of findings to 100
+NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
+// create a custom NeTex validator
+NetexValidator netexValidator = new CustomNetexValidator()
+// create a NeTEx validator runner that registers the NeTEx schema validator and the custom NeTEx validator
+NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(netexXMLParser, netexSchemaValidator, List.of(netexValidator));
+// run the validation for a given codespace, report id, NeTEx filename and file binary content
+ValidationReport validationReport = netexValidatorsRunner.validate(codespace, reportId, filename, content);
+```
