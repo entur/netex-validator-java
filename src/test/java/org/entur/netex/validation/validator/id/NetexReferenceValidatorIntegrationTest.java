@@ -22,21 +22,21 @@ class NetexReferenceValidatorIntegrationTest {
 
     @Test
     void testValidReference() throws IOException {
-        NeTexReferenceValidator neTexReferenceValidator = createValidator();
-        ValidationReport aggregatedValidationReport = getReport(TEST_DATASET_CODESPACE, TEST_REPORT_ID, TEST_DATASET_FILE_NAME, neTexReferenceValidator);
+        NetexReferenceValidator NetexReferenceValidator = createValidator();
+        ValidationReport aggregatedValidationReport = getReport(TEST_DATASET_CODESPACE, TEST_REPORT_ID, TEST_DATASET_FILE_NAME, NetexReferenceValidator);
         Assertions.assertTrue(aggregatedValidationReport.getValidationReportEntries().isEmpty());
     }
 
     @Test
     void testInvalidReference() throws IOException {
-        NeTexReferenceValidator neTexReferenceValidator = createValidator();
-        ValidationReport aggregatedValidationReport = getReport(TEST_DATASET_CODESPACE, TEST_REPORT_ID, TEST_DATASET_INVALID_REFERENCE_FILE_NAME, neTexReferenceValidator);
+        NetexReferenceValidator NetexReferenceValidator = createValidator();
+        ValidationReport aggregatedValidationReport = getReport(TEST_DATASET_CODESPACE, TEST_REPORT_ID, TEST_DATASET_INVALID_REFERENCE_FILE_NAME, NetexReferenceValidator);
         Assertions.assertFalse(aggregatedValidationReport.getValidationReportEntries().isEmpty());
     }
 
-    private NeTexReferenceValidator createValidator() {
+    private NetexReferenceValidator createValidator() {
         NetexIdRepository netexIdRepository = new DefaultNetexIdRepository();
         ExternalReferenceValidator acceptAllStopPlacesAndQuays = externalIdsToValidate -> externalIdsToValidate.stream().filter(e -> e.getId().contains(":Quay:") || e.getId().contains(":StopPlace:")).collect(Collectors.toSet());
-        return new NeTexReferenceValidator(netexIdRepository, List.of(acceptAllStopPlacesAndQuays), new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
+        return new NetexReferenceValidator(netexIdRepository, List.of(acceptAllStopPlacesAndQuays), new DefaultValidationEntryFactory(new DefaultValidationConfigLoader()));
     }
 }

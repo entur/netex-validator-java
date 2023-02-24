@@ -12,24 +12,26 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 /**
  * Validate that references refer to an existing element.
  */
-public class NeTexReferenceValidator extends AbstractNetexValidator {
+public class NetexReferenceValidator extends AbstractNetexValidator {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NeTexReferenceValidator.class);
+    static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NetexReferenceValidator.class);
 
     private static final String MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE = "Unresolved reference to external reference data";
-    private static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
     private final List<ExternalReferenceValidator> externalReferenceValidators;
     private final NetexIdRepository netexIdRepository;
 
-    public NeTexReferenceValidator(NetexIdRepository netexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators, ValidationReportEntryFactory validationReportEntryFactory) {
+    public NetexReferenceValidator(NetexIdRepository netexIdRepository, List<ExternalReferenceValidator> externalReferenceValidators, ValidationReportEntryFactory validationReportEntryFactory) {
         super(validationReportEntryFactory);
-        this.netexIdRepository = netexIdRepository;
-        this.externalReferenceValidators = externalReferenceValidators;
+        this.netexIdRepository = Objects.requireNonNull(netexIdRepository);
+        this.externalReferenceValidators = Objects.requireNonNull(externalReferenceValidators);
     }
 
     @Override
