@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -23,6 +24,10 @@ import java.util.stream.Collectors;
  */
 public class NetexIdUniquenessValidator extends AbstractNetexValidator {
 
+
+
+    static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
+    static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";
     /**
      * Set of NeTEx elements for which id-uniqueness across lines is not verified.
      * These IDs need not be stored.
@@ -33,9 +38,6 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
     private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES = "Duplicate element identifiers across common files";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NetexIdUniquenessValidator.class);
-    private static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
-    private static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";
-
 
     private final NetexIdRepository netexIdRepository;
     private final Set<String> ignorableElements;
@@ -47,7 +49,7 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
 
     public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository, ValidationReportEntryFactory validationReportEntryFactory, Set<String> ignorableElements) {
         super(validationReportEntryFactory);
-        this.netexIdRepository = netexIdRepository;
+        this.netexIdRepository = Objects.requireNonNull(netexIdRepository);
         this.ignorableElements = ignorableElements;
     }
 
