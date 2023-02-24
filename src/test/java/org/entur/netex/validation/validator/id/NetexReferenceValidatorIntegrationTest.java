@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 import static org.entur.netex.validation.validator.ValidatorTestUtil.getReport;
 
-class NetexReferenceValidatorTest {
+class NetexReferenceValidatorIntegrationTest {
 
     private static final String TEST_DATASET_FILE_NAME = "rb_flb-aggregated-netex.zip";
     private static final String TEST_DATASET_INVALID_REFERENCE_FILE_NAME = "rb_flb-aggregated-netex-invalid-reference.zip";

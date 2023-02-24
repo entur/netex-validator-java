@@ -2,6 +2,8 @@ package org.entur.netex.validation.validator;
 
 import org.entur.netex.validation.validator.id.IdVersion;
 
+import java.util.Objects;
+
 /**
  * Base class for NeTEx validators.
  */
@@ -10,7 +12,7 @@ public abstract class AbstractNetexValidator implements NetexValidator {
     private final ValidationReportEntryFactory validationReportEntryFactory;
 
     protected AbstractNetexValidator(ValidationReportEntryFactory validationReportEntryFactory) {
-        this.validationReportEntryFactory = validationReportEntryFactory;
+        this.validationReportEntryFactory = Objects.requireNonNull(validationReportEntryFactory);
     }
 
 
@@ -24,6 +26,7 @@ public abstract class AbstractNetexValidator implements NetexValidator {
      * @return
      */
     protected DataLocation getIdVersionLocation(IdVersion id) {
+        Objects.requireNonNull(id);
         return new DataLocation(id.getId(), id.getFilename(), id.getLineNumber(), id.getColumnNumber());
     }
 
