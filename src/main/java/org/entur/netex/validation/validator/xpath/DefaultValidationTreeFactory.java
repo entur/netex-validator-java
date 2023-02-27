@@ -380,5 +380,10 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         return noticesAssignmentsValidationTree;
     }
 
+    public static void main(String[] args) {
+        DefaultValidationTreeFactory defaultValidationTreeFactory = new DefaultValidationTreeFactory();
+        System.out.println(defaultValidationTreeFactory.buildValidationTree().printRulesList());
+    }
+
 
 }

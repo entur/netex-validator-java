@@ -2,7 +2,11 @@
 
 [![CircleCI](https://circleci.com/gh/entur/netex-validator-java/tree/main.svg?style=svg)](https://circleci.com/gh/entur/netex-validator-java/tree/main)
 
-Validate NeTEx datasets against the [Nordic NeTEx Profile](https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/728891481/Nordic+NeTEx+Profile).
+Validation library for NeTEx data.  
+The library analyzes NeTEx datasets and generates a validation report. 
+In addition to XML schema validation, the library applies a configurable set of validation rules (See list below).  
+The library is intended primarily to support the validation of datasets compliant with the [Nordic NeTEx Profile](https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/728891481/Nordic+NeTEx+Profile).  
+It expects the dataset to follow the packaging and naming conventions stated in the Nordic NeTEx profile (dataset packaged as a zip file, one NeTEx Line per XML file, shared file prefixed with '_', ...)
 
 # Input data
 The validator requires:
@@ -32,6 +36,9 @@ The library offers default implementations for:
 - NeTEx reference consistency check
 
 The library can be extended with custom NetexValidator implementations (see [Antu](https://github.com/entur/antu) for examples of Entur-specific validators)
+
+# Configurable rule severity and description
+The rule severity (INFO, WARNING, ERROR) and the rule message displayed in the validation report are specified in a configuration file (YAML). The default configuration can be found in ```configuration.default.yaml```
 
 # Parallel processing and thread-safety
 The library is thread-safe and can execute validations in parallel within the same JVM, though some NetexValidator implementations may require synchronization.
@@ -79,3 +86,145 @@ NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(netexXML
 // run the validation for a given codespace, report id, NeTEx filename and file binary content
 ValidationReport validationReport = netexValidatorsRunner.validate(codespace, reportId, filename, content);
 ```
+
+# Default rule set
+The NeTEx validator library comes with the following rule set by default:
+
+| Rule Code                                |                                                              Rule Description                                                               |
+|------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------:|
+| AUTHORITY_1                              |                                                 Missing CompanyNumber element on Authority                                                  |
+| AUTHORITY_2                              |                                                      Missing Name element on Authority                                                      |
+| AUTHORITY_3                              |                                                   Missing LegalName element on Authority                                                    |
+| AUTHORITY_4                              |                                                     Missing ContactDetails on Authority                                                     |
+| AUTHORITY_5                              |                   The Url must be defined for ContactDetails on Authority and it must start with 'http://' or 'https://'                    |
+| BLOCK_1                                  |                                      At least one Block or TrainBlock required in VehicleScheduleFrame                                      |
+| BLOCK_2                                  |                                               At least one Journey must be defined for Block                                                |
+| BLOCK_3                                  |                                               At least one DayType must be defined for Block                                                |
+| BOOKING_1                                |                                                       Illegal value for BookingAccess                                                       |
+| BOOKING_2                                |                                                       Illegal value for BookingMethod                                                       |
+| BOOKING_3                                |                                                         Illegal value for BookWhen                                                          |
+| BOOKING_4                                |   Mandatory booking property BookingContact not specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns   |
+| BOOKING_4                                |   Mandatory booking property BookingMethods not specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns   |
+| BOOKING_5                                | Either BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns |
+| BUY_WHEN_1                               |                                                          Illegal value for BuyWhen                                                          |
+| COMPOSITE_FRAME_1                        |                        A CompositeFrame must define a ValidityCondition valid for all data within the CompositeFrame                        |
+| COMPOSITE_FRAME_2                        |                                      ValidityConditions defined inside a frame inside a CompositeFrame                                      |
+| COMPOSITE_FRAME_3                        |                                           ValidBetween missing either or both of FromDate/ToDate                                            |
+| COMPOSITE_FRAME_4                        |                                               FromDate cannot be after ToDate on ValidBetween                                               |
+| COMPOSITE_FRAME_4                        |                                  AvailabilityCondition must have either FromDate or ToDate or both present                                  |
+| COMPOSITE_FRAME_5                        |                                          FromDate cannot be after ToDate on AvailabilityCondition                                           |
+| COMPOSITE_SITE_FRAME_IN_COMMON_FILE      |                                              Unexpected element SiteFrame. It will be ignored                                               |
+| COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE |                                                 Timetable frame not allowed in common files                                                 |
+| DATED_SERVICE_JOURNEY_1                  |                                               Missing OperatingDayRef on DatedServiceJourney                                                |
+| DATED_SERVICE_JOURNEY_2                  |                                              Missing ServiceJourneyRef on DatedServiceJourney                                               |
+| DATED_SERVICE_JOURNEY_3                  |                                              Multiple ServiceJourneyRef on DatedServiceJourney                                              |
+| DATED_SERVICE_JOURNEY_4                  |                                          DatedServiceJourney is repeated with a different version                                           |
+| DATED_SERVICE_JOURNEY_5                  |                               Multiple references from a DatedServiceJourney to the same DatedServiceJourney                                |
+| DEAD_RUN_1                               |                                                The Dead run does not reference passing times                                                |
+| DEAD_RUN_2                               |                                              The Dead run does not reference a journey pattern                                              |
+| DEAD_RUN_3                               |                                                  The Dead run does not reference day types                                                  |
+| DESTINATION_DISPLAY_1                    |                                                   Missing FrontText on DestinationDisplay                                                   |
+| DESTINATION_DISPLAY_2                    |                                                    Missing DestinationDisplayRef on Via                                                     |
+| FLEXIBLE_LINE_1                          |                                                  Missing FlexibleLineType on FlexibleLine                                                   |
+| FLEXIBLE_LINE_10                         |                              Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine                               |
+| FLEXIBLE_LINE_11                         |                                    BookWhen must be used together with LatestBookingTime on FlexibleLine                                    |
+| FLEXIBLE_LINE_8                          |                                                  Illegal FlexibleLineType on FlexibleLine                                                   |
+| FLEXIBLE_LINE_9                          |                                                Illegal FlexibleServiceType on ServiceJourney                                                |
+| FLEXIBLE_SERVICE_1                       |                                                   Missing id on FlexibleServiceProperties                                                   |
+| FLEXIBLE_SERVICE_2                       |                                                Missing version on FlexibleServiceProperties                                                 |
+| FLEXIBLE_SERVICE_3                       |                        Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties                        |
+| FLEXIBLE_SERVICE_4                       |                             BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties                              |
+| INTERCHANGE_1                            |                             The 'Planned' and 'Advertised' properties of an Interchange should not be specified                             |
+| INTERCHANGE_2                            |                                  Guaranteed Interchange should not have a maximum wait time value of zero                                   |
+| INTERCHANGE_3                            | The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour  |
+| JOURNEY_PATTERN_1                        |                                                      ServiceJourneyPattern not allowed                                                      |
+| JOURNEY_PATTERN_2                        |                                               No JourneyPattern defined in the Service Frame                                                |
+| JOURNEY_PATTERN_3                        |                                                     Missing RouteRef on JourneyPattern                                                      |
+| JOURNEY_PATTERN_4                        |                                      Missing DestinationDisplayRef on first StopPointInJourneyPattern                                       |
+| JOURNEY_PATTERN_5                        |                                     DestinationDisplayRef not allowed on last StopPointInJourneyPattern                                     |
+| JOURNEY_PATTERN_6                        |                                       StopPointInJourneyPattern neither allows boarding nor alighting                                       |
+| JOURNEY_PATTERN_7                        |              StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern              |
+| JOURNEY_PATTERN_8                        |                        Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern                        |
+| JOURNEY_PATTERN_9                        |                             BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern                              |
+| LINE_1                                   |                                                There must be either Lines or Flexible Lines                                                 |
+| LINE_2                                   |                                                            Missing Name on Line                                                             |
+| LINE_3                                   |                                                         Missing PublicCode on Line                                                          |
+| LINE_4                                   |                                                        Missing TransportMode on Line                                                        |
+| LINE_5                                   |                                                      Missing TransportSubmode on Line                                                       |
+| LINE_6                                   |                                         Routes should not be defined within a Line or FlexibleLine                                          |
+| LINE_7                                   |                           A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef                            |
+| LINE_8                                   |                                           Line colour should be encoded with 6 hexadecimal digits                                           |
+| LINE_9                                   |                                         Line colour should be encoded with valid hexadecimal digits                                         |
+| NETWORK_1                                |                                                       Missing AuthorityRef on Network                                                       |
+| NETWORK_2                                |                                                       Missing Name element on Network                                                       |
+| NETWORK_3                                |                                                    Missing Name element on GroupOfLines                                                     |
+| NOTICE_1                                 |                                                       Missing element Text for Notice                                                       |
+| NOTICE_2                                 |                                          Missing or empty element Text for Notice Alternative Text                                          |
+| NOTICE_3                                 |                                              Missing element Lang for Notice Alternative Text                                               |
+| NOTICE_4                                 |                                         The Notice has two Alternative Texts with the same language                                         |
+| NOTICE_5                                 |                                          The notice is assigned multiple times to the same object                                           |
+| NOTICE_6                                 |                                             The notice assignment does not reference an object                                              |
+| NOTICE_7                                 |                                              The notice assignment does not reference a notice                                              |
+| OPERATOR_1                               |                                                  Missing CompanyNumber element on Operator                                                  |
+| OPERATOR_2                               |                                                          Missing Name on Operator                                                           |
+| OPERATOR_3                               |                                                    Missing LegalName element on Operator                                                    |
+| OPERATOR_4                               |                                                 Missing ContactDetails element on Operator                                                  |
+| OPERATOR_5                               |                             At least one of Url, Phone or Email must be defined for ContactDetails on Operator                              |
+| OPERATOR_6                               |                                          Missing CustomerServiceContactDetails element on Operator                                          |
+| OPERATOR_7                               |                                      Missing Url element for CustomerServiceContactDetails on Operator                                      |
+| PASSENGER_STOP_ASSIGNMENT_1              |                                          Missing ScheduledStopPointRef on PassengerStopAssignment                                           |
+| PASSENGER_STOP_ASSIGNMENT_2              |                                                 Missing QuayRef on PassengerStopAssignment                                                  |
+| PASSENGER_STOP_ASSIGNMENT_3              |                                    The same quay is assigned more than once in PassengerStopAssignments                                     |
+| RESOURCE_FRAME_IN_LINE_FILE              |                                                 Exactly one ResourceFrame should be present                                                 |
+| ROUTE_1                                  |                                                     There should be at least one Route                                                      |
+| ROUTE_2                                  |                                                            Missing Name on Route                                                            |
+| ROUTE_3                                  |                                                          Missing lineRef on Route                                                           |
+| ROUTE_4                                  |                                                      Missing pointsInSequence on Route                                                      |
+| ROUTE_5                                  |                                            DirectionRef not allowed on Route (use DirectionType)                                            |
+| ROUTE_6                                  |                                                 Several points on route have the same order                                                 |
+| SERVICE_CALENDAR_1                       |                                        The DayType is not assigned to any calendar dates or periods                                         |
+| SERVICE_CALENDAR_2                       |                                  ServiceCalendar does not contain neither DayTypes nor DayTypeAssignments                                   |
+| SERVICE_CALENDAR_3                       |                                                      Missing ToDate on ServiceCalendar                                                      |
+| SERVICE_CALENDAR_4                       |                                                     Missing FromDate on ServiceCalendar                                                     |
+| SERVICE_CALENDAR_5                       |                                             FromDate cannot be after ToDate on ServiceCalendar                                              |
+| SERVICE_FRAME_1                          |                                             Unexpected element groupsOfLines outside of Network                                             |
+| SERVICE_FRAME_2                          |                                              Unexpected element timingPoints. Content ignored                                               |
+| SERVICE_FRAME_3                          |                                                      Missing Projection on RoutePoint                                                       |
+| SERVICE_FRAME_IN_COMMON_FILE_1           |                                                      Line not allowed in common files                                                       |
+| SERVICE_FRAME_IN_COMMON_FILE_2           |                                                      Route not allowed in common files                                                      |
+| SERVICE_FRAME_IN_COMMON_FILE_3           |                                                 JourneyPattern not allowed in common files                                                  |
+| SERVICE_JOURNEY_1                        |                                                 There should be at least one ServiceJourney                                                 |
+| SERVICE_JOURNEY_10                       |                                            The ServiceJourney does not refer to a JourneyPattern                                            |
+| SERVICE_JOURNEY_11                       |                   If overriding Line TransportMode or TransportSubmode on a ServiceJourney, both elements must be present                   |
+| SERVICE_JOURNEY_12                       |                                         Missing OperatorRef on ServiceJourney (not defined on Line)                                         |
+| SERVICE_JOURNEY_13                       |                                   The ServiceJourney does not refer to DayTypes nor DatedServiceJourneys                                    |
+| SERVICE_JOURNEY_14                       |                                    The ServiceJourney references both DayTypes and DatedServiceJourneys                                     |
+| SERVICE_JOURNEY_15                       |                               ServiceJourney does not specify passing time for all StopPointInJourneyPattern                                |
+| SERVICE_JOURNEY_16                       |                                             ServiceJourney is repeated with a different version                                             |
+| SERVICE_JOURNEY_2                        |                                                          Element Call not allowed                                                           |
+| SERVICE_JOURNEY_3                        |                                       The ServiceJourney does not specify any TimetabledPassingTimes                                        |
+| SERVICE_JOURNEY_4                        |                TimetabledPassingTime contains neither DepartureTime/EarliestDepartureTime nor ArrivalTime/LatestArrivalTime                 |
+| SERVICE_JOURNEY_5                        |                                     All TimetabledPassingTime except last call must have DepartureTime                                      |
+| SERVICE_JOURNEY_6                        |                                              Last TimetabledPassingTime must have ArrivalTime                                               |
+| SERVICE_JOURNEY_7                        |                                                  ArrivalTime is identical to DepartureTime                                                  |
+| SERVICE_JOURNEY_8                        |                                                     Missing id on TimetabledPassingTime                                                     |
+| SERVICE_JOURNEY_9                        |                                                  Missing version on TimetabledPassingTime                                                   |
+| SERVICE_LINK_1                           |                                                     Missing FromPointRef on ServiceLink                                                     |
+| SERVICE_LINK_2                           |                                                      Missing ToPointRef on ServiceLink                                                      |
+| SERVICE_LINK_3                           |                                                 Missing projections element on ServiceLink                                                  |
+| SITE_FRAME_IN_COMMON_FILE                |                                              Unexpected element SiteFrame. It will be ignored                                               |
+| SITE_FRAME_IN_LINE_FILE                  |                                              Unexpected element SiteFrame. It will be ignored                                               |
+| TIMETABLE_FRAME_IN_COMMON_FILE           |                                                 Timetable frame not allowed in common files                                                 |
+| TRANSPORT_MODE                           |                                                            Illegal TransportMode                                                            |
+| TRANSPORT_SUB_MODE                       |                                                          Illegal TransportSubMode                                                           |
+| VALIDITY_CONDITIONS_IN_COMMON_FILE_1     |                                  Neither ServiceFrame nor ServiceCalendarFrame defines ValidityConditions                                   |
+| VALIDITY_CONDITIONS_IN_COMMON_FILE_2     |                                             Multiple ResourceFrames without validity conditions                                             |
+| VALIDITY_CONDITIONS_IN_COMMON_FILE_3     |                                             Multiple ServiceFrames without validity conditions                                              |
+| VALIDITY_CONDITIONS_IN_COMMON_FILE_4     |                                         Multiple ServiceCalendarFrames without validity conditions                                          |
+| VALIDITY_CONDITIONS_IN_LINE_FILE_1       |                          Neither ServiceFrame, ServiceCalendarFrame nor TimetableFrame defines ValidityConditions                           |
+| VALIDITY_CONDITIONS_IN_LINE_FILE_2       |                                          Multiple frames of same type without validity conditions                                           |
+| VALIDITY_CONDITIONS_IN_LINE_FILE_3       |                                          Multiple frames of same type without validity conditions                                           |
+| VALIDITY_CONDITIONS_IN_LINE_FILE_4       |                                          Multiple frames of same type without validity conditions                                           |
+| VALIDITY_CONDITIONS_IN_LINE_FILE_5       |                                          Multiple frames of same type without validity conditions                                           |
+| VERSION_NON_NUMERIC                      |                                                          Non-numeric NeTEx version                                                          |
+

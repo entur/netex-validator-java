@@ -81,7 +81,7 @@ public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRul
 
     @Override
     public String getMessage() {
-        return MESSAGE_FORMAT;
+        return String.format(MESSAGE_FORMAT, bookingProperty);
     }
 
     @Override
