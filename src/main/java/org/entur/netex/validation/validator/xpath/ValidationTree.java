@@ -127,6 +127,10 @@ public class ValidationTree {
         return rules;
     }
 
+    public ValidationRule getRule(String code) {
+        return getRules().stream().filter(validationRule -> validationRule.getCode().equals(code)).findFirst().orElseThrow(() -> new IllegalArgumentException("No rule with code " + code));
+    }
+
     public String printRulesList() {
         return getRules().stream()
                 .sorted(Comparator.comparing(ValidationRule::getCode))
