@@ -23,6 +23,8 @@ import java.util.function.Predicate;
  */
 public class DefaultValidationTreeFactory implements ValidationTreeFactory {
 
+    public static final String SITE_FRAME = "SiteFrame";
+    public static final String RESOURCE_FRAME = "ResourceFrame";
 
     @Override
     public ValidationTree buildValidationTree() {
@@ -45,7 +47,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
                 validationContext -> validationContext.getNetexXMLParser().selectNodeSet("CompositeFrame", validationContext.getXmlNode()).isEmpty());
 
 
-        validationTree.addValidationRule(new ValidateNotExist("SiteFrame", "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_COMMON_FILE"));
+        validationTree.addValidationRule(new ValidateNotExist(SITE_FRAME, "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_COMMON_FILE"));
         validationTree.addValidationRule(new ValidateNotExist("TimetableFrame", "Timetable frame not allowed in common files", "TIMETABLE_FRAME_IN_COMMON_FILE"));
 
         validationTree.addValidationRule(new ValidateAtLeastOne("ServiceFrame[validityConditions] | ServiceCalendarFrame[validityConditions]", "Neither ServiceFrame nor ServiceCalendarFrame defines ValidityConditions", "VALIDITY_CONDITIONS_IN_COMMON_FILE_1"));
@@ -55,10 +57,11 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateNotExist("ServiceCalendarFrame[not(validityConditions) and count(//ServiceCalendarFrame) > 1]", "Multiple ServiceCalendarFrames without validity conditions", "VALIDITY_CONDITIONS_IN_COMMON_FILE_4"));
 
 
-        validationTree.addSubTree(getResourceFrameValidationTree("ResourceFrame"));
+        validationTree.addSubTree(getResourceFrameValidationTree(RESOURCE_FRAME));
         validationTree.addSubTree(getServiceFrameValidationTreeForCommonFile("ServiceFrame"));
         validationTree.addSubTree(getServiceCalendarFrameValidationTree("ServiceCalendarFrame"));
         validationTree.addSubTree(getVehicleScheduleFrameValidationTree("VehicleScheduleFrame"));
+        validationTree.addSubTree(getSiteFrameValidationTreeForCommonFile(SITE_FRAME));
 
         return validationTree;
     }
@@ -73,8 +76,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         compositeFrameValidationTree.addSubTree(getResourceFrameValidationTree("frames/ResourceFrame"));
         compositeFrameValidationTree.addSubTree(getServiceCalendarFrameValidationTree("frames/ServiceCalendarFrame"));
         compositeFrameValidationTree.addSubTree(getVehicleScheduleFrameValidationTree("frames/VehicleScheduleFrame"));
-
         compositeFrameValidationTree.addSubTree(getServiceFrameValidationTreeForCommonFile("frames/ServiceFrame"));
+        compositeFrameValidationTree.addSubTree(getSiteFrameValidationTreeForCommonFile("frames/SiteFrame"));
 
         return compositeFrameValidationTree;
     }
@@ -92,7 +95,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         return serviceFrameValidationTree;
     }
 
-
+    protected ValidationTree getSiteFrameValidationTreeForCommonFile(String path) {
+        return new ValidationTree("Site frame in common file", path);
+    }
 
     protected ValidationTree getLineFileValidationTree() {
         ValidationTree lineFileValidationTree = new ValidationTree("Line file", "/", Predicate.not(XPathValidationContext::isCommonFile));
@@ -126,8 +131,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
                 validationContext ->
                         validationContext.getNetexXMLParser().selectNodeSet("CompositeFrame", validationContext.getXmlNode()).isEmpty());
 
-        validationTree.addValidationRule(new ValidateExactlyOne("ResourceFrame", "Exactly one ResourceFrame should be present", "RESOURCE_FRAME_IN_LINE_FILE"));
-        validationTree.addValidationRule(new ValidateNotExist("SiteFrame", "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_LINE_FILE"));
+        validationTree.addValidationRule(new ValidateExactlyOne(RESOURCE_FRAME, "Exactly one ResourceFrame should be present", "RESOURCE_FRAME_IN_LINE_FILE"));
+        validationTree.addValidationRule(new ValidateNotExist(SITE_FRAME, "Unexpected element SiteFrame. It will be ignored", "SITE_FRAME_IN_LINE_FILE"));
         validationTree.addValidationRule(new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty(""));
         validationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingMethods", "frames/"));
         validationTree.addValidationRule(new ValidateMandatoryBookingProperty("BookingContact", "frames/"));
@@ -140,7 +145,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         validationTree.addValidationRule(new ValidateNotExist("VehicleScheduleFrame[not(validityConditions) and count(//VehicleScheduleFrame) > 1]", "Multiple frames of same type without validity conditions", "VALIDITY_CONDITIONS_IN_LINE_FILE_5"));
 
 
-        validationTree.addSubTree(getResourceFrameValidationTree("ResourceFrame"));
+        validationTree.addSubTree(getResourceFrameValidationTree(RESOURCE_FRAME));
         validationTree.addSubTree(getServiceCalendarFrameValidationTree("ServiceCalendarFrame"));
         validationTree.addSubTree(getTimetableFrameValidationTree("TimetableFrame"));
         validationTree.addSubTree(getVehicleScheduleFrameValidationTree("VehicleScheduleFrame"));
