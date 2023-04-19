@@ -136,7 +136,7 @@ validationRuleConfigs:
     name: FlexibleLine BookWhen without LatestBookingTime or LatestBookingTime without BookWhen
     severity: WARNING
   - code: FLEXIBLE_SERVICE_1
-    name: FlexibleService missing Id
+    name: FlexibleService missing Id on FlexibleServiceProperties
     severity: ERROR
   - code: FLEXIBLE_SERVICE_2
     name: FlexibleService missing version on FlexibleServiceProperties
