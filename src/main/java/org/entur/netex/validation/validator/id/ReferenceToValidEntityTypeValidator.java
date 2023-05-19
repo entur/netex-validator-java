@@ -131,6 +131,14 @@ public class ReferenceToValidEntityTypeValidator extends AbstractNetexValidator 
         fromStopPointRefSubstitutions.add("ScheduledStopPoint");
         substitutions.put("FromStopPointRef", fromStopPointRefSubstitutions);
 
+        Set<String> fromOperatingDayRefSubstitutions = new HashSet<>();
+        fromOperatingDayRefSubstitutions.add("OperatingDay");
+        substitutions.put("FromOperatingDayRef", fromOperatingDayRefSubstitutions);
+
+        Set<String> toOperatingDayRefSubstitutions = new HashSet<>();
+        toOperatingDayRefSubstitutions.add("OperatingDay");
+        substitutions.put("ToOperatingDayRef", toOperatingDayRefSubstitutions);
+
         Set<String> toStopPointRefSubstitutions = new HashSet<>();
         toStopPointRefSubstitutions.add("ScheduledStopPoint");
         substitutions.put("ToStopPointRef", toStopPointRefSubstitutions);
