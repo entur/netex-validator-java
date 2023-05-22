@@ -9,7 +9,6 @@ import java.util.Set;
 
 class InterchangeRuleReferencesIgnorerTest {
 
-    private static final String TEST_SCHEDULED_STOP_POINT_REFERENCE_ID = "XXX:ScheduledStopPoint:1";
     private InterchangeRuleReferencesIgnorer interchangeRuleReferencesIgnorer;
 
     @BeforeEach
