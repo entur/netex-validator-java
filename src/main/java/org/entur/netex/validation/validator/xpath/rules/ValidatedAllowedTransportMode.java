@@ -12,6 +12,7 @@ public class ValidatedAllowedTransportMode extends ValidateNotExist {
             "rail",
             "metro",
             "air",
+            "taxi",
             "water",
             "cableway",
             "funicular",
