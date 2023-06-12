@@ -76,7 +76,7 @@
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
         <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <dependency-check-maven.version>8.2.1</dependency-check-maven.version>
+        <dependency-check-maven.version>8.3.1</dependency-check-maven.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
         <argLine />
