@@ -21,6 +21,20 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+    <developers>
+        <developer>
+            <name>Vincent Paturet</name>
+            <email>vincent.paturet@entur.org</email>
+            <organization>Entur</organization>
+            <organizationUrl>https://www.entur.org</organizationUrl>
+        </developer>
+        <developer>
+            <name>Mansoor Sajjad</name>
+            <email>mansoor.sajjad@entur.org</email>
+            <organization>Entur</organization>
+            <organizationUrl>https://www.entur.org</organizationUrl>
+        </developer>
+    </developers>
     <scm>
         <connection>scm:git:ssh://git@github.com:entur/netex-validator-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/entur/netex-validator-java.git</developerConnection>
