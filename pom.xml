@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>0.0.44-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -28,11 +28,6 @@
     <tag>HEAD</tag>
   </scm>
     <distributionManagement>
-        <repository>
-            <id>central</id>
-            <name>entur2-releases</name>
-            <url>https://entur2.jfrog.io/entur2/libs-release-local</url>
-        </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>entur2-snapshots</name>
@@ -75,7 +70,7 @@
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
         <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.6.12</nexus-staging-maven-plugin.version>
         <dependency-check-maven.version>8.3.1</dependency-check-maven.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
@@ -84,6 +79,9 @@
         <maven.compiler.target>11</maven.compiler.target>
 
 
+        <!-- GPG configuration for jar signing-->
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
     </properties>
 
     <dependencies>
