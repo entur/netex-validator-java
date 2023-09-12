@@ -70,9 +70,19 @@ public class NetexValidatorsRunner {
             return validationReport;
         }
 
-        runNetexValidators(codespace, validationReportId, filename, fileContent, netexValidationProgressCallBack, validationReport);
+        ValidationContext validationContext = prepareValidationContext(codespace, filename, fileContent);
+        runNetexValidators(codespace, validationReportId, filename, validationContext, netexValidationProgressCallBack, validationReport);
 
         return validationReport;
+    }
+
+    protected ValidationContext prepareValidationContext(String codespace, String filename, byte[] fileContent) {
+        XdmNode document = netexXMLParser.parseByteArrayToXdmNode(fileContent);
+        XPathCompiler xPathCompiler = netexXMLParser.getXPathCompiler();
+        Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentifiers(document, xPathCompiler, filename, Set.of("Codespace")));
+        List<IdVersion> localRefs = NetexIdExtractorHelper.collectEntityReferences(document, xPathCompiler, filename, null);
+
+        return new ValidationContext(document, netexXMLParser, codespace, filename, localIds, localRefs);
     }
 
     /**
@@ -108,17 +118,10 @@ public class NetexValidatorsRunner {
      * @param codespace
      * @param validationReportId
      * @param filename
-     * @param fileContent
      * @param netexValidationProgressCallBack
      * @param validationReport
      */
-    private void runNetexValidators(String codespace, String validationReportId, String filename, byte[] fileContent, NetexValidationProgressCallBack netexValidationProgressCallBack, ValidationReport validationReport) {
-        XdmNode document = netexXMLParser.parseByteArrayToXdmNode(fileContent);
-        XPathCompiler xPathCompiler = netexXMLParser.getXPathCompiler();
-        Set<IdVersion> localIds = new HashSet<>(NetexIdExtractorHelper.collectEntityIdentifiers(document, xPathCompiler, filename, Set.of("Codespace")));
-        List<IdVersion> localRefs = NetexIdExtractorHelper.collectEntityReferences(document, xPathCompiler, filename, null);
-
-        ValidationContext validationContext = new ValidationContext(document, netexXMLParser, codespace, filename, localIds, localRefs);
+    private void runNetexValidators(String codespace, String validationReportId, String filename, ValidationContext validationContext, NetexValidationProgressCallBack netexValidationProgressCallBack, ValidationReport validationReport) {
 
         for (NetexValidator netexValidator : netexValidators) {
             String netexValidatorName = netexValidator.getClass().getName();
