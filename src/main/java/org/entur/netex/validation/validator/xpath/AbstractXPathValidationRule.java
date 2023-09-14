@@ -1,7 +1,9 @@
 package org.entur.netex.validation.validator.xpath;
 
+import net.sf.saxon.s9api.Axis;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.XdmNode;
+import net.sf.saxon.s9api.XdmSequenceIterator;
 import org.entur.netex.validation.validator.DataLocation;
 
 /**
@@ -21,5 +23,14 @@ public abstract class AbstractXPathValidationRule implements ValidationRule {
             netexId = "(N/A)";
         }
         return new DataLocation(netexId, fileName, xdmNode.getLineNumber(), xdmNode.getColumnNumber());
+    }
+
+    protected static XdmNode getChild(XdmNode parent, QName childName) {
+        XdmSequenceIterator<XdmNode> iter = parent.axisIterator(Axis.CHILD, childName);
+        if (iter.hasNext()) {
+            return iter.next();
+        } else {
+            return null;
+        }
     }
 }
