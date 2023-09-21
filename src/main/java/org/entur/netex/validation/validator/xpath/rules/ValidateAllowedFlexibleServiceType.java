@@ -7,17 +7,27 @@ import org.rutebanken.netex.model.FlexibleServiceEnumeration;
  */
 public class ValidateAllowedFlexibleServiceType extends ValidateNotExist {
 
-    private static final String VALID_FLEXIBLE_SERVICE_TYPES = "'" + String.join("','",
-            FlexibleServiceEnumeration.DYNAMIC_PASSING_TIMES.value(),
-            FlexibleServiceEnumeration.FIXED_HEADWAY_FREQUENCY.value(),
-            FlexibleServiceEnumeration.FIXED_PASSING_TIMES.value(),
-            FlexibleServiceEnumeration.NOT_FLEXIBLE.value())
-            + "'";
+  private static final String VALID_FLEXIBLE_SERVICE_TYPES =
+    "'" +
+    String.join(
+      "','",
+      FlexibleServiceEnumeration.DYNAMIC_PASSING_TIMES.value(),
+      FlexibleServiceEnumeration.FIXED_HEADWAY_FREQUENCY.value(),
+      FlexibleServiceEnumeration.FIXED_PASSING_TIMES.value(),
+      FlexibleServiceEnumeration.NOT_FLEXIBLE.value()
+    ) +
+    "'";
 
-    public static final String MESSAGE = "Illegal FlexibleServiceType on ServiceJourney";
+  public static final String MESSAGE =
+    "Illegal FlexibleServiceType on ServiceJourney";
 
-    public ValidateAllowedFlexibleServiceType() {
-        super("vehicleJourneys/ServiceJourney/FlexibleServiceProperties/FlexibleServiceType[not(. = (" + VALID_FLEXIBLE_SERVICE_TYPES + "))]", MESSAGE, "FLEXIBLE_LINE_9");
-    }
+  public ValidateAllowedFlexibleServiceType() {
+    super(
+      "vehicleJourneys/ServiceJourney/FlexibleServiceProperties/FlexibleServiceType[not(. = (" +
+      VALID_FLEXIBLE_SERVICE_TYPES +
+      "))]",
+      MESSAGE,
+      "FLEXIBLE_LINE_9"
+    );
+  }
 }
-

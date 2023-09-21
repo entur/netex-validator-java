@@ -5,24 +5,33 @@ package org.entur.netex.validation.validator.xpath.rules;
  */
 public class ValidatedAllowedTransportMode extends ValidateNotExist {
 
-    public static final String DEFAULT_VALID_TRANSPORT_MODES = "'" + String.join("','",
-            "coach",
-            "bus",
-            "tram",
-            "rail",
-            "metro",
-            "air",
-            "taxi",
-            "water",
-            "cableway",
-            "funicular",
-            "unknown")
-            + "'";
+  public static final String DEFAULT_VALID_TRANSPORT_MODES =
+    "'" +
+    String.join(
+      "','",
+      "coach",
+      "bus",
+      "tram",
+      "rail",
+      "metro",
+      "air",
+      "taxi",
+      "water",
+      "cableway",
+      "funicular",
+      "unknown"
+    ) +
+    "'";
 
-    private static final String MESSAGE = "Illegal TransportMode";
+  private static final String MESSAGE = "Illegal TransportMode";
 
-    public ValidatedAllowedTransportMode(String validTransportModes) {
-        super("lines/*[self::Line or self::FlexibleLine]/TransportMode[not(. = (" + validTransportModes + "))]", MESSAGE, "TRANSPORT_MODE");
-    }
-
+  public ValidatedAllowedTransportMode(String validTransportModes) {
+    super(
+      "lines/*[self::Line or self::FlexibleLine]/TransportMode[not(. = (" +
+      validTransportModes +
+      "))]",
+      MESSAGE,
+      "TRANSPORT_MODE"
+    );
+  }
 }

@@ -7,25 +7,29 @@ import org.entur.netex.validation.validator.DataLocation;
  */
 public class XPathValidationReportEntry {
 
-    private final String code;
-    private final String message;
-    private final DataLocation dataLocation;
+  private final String code;
+  private final String message;
+  private final DataLocation dataLocation;
 
-    public XPathValidationReportEntry(String message, String code, DataLocation dataLocation) {
-        this.code = code;
-        this.message = message;
-        this.dataLocation = dataLocation;
-    }
+  public XPathValidationReportEntry(
+    String message,
+    String code,
+    DataLocation dataLocation
+  ) {
+    this.code = code;
+    this.message = message;
+    this.dataLocation = dataLocation;
+  }
 
-    public String getCode() {
-        return code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public DataLocation getDataLocation() {
-        return dataLocation;
-    }
+  public DataLocation getDataLocation() {
+    return dataLocation;
+  }
 }

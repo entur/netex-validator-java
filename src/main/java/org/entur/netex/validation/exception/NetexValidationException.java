@@ -23,15 +23,15 @@ package org.entur.netex.validation.exception;
  */
 public class NetexValidationException extends RuntimeException {
 
-    public NetexValidationException(Throwable cause) {
-        super(cause);
-    }
+  public NetexValidationException(Throwable cause) {
+    super(cause);
+  }
 
-    public NetexValidationException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public NetexValidationException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public NetexValidationException(String message) {
-        super(message);
-    }
+  public NetexValidationException(String message) {
+    super(message);
+  }
 }
