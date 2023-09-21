@@ -20,10 +20,7 @@ package org.entur.netex.validation;
 
 public final class Constants {
 
-    public static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
+  public static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
 
-    private Constants() {
-    }
-
+  private Constants() {}
 }
-

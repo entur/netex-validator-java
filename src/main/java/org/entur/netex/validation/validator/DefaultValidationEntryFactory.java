@@ -8,20 +8,36 @@ import org.entur.netex.validation.exception.NetexValidationException;
  * Default implementation of the validation report entry factory.
  * The entry name and severity are retrieved from the validation configuration file.
  */
-public class DefaultValidationEntryFactory implements ValidationReportEntryFactory {
+public class DefaultValidationEntryFactory
+  implements ValidationReportEntryFactory {
 
-    private final ValidationConfigLoader validationConfigLoader;
+  private final ValidationConfigLoader validationConfigLoader;
 
-    public DefaultValidationEntryFactory(ValidationConfigLoader validationConfigLoader) {
-        this.validationConfigLoader = validationConfigLoader;
+  public DefaultValidationEntryFactory(
+    ValidationConfigLoader validationConfigLoader
+  ) {
+    this.validationConfigLoader = validationConfigLoader;
+  }
+
+  @Override
+  public ValidationReportEntry createValidationReportEntry(
+    String code,
+    String validationReportEntryMessage,
+    DataLocation dataLocation
+  ) {
+    ValidationRuleConfig validationRuleConfig = validationConfigLoader
+      .getValidationRuleConfigs()
+      .get(code);
+    if (validationRuleConfig == null) {
+      throw new NetexValidationException(
+        "Configuration not found for rule " + code
+      );
     }
-
-    @Override
-    public ValidationReportEntry createValidationReportEntry(String code, String validationReportEntryMessage, DataLocation dataLocation) {
-        ValidationRuleConfig validationRuleConfig = validationConfigLoader.getValidationRuleConfigs().get(code);
-        if(validationRuleConfig == null) {
-            throw new NetexValidationException("Configuration not found for rule " + code);
-        }
-        return new ValidationReportEntry(validationReportEntryMessage, validationRuleConfig.getName(), validationRuleConfig.getSeverity(), dataLocation);
-    }
+    return new ValidationReportEntry(
+      validationReportEntryMessage,
+      validationRuleConfig.getName(),
+      validationRuleConfig.getSeverity(),
+      dataLocation
+    );
+  }
 }

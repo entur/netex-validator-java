@@ -7,14 +7,15 @@ import java.util.List;
  */
 public class ValidationConfig {
 
-    private List<ValidationRuleConfig> validationRuleConfigs;
-    
-    public List<ValidationRuleConfig> getValidationRuleConfigs() {
-        return validationRuleConfigs;
-    }
+  private List<ValidationRuleConfig> validationRuleConfigs;
 
-    public void setValidationRuleConfigs(List<ValidationRuleConfig> validationRuleConfigs) {
-        this.validationRuleConfigs = validationRuleConfigs;
-    }
-    
+  public List<ValidationRuleConfig> getValidationRuleConfigs() {
+    return validationRuleConfigs;
+  }
+
+  public void setValidationRuleConfigs(
+    List<ValidationRuleConfig> validationRuleConfigs
+  ) {
+    this.validationRuleConfigs = validationRuleConfigs;
+  }
 }

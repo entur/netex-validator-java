@@ -7,33 +7,31 @@ import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
  */
 public class ValidationRuleConfig {
 
+  private String code;
+  private String name;
+  private ValidationReportEntrySeverity severity;
 
-    private String code;
-    private String name;
-    private ValidationReportEntrySeverity severity;
+  public String getCode() {
+    return code;
+  }
 
-    public String getCode() {
-        return code;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public ValidationReportEntrySeverity getSeverity() {
+    return severity;
+  }
 
-    public ValidationReportEntrySeverity getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(ValidationReportEntrySeverity severity) {
-        this.severity = severity;
-    }
-
+  public void setSeverity(ValidationReportEntrySeverity severity) {
+    this.severity = severity;
+  }
 }
