@@ -17,28 +17,29 @@ class ValidateAllowedBookingAccessPropertyTest {
     Set.of("SiteFrame")
   );
   private static final String NETEX_FRAGMENT =
-    "<FlexibleLine xmlns=\"http://www.netex.org.uk/netex\" version=\"46\" id=\"BRA:FlexibleLine:9204411c-bf86-4b6a-b8fa-5c40b8702213\">\n" +
-    "                            <Name>HentMeg Kongsberg</Name>\n" +
-    "                            <Description>Brakar HentMeg er en bestillingstjeneste der du kan bestille en bussreise fra holdeplass til holdeplass i Kongsberg.</Description>\n" +
-    "                            <TransportMode>bus</TransportMode>\n" +
-    "                            <TransportSubmode>\n" +
-    "<BusSubmode>localBus</BusSubmode>\n" +
-    "                            </TransportSubmode>\n" +
-    "                            <PublicCode>HentMeg</PublicCode>\n" +
-    "                            <OperatorRef ref=\"BRA:Operator:1\"/>\n" +
-    "                            <RepresentedByGroupRef ref=\"BRA:Network:e7f2a84e-2a94-4899-b833-37d18cddb26f\"/>\n" +
-    "                            <FlexibleLineType>fixedStopAreaWide</FlexibleLineType>\n" +
-    "                            <BookingContact>\n" +
-    "<Phone>32 20 30 90</Phone>\n" +
-    "<Url>https://www.brakar.no/hent-meg/</Url>\n" +
-    "                            </BookingContact>\n" +
-    "                            <BookingMethods>callOffice online</BookingMethods>\n" +
-    "                            <BookingAccess>${BOOKING_ACCESS}</BookingAccess>\n" +
-    "                            <BookWhen>advanceAndDayOfTravel</BookWhen>\n" +
-    "                            <BuyWhen>onReservation</BuyWhen>\n" +
-    "                            <MinimumBookingPeriod>PT15M</MinimumBookingPeriod>\n" +
-    "                            <BookingNote></BookingNote>\n" +
-    "                        </FlexibleLine>";
+    """
+                  <FlexibleLine xmlns="http://www.netex.org.uk/netex" version="46" id="BRA:FlexibleLine:9204411c-bf86-4b6a-b8fa-5c40b8702213">
+                                              <Name>HentMeg Kongsberg</Name>
+                                              <Description>Brakar HentMeg er en bestillingstjeneste der du kan bestille en bussreise fra holdeplass til holdeplass i Kongsberg.</Description>
+                                              <TransportMode>bus</TransportMode>
+                                              <TransportSubmode>
+                  <BusSubmode>localBus</BusSubmode>
+                                              </TransportSubmode>
+                                              <PublicCode>HentMeg</PublicCode>
+                                              <OperatorRef ref="BRA:Operator:1"/>
+                                              <RepresentedByGroupRef ref="BRA:Network:e7f2a84e-2a94-4899-b833-37d18cddb26f"/>
+                                              <FlexibleLineType>fixedStopAreaWide</FlexibleLineType>
+                                              <BookingContact>
+                  <Phone>32 20 30 90</Phone>
+                  <Url>https://www.brakar.no/hent-meg/</Url>
+                                              </BookingContact>
+                                              <BookingMethods>callOffice online</BookingMethods>
+                                              <BookingAccess>${BOOKING_ACCESS}</BookingAccess>
+                                              <BookWhen>advanceAndDayOfTravel</BookWhen>
+                                              <BuyWhen>onReservation</BuyWhen>
+                                              <MinimumBookingPeriod>PT15M</MinimumBookingPeriod>
+                                              <BookingNote></BookingNote>
+                                          </FlexibleLine>""";
 
   @Test
   void testInvalidBookingAccess() {
