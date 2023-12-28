@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmItem;
@@ -178,6 +179,7 @@ public class ValidationTree {
   }
 
   public String printRulesList() {
+    AtomicInteger integer = new AtomicInteger(0);
     return getRules()
       .stream()
       .sorted(Comparator.comparing(ValidationRule::getCode))
@@ -189,6 +191,9 @@ public class ValidationTree {
         " |\n"
       )
       .distinct()
+      .map(validationRuleString ->
+        " | " + integer.addAndGet(1) + validationRuleString
+      )
       .collect(Collectors.joining());
   }
 
