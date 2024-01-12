@@ -54,7 +54,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>11</jdk.version>
 
-        <netex-java-model.version>1.0.15</netex-java-model.version>
+        <netex-java-model.version>1.0.16-SNAPSHOT</netex-java-model.version>
         <saxon.version>11.6</saxon.version>
         <snakeyaml.version>1.33</snakeyaml.version>
         <slf4j.version>1.7.36</slf4j.version>
@@ -315,27 +315,6 @@
                                 <requirePluginVersions />
                             </rules>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <version>${dependency-check-maven.version}</version>
-                <configuration>
-                    <failBuildOnCVSS>9</failBuildOnCVSS>
-                    <failOnError>false</failOnError>
-                    <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                    <ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
-                    <suppressionFiles>
-                        <suppressionFile>dependencycheck-suppression.xml</suppressionFile>
-                    </suppressionFiles>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

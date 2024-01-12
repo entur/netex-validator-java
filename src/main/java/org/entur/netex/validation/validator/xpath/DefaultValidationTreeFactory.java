@@ -770,8 +770,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
-        "vehicleJourneys/DatedServiceJourney/DatedServiceJourneyRef[@ref = preceding-sibling::DatedServiceJourneyRef/@ref]",
-        "Multiple references from a DatedServiceJourney to the same DatedServiceJourney",
+        "vehicleJourneys/DatedServiceJourney/replacedJourneys/DatedVehicleJourneyRef[@ref = preceding-sibling::DatedVehicleJourneyRef/@ref]",
+        "Multiple references from a DatedServiceJourney to the same DatedVehicleJourneyRef",
         "DATED_SERVICE_JOURNEY_5"
       )
     );
