@@ -14,8 +14,6 @@ public interface ValidationConfigLoader {
 
   /**
    * Return a validation rule configuration for a given rule code.
-   * @param ruleCode
-   * @return
    */
   ValidationRuleConfig getValidationRuleConfig(String ruleCode);
 }

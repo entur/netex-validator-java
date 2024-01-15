@@ -2,7 +2,6 @@ package org.entur.netex.validation.validator.xpath;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.AbstractNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;

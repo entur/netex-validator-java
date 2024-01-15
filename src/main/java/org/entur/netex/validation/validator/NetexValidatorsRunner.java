@@ -158,13 +158,6 @@ public class NetexValidatorsRunner {
 
   /**
    * Run the XML schema validation.
-   *
-   * @param codespace
-   * @param validationReportId
-   * @param filename
-   * @param fileContent
-   * @param netexValidationProgressCallBack
-   * @param validationReport
    */
   private void runSchemaValidation(
     String codespace,
@@ -206,12 +199,6 @@ public class NetexValidatorsRunner {
 
   /**
    * Run the NeTEx validators.
-   *
-   * @param codespace
-   * @param validationReportId
-   * @param filename
-   * @param netexValidationProgressCallBack
-   * @param validationReport
    */
   private void runNetexValidators(
     String codespace,
@@ -267,9 +254,6 @@ public class NetexValidatorsRunner {
 
   /**
    * Notify a validation task progress in a separate thread.
-   * @param netexValidationProgressCallBack
-   * @param taskName
-   * @param taskComplete
    */
   private void notifyProgressAsync(
     NetexValidationProgressCallBack netexValidationProgressCallBack,

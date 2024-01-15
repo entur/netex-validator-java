@@ -31,8 +31,6 @@ public abstract class AbstractNetexValidator implements NetexValidator {
 
   /**
    * Return the location of a NeTEx element in the XML document.
-   * @param id
-   * @return
    */
   protected DataLocation getIdVersionLocation(IdVersion id) {
     Objects.requireNonNull(id);
@@ -46,9 +44,6 @@ public abstract class AbstractNetexValidator implements NetexValidator {
 
   /**
    * Create a textual description of the rule.
-   * @param code
-   * @param message
-   * @return a textual description of the rule
    */
   protected String createRuleDescription(String code, String message) {
     return '[' + code + "] " + message;
