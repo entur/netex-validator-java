@@ -93,7 +93,7 @@ public class ValidateMandatoryBookingProperty
               .load();
             sjSelector.setContextItem(validationContext.getXmlNode());
             XdmValue errorsForJP = sjSelector.evaluate();
-            if (errorsForJP.size() > 0) {
+            if (!errorsForJP.isEmpty()) {
               errorNodes.add(errorsForJP);
             }
           }

@@ -39,21 +39,22 @@ public class ValidatorTestUtil {
     URL dataset = ValidatorTestUtil.class.getResource('/' + fileName);
     assert dataset != null;
     String file = dataset.getFile();
-    ZipFile zipFile = new ZipFile(file);
-    zipFile
-      .stream()
-      // validate common files first
-      .sorted(Comparator.comparing(ZipEntry::getName).reversed())
-      .forEach(zipEntry ->
-        validateEntry(
-          codespace,
-          reportId,
-          netexValidatorsRunner,
-          aggregatedValidationReport,
-          zipFile,
-          zipEntry
-        )
-      );
+    try (ZipFile zipFile = new ZipFile(file)) {
+      zipFile
+        .stream()
+        // validate common files first
+        .sorted(Comparator.comparing(ZipEntry::getName).reversed())
+        .forEach(zipEntry ->
+          validateEntry(
+            codespace,
+            reportId,
+            netexValidatorsRunner,
+            aggregatedValidationReport,
+            zipFile,
+            zipEntry
+          )
+        );
+    }
     return aggregatedValidationReport;
   }
 
