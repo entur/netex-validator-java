@@ -73,16 +73,16 @@ public class XPathValidator extends AbstractNetexValidator {
     return xPathValidationReportEntries
       .stream()
       .map(this::createValidationReportEntry)
-      .collect(Collectors.toList());
+      .toList();
   }
 
   private ValidationReportEntry createValidationReportEntry(
     XPathValidationReportEntry xPathValidationReportEntry
   ) {
     return createValidationReportEntry(
-      xPathValidationReportEntry.getCode(),
-      xPathValidationReportEntry.getDataLocation(),
-      xPathValidationReportEntry.getMessage()
+      xPathValidationReportEntry.code(),
+      xPathValidationReportEntry.dataLocation(),
+      xPathValidationReportEntry.message()
     );
   }
 

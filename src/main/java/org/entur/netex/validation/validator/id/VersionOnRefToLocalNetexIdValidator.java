@@ -46,7 +46,7 @@ public class VersionOnRefToLocalNetexIdValidator
     List<IdVersion> nonVersionedLocalRefs = localRefs
       .stream()
       .filter(e -> e.getVersion() == null)
-      .collect(Collectors.toList());
+      .toList();
     Set<String> localIdsWithoutVersion = localIds
       .stream()
       .map(IdVersion::getId)

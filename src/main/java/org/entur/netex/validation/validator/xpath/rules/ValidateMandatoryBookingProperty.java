@@ -71,8 +71,7 @@ public class ValidateMandatoryBookingProperty
         XdmValue nodes = selector.evaluate();
 
         for (XdmItem item : nodes) {
-          if (item instanceof XdmNode) {
-            XdmNode node = (XdmNode) item;
+          if (item instanceof XdmNode node) {
             String id = node.getAttributeValue(QName.fromEQName("id"));
             String version = node.getAttributeValue(
               QName.fromEQName("version")
