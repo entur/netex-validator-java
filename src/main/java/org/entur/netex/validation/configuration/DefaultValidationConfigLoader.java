@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
@@ -44,7 +45,9 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
       .currentThread()
       .getContextClassLoader()
       .getResourceAsStream(configurationFile);
-    Yaml yaml = new Yaml(new Constructor(ValidationConfig.class));
+    Yaml yaml = new Yaml(
+      new Constructor(ValidationConfig.class, new LoaderOptions())
+    );
     ValidationConfig validationConfig = yaml.load(inputStream);
     return validationConfig
       .getValidationRuleConfigs()
