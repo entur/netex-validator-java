@@ -1,8 +1,11 @@
 package org.entur.netex.validation.validator.xpath;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.xml.NetexXMLParser;
@@ -18,6 +21,7 @@ public class ValidationContext {
   private final String fileName;
   private final Set<IdVersion> localIds;
   private final List<IdVersion> localRefs;
+  private final Map<String, IdVersion> localIdsMap;
 
   /**
    * Build the validation context for a validation run
@@ -41,6 +45,10 @@ public class ValidationContext {
     this.codespace = Objects.requireNonNull(codespace);
     this.fileName = fileName;
     this.localIds = Objects.requireNonNull(localIds);
+    this.localIdsMap =
+      localIds
+        .stream()
+        .collect(Collectors.toMap(IdVersion::getId, Function.identity()));
     this.localRefs = Objects.requireNonNull(localRefs);
   }
 
@@ -70,5 +78,9 @@ public class ValidationContext {
 
   public NetexXMLParser getNetexXMLParser() {
     return netexXMLParser;
+  }
+
+  public Map<String, IdVersion> getLocalIdsMap() {
+    return localIdsMap;
   }
 }
