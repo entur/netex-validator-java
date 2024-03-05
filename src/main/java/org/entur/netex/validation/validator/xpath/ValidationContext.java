@@ -48,7 +48,13 @@ public class ValidationContext {
     this.localIdsMap =
       localIds
         .stream()
-        .collect(Collectors.toMap(IdVersion::getId, Function.identity()));
+        .collect(
+          Collectors.toMap(
+            IdVersion::getId,
+            Function.identity(),
+            (existing, duplicate) -> existing
+          )
+        );
     this.localRefs = Objects.requireNonNull(localRefs);
   }
 
