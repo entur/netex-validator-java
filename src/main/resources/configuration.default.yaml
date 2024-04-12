@@ -372,6 +372,9 @@ validationRuleConfigs:
   - code: SERVICE_JOURNEY_9
     name: ServiceJourney missing version on TimetabledPassingTime
     severity: WARNING
+  - code: SERVICE_JOURNEY_17
+    name: ServiceJourney duplicated TimetabledPassingTime id
+    severity: ERROR
   - code: SERVICE_LINK_1
     name: ServiceLink missing FromPointRef
     severity: ERROR
