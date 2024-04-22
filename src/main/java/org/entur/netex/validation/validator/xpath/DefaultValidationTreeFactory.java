@@ -3,19 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedBookingAccessProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedBookingMethodProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedBookingWhenProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedBuyWhenProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedFlexibleLineType;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedFlexibleServiceType;
-import org.entur.netex.validation.validator.xpath.rules.ValidateAtLeastOne;
-import org.entur.netex.validation.validator.xpath.rules.ValidateExactlyOne;
-import org.entur.netex.validation.validator.xpath.rules.ValidateMandatoryBookingProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty;
-import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
-import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportMode;
-import org.entur.netex.validation.validator.xpath.rules.ValidatedAllowedTransportSubMode;
+import org.entur.netex.validation.validator.xpath.rules.*;
 
 /**
  * Build the tree of XPath validation rules.
@@ -688,6 +676,10 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "Missing version on TimetabledPassingTime",
         "SERVICE_JOURNEY_9"
       )
+    );
+
+    validationTree.addValidationRule(
+      new ValidateDuplicatedTimetabledPassingTimeId("")
     );
 
     validationTree.addValidationRule(
