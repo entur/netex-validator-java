@@ -34,6 +34,8 @@ public class NetexValidatorsRunner {
 
   private final NetexSchemaValidator netexSchemaValidator;
   private final List<NetexValidator> netexValidators;
+  private final List<NetexDatasetValidator> netexDatasetValidators;
+
   private final NetexXMLParser netexXMLParser;
 
   public NetexValidatorsRunner(
@@ -50,7 +52,20 @@ public class NetexValidatorsRunner {
   ) {
     this.netexSchemaValidator = netexSchemaValidator;
     this.netexValidators = netexValidators;
+    this.netexDatasetValidators = List.of();
     this.netexXMLParser = netexXMLParser;
+  }
+
+  public NetexValidatorsRunner(
+    NetexXMLParser netexXMLParser,
+    NetexSchemaValidator netexSchemaValidator,
+    List<NetexValidator> netexValidators,
+    List<NetexDatasetValidator> netexDatasetValidators
+  ) {
+    this.netexXMLParser = netexXMLParser;
+    this.netexSchemaValidator = netexSchemaValidator;
+    this.netexValidators = netexValidators;
+    this.netexDatasetValidators = netexDatasetValidators;
   }
 
   public ValidationReport validate(
@@ -108,10 +123,12 @@ public class NetexValidatorsRunner {
     }
 
     ValidationContext validationContext = prepareValidationContext(
+      validationReportId,
       codespace,
       filename,
       fileContent
     );
+    postPrepareValidationContext(validationContext);
     runNetexValidators(
       codespace,
       validationReportId,
@@ -124,7 +141,14 @@ public class NetexValidatorsRunner {
     return validationReport;
   }
 
+  protected void postPrepareValidationContext(
+    ValidationContext validationContext
+  ) {
+    /* Nothing here */
+  }
+
   protected ValidationContext prepareValidationContext(
+    String validationReportId,
     String codespace,
     String filename,
     byte[] fileContent
@@ -250,6 +274,56 @@ public class NetexValidatorsRunner {
         );
       }
     }
+  }
+
+  /**
+   * Run the NeTEx validators.
+   */
+  public ValidationReport runNetexDatasetValidators(
+    ValidationReport validationReport,
+    NetexValidationProgressCallBack netexValidationProgressCallBack
+  ) {
+    for (NetexDatasetValidator netexDatasetValidator : netexDatasetValidators) {
+      String netexValidatorName = netexDatasetValidator.getClass().getName();
+      netexValidationProgressCallBack.notifyProgress(
+        "Starting validator " + netexValidatorName
+      );
+      StopWatch netexValidatorStopWatch = new StopWatch();
+      netexValidatorStopWatch.start();
+
+      AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
+      notifyProgressAsync(
+        netexValidationProgressCallBack,
+        netexValidatorName,
+        netexValidatorComplete
+      );
+
+      try {
+        netexDatasetValidator.validate(validationReport);
+      } finally {
+        netexValidatorComplete.set(true);
+      }
+
+      netexValidatorStopWatch.stop();
+      if (netexValidatorStopWatch.getTime() > 30000) {
+        LOGGER.warn(
+          "Validator {} for {}/{} completed in {} ms",
+          netexValidatorName,
+          validationReport.getCodespace(),
+          validationReport.getValidationReportId(),
+          netexValidatorStopWatch.getTime()
+        );
+      } else {
+        LOGGER.debug(
+          "Validator {} for {}/{} completed in {} ms",
+          netexValidatorName,
+          validationReport.getCodespace(),
+          validationReport.getValidationReportId(),
+          netexValidatorStopWatch.getTime()
+        );
+      }
+    }
+    return validationReport;
   }
 
   /**
