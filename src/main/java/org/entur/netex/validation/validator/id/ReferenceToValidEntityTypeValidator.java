@@ -200,6 +200,7 @@ public class ReferenceToValidEntityTypeValidator
     placeRefSubstitutions.add("StopPlace");
     placeRefSubstitutions.add("Quay");
     substitutions.put("PlaceRef", placeRefSubstitutions);
+    substitutions.put("ParentSiteRef", placeRefSubstitutions);
 
     Set<String> equipmentRefSubstitutions = new HashSet<>();
     equipmentRefSubstitutions.add("AccessVehicleEquipment");
