@@ -56,7 +56,7 @@
 
         <netex-java-model.version>1.0.15</netex-java-model.version>
         <saxon.version>11.6</saxon.version>
-        <snakeyaml.version>1.33</snakeyaml.version>
+        <snakeyaml.version>2.3</snakeyaml.version>
         <slf4j.version>1.7.36</slf4j.version>
 
         <zt-zip.version>1.16</zt-zip.version>
