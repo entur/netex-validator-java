@@ -57,7 +57,8 @@ jobs:
           key: dep-cache-{{ checksum "pom.xml" }}
       # Cannot use -o because of snapshot dependencies.
       - run: mvn package -s .circleci/settings.xml -PprettierCheck -Dprettier.nodePath=node -Dprettier.npmPath=npm
-      - run: *sonar-scan
+      # temporarily disabling Sonar due to Sonar Cloud unavailability
+      #- run: *sonar-scan
       - run:
           name: Save test results
           command: |
