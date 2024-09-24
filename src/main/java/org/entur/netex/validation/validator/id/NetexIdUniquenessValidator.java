@@ -44,7 +44,9 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
       "ScheduledStopPoint",
       "PassengerStopAssignment",
       "NoticeAssignment",
-      "ServiceLinkInJourneyPattern"
+      "ServiceLinkInJourneyPattern",
+      "ServiceFacilitySet",
+      "AvailabilityCondition"
     )
   );
 
