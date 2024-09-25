@@ -59,36 +59,36 @@
         <snakeyaml.version>1.33</snakeyaml.version>
         <slf4j.version>1.7.36</slf4j.version>
 
-        <zt-zip.version>1.16</zt-zip.version>
-        <junit.version>5.10.3</junit.version>
-        <mockito-core.version>5.8.0</mockito-core.version>
-        <logback-classic.version>1.2.13</logback-classic.version>
+        <zt-zip.version>1.17</zt-zip.version>
+        <junit.version>5.11.1</junit.version>
+        <mockito-core.version>5.13.0</mockito-core.version>
+        <logback-classic.version>1.5.8</logback-classic.version>
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
-        <maven-enforcer-plugin.version>3.4.1</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.6.3</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
-        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+        <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
-        <maven-clean-plugin.version>3.3.2</maven-clean-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
+        <maven-clean-plugin.version>3.4.0</maven-clean-plugin.version>
         <maven-install-plugin.version>2.5.2</maven-install-plugin.version>
-        <maven-site-plugin.version>3.12.1</maven-site-plugin.version>
+        <maven-site-plugin.version>3.20.0</maven-site-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-scm-provider-gitexe.version>1.12.2</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>1.12.2</maven-scm-api.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
-        <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
         <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
         <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
         <dependency-check-maven.version>10.0.4</dependency-check-maven.version>
-        <gitflow-maven-plugin.version>1.20.0</gitflow-maven-plugin.version>
+        <gitflow-maven-plugin.version>1.21.0</gitflow-maven-plugin.version>
         <prettier-java.version>2.1.0</prettier-java.version>
-        <prettier-maven-plugin.version>0.21</prettier-maven-plugin.version>
+        <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
         <plugin.prettier.goal>write</plugin.prettier.goal>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
