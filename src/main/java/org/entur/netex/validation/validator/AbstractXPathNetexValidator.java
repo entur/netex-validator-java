@@ -4,13 +4,14 @@ import java.util.Objects;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
- * Base class for NeTEx validators.
+ * Base class for NeTEx XPath-based validators.
  */
-public abstract class AbstractNetexValidator implements NetexValidator {
+public abstract class AbstractXPathNetexValidator
+  implements XPathNetexValidator {
 
   private final ValidationReportEntryFactory validationReportEntryFactory;
 
-  protected AbstractNetexValidator(
+  protected AbstractXPathNetexValidator(
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
     this.validationReportEntryFactory =

@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Validate that local NeTEX IDs have a version attribute.
  */
-public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
+public class VersionOnLocalNetexIdValidator
+  extends AbstractXPathNetexValidator {
 
   static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
 
@@ -36,15 +37,15 @@ public class VersionOnLocalNetexIdValidator extends AbstractNetexValidator {
   @Override
   public void validate(
     ValidationReport validationReport,
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
-      validationContext.getFileName(),
+      xPathValidationContext.getFileName(),
       validationReport.getValidationReportId()
     );
     validationReport.addAllValidationReportEntries(
-      validate(validationContext.getLocalIds())
+      validate(xPathValidationContext.getLocalIds())
     );
   }
 

@@ -13,7 +13,7 @@ import org.entur.netex.validation.xml.NetexXMLParser;
 /**
  * Context of the current NeTEx validation.
  */
-public class ValidationContext {
+public class XPathValidationContext {
 
   private final XdmNode xmlNode;
   private final NetexXMLParser netexXMLParser;
@@ -32,7 +32,7 @@ public class ValidationContext {
    * @param localIds the set of NeTEx ids declared in the file.
    * @param localRefs the set of references to other NeTEx objects. They may refer to object in the same file or to external sources.
    */
-  public ValidationContext(
+  public XPathValidationContext(
     XdmNode document,
     NetexXMLParser netexXMLParser,
     String codespace,

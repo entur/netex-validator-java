@@ -22,7 +22,7 @@ public class ValidatorTestUtil {
     String codespace,
     String reportId,
     String fileName,
-    NetexValidator netexValidator
+    XPathNetexValidator netexValidator
   ) throws IOException {
     NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
     NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);

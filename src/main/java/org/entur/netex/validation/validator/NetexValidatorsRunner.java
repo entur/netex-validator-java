@@ -13,13 +13,13 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.id.NetexIdExtractorHelper;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Orchestrate the execution of individual instances of {@link NetexValidator}.
+ * Orchestrate the execution of individual instances of {@link XPathNetexValidator}.
  * The first step in the validation process is the XML Schema validation.
  * The XML Schema validation is a blocking step: further validators downstream are skipped in case of XML Schema validation errors.
  */
@@ -33,14 +33,14 @@ public class NetexValidatorsRunner {
   private static final int MAX_WAITING_LOOPS = 180;
 
   private final NetexSchemaValidator netexSchemaValidator;
-  private final List<NetexValidator> netexValidators;
+  private final List<XPathNetexValidator> netexValidators;
   private final List<NetexDatasetValidator> netexDatasetValidators;
 
   private final NetexXMLParser netexXMLParser;
 
   public NetexValidatorsRunner(
     NetexXMLParser netexXMLParser,
-    List<NetexValidator> netexValidators
+    List<XPathNetexValidator> netexValidators
   ) {
     this(netexXMLParser, null, netexValidators);
   }
@@ -48,7 +48,7 @@ public class NetexValidatorsRunner {
   public NetexValidatorsRunner(
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
-    List<NetexValidator> netexValidators
+    List<XPathNetexValidator> netexValidators
   ) {
     this.netexSchemaValidator = netexSchemaValidator;
     this.netexValidators = netexValidators;
@@ -59,7 +59,7 @@ public class NetexValidatorsRunner {
   public NetexValidatorsRunner(
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
-    List<NetexValidator> netexValidators,
+    List<XPathNetexValidator> netexValidators,
     List<NetexDatasetValidator> netexDatasetValidators
   ) {
     this.netexXMLParser = netexXMLParser;
@@ -122,18 +122,18 @@ public class NetexValidatorsRunner {
       return validationReport;
     }
 
-    ValidationContext validationContext = prepareValidationContext(
+    XPathValidationContext xPathValidationContext = prepareValidationContext(
       validationReportId,
       codespace,
       filename,
       fileContent
     );
-    postPrepareValidationContext(validationContext);
+    postPrepareValidationContext(xPathValidationContext);
     runNetexValidators(
       codespace,
       validationReportId,
       filename,
-      validationContext,
+      xPathValidationContext,
       netexValidationProgressCallBack,
       validationReport
     );
@@ -142,12 +142,12 @@ public class NetexValidatorsRunner {
   }
 
   protected void postPrepareValidationContext(
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     /* Nothing here */
   }
 
-  protected ValidationContext prepareValidationContext(
+  protected XPathValidationContext prepareValidationContext(
     String validationReportId,
     String codespace,
     String filename,
@@ -170,7 +170,7 @@ public class NetexValidatorsRunner {
       null
     );
 
-    return new ValidationContext(
+    return new XPathValidationContext(
       document,
       netexXMLParser,
       codespace,
@@ -228,11 +228,11 @@ public class NetexValidatorsRunner {
     String codespace,
     String validationReportId,
     String filename,
-    ValidationContext validationContext,
+    XPathValidationContext xPathValidationContext,
     NetexValidationProgressCallBack netexValidationProgressCallBack,
     ValidationReport validationReport
   ) {
-    for (NetexValidator netexValidator : netexValidators) {
+    for (XPathNetexValidator netexValidator : netexValidators) {
       String netexValidatorName = netexValidator.getClass().getName();
       netexValidationProgressCallBack.notifyProgress(
         "Starting validator " + netexValidatorName
@@ -248,7 +248,7 @@ public class NetexValidatorsRunner {
       );
 
       try {
-        netexValidator.validate(validationReport, validationContext);
+        netexValidator.validate(validationReport, xPathValidationContext);
       } finally {
         netexValidatorComplete.set(true);
       }
@@ -360,7 +360,7 @@ public class NetexValidatorsRunner {
   public Set<String> getRuleDescriptions() {
     return netexValidators
       .stream()
-      .map(NetexValidator::getRuleDescriptions)
+      .map(XPathNetexValidator::getRuleDescriptions)
       .flatMap(Collection::stream)
       .collect(Collectors.toSet());
   }

@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathRuleValidator extends AbstractNetexValidator {
+public class XPathRuleValidator extends AbstractXPathNetexValidator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     XPathRuleValidator.class
@@ -33,18 +33,18 @@ public class XPathRuleValidator extends AbstractNetexValidator {
   @Override
   public void validate(
     ValidationReport validationReport,
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
-      validationContext.getFileName(),
+      xPathValidationContext.getFileName(),
       validationReport.getValidationReportId()
     );
     List<ValidationReportEntry> validationReportEntries = validate(
       validationReport.getCodespace(),
-      validationContext.getFileName(),
-      validationContext.getXmlNode(),
-      validationContext.getNetexXMLParser()
+      xPathValidationContext.getFileName(),
+      xPathValidationContext.getXmlNode(),
+      xPathValidationContext.getNetexXMLParser()
     );
     validationReport.addAllValidationReportEntries(validationReportEntries);
   }

@@ -6,7 +6,7 @@ import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +61,7 @@ class VersionOnRefToLocalNetexIdValidatorTest {
       0
     );
     Set<IdVersion> localIds = Set.of(idVersionLocal);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -71,7 +71,7 @@ class VersionOnRefToLocalNetexIdValidatorTest {
     );
     versionOnRefToLocalNetexIdValidator.validate(
       validationReport,
-      validationContext
+      xPathValidationContext
     );
     Assertions.assertFalse(
       validationReport.getValidationReportEntries().isEmpty()
@@ -109,7 +109,7 @@ class VersionOnRefToLocalNetexIdValidatorTest {
       0
     );
     Set<IdVersion> localIds = Set.of(idVersionLocal);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -119,7 +119,7 @@ class VersionOnRefToLocalNetexIdValidatorTest {
     );
     versionOnRefToLocalNetexIdValidator.validate(
       validationReport,
-      validationContext
+      xPathValidationContext
     );
     Assertions.assertTrue(
       validationReport.getValidationReportEntries().isEmpty()
