@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * Validate that references to local elements have a version attribute.
  */
 public class VersionOnRefToLocalNetexIdValidator
-  extends AbstractXPathNetexValidator {
+  extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_9 = "NETEX_ID_9";
 

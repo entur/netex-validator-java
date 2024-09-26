@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathRuleValidator extends AbstractXPathNetexValidator {
+public class XPathRuleValidator extends AbstractXPathValidator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     XPathRuleValidator.class

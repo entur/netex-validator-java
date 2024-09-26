@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Verify that NeTEx ids in the current file are not present in one of the files already validated.
  */
-public class NetexIdUniquenessValidator extends AbstractXPathNetexValidator {
+public class NetexIdUniquenessValidator extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
   static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";

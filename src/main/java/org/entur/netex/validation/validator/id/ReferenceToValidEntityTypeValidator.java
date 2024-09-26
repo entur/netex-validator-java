@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
  * Validate that NeTEX references point to a valid element type.
  */
 public class ReferenceToValidEntityTypeValidator
-  extends AbstractXPathNetexValidator {
+  extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
   static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";

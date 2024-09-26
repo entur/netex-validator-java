@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.entur.netex.validation.validator.AbstractXPathNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validate that references refer to an existing element.
  */
-public class NetexReferenceValidator extends AbstractXPathNetexValidator {
+public class NetexReferenceValidator extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
 

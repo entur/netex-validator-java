@@ -6,12 +6,12 @@ import org.entur.netex.validation.validator.id.IdVersion;
 /**
  * Base class for NeTEx XPath-based validators.
  */
-public abstract class AbstractXPathNetexValidator
-  implements XPathNetexValidator {
+public abstract class AbstractXPathValidator
+  implements XPathValidator {
 
   private final ValidationReportEntryFactory validationReportEntryFactory;
 
-  protected AbstractXPathNetexValidator(
+  protected AbstractXPathValidator(
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
     this.validationReportEntryFactory =
