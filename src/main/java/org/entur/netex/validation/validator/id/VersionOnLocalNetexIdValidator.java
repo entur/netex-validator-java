@@ -16,8 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validate that local NeTEX IDs have a version attribute.
  */
-public class VersionOnLocalNetexIdValidator
-  extends AbstractXPathValidator {
+public class VersionOnLocalNetexIdValidator extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
 
