@@ -1,17 +1,18 @@
 package org.entur.netex.validation.validator;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.ByteArrayInputStream;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.apache.commons.lang3.time.StopWatch;
+import org.entur.netex.NetexParser;
+import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.id.NetexIdExtractorHelper;
+import org.entur.netex.validation.validator.jaxb.*;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
@@ -34,7 +35,11 @@ public class NetexValidatorsRunner {
 
   private final NetexSchemaValidator netexSchemaValidator;
   private final List<XPathValidator> netexValidators;
+  private final List<JAXBValidator> jaxbValidators;
   private final List<NetexDatasetValidator> netexDatasetValidators;
+  private final List<CommonDataScraper> commonDataScrapers;
+  private final CommonDataRepository commonDataRepository;
+  private final StopPlaceRepository stopPlaceRepository;
 
   private final NetexXMLParser netexXMLParser;
 
@@ -50,22 +55,64 @@ public class NetexValidatorsRunner {
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators
   ) {
-    this.netexSchemaValidator = netexSchemaValidator;
-    this.netexValidators = netexValidators;
-    this.netexDatasetValidators = List.of();
-    this.netexXMLParser = netexXMLParser;
+    this(netexXMLParser, netexSchemaValidator, netexValidators, null, null);
   }
 
   public NetexValidatorsRunner(
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators,
-    List<NetexDatasetValidator> netexDatasetValidators
+    CommonDataRepository commonDataRepository,
+    StopPlaceRepository stopPlaceRepository
+  ) {
+    this(
+      netexXMLParser,
+      netexSchemaValidator,
+      netexValidators,
+      List.of(),
+      commonDataRepository,
+      stopPlaceRepository
+    );
+  }
+
+  public NetexValidatorsRunner(
+    NetexXMLParser netexXMLParser,
+    NetexSchemaValidator netexSchemaValidator,
+    List<XPathValidator> netexValidators,
+    List<NetexDatasetValidator> netexDatasetValidators,
+    CommonDataRepository commonDataRepository,
+    StopPlaceRepository stopPlaceRepository
+  ) {
+    this(
+      netexXMLParser,
+      netexSchemaValidator,
+      netexValidators,
+      List.of(),
+      netexDatasetValidators,
+      List.of(),
+      commonDataRepository,
+      stopPlaceRepository
+    );
+  }
+
+  public NetexValidatorsRunner(
+    NetexXMLParser netexXMLParser,
+    NetexSchemaValidator netexSchemaValidator,
+    List<XPathValidator> netexValidators,
+    List<JAXBValidator> jaxbValidators,
+    List<NetexDatasetValidator> netexDatasetValidators,
+    List<CommonDataScraper> commonDataScrapers,
+    CommonDataRepository commonDataRepository,
+    StopPlaceRepository stopPlaceRepository
   ) {
     this.netexXMLParser = netexXMLParser;
     this.netexSchemaValidator = netexSchemaValidator;
     this.netexValidators = netexValidators;
+    this.jaxbValidators = jaxbValidators;
     this.netexDatasetValidators = netexDatasetValidators;
+    this.commonDataScrapers = commonDataScrapers;
+    this.commonDataRepository = commonDataRepository;
+    this.stopPlaceRepository = stopPlaceRepository;
   }
 
   public ValidationReport validate(
@@ -122,13 +169,9 @@ public class NetexValidatorsRunner {
       return validationReport;
     }
 
-    XPathValidationContext xPathValidationContext = prepareValidationContext(
-      validationReportId,
-      codespace,
-      filename,
-      fileContent
-    );
-    postPrepareValidationContext(xPathValidationContext);
+    XPathValidationContext xPathValidationContext =
+      prepareXPathValidationContext(codespace, filename, fileContent);
+
     runNetexValidators(
       codespace,
       validationReportId,
@@ -138,17 +181,41 @@ public class NetexValidatorsRunner {
       validationReport
     );
 
+    JAXBValidationContext jaxbValidationContext = prepareJAXBValidationContext(
+      validationReportId,
+      codespace,
+      filename,
+      fileContent,
+      xPathValidationContext.getLocalIdsMap()
+    );
+    postPrepareXPathValidationContext(jaxbValidationContext);
+    runJAXBValidators(
+      codespace,
+      validationReportId,
+      filename,
+      jaxbValidationContext,
+      netexValidationProgressCallBack,
+      validationReport
+    );
+
     return validationReport;
   }
 
-  protected void postPrepareValidationContext(
-    XPathValidationContext xPathValidationContext
+  protected void postPrepareXPathValidationContext(
+    JAXBValidationContext validationContext
   ) {
-    /* Nothing here */
+    LOGGER.info(
+      "Starting data scraping for file {}",
+      validationContext.getFileName()
+    );
+    if (!validationContext.isCommonFile()) {
+      commonDataScrapers.forEach(commonDataScraper ->
+        commonDataScraper.scrapeData(validationContext)
+      );
+    }
   }
 
-  protected XPathValidationContext prepareValidationContext(
-    String validationReportId,
+  protected XPathValidationContext prepareXPathValidationContext(
     String codespace,
     String filename,
     byte[] fileContent
@@ -177,6 +244,29 @@ public class NetexValidatorsRunner {
       filename,
       localIds,
       localRefs
+    );
+  }
+
+  protected JAXBValidationContext prepareJAXBValidationContext(
+    String validationReportId,
+    String codespace,
+    String filename,
+    byte[] fileContent,
+    Map<String, IdVersion> localIdMap
+  ) {
+    NetexParser netexParser = new NetexParser();
+    NetexEntitiesIndex netexEntitiesIndex = netexParser.parse(
+      new ByteArrayInputStream(fileContent)
+    );
+
+    return new JAXBValidationContext(
+      validationReportId,
+      netexEntitiesIndex,
+      commonDataRepository,
+      stopPlaceRepository,
+      codespace,
+      filename,
+      localIdMap
     );
   }
 
@@ -249,6 +339,61 @@ public class NetexValidatorsRunner {
 
       try {
         netexValidator.validate(validationReport, xPathValidationContext);
+      } finally {
+        netexValidatorComplete.set(true);
+      }
+
+      netexValidatorStopWatch.stop();
+      if (netexValidatorStopWatch.getTime() > 30000) {
+        LOGGER.warn(
+          "Validator {} for {}/{}/{} completed in {} ms",
+          netexValidatorName,
+          codespace,
+          validationReportId,
+          filename,
+          netexValidatorStopWatch.getTime()
+        );
+      } else {
+        LOGGER.debug(
+          "Validator {} for {}/{}/{} completed in {} ms",
+          netexValidatorName,
+          codespace,
+          validationReportId,
+          filename,
+          netexValidatorStopWatch.getTime()
+        );
+      }
+    }
+  }
+
+  /**
+   * Run the NeTEx validators.
+   */
+  private void runJAXBValidators(
+    String codespace,
+    String validationReportId,
+    String filename,
+    JAXBValidationContext jaxbValidationContext,
+    NetexValidationProgressCallBack netexValidationProgressCallBack,
+    ValidationReport validationReport
+  ) {
+    for (JAXBValidator netexValidator : jaxbValidators) {
+      String netexValidatorName = netexValidator.getClass().getName();
+      netexValidationProgressCallBack.notifyProgress(
+        "Starting validator " + netexValidatorName
+      );
+      StopWatch netexValidatorStopWatch = new StopWatch();
+      netexValidatorStopWatch.start();
+
+      AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
+      notifyProgressAsync(
+        netexValidationProgressCallBack,
+        netexValidatorName,
+        netexValidatorComplete
+      );
+
+      try {
+        netexValidator.validate(validationReport, jaxbValidationContext);
       } finally {
         netexValidatorComplete.set(true);
       }

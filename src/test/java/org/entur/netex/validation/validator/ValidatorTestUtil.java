@@ -29,7 +29,9 @@ public class ValidatorTestUtil {
     NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(
       netexXMLParser,
       netexSchemaValidator,
-      List.of(netexValidator)
+      List.of(netexValidator),
+      null,
+      null
     );
     ValidationReport aggregatedValidationReport = new ValidationReport(
       codespace,
