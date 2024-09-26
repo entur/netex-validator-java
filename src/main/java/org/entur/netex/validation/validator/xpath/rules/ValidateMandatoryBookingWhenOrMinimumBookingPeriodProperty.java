@@ -12,7 +12,7 @@ import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
-import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
@@ -35,7 +35,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
 
   @Override
   public List<XPathValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   ) {
     try {
       List<XdmValue> errorNodes = new ArrayList<>();

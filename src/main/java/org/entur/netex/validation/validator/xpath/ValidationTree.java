@@ -31,7 +31,7 @@ public class ValidationTree {
   private final String context;
   private final List<ValidationTree> subTrees;
   private final List<ValidationRule> validationRules;
-  private final Predicate<XPathValidationContext> executionCondition;
+  private final Predicate<XPathRuleValidationContext> executionCondition;
 
   /**
    * @param name the name of the validation tree.
@@ -49,7 +49,7 @@ public class ValidationTree {
   public ValidationTree(
     String name,
     String context,
-    Predicate<XPathValidationContext> executionCondition
+    Predicate<XPathRuleValidationContext> executionCondition
   ) {
     this.name = name;
     this.context = context;
@@ -59,7 +59,7 @@ public class ValidationTree {
   }
 
   public List<XPathValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   ) {
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       new ArrayList<>();
@@ -90,8 +90,8 @@ public class ValidationTree {
           validationContext.getXmlNode()
         );
       for (XdmItem xdmItem : subContextNodes) {
-        XPathValidationContext validationSubContext =
-          new XPathValidationContext(
+        XPathRuleValidationContext validationSubContext =
+          new XPathRuleValidationContext(
             (XdmNode) xdmItem,
             validationContext.getNetexXMLParser(),
             validationContext.getCodespace(),

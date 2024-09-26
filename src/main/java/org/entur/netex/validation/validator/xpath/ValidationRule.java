@@ -14,7 +14,7 @@ public interface ValidationRule {
    * @return a list of validation entries for the current context.
    */
   List<XPathValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   );
 
   /**

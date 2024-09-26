@@ -7,7 +7,7 @@ import org.entur.netex.validation.xml.NetexXMLParser;
 /**
  * The validation context for an XPath validation rule.
  */
-public class XPathValidationContext {
+public class XPathRuleValidationContext {
 
   private final XdmNode xmlNode;
   private final NetexXMLParser netexXMLParser;
@@ -21,7 +21,7 @@ public class XPathValidationContext {
    * @param codespace the current codespace.
    * @param fileName the current filename.
    */
-  public XPathValidationContext(
+  public XPathRuleValidationContext(
     XdmNode document,
     NetexXMLParser netexXMLParser,
     String codespace,

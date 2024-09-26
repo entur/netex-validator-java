@@ -14,15 +14,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathValidator extends AbstractNetexValidator {
+public class XPathRuleValidator extends AbstractNetexValidator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
-    XPathValidator.class
+    XPathRuleValidator.class
   );
 
   private final ValidationTree topLevelValidationTree;
 
-  public XPathValidator(
+  public XPathRuleValidator(
     ValidationTreeFactory validationTreeFactory,
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
@@ -55,17 +55,18 @@ public class XPathValidator extends AbstractNetexValidator {
     XdmNode document,
     NetexXMLParser netexXMLParser
   ) {
-    XPathValidationContext validationContext = new XPathValidationContext(
-      document,
-      netexXMLParser,
-      codespace,
-      fileName
-    );
+    XPathRuleValidationContext validationContext =
+      new XPathRuleValidationContext(
+        document,
+        netexXMLParser,
+        codespace,
+        fileName
+      );
     return this.validate(validationContext);
   }
 
   public List<ValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   ) {
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       topLevelValidationTree.validate(validationContext);

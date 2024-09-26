@@ -35,7 +35,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     ValidationTree commonFileValidationTree = new ValidationTree(
       "Common file",
       "/",
-      XPathValidationContext::isCommonFile
+      XPathRuleValidationContext::isCommonFile
     );
     commonFileValidationTree.addSubTree(
       getCompositeFrameValidationTreeForCommonFile()
@@ -204,7 +204,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     ValidationTree lineFileValidationTree = new ValidationTree(
       "Line file",
       "/",
-      Predicate.not(XPathValidationContext::isCommonFile)
+      Predicate.not(XPathRuleValidationContext::isCommonFile)
     );
     lineFileValidationTree.addSubTree(
       getCompositeFrameValidationTreeForLineFile()

@@ -8,7 +8,7 @@ import net.sf.saxon.s9api.*;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
-import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
@@ -30,7 +30,7 @@ public class ValidateDuplicatedTimetabledPassingTimeId
 
   @Override
   public List<XPathValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   ) {
     try {
       XPathSelector selector = validationContext

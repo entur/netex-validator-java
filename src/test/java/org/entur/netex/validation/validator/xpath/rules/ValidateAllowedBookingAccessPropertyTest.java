@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.xpath.rules;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
@@ -52,14 +52,15 @@ class ValidateAllowedBookingAccessPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       flexibleLineWithInvalidBookingAccess
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
-      validateAllowedBookingAccessProperty.validate(xpathValidationContext);
+      validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertFalse(xPathValidationReportEntries.isEmpty());
   }
@@ -75,14 +76,15 @@ class ValidateAllowedBookingAccessPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       flexibleLineWithValidBookingAccess
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
-      validateAllowedBookingAccessProperty.validate(xpathValidationContext);
+      validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
   }
