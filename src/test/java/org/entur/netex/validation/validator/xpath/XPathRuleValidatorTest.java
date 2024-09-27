@@ -14,7 +14,7 @@ import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class XpathValidatorTest {
+class XPathRuleValidatorTest {
 
   private static final String TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME =
     "rb_flb-aggregated-netex.zip";
@@ -60,7 +60,7 @@ class XpathValidatorTest {
     new DefaultValidationTreeFactory();
   private final ValidationConfigLoader validationConfigLoader =
     new DefaultValidationConfigLoader();
-  private final XPathValidator xPathValidator = new XPathValidator(
+  private final XPathRuleValidator xPathRuleValidator = new XPathRuleValidator(
     validationTreeFactory,
     new DefaultValidationEntryFactory(validationConfigLoader)
   );
@@ -72,7 +72,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -92,7 +92,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -117,7 +117,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_DATASET_DAY_TYPE_NOT_ASSIGNED);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -143,7 +143,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_DATASET_COLOUR_VALID_CODING_FILE_NAME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "ENT",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -179,7 +179,7 @@ class XpathValidatorTest {
       );
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "ENT",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -216,7 +216,7 @@ class XpathValidatorTest {
       );
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "ENT",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -252,7 +252,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_DSJ_MULTIPLE_REFERENCE_TO_SAME_DSJ);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "ENT",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -278,7 +278,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_NON_NUMERIC_NETEX_VERSION);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -304,7 +304,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_VALID);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -328,7 +328,7 @@ class XpathValidatorTest {
       );
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -356,7 +356,7 @@ class XpathValidatorTest {
       );
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -382,7 +382,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_LAST_ARRIVAL_TIME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -408,7 +408,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -434,7 +434,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_TIME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -460,7 +460,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_LINE_MISSING_LAST_ARRIVAL_TIME);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "FLB",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -486,7 +486,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICED_OBJECT_REF);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
@@ -512,7 +512,7 @@ class XpathValidatorTest {
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICE_REF);
     List<ValidationReportEntry> validationReportEntries = validateXPath(
       "BRA",
-      xPathValidator,
+      xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );

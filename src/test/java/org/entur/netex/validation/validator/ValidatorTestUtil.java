@@ -12,8 +12,8 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
-import org.entur.netex.validation.validator.xpath.XPathValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidator;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidator;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
 public class ValidatorTestUtil {
@@ -22,14 +22,16 @@ public class ValidatorTestUtil {
     String codespace,
     String reportId,
     String fileName,
-    NetexValidator netexValidator
+    XPathValidator netexValidator
   ) throws IOException {
     NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
     NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
     NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(
       netexXMLParser,
       netexSchemaValidator,
-      List.of(netexValidator)
+      List.of(netexValidator),
+      null,
+      null
     );
     ValidationReport aggregatedValidationReport = new ValidationReport(
       codespace,
@@ -85,7 +87,7 @@ public class ValidatorTestUtil {
 
   public static List<ValidationReportEntry> validateXPath(
     String codespace,
-    XPathValidator xPathValidator,
+    XPathRuleValidator xPathRuleValidator,
     NetexXMLParser netexXMLParser,
     InputStream testDatasetAsStream
   ) throws IOException {
@@ -99,15 +101,15 @@ public class ValidatorTestUtil {
       while (zipEntry != null) {
         byte[] content = zipInputStream.readAllBytes();
         XdmNode document = netexXMLParser.parseByteArrayToXdmNode(content);
-        XPathValidationContext xPathValidationContext =
-          new XPathValidationContext(
+        XPathRuleValidationContext xPathRuleValidationContext =
+          new XPathRuleValidationContext(
             document,
             netexXMLParser,
             codespace,
             zipEntry.getName()
           );
         validationReportEntries.addAll(
-          xPathValidator.validate(xPathValidationContext)
+          xPathRuleValidator.validate(xPathRuleValidationContext)
         );
         zipEntry = zipInputStream.getNextEntry();
       }

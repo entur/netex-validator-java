@@ -1,25 +1,18 @@
 package org.entur.netex.validation.validator;
 
 import java.util.Set;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
 
 /**
- * A validator that updates a {@link ValidationReport} according to a {@link ValidationContext}.
+ *  A Validator applied to a NeTEx file.
  */
-public interface NetexValidator {
+public interface NetexValidator<V extends ValidationContext> {
   /**
-   * Validate the document specified in the {@link ValidationContext} and update the given {@link ValidationReport}
-   * @param validationReport the validation report to be updated.
-   * @param validationContext the current validation context.
+   * Validate NeTEx data provided by the validation context and report issues in the validation report.
    */
-  void validate(
-    ValidationReport validationReport,
-    ValidationContext validationContext
-  );
+  void validate(ValidationReport validationReport, V validationContext);
 
   /**
    * Return the textual descriptions of the validation rules verified by this validator.
-   * @return the textual descriptions of the rules
    */
   Set<String> getRuleDescriptions();
 }

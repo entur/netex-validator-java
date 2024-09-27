@@ -9,19 +9,19 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Verify that NeTEx ids in the current file are not present in one of the files already validated.
  */
-public class NetexIdUniquenessValidator extends AbstractNetexValidator {
+public class NetexIdUniquenessValidator extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
   static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";
@@ -86,19 +86,19 @@ public class NetexIdUniquenessValidator extends AbstractNetexValidator {
   @Override
   public void validate(
     ValidationReport validationReport,
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
-      validationContext.getFileName(),
+      xPathValidationContext.getFileName(),
       validationReport.getValidationReportId()
     );
     validationReport.addAllValidationReportEntries(
       validate(
         validationReport.getValidationReportId(),
-        validationContext.getFileName(),
-        validationContext.getLocalIds(),
-        validationContext.isCommonFile()
+        xPathValidationContext.getFileName(),
+        xPathValidationContext.getLocalIds(),
+        xPathValidationContext.isCommonFile()
       )
     );
   }

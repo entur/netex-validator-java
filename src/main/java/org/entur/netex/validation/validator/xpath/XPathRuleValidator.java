@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
@@ -14,15 +14,15 @@ import org.slf4j.LoggerFactory;
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathValidator extends AbstractNetexValidator {
+public class XPathRuleValidator extends AbstractXPathValidator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
-    XPathValidator.class
+    XPathRuleValidator.class
   );
 
   private final ValidationTree topLevelValidationTree;
 
-  public XPathValidator(
+  public XPathRuleValidator(
     ValidationTreeFactory validationTreeFactory,
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
@@ -33,18 +33,18 @@ public class XPathValidator extends AbstractNetexValidator {
   @Override
   public void validate(
     ValidationReport validationReport,
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
-      validationContext.getFileName(),
+      xPathValidationContext.getFileName(),
       validationReport.getValidationReportId()
     );
     List<ValidationReportEntry> validationReportEntries = validate(
       validationReport.getCodespace(),
-      validationContext.getFileName(),
-      validationContext.getXmlNode(),
-      validationContext.getNetexXMLParser()
+      xPathValidationContext.getFileName(),
+      xPathValidationContext.getXmlNode(),
+      xPathValidationContext.getNetexXMLParser()
     );
     validationReport.addAllValidationReportEntries(validationReportEntries);
   }
@@ -55,17 +55,18 @@ public class XPathValidator extends AbstractNetexValidator {
     XdmNode document,
     NetexXMLParser netexXMLParser
   ) {
-    XPathValidationContext validationContext = new XPathValidationContext(
-      document,
-      netexXMLParser,
-      codespace,
-      fileName
-    );
+    XPathRuleValidationContext validationContext =
+      new XPathRuleValidationContext(
+        document,
+        netexXMLParser,
+        codespace,
+        fileName
+      );
     return this.validate(validationContext);
   }
 
   public List<ValidationReportEntry> validate(
-    XPathValidationContext validationContext
+    XPathRuleValidationContext validationContext
   ) {
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       topLevelValidationTree.validate(validationContext);

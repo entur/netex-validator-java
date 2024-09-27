@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.xpath.rules;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.xpath.XPathValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
@@ -80,15 +80,16 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       flexibleLineWithMissingBookWhen
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
-        xpathValidationContext
+        xpathRuleValidationContext
       );
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertFalse(xPathValidationReportEntries.isEmpty());
@@ -109,15 +110,16 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       flexibleLineWithBookWhen
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
-        xpathValidationContext
+        xpathRuleValidationContext
       );
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
@@ -137,15 +139,16 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       journeyPatternWithBookingArrangement
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
-        xpathValidationContext
+        xpathRuleValidationContext
       );
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
@@ -165,15 +168,16 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
       serviceJourneyWithFlexibleProperties
     );
-    XPathValidationContext xpathValidationContext = new XPathValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
-    );
+    XPathRuleValidationContext xpathRuleValidationContext =
+      new XPathRuleValidationContext(
+        document,
+        NETEX_XML_PARSER,
+        TEST_CODESPACE,
+        null
+      );
     List<XPathValidationReportEntry> xPathValidationReportEntries =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
-        xpathValidationContext
+        xpathRuleValidationContext
       );
     Assertions.assertNotNull(xPathValidationReportEntries);
     Assertions.assertTrue(xPathValidationReportEntries.isEmpty());

@@ -6,7 +6,7 @@ import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -83,7 +83,7 @@ class NetexIdUniquenessValidatorTest {
       0
     );
     Set<IdVersion> localIds = Set.of(idVersion);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -91,7 +91,10 @@ class NetexIdUniquenessValidatorTest {
       localIds,
       List.of()
     );
-    netexIdUniquenessValidator.validate(validationReport, validationContext);
+    netexIdUniquenessValidator.validate(
+      validationReport,
+      xPathValidationContext
+    );
     Assertions.assertFalse(
       validationReport.getValidationReportEntries().isEmpty()
     );
@@ -118,7 +121,7 @@ class NetexIdUniquenessValidatorTest {
       0
     );
     Set<IdVersion> localIds = Set.of(idVersion);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -126,7 +129,10 @@ class NetexIdUniquenessValidatorTest {
       localIds,
       List.of()
     );
-    netexIdUniquenessValidator.validate(validationReport, validationContext);
+    netexIdUniquenessValidator.validate(
+      validationReport,
+      xPathValidationContext
+    );
     Assertions.assertFalse(
       validationReport.getValidationReportEntries().isEmpty()
     );
@@ -153,7 +159,7 @@ class NetexIdUniquenessValidatorTest {
       0
     );
     Set<IdVersion> localIds = Set.of(idVersion);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -161,7 +167,10 @@ class NetexIdUniquenessValidatorTest {
       localIds,
       List.of()
     );
-    netexIdUniquenessValidator.validate(validationReport, validationContext);
+    netexIdUniquenessValidator.validate(
+      validationReport,
+      xPathValidationContext
+    );
     Assertions.assertTrue(
       validationReport.getValidationReportEntries().isEmpty()
     );

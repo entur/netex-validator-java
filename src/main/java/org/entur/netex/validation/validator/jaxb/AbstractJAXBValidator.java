@@ -1,16 +1,19 @@
-package org.entur.netex.validation.validator;
+package org.entur.netex.validation.validator.jaxb;
 
 import java.util.Objects;
+import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.ValidationReportEntry;
+import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
- * Base class for NeTEx validators.
+ * Base class for JAXB-based validators.
  */
-public abstract class AbstractNetexValidator implements NetexValidator {
+public abstract class AbstractJAXBValidator implements JAXBValidator {
 
   private final ValidationReportEntryFactory validationReportEntryFactory;
 
-  protected AbstractNetexValidator(
+  protected AbstractJAXBValidator(
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
     this.validationReportEntryFactory =

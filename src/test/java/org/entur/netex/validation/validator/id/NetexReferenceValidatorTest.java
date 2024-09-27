@@ -7,7 +7,7 @@ import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,7 +88,7 @@ class NetexReferenceValidatorTest {
       0
     );
     List<IdVersion> localRefs = List.of(localRef);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -102,7 +102,7 @@ class NetexReferenceValidatorTest {
         List.of(),
         validationReportEntryFactory
       );
-    netexReferenceValidator.validate(validationReport, validationContext);
+    netexReferenceValidator.validate(validationReport, xPathValidationContext);
     Assertions.assertFalse(
       validationReport.getValidationReportEntries().isEmpty()
     );
@@ -130,7 +130,7 @@ class NetexReferenceValidatorTest {
     );
     Set<IdVersion> localIds = Set.of(localIdVersion);
     List<IdVersion> localRefs = new ArrayList<>(localIds);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -144,7 +144,7 @@ class NetexReferenceValidatorTest {
         List.of(),
         validationReportEntryFactory
       );
-    netexReferenceValidator.validate(validationReport, validationContext);
+    netexReferenceValidator.validate(validationReport, xPathValidationContext);
     Assertions.assertTrue(
       validationReport.getValidationReportEntries().isEmpty()
     );
@@ -163,7 +163,7 @@ class NetexReferenceValidatorTest {
     );
     Set<IdVersion> localIds = Set.of();
     List<IdVersion> localRefs = List.of(localRefVersion);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -180,7 +180,7 @@ class NetexReferenceValidatorTest {
         List.of(externalReferenceValidator),
         validationReportEntryFactory
       );
-    netexReferenceValidator.validate(validationReport, validationContext);
+    netexReferenceValidator.validate(validationReport, xPathValidationContext);
     Assertions.assertFalse(
       validationReport.getValidationReportEntries().isEmpty()
     );
@@ -208,7 +208,7 @@ class NetexReferenceValidatorTest {
     );
     Set<IdVersion> localIds = Set.of();
     List<IdVersion> localRefs = List.of(localRefVersion);
-    ValidationContext validationContext = new ValidationContext(
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
       null,
       TEST_CODESPACE,
@@ -225,7 +225,7 @@ class NetexReferenceValidatorTest {
         List.of(externalReferenceValidator),
         validationReportEntryFactory
       );
-    netexReferenceValidator.validate(validationReport, validationContext);
+    netexReferenceValidator.validate(validationReport, xPathValidationContext);
     Assertions.assertTrue(
       validationReport.getValidationReportEntries().isEmpty()
     );

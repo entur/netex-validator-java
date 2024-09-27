@@ -2,18 +2,19 @@ package org.entur.netex.validation.validator;
 
 import java.util.Objects;
 
-public abstract class NetexDatasetValidator {
+/**
+ * Base class for DatasetValidators.
+ */
+public abstract class AbstractDatasetValidator implements DatasetValidator {
 
   private final ValidationReportEntryFactory validationReportEntryFactory;
 
-  protected NetexDatasetValidator(
+  protected AbstractDatasetValidator(
     ValidationReportEntryFactory validationReportEntryFactory
   ) {
     this.validationReportEntryFactory =
       Objects.requireNonNull(validationReportEntryFactory);
   }
-
-  public abstract ValidationReport validate(ValidationReport validationReport);
 
   protected ValidationReportEntry createValidationReportEntry(
     String code,

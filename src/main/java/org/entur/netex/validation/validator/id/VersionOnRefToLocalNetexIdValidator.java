@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractNetexValidator;
+import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.entur.netex.validation.validator.ValidationReportEntry;
 import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.xpath.ValidationContext;
+import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * Validate that references to local elements have a version attribute.
  */
 public class VersionOnRefToLocalNetexIdValidator
-  extends AbstractNetexValidator {
+  extends AbstractXPathValidator {
 
   static final String RULE_CODE_NETEX_ID_9 = "NETEX_ID_9";
 
@@ -37,11 +37,11 @@ public class VersionOnRefToLocalNetexIdValidator
   @Override
   public void validate(
     ValidationReport validationReport,
-    ValidationContext validationContext
+    XPathValidationContext xPathValidationContext
   ) {
     List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
-    Set<IdVersion> localIds = validationContext.getLocalIds();
-    List<IdVersion> localRefs = validationContext.getLocalRefs();
+    Set<IdVersion> localIds = xPathValidationContext.getLocalIds();
+    List<IdVersion> localRefs = xPathValidationContext.getLocalRefs();
 
     List<IdVersion> nonVersionedLocalRefs = localRefs
       .stream()
