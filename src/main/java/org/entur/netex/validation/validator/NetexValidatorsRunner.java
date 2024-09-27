@@ -181,6 +181,11 @@ public class NetexValidatorsRunner {
       validationReport
     );
 
+    if (validationReport.hasError()) {
+      // do not run subsequent validators if the XPath validation fails
+      return validationReport;
+    }
+
     JAXBValidationContext jaxbValidationContext = prepareJAXBValidationContext(
       validationReportId,
       codespace,
