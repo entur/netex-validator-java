@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.jaxb;
 
 import java.util.List;
+import org.entur.netex.validation.validator.model.*;
 
 /**
  * Repository for NeTEx data collected during validation.

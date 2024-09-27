@@ -1,4 +1,4 @@
-package org.entur.netex.validation.validator.jaxb;
+package org.entur.netex.validation.validator.model;
 
 /**
  * Light-way representation of a NeTEx StopPlace.

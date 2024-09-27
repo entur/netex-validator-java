@@ -16,6 +16,10 @@
 package org.entur.netex.validation.validator.jaxb;
 
 import javax.annotation.Nullable;
+import org.entur.netex.validation.validator.model.QuayCoordinates;
+import org.entur.netex.validation.validator.model.QuayId;
+import org.entur.netex.validation.validator.model.StopPlaceId;
+import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
 
 /**
  * A repository that contains stop place reference data.

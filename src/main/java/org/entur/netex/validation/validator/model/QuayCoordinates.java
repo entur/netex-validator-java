@@ -1,4 +1,4 @@
-package org.entur.netex.validation.validator.jaxb;
+package org.entur.netex.validation.validator.model;
 
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.locationtech.jts.geom.Coordinate;

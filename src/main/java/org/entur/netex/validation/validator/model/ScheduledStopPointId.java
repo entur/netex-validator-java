@@ -1,4 +1,4 @@
-package org.entur.netex.validation.validator.jaxb;
+package org.entur.netex.validation.validator.model;
 
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
