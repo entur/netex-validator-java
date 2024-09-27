@@ -36,7 +36,7 @@ public class NetexValidatorsRunner {
   private final NetexSchemaValidator netexSchemaValidator;
   private final List<XPathValidator> netexValidators;
   private final List<JAXBValidator> jaxbValidators;
-  private final List<NetexDatasetValidator> netexDatasetValidators;
+  private final List<DatasetValidator> datasetValidators;
   private final List<NetexDataCollector> netexDataCollectors;
   private final NetexDataRepository netexDataRepository;
   private final StopPlaceRepository stopPlaceRepository;
@@ -79,7 +79,7 @@ public class NetexValidatorsRunner {
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators,
-    List<NetexDatasetValidator> netexDatasetValidators,
+    List<DatasetValidator> datasetValidators,
     NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository
   ) {
@@ -88,7 +88,7 @@ public class NetexValidatorsRunner {
       netexSchemaValidator,
       netexValidators,
       List.of(),
-      netexDatasetValidators,
+      datasetValidators,
       List.of(),
       netexDataRepository,
       stopPlaceRepository
@@ -100,7 +100,7 @@ public class NetexValidatorsRunner {
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators,
     List<JAXBValidator> jaxbValidators,
-    List<NetexDatasetValidator> netexDatasetValidators,
+    List<DatasetValidator> datasetValidators,
     List<NetexDataCollector> netexDataCollectors,
     NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository
@@ -109,7 +109,7 @@ public class NetexValidatorsRunner {
     this.netexSchemaValidator = netexSchemaValidator;
     this.netexValidators = netexValidators;
     this.jaxbValidators = jaxbValidators;
-    this.netexDatasetValidators = netexDatasetValidators;
+    this.datasetValidators = datasetValidators;
     this.netexDataCollectors = netexDataCollectors;
     this.netexDataRepository = netexDataRepository;
     this.stopPlaceRepository = stopPlaceRepository;
@@ -433,8 +433,8 @@ public class NetexValidatorsRunner {
     ValidationReport validationReport,
     NetexValidationProgressCallBack netexValidationProgressCallBack
   ) {
-    for (NetexDatasetValidator netexDatasetValidator : netexDatasetValidators) {
-      String netexValidatorName = netexDatasetValidator.getClass().getName();
+    for (DatasetValidator datasetValidator : datasetValidators) {
+      String netexValidatorName = datasetValidator.getClass().getName();
       netexValidationProgressCallBack.notifyProgress(
         "Starting validator " + netexValidatorName
       );
@@ -449,7 +449,7 @@ public class NetexValidatorsRunner {
       );
 
       try {
-        netexDatasetValidator.validate(validationReport);
+        datasetValidator.validate(validationReport);
       } finally {
         netexValidatorComplete.set(true);
       }
