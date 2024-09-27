@@ -37,8 +37,8 @@ public class NetexValidatorsRunner {
   private final List<XPathValidator> netexValidators;
   private final List<JAXBValidator> jaxbValidators;
   private final List<NetexDatasetValidator> netexDatasetValidators;
-  private final List<CommonDataScraper> commonDataScrapers;
-  private final CommonDataRepository commonDataRepository;
+  private final List<NetexDataCollector> netexDataCollectors;
+  private final NetexDataRepository netexDataRepository;
   private final StopPlaceRepository stopPlaceRepository;
 
   private final NetexXMLParser netexXMLParser;
@@ -62,7 +62,7 @@ public class NetexValidatorsRunner {
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators,
-    CommonDataRepository commonDataRepository,
+    NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository
   ) {
     this(
@@ -70,7 +70,7 @@ public class NetexValidatorsRunner {
       netexSchemaValidator,
       netexValidators,
       List.of(),
-      commonDataRepository,
+      netexDataRepository,
       stopPlaceRepository
     );
   }
@@ -80,7 +80,7 @@ public class NetexValidatorsRunner {
     NetexSchemaValidator netexSchemaValidator,
     List<XPathValidator> netexValidators,
     List<NetexDatasetValidator> netexDatasetValidators,
-    CommonDataRepository commonDataRepository,
+    NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository
   ) {
     this(
@@ -90,7 +90,7 @@ public class NetexValidatorsRunner {
       List.of(),
       netexDatasetValidators,
       List.of(),
-      commonDataRepository,
+      netexDataRepository,
       stopPlaceRepository
     );
   }
@@ -101,8 +101,8 @@ public class NetexValidatorsRunner {
     List<XPathValidator> netexValidators,
     List<JAXBValidator> jaxbValidators,
     List<NetexDatasetValidator> netexDatasetValidators,
-    List<CommonDataScraper> commonDataScrapers,
-    CommonDataRepository commonDataRepository,
+    List<NetexDataCollector> netexDataCollectors,
+    NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository
   ) {
     this.netexXMLParser = netexXMLParser;
@@ -110,8 +110,8 @@ public class NetexValidatorsRunner {
     this.netexValidators = netexValidators;
     this.jaxbValidators = jaxbValidators;
     this.netexDatasetValidators = netexDatasetValidators;
-    this.commonDataScrapers = commonDataScrapers;
-    this.commonDataRepository = commonDataRepository;
+    this.netexDataCollectors = netexDataCollectors;
+    this.netexDataRepository = netexDataRepository;
     this.stopPlaceRepository = stopPlaceRepository;
   }
 
@@ -210,12 +210,12 @@ public class NetexValidatorsRunner {
     JAXBValidationContext validationContext
   ) {
     LOGGER.info(
-      "Starting data scraping for file {}",
+      "Collecting NeTEx data for file {}",
       validationContext.getFileName()
     );
     if (!validationContext.isCommonFile()) {
-      commonDataScrapers.forEach(commonDataScraper ->
-        commonDataScraper.scrapeData(validationContext)
+      netexDataCollectors.forEach(netexDataCollector ->
+        netexDataCollector.collect(validationContext)
       );
     }
   }
@@ -267,7 +267,7 @@ public class NetexValidatorsRunner {
     return new JAXBValidationContext(
       validationReportId,
       netexEntitiesIndex,
-      commonDataRepository,
+      netexDataRepository,
       stopPlaceRepository,
       codespace,
       filename,

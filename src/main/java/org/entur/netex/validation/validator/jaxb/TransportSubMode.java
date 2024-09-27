@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.StopPlace;
 
+/**
+ * A NeTEx transport sub-mode.
+ */
 public record TransportSubMode(String name) {
   public TransportSubMode {
     Objects.requireNonNull(name, "Invalid transport sub mode " + name);

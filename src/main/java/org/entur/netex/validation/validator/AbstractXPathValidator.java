@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
- * Base class for NeTEx XPath-based validators.
+ * Base class for XPath-based validators.
  */
 public abstract class AbstractXPathValidator implements XPathValidator {
 

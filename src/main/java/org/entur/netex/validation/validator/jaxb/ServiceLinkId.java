@@ -6,6 +6,9 @@ import org.rutebanken.netex.model.LinkInJourneyPattern;
 import org.rutebanken.netex.model.ServiceLink;
 import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 
+/**
+ * The NeTEx id of a ServiceLink.
+ */
 public record ServiceLinkId(String id) {
   public ServiceLinkId {
     if (!isValid(id)) {

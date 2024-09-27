@@ -3,12 +3,15 @@ package org.entur.netex.validation.validator.jaxb;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.ServiceLink;
 
-public record ScheduledStopPointIds(
+/**
+ * The pair of ScheduleStopPoint ids representing the "from" and "to" ends of a ServiceLink.
+ */
+public record FromToScheduledStopPointId(
   ScheduledStopPointId from,
   ScheduledStopPointId to
 ) {
-  public static ScheduledStopPointIds of(ServiceLink serviceLink) {
-    return new ScheduledStopPointIds(
+  public static FromToScheduledStopPointId of(ServiceLink serviceLink) {
+    return new FromToScheduledStopPointId(
       ScheduledStopPointId.of(serviceLink.getFromPointRef()),
       ScheduledStopPointId.of(serviceLink.getToPointRef())
     );
@@ -27,11 +30,13 @@ public record ScheduledStopPointIds(
    * Used to encode data to store in redis.
    * Caution: Changes in this method can effect data stored in redis.
    */
-  public static ScheduledStopPointIds fromString(String scheduledStopPointIds) {
+  public static FromToScheduledStopPointId fromString(
+    String scheduledStopPointIds
+  ) {
     if (scheduledStopPointIds != null) {
       String[] split = scheduledStopPointIds.split("§");
       if (split.length == 2) {
-        return new ScheduledStopPointIds(
+        return new FromToScheduledStopPointId(
           new ScheduledStopPointId(split[0]),
           new ScheduledStopPointId(split[1])
         );

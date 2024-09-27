@@ -6,6 +6,9 @@ import org.rutebanken.netex.model.LocationStructure;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 
+/**
+ * Latitude and longitude of a NeTEx Quay.
+ */
 public record QuayCoordinates(double longitude, double latitude) {
   public static QuayCoordinates of(StopPlace stopPlace) {
     if (stopPlace != null && stopPlace.getCentroid() != null) {

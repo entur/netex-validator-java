@@ -4,7 +4,7 @@ import java.util.Objects;
 import org.entur.netex.validation.exception.NetexValidationException;
 
 /**
- * The id of a NeTEx StopPlace.
+ * The NeTEx id of a StopPlace.
  */
 public record StopPlaceId(String id) {
   public StopPlaceId {

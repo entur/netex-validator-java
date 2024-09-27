@@ -5,13 +5,13 @@ import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
- * Extends the XPathValidationContext with NetexEntitiesIndex, which is the in memory index of the Netex dataset.
+ * Validation context for JAXB-based validators.
  */
 public class JAXBValidationContext {
 
   private final String validationReportId;
   private final NetexEntitiesIndex netexEntitiesIndex;
-  private final CommonDataRepository commonDataRepository;
+  private final NetexDataRepository netexDataRepository;
   private final StopPlaceRepository stopPlaceRepository;
   private final String codespace;
   private final String fileName;
@@ -20,7 +20,7 @@ public class JAXBValidationContext {
   public JAXBValidationContext(
     String validationReportId,
     NetexEntitiesIndex netexEntitiesIndex,
-    CommonDataRepository commonDataRepository,
+    NetexDataRepository netexDataRepository,
     StopPlaceRepository stopPlaceRepository,
     String codespace,
     String fileName,
@@ -28,7 +28,7 @@ public class JAXBValidationContext {
   ) {
     this.validationReportId = validationReportId;
     this.netexEntitiesIndex = netexEntitiesIndex;
-    this.commonDataRepository = commonDataRepository;
+    this.netexDataRepository = netexDataRepository;
     this.stopPlaceRepository = stopPlaceRepository;
     this.codespace = codespace;
     this.fileName = fileName;
@@ -47,8 +47,8 @@ public class JAXBValidationContext {
     return stopPlaceRepository;
   }
 
-  public CommonDataRepository getCommonDataRepository() {
-    return commonDataRepository;
+  public NetexDataRepository getNetexDataRepository() {
+    return netexDataRepository;
   }
 
   public NetexEntitiesIndex getNetexEntitiesIndex() {

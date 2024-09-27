@@ -5,6 +5,9 @@ import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.ScheduledStopPointRefStructure;
 import org.rutebanken.netex.model.StopPointInJourneyPattern;
 
+/**
+ * The NeTEx id od a ScheduledStopPoint.
+ */
 public record ScheduledStopPointId(String id) {
   public ScheduledStopPointId {
     if (!isValid(id)) {

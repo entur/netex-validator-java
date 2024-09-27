@@ -4,6 +4,9 @@ import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 
+/**
+ * A pair of mode and sub-mode.
+ */
 public record TransportModeAndSubMode(
   AllVehicleModesOfTransportEnumeration mode,
   TransportSubMode subMode

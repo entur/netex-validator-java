@@ -7,7 +7,7 @@ import org.entur.netex.validation.validator.ValidationReportEntryFactory;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
- * Base class for NeTEx XPath-based validators.
+ * Base class for JAXB-based validators.
  */
 public abstract class AbstractJAXBValidator implements JAXBValidator {
 

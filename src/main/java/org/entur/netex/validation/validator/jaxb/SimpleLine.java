@@ -7,15 +7,19 @@ import org.rutebanken.netex.model.FlexibleLine;
 import org.rutebanken.netex.model.Line;
 import org.rutebanken.netex.model.MultilingualString;
 
-public record LineInfo(String lineId, String lineName, String fileName) {
-  public LineInfo {
+/**
+ * Light-way representation of a NeTEx Line.
+ * This contains the minimum information required to validate a Line.
+ */
+public record SimpleLine(String lineId, String lineName, String fileName) {
+  public SimpleLine {
     Objects.requireNonNull(lineId, "Line id should not be null");
     Objects.requireNonNull(lineName, "Line name should not be null");
     Objects.requireNonNull(fileName, "File name should not be null");
   }
 
-  public static LineInfo of(Line line, String fileName) {
-    return new LineInfo(
+  public static SimpleLine of(Line line, String fileName) {
+    return new SimpleLine(
       line.getId(),
       Optional
         .ofNullable(line.getName())
@@ -25,8 +29,8 @@ public record LineInfo(String lineId, String lineName, String fileName) {
     );
   }
 
-  public static LineInfo of(FlexibleLine flexibleLine, String fileName) {
-    return new LineInfo(
+  public static SimpleLine of(FlexibleLine flexibleLine, String fileName) {
+    return new SimpleLine(
       flexibleLine.getId(),
       Optional
         .ofNullable(flexibleLine.getName())
@@ -49,11 +53,11 @@ public record LineInfo(String lineId, String lineName, String fileName) {
    * Used to encode data to store in redis.
    * Caution: Changes in this method can effect data stored in redis.
    */
-  public static LineInfo fromString(String lineInfo) {
+  public static SimpleLine fromString(String lineInfo) {
     if (lineInfo != null) {
       String[] split = lineInfo.split("§");
       if (split.length == 3) {
-        return new LineInfo(split[0], split[1], split[2]);
+        return new SimpleLine(split[0], split[1], split[2]);
       } else {
         throw new NetexValidationException(
           "Invalid lineInfo string: " + lineInfo
@@ -66,8 +70,8 @@ public record LineInfo(String lineId, String lineName, String fileName) {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (!(o instanceof LineInfo lineInfo)) return false;
-    return Objects.equals(lineName, lineInfo.lineName);
+    if (!(o instanceof SimpleLine simpleLine)) return false;
+    return Objects.equals(lineName, simpleLine.lineName);
   }
 
   @Override

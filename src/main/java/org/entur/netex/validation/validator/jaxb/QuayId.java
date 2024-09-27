@@ -6,7 +6,7 @@ import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.Quay;
 
 /**
- * The id of a NeTEx quay.
+ * The NeTEx id of Quay.
  */
 public record QuayId(String id) {
   public QuayId {
