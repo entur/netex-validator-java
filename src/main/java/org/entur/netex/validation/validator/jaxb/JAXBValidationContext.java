@@ -2,12 +2,13 @@ package org.entur.netex.validation.validator.jaxb;
 
 import java.util.Map;
 import org.entur.netex.index.api.NetexEntitiesIndex;
+import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
 
 /**
  * Validation context for JAXB-based validators.
  */
-public class JAXBValidationContext {
+public class JAXBValidationContext implements ValidationContext {
 
   private final String validationReportId;
   private final NetexEntitiesIndex netexEntitiesIndex;
@@ -35,10 +36,12 @@ public class JAXBValidationContext {
     this.localIdsMap = localIdsMap;
   }
 
+  @Override
   public String getFileName() {
     return fileName;
   }
 
+  @Override
   public String getCodespace() {
     return codespace;
   }
@@ -61,9 +64,5 @@ public class JAXBValidationContext {
 
   public Map<String, IdVersion> getLocalIdsMap() {
     return localIdsMap;
-  }
-
-  public boolean isCommonFile() {
-    return fileName != null && fileName.startsWith("_");
   }
 }

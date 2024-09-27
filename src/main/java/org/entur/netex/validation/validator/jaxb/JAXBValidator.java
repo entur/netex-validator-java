@@ -1,13 +1,8 @@
 package org.entur.netex.validation.validator.jaxb;
 
-import org.entur.netex.validation.validator.ValidationReport;
+import org.entur.netex.validation.validator.NetexValidator;
 
 /**
  * Validator using a JAXB representation of the NeTEx data.
  */
-public interface JAXBValidator {
-  void validate(
-    ValidationReport validationReport,
-    JAXBValidationContext jaxbValidationContext
-  );
-}
+public interface JAXBValidator extends NetexValidator<JAXBValidationContext> {}

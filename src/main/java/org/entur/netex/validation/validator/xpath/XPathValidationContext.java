@@ -7,13 +7,14 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
 /**
  * Context of the current NeTEx validation.
  */
-public class XPathValidationContext {
+public class XPathValidationContext implements ValidationContext {
 
   private final XdmNode xmlNode;
   private final NetexXMLParser netexXMLParser;
@@ -62,10 +63,12 @@ public class XPathValidationContext {
     return xmlNode;
   }
 
+  @Override
   public String getFileName() {
     return fileName;
   }
 
+  @Override
   public String getCodespace() {
     return codespace;
   }
@@ -76,10 +79,6 @@ public class XPathValidationContext {
 
   public List<IdVersion> getLocalRefs() {
     return localRefs;
-  }
-
-  public boolean isCommonFile() {
-    return fileName != null && fileName.startsWith("_");
   }
 
   public NetexXMLParser getNetexXMLParser() {

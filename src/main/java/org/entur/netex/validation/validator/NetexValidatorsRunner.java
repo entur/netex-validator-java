@@ -5,6 +5,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XdmNode;
 import org.apache.commons.lang3.time.StopWatch;
@@ -508,9 +509,9 @@ public class NetexValidatorsRunner {
   }
 
   public Set<String> getRuleDescriptions() {
-    return netexValidators
-      .stream()
-      .map(XPathValidator::getRuleDescriptions)
+    return Stream
+      .concat(netexValidators.stream(), jaxbValidators.stream())
+      .map(NetexValidator::getRuleDescriptions)
       .flatMap(Collection::stream)
       .collect(Collectors.toSet());
   }
