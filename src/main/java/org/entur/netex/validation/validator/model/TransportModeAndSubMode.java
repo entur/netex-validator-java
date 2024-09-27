@@ -18,10 +18,6 @@ public record TransportModeAndSubMode(
     );
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return (
@@ -30,10 +26,6 @@ public record TransportModeAndSubMode(
     );
   }
 
-  /*
-   * Used to decode data stored in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   public static TransportModeAndSubMode fromString(
     String stopPlaceTransportModeAndSubMode
   ) {

@@ -43,10 +43,6 @@ public record ScheduledStopPointId(String id) {
     return id != null && id.contains(":ScheduledStopPoint:");
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return id();

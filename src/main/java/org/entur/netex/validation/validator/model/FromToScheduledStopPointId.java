@@ -17,19 +17,11 @@ public record FromToScheduledStopPointId(
     );
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return from.toString() + "§" + to.toString();
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   public static FromToScheduledStopPointId fromString(
     String scheduledStopPointIds
   ) {

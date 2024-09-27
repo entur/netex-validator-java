@@ -35,10 +35,6 @@ public record ServiceLinkId(String id) {
     return id != null && id.contains(":ServiceLink:");
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return id();

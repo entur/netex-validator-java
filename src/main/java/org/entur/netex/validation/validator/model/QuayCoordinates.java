@@ -37,19 +37,11 @@ public record QuayCoordinates(double longitude, double latitude) {
     return new Coordinate(longitude, latitude);
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return longitude + "§" + latitude;
   }
 
-  /*
-   * Used to decode data stored in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   public static QuayCoordinates fromString(String quayCoordinates) {
     if (quayCoordinates != null) {
       String[] split = quayCoordinates.split("§");

@@ -40,19 +40,11 @@ public record SimpleLine(String lineId, String lineName, String fileName) {
     );
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   @Override
   public String toString() {
     return lineId + "§" + lineName + "§" + fileName;
   }
 
-  /*
-   * Used to encode data to store in redis.
-   * Caution: Changes in this method can effect data stored in redis.
-   */
   public static SimpleLine fromString(String lineInfo) {
     if (lineInfo != null) {
       String[] split = lineInfo.split("§");
