@@ -63,7 +63,7 @@
 
         <zt-zip.version>1.17</zt-zip.version>
         <junit.version>5.11.1</junit.version>
-        <mockito-core.version>5.13.0</mockito-core.version>
+        <mockito-core.version>5.14.0</mockito-core.version>
         <logback-classic.version>1.5.8</logback-classic.version>
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
