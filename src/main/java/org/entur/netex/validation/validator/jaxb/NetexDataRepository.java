@@ -17,7 +17,7 @@ public interface NetexDataRepository {
   /**
    * Resolve the QuayId referred by a ScheduledStopPoint.
    */
-  QuayId findQuayIdForScheduledStopPoint(
+  QuayId quayIdForScheduledStopPoint(
     ScheduledStopPointId scheduledStopPointId,
     String validationReportId
   );
@@ -25,7 +25,7 @@ public interface NetexDataRepository {
   /**
    * Resolve the "from" and "to" ScheduledStopPoints referred by a ServiceLink.
    */
-  FromToScheduledStopPointId findFromToScheduledStopPointIdForServiceLink(
+  FromToScheduledStopPointId fromToScheduledStopPointIdForServiceLink(
     ServiceLinkId serviceLinkId,
     String validationReportId
   );
@@ -33,12 +33,20 @@ public interface NetexDataRepository {
   /**
    * List the NeTEx Line names in the dataset.
    */
-  List<SimpleLine> getLineNames(String validationReportId);
+  List<SimpleLine> lineNames(String validationReportId);
+
+  /**
+   * List the ServiceJourneyStops for a ServiceJourney.
+   */
+  public List<ServiceJourneyStop> serviceJourneyStops(
+    String validationReportId,
+    ServiceJourneyId serviceJourneyId
+  );
 
   /**
    *
    */
-  void loadCommonDataCache(byte[] fileContent, String validationReportId);
+  void fillNetexDataCache(byte[] fileContent, String validationReportId);
 
   /**
    * Clean up the NeTEx data repository.
