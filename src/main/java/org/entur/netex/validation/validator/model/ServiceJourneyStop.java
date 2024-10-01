@@ -52,11 +52,12 @@ public record ServiceJourneyStop(
     String toReturn = "scheduledStopPointId(" + scheduledStopPointId + ")";
 
     if (arrivalTime != null) {
-      toReturn += "arrival(" + arrivalTime + "§" + arrivalDayOffset + "),";
+      toReturn += ",arrival(" + arrivalTime + "§" + arrivalDayOffset + ")";
     }
 
     if (departureTime != null) {
-      toReturn += "departure(" + departureTime + "§" + departureDayOffset + ")";
+      toReturn +=
+        ",departure(" + departureTime + "§" + departureDayOffset + ")";
     }
 
     return toReturn;

@@ -44,6 +44,13 @@ public interface NetexDataRepository {
   );
 
   /**
+   * List the ServiceJourneyInterchangeInfos in the dataset.
+   */
+  List<ServiceJourneyInterchangeInfo> serviceJourneyInterchangeInfos(
+    String validationReportId
+  );
+
+  /**
    *
    */
   void fillNetexDataCache(byte[] fileContent, String validationReportId);
