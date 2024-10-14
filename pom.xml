@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>3.0.6-SNAPSHOT</version>
+    <version>3.0.8-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -55,22 +55,22 @@
         <jdk.version>17</jdk.version>
 
         <netex-java-model.version>2.0.15</netex-java-model.version>
-        <netex-parser-java.version>3.1.23</netex-parser-java.version>
+        <netex-parser-java.version>3.1.25</netex-parser-java.version>
         <saxon.version>11.6</saxon.version>
         <geotools.version>32.0</geotools.version>
         <snakeyaml.version>2.3</snakeyaml.version>
         <slf4j.version>2.0.16</slf4j.version>
 
         <zt-zip.version>1.17</zt-zip.version>
-        <junit.version>5.11.1</junit.version>
-        <mockito-core.version>5.14.0</mockito-core.version>
-        <logback-classic.version>1.5.8</logback-classic.version>
+        <junit.version>5.11.2</junit.version>
+        <mockito-core.version>5.14.1</mockito-core.version>
+        <logback-classic.version>1.5.10</logback-classic.version>
 
         <maven-exec-plugin.version>1.6.0</maven-exec-plugin.version>
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.10.1</maven-javadoc-plugin.version>
         <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
         <maven-gpg-plugin.version>3.2.7</maven-gpg-plugin.version>
         <maven-dependency-plugin.version>3.1.2</maven-dependency-plugin.version>
