@@ -10,7 +10,7 @@ import org.entur.netex.validation.validator.model.*;
  */
 public interface NetexDataRepository {
   /**
-   *
+   * Check if the repository has QuayIds.
    */
   boolean hasQuayIds(String validationReportId);
 
@@ -42,6 +42,11 @@ public interface NetexDataRepository {
     String validationReportId,
     ServiceJourneyId serviceJourneyId
   );
+
+  /**
+   * Check if the repository has ServiceJourneyInterchangeInfos.
+   */
+  boolean hasServiceJourneyInterchangeInfos(String validationReportId);
 
   /**
    * List the ServiceJourneyInterchangeInfos in the dataset.
