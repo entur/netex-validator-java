@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Orchestrate the execution of individual instances of {@link XPathValidator}.
+ * Orchestrate the execution of individual instances of {@link NetexValidator}.
  * The first step in the validation process is the XML Schema validation.
  * The XML Schema validation is a blocking step: further validators downstream are skipped in case of XML Schema validation errors.
  */
@@ -35,7 +35,7 @@ public class NetexValidatorsRunner {
   private static final int MAX_WAITING_LOOPS = 180;
 
   private final NetexSchemaValidator netexSchemaValidator;
-  private final List<XPathValidator> netexValidators;
+  private final List<XPathValidator> xPathValidators;
   private final List<JAXBValidator> jaxbValidators;
   private final List<DatasetValidator> datasetValidators;
   private final List<NetexDataCollector> netexDataCollectors;
@@ -44,62 +44,10 @@ public class NetexValidatorsRunner {
 
   private final NetexXMLParser netexXMLParser;
 
-  public NetexValidatorsRunner(
-    NetexXMLParser netexXMLParser,
-    List<XPathValidator> netexValidators
-  ) {
-    this(netexXMLParser, null, netexValidators);
-  }
-
-  public NetexValidatorsRunner(
+  NetexValidatorsRunner(
     NetexXMLParser netexXMLParser,
     NetexSchemaValidator netexSchemaValidator,
-    List<XPathValidator> netexValidators
-  ) {
-    this(netexXMLParser, netexSchemaValidator, netexValidators, null, null);
-  }
-
-  public NetexValidatorsRunner(
-    NetexXMLParser netexXMLParser,
-    NetexSchemaValidator netexSchemaValidator,
-    List<XPathValidator> netexValidators,
-    NetexDataRepository netexDataRepository,
-    StopPlaceRepository stopPlaceRepository
-  ) {
-    this(
-      netexXMLParser,
-      netexSchemaValidator,
-      netexValidators,
-      List.of(),
-      netexDataRepository,
-      stopPlaceRepository
-    );
-  }
-
-  public NetexValidatorsRunner(
-    NetexXMLParser netexXMLParser,
-    NetexSchemaValidator netexSchemaValidator,
-    List<XPathValidator> netexValidators,
-    List<DatasetValidator> datasetValidators,
-    NetexDataRepository netexDataRepository,
-    StopPlaceRepository stopPlaceRepository
-  ) {
-    this(
-      netexXMLParser,
-      netexSchemaValidator,
-      netexValidators,
-      List.of(),
-      datasetValidators,
-      List.of(),
-      netexDataRepository,
-      stopPlaceRepository
-    );
-  }
-
-  public NetexValidatorsRunner(
-    NetexXMLParser netexXMLParser,
-    NetexSchemaValidator netexSchemaValidator,
-    List<XPathValidator> netexValidators,
+    List<XPathValidator> xPathValidators,
     List<JAXBValidator> jaxbValidators,
     List<DatasetValidator> datasetValidators,
     List<NetexDataCollector> netexDataCollectors,
@@ -108,12 +56,16 @@ public class NetexValidatorsRunner {
   ) {
     this.netexXMLParser = netexXMLParser;
     this.netexSchemaValidator = netexSchemaValidator;
-    this.netexValidators = netexValidators;
+    this.xPathValidators = xPathValidators;
     this.jaxbValidators = jaxbValidators;
     this.datasetValidators = datasetValidators;
     this.netexDataCollectors = netexDataCollectors;
     this.netexDataRepository = netexDataRepository;
     this.stopPlaceRepository = stopPlaceRepository;
+  }
+
+  public static NetexValidatorsRunnerBuilder of() {
+    return new NetexValidatorsRunnerBuilder();
   }
 
   public ValidationReport validate(
@@ -173,7 +125,7 @@ public class NetexValidatorsRunner {
     XPathValidationContext xPathValidationContext =
       prepareXPathValidationContext(codespace, filename, fileContent);
 
-    runNetexValidators(
+    runXPathValidators(
       codespace,
       validationReportId,
       filename,
@@ -320,7 +272,7 @@ public class NetexValidatorsRunner {
   /**
    * Run the NeTEx validators.
    */
-  private void runNetexValidators(
+  private void runXPathValidators(
     String codespace,
     String validationReportId,
     String filename,
@@ -328,13 +280,13 @@ public class NetexValidatorsRunner {
     NetexValidationProgressCallBack netexValidationProgressCallBack,
     ValidationReport validationReport
   ) {
-    for (XPathValidator netexValidator : netexValidators) {
-      String netexValidatorName = netexValidator.getClass().getName();
+    for (XPathValidator xPathValidator : xPathValidators) {
+      String netexValidatorName = xPathValidator.getClass().getName();
       netexValidationProgressCallBack.notifyProgress(
         "Starting validator " + netexValidatorName
       );
-      StopWatch netexValidatorStopWatch = new StopWatch();
-      netexValidatorStopWatch.start();
+      StopWatch xpathValidatorStopWatch = new StopWatch();
+      xpathValidatorStopWatch.start();
 
       AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
       notifyProgressAsync(
@@ -344,20 +296,20 @@ public class NetexValidatorsRunner {
       );
 
       try {
-        netexValidator.validate(validationReport, xPathValidationContext);
+        xPathValidator.validate(validationReport, xPathValidationContext);
       } finally {
         netexValidatorComplete.set(true);
       }
 
-      netexValidatorStopWatch.stop();
-      if (netexValidatorStopWatch.getTime() > 30000) {
+      xpathValidatorStopWatch.stop();
+      if (xpathValidatorStopWatch.getTime() > 30000) {
         LOGGER.warn(
           "Validator {} for {}/{}/{} completed in {} ms",
           netexValidatorName,
           codespace,
           validationReportId,
           filename,
-          netexValidatorStopWatch.getTime()
+          xpathValidatorStopWatch.getTime()
         );
       } else {
         LOGGER.debug(
@@ -366,7 +318,7 @@ public class NetexValidatorsRunner {
           codespace,
           validationReportId,
           filename,
-          netexValidatorStopWatch.getTime()
+          xpathValidatorStopWatch.getTime()
         );
       }
     }
@@ -383,13 +335,13 @@ public class NetexValidatorsRunner {
     NetexValidationProgressCallBack netexValidationProgressCallBack,
     ValidationReport validationReport
   ) {
-    for (JAXBValidator netexValidator : jaxbValidators) {
-      String netexValidatorName = netexValidator.getClass().getName();
+    for (JAXBValidator jaxbValidator : jaxbValidators) {
+      String netexValidatorName = jaxbValidator.getClass().getName();
       netexValidationProgressCallBack.notifyProgress(
         "Starting validator " + netexValidatorName
       );
-      StopWatch netexValidatorStopWatch = new StopWatch();
-      netexValidatorStopWatch.start();
+      StopWatch jaxbValidatorStopWatch = new StopWatch();
+      jaxbValidatorStopWatch.start();
 
       AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
       notifyProgressAsync(
@@ -399,20 +351,20 @@ public class NetexValidatorsRunner {
       );
 
       try {
-        netexValidator.validate(validationReport, jaxbValidationContext);
+        jaxbValidator.validate(validationReport, jaxbValidationContext);
       } finally {
         netexValidatorComplete.set(true);
       }
 
-      netexValidatorStopWatch.stop();
-      if (netexValidatorStopWatch.getTime() > 30000) {
+      jaxbValidatorStopWatch.stop();
+      if (jaxbValidatorStopWatch.getTime() > 30000) {
         LOGGER.warn(
           "Validator {} for {}/{}/{} completed in {} ms",
           netexValidatorName,
           codespace,
           validationReportId,
           filename,
-          netexValidatorStopWatch.getTime()
+          jaxbValidatorStopWatch.getTime()
         );
       } else {
         LOGGER.debug(
@@ -421,7 +373,7 @@ public class NetexValidatorsRunner {
           codespace,
           validationReportId,
           filename,
-          netexValidatorStopWatch.getTime()
+          jaxbValidatorStopWatch.getTime()
         );
       }
     }
@@ -439,8 +391,8 @@ public class NetexValidatorsRunner {
       netexValidationProgressCallBack.notifyProgress(
         "Starting validator " + netexValidatorName
       );
-      StopWatch netexValidatorStopWatch = new StopWatch();
-      netexValidatorStopWatch.start();
+      StopWatch datasetValidatorStopWatch = new StopWatch();
+      datasetValidatorStopWatch.start();
 
       AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
       notifyProgressAsync(
@@ -455,14 +407,14 @@ public class NetexValidatorsRunner {
         netexValidatorComplete.set(true);
       }
 
-      netexValidatorStopWatch.stop();
-      if (netexValidatorStopWatch.getTime() > 30000) {
+      datasetValidatorStopWatch.stop();
+      if (datasetValidatorStopWatch.getTime() > 30000) {
         LOGGER.warn(
           "Validator {} for {}/{} completed in {} ms",
           netexValidatorName,
           validationReport.getCodespace(),
           validationReport.getValidationReportId(),
-          netexValidatorStopWatch.getTime()
+          datasetValidatorStopWatch.getTime()
         );
       } else {
         LOGGER.debug(
@@ -470,7 +422,7 @@ public class NetexValidatorsRunner {
           netexValidatorName,
           validationReport.getCodespace(),
           validationReport.getValidationReportId(),
-          netexValidatorStopWatch.getTime()
+          datasetValidatorStopWatch.getTime()
         );
       }
     }
@@ -510,7 +462,7 @@ public class NetexValidatorsRunner {
 
   public Set<String> getRuleDescriptions() {
     return Stream
-      .concat(netexValidators.stream(), jaxbValidators.stream())
+      .concat(xPathValidators.stream(), jaxbValidators.stream())
       .map(NetexValidator::getRuleDescriptions)
       .flatMap(Collection::stream)
       .collect(Collectors.toSet());

@@ -26,13 +26,12 @@ public class ValidatorTestUtil {
   ) throws IOException {
     NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
     NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
-    NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(
-      netexXMLParser,
-      netexSchemaValidator,
-      List.of(netexValidator),
-      null,
-      null
-    );
+    NetexValidatorsRunner netexValidatorsRunner = NetexValidatorsRunner
+      .of()
+      .withNetexXMLParser(netexXMLParser)
+      .withNetexSchemaValidator(netexSchemaValidator)
+      .withXPathValidators(List.of(netexValidator))
+      .build();
     ValidationReport aggregatedValidationReport = new ValidationReport(
       codespace,
       reportId
