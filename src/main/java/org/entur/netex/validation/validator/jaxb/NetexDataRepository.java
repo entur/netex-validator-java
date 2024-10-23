@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.jaxb;
 
 import java.util.List;
+import java.util.Map;
 import org.entur.netex.validation.validator.model.*;
 
 /**
@@ -36,17 +37,11 @@ public interface NetexDataRepository {
   List<SimpleLine> lineNames(String validationReportId);
 
   /**
-   * List the ServiceJourneyStops for a ServiceJourney.
+   * ServiceJourneyStops per ServiceJourneyId for a validation report.
    */
-  public List<ServiceJourneyStop> serviceJourneyStops(
-    String validationReportId,
-    ServiceJourneyId serviceJourneyId
+  Map<ServiceJourneyId, List<ServiceJourneyStop>> serviceJourneyStops(
+    String validationReportId
   );
-
-  /**
-   * Check if the repository has ServiceJourneyInterchangeInfos.
-   */
-  boolean hasServiceJourneyInterchangeInfos(String validationReportId);
 
   /**
    * List the ServiceJourneyInterchangeInfos in the dataset.
