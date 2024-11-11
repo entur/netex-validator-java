@@ -14,6 +14,7 @@ import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.id.NetexIdExtractorHelper;
 import org.entur.netex.validation.validator.jaxb.*;
+import org.entur.netex.validation.validator.schema.NetexSchemaValidationContext;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
@@ -24,6 +25,8 @@ import org.slf4j.LoggerFactory;
  * Orchestrate the execution of individual instances of {@link NetexValidator}.
  * The first step in the validation process is the XML Schema validation.
  * The XML Schema validation is a blocking step: further validators downstream are skipped in case of XML Schema validation errors.
+ * The second step runs XPath-based validators.
+ * The third step runs JAXB-based validators.
  */
 public class NetexValidatorsRunner {
 
@@ -44,24 +47,22 @@ public class NetexValidatorsRunner {
 
   private final NetexXMLParser netexXMLParser;
 
-  NetexValidatorsRunner(
-    NetexXMLParser netexXMLParser,
-    NetexSchemaValidator netexSchemaValidator,
-    List<XPathValidator> xPathValidators,
-    List<JAXBValidator> jaxbValidators,
-    List<DatasetValidator> datasetValidators,
-    List<NetexDataCollector> netexDataCollectors,
-    NetexDataRepository netexDataRepository,
-    StopPlaceRepository stopPlaceRepository
-  ) {
-    this.netexXMLParser = netexXMLParser;
-    this.netexSchemaValidator = netexSchemaValidator;
-    this.xPathValidators = xPathValidators;
-    this.jaxbValidators = jaxbValidators;
-    this.datasetValidators = datasetValidators;
-    this.netexDataCollectors = netexDataCollectors;
-    this.netexDataRepository = netexDataRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+  NetexValidatorsRunner(NetexValidatorsRunnerBuilder builder) {
+    this.netexXMLParser = builder.getNetexXMLParser();
+    this.netexSchemaValidator = builder.getNetexSchemaValidator();
+
+    this.xPathValidators = builder.getXPathValidators();
+    if (!xPathValidators.isEmpty() && netexXMLParser == null) {
+      throw new IllegalArgumentException(
+        "XPath validators require a NeTEx XML parser"
+      );
+    }
+
+    this.jaxbValidators = builder.getJaxbValidators();
+    this.datasetValidators = builder.getDatasetValidators();
+    this.netexDataCollectors = builder.getNetexDataCollectors();
+    this.netexDataRepository = builder.getNetexDataRepository();
+    this.stopPlaceRepository = builder.getStopPlaceRepository();
   }
 
   public static NetexValidatorsRunnerBuilder of() {
@@ -102,11 +103,11 @@ public class NetexValidatorsRunner {
     if (netexSchemaValidator == null || skipSchemaValidation) {
       LOGGER.info("Skipping schema validation");
     } else {
+      NetexSchemaValidationContext netexSchemaValidationContext =
+        new NetexSchemaValidationContext(filename, codespace, fileContent);
       runSchemaValidation(
-        codespace,
         validationReportId,
-        filename,
-        fileContent,
+        netexSchemaValidationContext,
         netexValidationProgressCallBack,
         validationReport
       );
@@ -117,7 +118,7 @@ public class NetexValidatorsRunner {
       return validationReport;
     }
 
-    if (skipValidators) {
+    if (skipValidators || !hasValidators()) {
       LOGGER.info("Skipping NeTEx validators");
       return validationReport;
     }
@@ -157,6 +158,10 @@ public class NetexValidatorsRunner {
     );
 
     return validationReport;
+  }
+
+  private boolean hasValidators() {
+    return !xPathValidators.isEmpty() || !jaxbValidators.isEmpty();
   }
 
   protected void postPrepareXPathValidationContext(
@@ -232,40 +237,19 @@ public class NetexValidatorsRunner {
    * Run the XML schema validation.
    */
   private void runSchemaValidation(
-    String codespace,
     String validationReportId,
-    String filename,
-    byte[] fileContent,
+    NetexSchemaValidationContext netexSchemaValidationContext,
     NetexValidationProgressCallBack netexValidationProgressCallBack,
     ValidationReport validationReport
   ) {
-    StopWatch xmlSchemaValidationStopWatch = new StopWatch();
-    netexValidationProgressCallBack.notifyProgress(
-      "Starting NeTEx Schema validation"
-    );
-    xmlSchemaValidationStopWatch.start();
-
-    AtomicBoolean schemaValidationComplete = new AtomicBoolean(false);
-    notifyProgressAsync(
-      netexValidationProgressCallBack,
-      "NeTEx Schema validation",
-      schemaValidationComplete
-    );
-
-    try {
-      validationReport.addAllValidationReportEntries(
-        netexSchemaValidator.validateSchema(filename, fileContent)
-      );
-    } finally {
-      schemaValidationComplete.set(true);
-    }
-    xmlSchemaValidationStopWatch.stop();
-    LOGGER.debug(
-      "XMLSchema validation for {}/{}/{} completed in {} ms",
-      codespace,
+    runValidator(
+      netexSchemaValidationContext.getCodespace(),
       validationReportId,
-      filename,
-      xmlSchemaValidationStopWatch.getTime()
+      netexSchemaValidationContext.getFileName(),
+      netexSchemaValidator,
+      validationReport,
+      netexValidationProgressCallBack,
+      netexSchemaValidationContext
     );
   }
 
@@ -281,46 +265,15 @@ public class NetexValidatorsRunner {
     ValidationReport validationReport
   ) {
     for (XPathValidator xPathValidator : xPathValidators) {
-      String netexValidatorName = xPathValidator.getClass().getName();
-      netexValidationProgressCallBack.notifyProgress(
-        "Starting validator " + netexValidatorName
-      );
-      StopWatch xpathValidatorStopWatch = new StopWatch();
-      xpathValidatorStopWatch.start();
-
-      AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
-      notifyProgressAsync(
+      runValidator(
+        codespace,
+        validationReportId,
+        filename,
+        xPathValidator,
+        validationReport,
         netexValidationProgressCallBack,
-        netexValidatorName,
-        netexValidatorComplete
+        xPathValidationContext
       );
-
-      try {
-        xPathValidator.validate(validationReport, xPathValidationContext);
-      } finally {
-        netexValidatorComplete.set(true);
-      }
-
-      xpathValidatorStopWatch.stop();
-      if (xpathValidatorStopWatch.getTime() > 30000) {
-        LOGGER.warn(
-          "Validator {} for {}/{}/{} completed in {} ms",
-          netexValidatorName,
-          codespace,
-          validationReportId,
-          filename,
-          xpathValidatorStopWatch.getTime()
-        );
-      } else {
-        LOGGER.debug(
-          "Validator {} for {}/{}/{} completed in {} ms",
-          netexValidatorName,
-          codespace,
-          validationReportId,
-          filename,
-          xpathValidatorStopWatch.getTime()
-        );
-      }
     }
   }
 
@@ -336,51 +289,20 @@ public class NetexValidatorsRunner {
     ValidationReport validationReport
   ) {
     for (JAXBValidator jaxbValidator : jaxbValidators) {
-      String netexValidatorName = jaxbValidator.getClass().getName();
-      netexValidationProgressCallBack.notifyProgress(
-        "Starting validator " + netexValidatorName
-      );
-      StopWatch jaxbValidatorStopWatch = new StopWatch();
-      jaxbValidatorStopWatch.start();
-
-      AtomicBoolean netexValidatorComplete = new AtomicBoolean(false);
-      notifyProgressAsync(
+      runValidator(
+        codespace,
+        validationReportId,
+        filename,
+        jaxbValidator,
+        validationReport,
         netexValidationProgressCallBack,
-        netexValidatorName,
-        netexValidatorComplete
+        jaxbValidationContext
       );
-
-      try {
-        jaxbValidator.validate(validationReport, jaxbValidationContext);
-      } finally {
-        netexValidatorComplete.set(true);
-      }
-
-      jaxbValidatorStopWatch.stop();
-      if (jaxbValidatorStopWatch.getTime() > 30000) {
-        LOGGER.warn(
-          "Validator {} for {}/{}/{} completed in {} ms",
-          netexValidatorName,
-          codespace,
-          validationReportId,
-          filename,
-          jaxbValidatorStopWatch.getTime()
-        );
-      } else {
-        LOGGER.debug(
-          "Validator {} for {}/{}/{} completed in {} ms",
-          netexValidatorName,
-          codespace,
-          validationReportId,
-          filename,
-          jaxbValidatorStopWatch.getTime()
-        );
-      }
     }
   }
 
   /**
-   * Run the NeTEx validators.
+   * Run the NeTEx dataset validators.
    */
   public ValidationReport runNetexDatasetValidators(
     ValidationReport validationReport,
@@ -458,6 +380,56 @@ public class NetexValidatorsRunner {
       }
       return null;
     });
+  }
+
+  private <C extends ValidationContext> void runValidator(
+    String codespace,
+    String validationReportId,
+    String filename,
+    NetexValidator<C> validator,
+    ValidationReport validationReport,
+    NetexValidationProgressCallBack progressCallback,
+    C validationContext
+  ) {
+    String netexValidatorName = validator.getClass().getName();
+    progressCallback.notifyProgress("Starting validator " + netexValidatorName);
+
+    StopWatch stopWatch = new StopWatch();
+    stopWatch.start();
+
+    AtomicBoolean validatorComplete = new AtomicBoolean(false);
+    notifyProgressAsync(
+      progressCallback,
+      netexValidatorName,
+      validatorComplete
+    );
+
+    try {
+      validator.validate(validationReport, validationContext);
+    } finally {
+      validatorComplete.set(true);
+    }
+
+    stopWatch.stop();
+    if (stopWatch.getTime() > 30000) {
+      LOGGER.warn(
+        "Validator {} for {}/{}/{} completed in {} ms",
+        netexValidatorName,
+        codespace,
+        validationReportId,
+        filename,
+        stopWatch.getTime()
+      );
+    } else {
+      LOGGER.debug(
+        "Validator {} for {}/{}/{} completed in {} ms",
+        netexValidatorName,
+        codespace,
+        validationReportId,
+        filename,
+        stopWatch.getTime()
+      );
+    }
   }
 
   public Set<String> getRuleDescriptions() {
