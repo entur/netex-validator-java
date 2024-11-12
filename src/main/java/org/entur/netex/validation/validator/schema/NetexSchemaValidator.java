@@ -4,12 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Validator;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.*;
 import org.entur.netex.validation.xml.NetexSchemaRepository;
 import org.rutebanken.netex.validation.NeTExValidator;
 import org.slf4j.Logger;
@@ -21,7 +20,8 @@ import org.xml.sax.SAXParseException;
 /**
  * Validate NeTEx files against the NeTEx XML schema.
  */
-public class NetexSchemaValidator {
+public class NetexSchemaValidator
+  implements NetexValidator<NetexSchemaValidationContext> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     NetexSchemaValidator.class
@@ -38,20 +38,35 @@ public class NetexSchemaValidator {
     this.maxValidationReportEntries = maxValidationReportEntries;
   }
 
-  public List<ValidationReportEntry> validateSchema(
+  private DataLocation getErrorLocation(
     String fileName,
-    byte[] content
+    SAXParseException saxParseException
   ) {
-    LOGGER.debug("Validating file {}", fileName);
+    return new DataLocation(
+      null,
+      fileName,
+      saxParseException.getLineNumber(),
+      saxParseException.getColumnNumber()
+    );
+  }
+
+  @Override
+  public void validate(
+    ValidationReport validationReport,
+    NetexSchemaValidationContext validationContext
+  ) {
+    LOGGER.debug("Validating file {}", validationContext.getFileName());
     List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
     try {
       NeTExValidator.NetexVersion schemaVersion =
-        NetexSchemaRepository.detectNetexSchemaVersion(content);
+        NetexSchemaRepository.detectNetexSchemaVersion(
+          validationContext.getFileContent()
+        );
       if (schemaVersion == null) {
         schemaVersion = NeTExValidator.LATEST;
         LOGGER.warn(
           "Could not detect schema version for file {}, defaulting to latest ({}})",
-          fileName,
+          validationContext.getFileName(),
           schemaVersion
         );
       }
@@ -66,7 +81,7 @@ public class NetexSchemaValidator {
           public void warning(SAXParseException exception)
             throws SAXParseException {
             addValidationReportEntry(
-              fileName,
+              validationContext.getFileName(),
               exception,
               ValidationReportEntrySeverity.WARNING
             );
@@ -77,7 +92,7 @@ public class NetexSchemaValidator {
           public void error(SAXParseException exception)
             throws SAXParseException {
             addValidationReportEntry(
-              fileName,
+              validationContext.getFileName(),
               exception,
               ValidationReportEntrySeverity.CRITICAL
             );
@@ -121,25 +136,22 @@ public class NetexSchemaValidator {
         }
       );
 
-      validator.validate(new StreamSource(new ByteArrayInputStream(content)));
+      validator.validate(
+        new StreamSource(
+          new ByteArrayInputStream(validationContext.getFileContent())
+        )
+      );
     } catch (IOException e) {
       throw new NetexValidationException(e);
     } catch (SAXException saxException) {
       LOGGER.info("Found schema validation errors");
     }
 
-    return validationReportEntries;
+    validationReport.addAllValidationReportEntries(validationReportEntries);
   }
 
-  private DataLocation getErrorLocation(
-    String fileName,
-    SAXParseException saxParseException
-  ) {
-    return new DataLocation(
-      null,
-      fileName,
-      saxParseException.getLineNumber(),
-      saxParseException.getColumnNumber()
-    );
+  @Override
+  public Set<String> getRuleDescriptions() {
+    return Set.of("NeTEx XML Schema validation");
   }
 }

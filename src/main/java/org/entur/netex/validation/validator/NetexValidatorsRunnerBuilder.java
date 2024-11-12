@@ -21,6 +21,38 @@ public class NetexValidatorsRunnerBuilder {
 
   NetexValidatorsRunnerBuilder() {}
 
+  public NetexXMLParser getNetexXMLParser() {
+    return netexXMLParser;
+  }
+
+  public NetexSchemaValidator getNetexSchemaValidator() {
+    return netexSchemaValidator;
+  }
+
+  public NetexDataRepository getNetexDataRepository() {
+    return netexDataRepository;
+  }
+
+  public StopPlaceRepository getStopPlaceRepository() {
+    return stopPlaceRepository;
+  }
+
+  public List<XPathValidator> getXPathValidators() {
+    return xPathValidators;
+  }
+
+  public List<JAXBValidator> getJaxbValidators() {
+    return jaxbValidators;
+  }
+
+  public List<DatasetValidator> getDatasetValidators() {
+    return datasetValidators;
+  }
+
+  public List<NetexDataCollector> getNetexDataCollectors() {
+    return netexDataCollectors;
+  }
+
   public NetexValidatorsRunnerBuilder withNetexXMLParser(
     NetexXMLParser netexXMLParser
   ) {
@@ -78,15 +110,6 @@ public class NetexValidatorsRunnerBuilder {
   }
 
   public NetexValidatorsRunner build() {
-    return new NetexValidatorsRunner(
-      netexXMLParser,
-      netexSchemaValidator,
-      xPathValidators,
-      jaxbValidators,
-      datasetValidators,
-      netexDataCollectors,
-      netexDataRepository,
-      stopPlaceRepository
-    );
+    return new NetexValidatorsRunner(this);
   }
 }

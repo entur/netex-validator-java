@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>4.0.6-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
