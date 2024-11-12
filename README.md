@@ -65,7 +65,7 @@ XPath rules must be registered in a ValidationTree to be applied on a NeTEx docu
 The library comes with a default validation tree (see DefaultValidationTreeFactory) that can be extended with custom rules.
 
 ## Implementing custom NeTEx validators
-Other types of NeTEx validators (non XPath-based) can be added by implementing the NetexValidator interface.
+Other types of NeTEx validators can be added by implementing the NetexValidator interface.
 See NetexIdUniquenessValidator for an example.
 
 ## Registering validators
@@ -73,7 +73,7 @@ Validators must be registered in a NetexValidatorsRunner.
 The method NetexValidatorsRunner.validate() is the entry point for running a validation.  
 It executes the registered NeTEx validators and returns a ValidationReport containing the validation findings.
 
-Example:
+Example (see also **Demo.java** for an executable example)
 ```java
 // create a NeTEx XML Parser that ignores SiteFrame elements
 NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
@@ -82,7 +82,12 @@ NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
 // create a custom NeTex validator
 NetexValidator netexValidator = new CustomNetexValidator()
 // create a NeTEx validator runner that registers the NeTEx schema validator and the custom NeTEx validator
-NetexValidatorsRunner netexValidatorsRunner = new NetexValidatorsRunner(netexXMLParser, netexSchemaValidator, List.of(netexValidator));
+NetexValidatorsRunner netexValidatorsRunner = NetexValidatorsRunner
+        .of()
+        .withNetexXMLParser(netexXMLParser)
+        .withNetexSchemaValidator(netexSchemaValidator)
+        .withXPathValidators(List.of(xPathValidator))
+        .build();
 // run the validation for a given codespace, report id, NeTEx filename and file binary content
 ValidationReport validationReport = netexValidatorsRunner.validate(codespace, reportId, filename, content);
 ```
