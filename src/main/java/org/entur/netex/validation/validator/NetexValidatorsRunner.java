@@ -69,6 +69,9 @@ public class NetexValidatorsRunner {
     return new NetexValidatorsRunnerBuilder();
   }
 
+  /**
+   * Validate a NeTEx file.
+   */
   public ValidationReport validate(
     String codespace,
     String validationReportId,
@@ -86,6 +89,10 @@ public class NetexValidatorsRunner {
     );
   }
 
+  /**
+   * Validate a NeTEx file.
+   * Optionally skip the NeTEx schema validation or the NeTEx validators
+   */
   public ValidationReport validate(
     String codespace,
     String validationReportId,
@@ -101,7 +108,7 @@ public class NetexValidatorsRunner {
     );
 
     if (netexSchemaValidator == null || skipSchemaValidation) {
-      LOGGER.info("Skipping schema validation");
+      LOGGER.debug("Skipping schema validation");
     } else {
       NetexSchemaValidationContext netexSchemaValidationContext =
         new NetexSchemaValidationContext(filename, codespace, fileContent);
@@ -118,8 +125,8 @@ public class NetexValidatorsRunner {
       return validationReport;
     }
 
-    if (skipValidators || !hasValidators()) {
-      LOGGER.info("Skipping NeTEx validators");
+    if (skipValidators || !hasNetexValidators()) {
+      LOGGER.debug("Skipping NeTEx validators");
       return validationReport;
     }
 
@@ -160,8 +167,28 @@ public class NetexValidatorsRunner {
     return validationReport;
   }
 
-  private boolean hasValidators() {
+  /**
+   *
+   * @return true if this validator runner is configured to run the XML schema validation.
+   */
+  public boolean hasSchemaValidator() {
+    return netexSchemaValidator != null;
+  }
+
+  /**
+   *
+   * @return true if this validator runner is configured to run the XPath and JAXB validators.
+   */
+  public boolean hasNetexValidators() {
     return !xPathValidators.isEmpty() || !jaxbValidators.isEmpty();
+  }
+
+  /**
+   *
+   * @return true if this validator runner is configured to run dataset-wide validators.
+   */
+  public boolean hasDatasetValidators() {
+    return !datasetValidators.isEmpty();
   }
 
   protected void postPrepareXPathValidationContext(
