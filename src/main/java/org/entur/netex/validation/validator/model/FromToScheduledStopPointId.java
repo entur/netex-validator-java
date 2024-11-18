@@ -4,7 +4,7 @@ import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.ServiceLink;
 
 /**
- * The pair of ScheduleStopPoint ids representing the "from" and "to" ends of a ServiceLink.
+ * The pair of ScheduledStopPoint ids representing the "from" and "to" ends of a ServiceLink.
  */
 public record FromToScheduledStopPointId(
   ScheduledStopPointId from,
