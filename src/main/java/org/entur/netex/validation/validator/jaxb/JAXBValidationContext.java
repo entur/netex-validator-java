@@ -1,9 +1,11 @@
 package org.entur.netex.validation.validator.jaxb;
 
 import java.util.*;
+import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
+import org.entur.netex.validation.validator.jaxb.support.DatedServiceJourneyUtils;
 import org.entur.netex.validation.validator.jaxb.support.FlexibleLineUtils;
 import org.entur.netex.validation.validator.model.*;
 import org.rutebanken.netex.model.*;
@@ -80,6 +82,7 @@ public class JAXBValidationContext implements ValidationContext {
    * If the quay id is not found in the common data repository,
    * it will be looked up from the netex entities index.
    */
+  @Nullable
   public QuayId quayIdForScheduledStopPoint(
     ScheduledStopPointId scheduledStopPointId
   ) {
@@ -101,6 +104,7 @@ public class JAXBValidationContext implements ValidationContext {
   /**
    * Return the coordinates for a given scheduledStopPoint.
    */
+  @Nullable
   public QuayCoordinates coordinatesForScheduledStopPoint(
     ScheduledStopPointId scheduledStopPointId
   ) {
@@ -120,8 +124,27 @@ public class JAXBValidationContext implements ValidationContext {
   }
 
   /**
+   * Return all lines in the current file.
+   */
+  public Collection<Line> lines() {
+    return Collections.unmodifiableCollection(
+      netexEntitiesIndex.getLineIndex().getAll()
+    );
+  }
+
+  /**
+   * Return all flexible lines in the current file.
+   */
+  public Collection<FlexibleLine> flexibleLines() {
+    return Collections.unmodifiableCollection(
+      netexEntitiesIndex.getFlexibleLineIndex().getAll()
+    );
+  }
+
+  /**
    * Return the name of the stop place referenced by a given ScheduledStopPoint.
    */
+  @Nullable
   public String stopPointName(ScheduledStopPointId scheduledStopPointId) {
     QuayId quayId = quayIdForScheduledStopPoint(scheduledStopPointId);
     if (quayId == null) {
@@ -151,6 +174,7 @@ public class JAXBValidationContext implements ValidationContext {
    * Return the JourneyPattern for the given ServiceJourney.
    * Missing JourneyPatternRef on ServiceJourney is validated with SERVICE_JOURNEY_10
    */
+  @Nullable
   public JourneyPattern journeyPattern(ServiceJourney serviceJourney) {
     return netexEntitiesIndex
       .getJourneyPatternIndex()
@@ -175,6 +199,38 @@ public class JAXBValidationContext implements ValidationContext {
     return Collections.unmodifiableCollection(
       netexEntitiesIndex.getDatedServiceJourneyIndex().getAll()
     );
+  }
+
+  /**
+   * Return DatedServiceJourneys matching a given service alteration.
+   */
+  public Collection<DatedServiceJourney> datedServiceJourneysByServiceAlteration(
+    ServiceAlterationEnumeration serviceAlteration
+  ) {
+    return datedServiceJourneys()
+      .stream()
+      .filter(dsj -> dsj.getServiceAlteration() == serviceAlteration)
+      .toList();
+  }
+
+  /**
+   * Return the DatedServiceJourney identified by the given NeTEx id.
+   */
+  @Nullable
+  public DatedServiceJourney datedServiceJourney(String id) {
+    return netexEntitiesIndex.getDatedServiceJourneyIndex().get(id);
+  }
+
+  /**
+   * Return the original DatedServiceJourney of a given DatedServiceJourney.
+   */
+  @Nullable
+  public DatedServiceJourney originalDatedServiceJourney(
+    DatedServiceJourney dsj
+  ) {
+    return netexEntitiesIndex
+      .getDatedServiceJourneyIndex()
+      .get(DatedServiceJourneyUtils.originalDatedServiceJourneyRef(dsj));
   }
 
   /**
@@ -229,10 +285,7 @@ public class JAXBValidationContext implements ValidationContext {
     AllVehicleModesOfTransportEnumeration transportMode =
       serviceJourney.getTransportMode();
     if (transportMode == null) {
-      JourneyPattern journeyPattern = netexEntitiesIndex
-        .getJourneyPatternIndex()
-        .get(serviceJourney.getJourneyPatternRef().getValue().getRef());
-
+      JourneyPattern journeyPattern = journeyPattern(serviceJourney);
       return transportMode(journeyPattern);
     }
     return transportMode;
