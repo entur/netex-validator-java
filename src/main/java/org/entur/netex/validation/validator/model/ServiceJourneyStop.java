@@ -8,6 +8,10 @@ import java.util.regex.Pattern;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.TimetabledPassingTime;
 
+/**
+ * The NeTEx id of ScheduledStopPoint.
+ * Arrival and departure times of TimetabledPassingTime for the ScheduledStopPoint.
+ */
 public record ServiceJourneyStop(
   ScheduledStopPointId scheduledStopPointId,
   LocalTime arrivalTime,

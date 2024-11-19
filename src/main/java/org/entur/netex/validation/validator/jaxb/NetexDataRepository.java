@@ -51,6 +51,18 @@ public interface NetexDataRepository {
   );
 
   /**
+   * List the DayTypes for each ServiceJourneyId in the dataset.
+   */
+  Map<ServiceJourneyId, List<DayTypeId>> serviceJourneyDayTypes(
+    String validationReportId
+  );
+
+  /**
+   * List the active dates for each DayType in the dataset.
+   */
+  Map<DayTypeId, ActiveDates> activeDates(String validationReportId);
+
+  /**
    *
    */
   void fillNetexDataCache(byte[] fileContent, String validationReportId);

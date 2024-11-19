@@ -198,11 +198,9 @@ public class NetexValidatorsRunner {
       "Collecting NeTEx data for file {}",
       validationContext.getFileName()
     );
-    if (!validationContext.isCommonFile()) {
-      netexDataCollectors.forEach(netexDataCollector ->
-        netexDataCollector.collect(validationContext)
-      );
-    }
+    netexDataCollectors.forEach(netexDataCollector ->
+      netexDataCollector.collect(validationContext)
+    );
   }
 
   protected XPathValidationContext prepareXPathValidationContext(
