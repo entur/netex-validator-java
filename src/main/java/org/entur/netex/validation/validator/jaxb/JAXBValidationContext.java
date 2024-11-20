@@ -23,7 +23,7 @@ public class JAXBValidationContext implements ValidationContext {
 
   private final String validationReportId;
   private final NetexEntitiesIndex netexEntitiesIndex;
-  private final NetexDataRepository netexDataRepository;
+  private final CommonDataRepository commonDataRepository;
   private final StopPlaceRepository stopPlaceRepository;
   private final String codespace;
   private final String fileName;
@@ -32,7 +32,7 @@ public class JAXBValidationContext implements ValidationContext {
   public JAXBValidationContext(
     String validationReportId,
     NetexEntitiesIndex netexEntitiesIndex,
-    NetexDataRepository netexDataRepository,
+    CommonDataRepository commonDataRepository,
     StopPlaceRepository stopPlaceRepository,
     String codespace,
     String fileName,
@@ -40,7 +40,7 @@ public class JAXBValidationContext implements ValidationContext {
   ) {
     this.validationReportId = validationReportId;
     this.netexEntitiesIndex = netexEntitiesIndex;
-    this.netexDataRepository = netexDataRepository;
+    this.commonDataRepository = commonDataRepository;
     this.stopPlaceRepository = stopPlaceRepository;
     this.codespace = codespace;
     this.fileName = fileName;
@@ -55,14 +55,6 @@ public class JAXBValidationContext implements ValidationContext {
   @Override
   public String getCodespace() {
     return codespace;
-  }
-
-  public StopPlaceRepository getStopPlaceRepository() {
-    return stopPlaceRepository;
-  }
-
-  public NetexDataRepository getNetexDataRepository() {
-    return netexDataRepository;
   }
 
   public NetexEntitiesIndex getNetexEntitiesIndex() {
@@ -89,8 +81,8 @@ public class JAXBValidationContext implements ValidationContext {
     if (scheduledStopPointId == null) {
       return null;
     }
-    return netexDataRepository.hasQuayIds(validationReportId)
-      ? netexDataRepository.quayIdForScheduledStopPoint(
+    return commonDataRepository.hasSharedScheduledStopPoints(validationReportId)
+      ? commonDataRepository.quayIdForScheduledStopPoint(
         scheduledStopPointId,
         validationReportId
       )
@@ -99,6 +91,14 @@ public class JAXBValidationContext implements ValidationContext {
           .getQuayIdByStopPointRefIndex()
           .get(scheduledStopPointId.id())
       );
+  }
+
+  /**
+   * Return the coordinates for a given Quay.
+   */
+  @Nullable
+  public QuayCoordinates coordinatesForQuayId(QuayId quayId) {
+    return stopPlaceRepository.getCoordinatesForQuayId(quayId);
   }
 
   /**
@@ -262,6 +262,19 @@ public class JAXBValidationContext implements ValidationContext {
   public Collection<ServiceLink> serviceLinks() {
     return Collections.unmodifiableCollection(
       netexEntitiesIndex.getServiceLinkIndex().getAll()
+    );
+  }
+
+  /**
+   *
+   * Return the ScheduledStopPoint ids at both ends of a ServiceLink.
+   */
+  public FromToScheduledStopPointId fromToScheduledStopPointIdForServiceLink(
+    ServiceLinkId serviceLinkId
+  ) {
+    return commonDataRepository.fromToScheduledStopPointIdForServiceLink(
+      serviceLinkId,
+      validationReportId
     );
   }
 

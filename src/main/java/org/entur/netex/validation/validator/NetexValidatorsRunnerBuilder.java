@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator;
 
 import java.util.List;
+import org.entur.netex.validation.validator.jaxb.CommonDataRepositoryLoader;
 import org.entur.netex.validation.validator.jaxb.JAXBValidator;
 import org.entur.netex.validation.validator.jaxb.NetexDataCollector;
 import org.entur.netex.validation.validator.jaxb.NetexDataRepository;
@@ -12,6 +13,7 @@ public class NetexValidatorsRunnerBuilder {
 
   private NetexXMLParser netexXMLParser;
   private NetexSchemaValidator netexSchemaValidator = null;
+  private CommonDataRepositoryLoader commonDataRepository = null;
   private NetexDataRepository netexDataRepository = null;
   private StopPlaceRepository stopPlaceRepository = null;
   private List<XPathValidator> xPathValidators = List.of();
@@ -27,6 +29,10 @@ public class NetexValidatorsRunnerBuilder {
 
   public NetexSchemaValidator getNetexSchemaValidator() {
     return netexSchemaValidator;
+  }
+
+  public CommonDataRepositoryLoader getCommonDataRepository() {
+    return commonDataRepository;
   }
 
   public NetexDataRepository getNetexDataRepository() {
@@ -71,6 +77,13 @@ public class NetexValidatorsRunnerBuilder {
     NetexSchemaValidator netexSchemaValidator
   ) {
     this.netexSchemaValidator = netexSchemaValidator;
+    return this;
+  }
+
+  public NetexValidatorsRunnerBuilder withCommonDataRepository(
+    CommonDataRepositoryLoader commonDataRepository
+  ) {
+    this.commonDataRepository = commonDataRepository;
     return this;
   }
 

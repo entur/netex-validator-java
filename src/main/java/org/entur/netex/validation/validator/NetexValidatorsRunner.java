@@ -42,7 +42,7 @@ public class NetexValidatorsRunner {
   private final List<JAXBValidator> jaxbValidators;
   private final List<DatasetValidator> datasetValidators;
   private final List<NetexDataCollector> netexDataCollectors;
-  private final NetexDataRepository netexDataRepository;
+  private final CommonDataRepositoryLoader commonDataRepository;
   private final StopPlaceRepository stopPlaceRepository;
 
   private final NetexXMLParser netexXMLParser;
@@ -61,7 +61,7 @@ public class NetexValidatorsRunner {
     this.jaxbValidators = builder.getJaxbValidators();
     this.datasetValidators = builder.getDatasetValidators();
     this.netexDataCollectors = builder.getNetexDataCollectors();
-    this.netexDataRepository = builder.getNetexDataRepository();
+    this.commonDataRepository = builder.getCommonDataRepository();
     this.stopPlaceRepository = builder.getStopPlaceRepository();
   }
 
@@ -154,7 +154,25 @@ public class NetexValidatorsRunner {
       fileContent,
       xPathValidationContext.getLocalIdsMap()
     );
-    postPrepareXPathValidationContext(jaxbValidationContext);
+
+    if (jaxbValidationContext.isCommonFile() && commonDataRepository != null) {
+      LOGGER.info(
+        "Collecting common data for common file {}",
+        jaxbValidationContext.getFileName()
+      );
+      commonDataRepository.collect(
+        jaxbValidationContext.getValidationReportId(),
+        jaxbValidationContext.getNetexEntitiesIndex()
+      );
+    }
+    LOGGER.info(
+      "Collecting data for file {}",
+      jaxbValidationContext.getFileName()
+    );
+    netexDataCollectors.forEach(netexDataCollector ->
+      netexDataCollector.collect(jaxbValidationContext)
+    );
+
     runJAXBValidators(
       codespace,
       validationReportId,
@@ -250,7 +268,7 @@ public class NetexValidatorsRunner {
     return new JAXBValidationContext(
       validationReportId,
       netexEntitiesIndex,
-      netexDataRepository,
+      commonDataRepository,
       stopPlaceRepository,
       codespace,
       filename,

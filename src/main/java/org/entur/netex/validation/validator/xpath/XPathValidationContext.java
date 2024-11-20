@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -45,12 +46,13 @@ public class XPathValidationContext implements ValidationContext {
     this.netexXMLParser = netexXMLParser;
     this.codespace = Objects.requireNonNull(codespace);
     this.fileName = fileName;
-    this.localIds = Objects.requireNonNull(localIds);
+    this.localIds =
+      Collections.unmodifiableSet(Objects.requireNonNull(localIds));
     this.localIdsMap =
       localIds
         .stream()
         .collect(
-          Collectors.toMap(
+          Collectors.toUnmodifiableMap(
             IdVersion::getId,
             Function.identity(),
             (existing, duplicate) -> existing
@@ -73,6 +75,9 @@ public class XPathValidationContext implements ValidationContext {
     return codespace;
   }
 
+  /**
+   * Return the set of local IdVersions in the current NeTEx document.
+   */
   public Set<IdVersion> getLocalIds() {
     return localIds;
   }
@@ -85,6 +90,9 @@ public class XPathValidationContext implements ValidationContext {
     return netexXMLParser;
   }
 
+  /**
+   * Return the map between NeTEx IDs and IdVersions present in the current NeTEx document.
+   */
   public Map<String, IdVersion> getLocalIdsMap() {
     return localIdsMap;
   }
