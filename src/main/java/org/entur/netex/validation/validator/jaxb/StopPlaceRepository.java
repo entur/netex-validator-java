@@ -54,14 +54,4 @@ public interface StopPlaceRepository {
    */
   @Nullable
   String getStopPlaceNameForQuayId(QuayId quayId);
-
-  /**
-   * Refresh the repository.
-   */
-  void refreshCache();
-
-  /**
-   * Return true if the repository is not primed.
-   */
-  boolean isEmpty();
 }
