@@ -1,6 +1,7 @@
 package org.entur.netex.validation.validator.jaxb;
 
 import java.util.*;
+import java.util.function.Function;
 import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.ValidationContext;
@@ -33,7 +34,7 @@ public class JAXBValidationContext implements ValidationContext {
     String validationReportId,
     NetexEntitiesIndex netexEntitiesIndex,
     CommonDataRepository commonDataRepository,
-    StopPlaceRepository stopPlaceRepository,
+    Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepositoryFunction,
     String codespace,
     String fileName,
     Map<String, IdVersion> localIdsMap
@@ -41,7 +42,12 @@ public class JAXBValidationContext implements ValidationContext {
     this.validationReportId = validationReportId;
     this.netexEntitiesIndex = netexEntitiesIndex;
     this.commonDataRepository = commonDataRepository;
-    this.stopPlaceRepository = stopPlaceRepository;
+    if (stopPlaceRepositoryFunction != null) {
+      this.stopPlaceRepository = stopPlaceRepositoryFunction.apply(this);
+    } else {
+      this.stopPlaceRepository = null;
+    }
+
     this.codespace = codespace;
     this.fileName = fileName;
     this.localIdsMap = localIdsMap;

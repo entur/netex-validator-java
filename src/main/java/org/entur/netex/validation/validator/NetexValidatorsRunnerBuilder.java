@@ -1,7 +1,9 @@
 package org.entur.netex.validation.validator;
 
 import java.util.List;
+import java.util.function.Function;
 import org.entur.netex.validation.validator.jaxb.CommonDataRepositoryLoader;
+import org.entur.netex.validation.validator.jaxb.JAXBValidationContext;
 import org.entur.netex.validation.validator.jaxb.JAXBValidator;
 import org.entur.netex.validation.validator.jaxb.NetexDataCollector;
 import org.entur.netex.validation.validator.jaxb.NetexDataRepository;
@@ -15,7 +17,8 @@ public class NetexValidatorsRunnerBuilder {
   private NetexSchemaValidator netexSchemaValidator = null;
   private CommonDataRepositoryLoader commonDataRepository = null;
   private NetexDataRepository netexDataRepository = null;
-  private StopPlaceRepository stopPlaceRepository = null;
+  private Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository =
+    null;
   private List<XPathValidator> xPathValidators = List.of();
   private List<JAXBValidator> jaxbValidators = List.of();
   private List<DatasetValidator> datasetValidators = List.of();
@@ -39,7 +42,7 @@ public class NetexValidatorsRunnerBuilder {
     return netexDataRepository;
   }
 
-  public StopPlaceRepository getStopPlaceRepository() {
+  public Function<JAXBValidationContext, StopPlaceRepository> getStopPlaceRepository() {
     return stopPlaceRepository;
   }
 
@@ -96,6 +99,13 @@ public class NetexValidatorsRunnerBuilder {
 
   public NetexValidatorsRunnerBuilder withStopPlaceRepository(
     StopPlaceRepository stopPlaceRepository
+  ) {
+    this.stopPlaceRepository = jaxbValidationContext -> stopPlaceRepository;
+    return this;
+  }
+
+  public NetexValidatorsRunnerBuilder withStopPlaceRepository(
+    Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository
   ) {
     this.stopPlaceRepository = stopPlaceRepository;
     return this;
