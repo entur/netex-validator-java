@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import net.sf.saxon.s9api.XPathCompiler;
@@ -43,7 +44,7 @@ public class NetexValidatorsRunner {
   private final List<DatasetValidator> datasetValidators;
   private final List<NetexDataCollector> netexDataCollectors;
   private final CommonDataRepositoryLoader commonDataRepository;
-  private final StopPlaceRepository stopPlaceRepository;
+  private final Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository;
 
   private final NetexXMLParser netexXMLParser;
 
