@@ -46,14 +46,4 @@ public interface NetexDataRepository {
   Map<ServiceJourneyId, List<OperatingDayId>> serviceJourneyOperatingDays(
     String validationReportId
   );
-
-  /**
-   *
-   */
-  void fillNetexDataCache(byte[] fileContent, String validationReportId);
-
-  /**
-   * Clean up the NeTEx data repository.
-   */
-  void cleanUp(String validationReportId);
 }
