@@ -293,6 +293,26 @@ public class JAXBValidationContext implements ValidationContext {
     );
   }
 
+  public boolean hasCompositeFrames() {
+    return !netexEntitiesIndex.getCompositeFrames().isEmpty();
+  }
+
+  public Collection<CompositeFrame> compositeFrames() {
+    return Collections.unmodifiableCollection(
+      netexEntitiesIndex.getCompositeFrames()
+    );
+  }
+
+  public boolean hasServiceCalendarFrames() {
+    return !netexEntitiesIndex.getServiceCalendarFrames().isEmpty();
+  }
+
+  public Collection<ServiceCalendarFrame> serviceCalendarFrames() {
+    return Collections.unmodifiableCollection(
+      netexEntitiesIndex.getServiceCalendarFrames()
+    );
+  }
+
   /**
    * Find the transport mode for the given service journey.
    * If the transport mode is not set on the service journey,

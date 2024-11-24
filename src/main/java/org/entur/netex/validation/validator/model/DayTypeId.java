@@ -10,7 +10,7 @@ import org.rutebanken.netex.model.*;
 /**
  * The NeTEx id of DayType.
  */
-public record DayTypeId(String id) {
+public record DayTypeId(String id) implements ActiveDatesId {
   public DayTypeId {
     Objects.requireNonNull(id, "DayType id should not be null");
     if (!isValid(id)) {

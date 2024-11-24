@@ -25,8 +25,12 @@ public record ServiceJourneyStop(
   ) {
     return new ServiceJourneyStop(
       scheduledStopPointId,
-      timetabledPassingTime.getArrivalTime(),
-      timetabledPassingTime.getDepartureTime(),
+      Optional
+        .ofNullable(timetabledPassingTime.getArrivalTime())
+        .orElse(timetabledPassingTime.getDepartureTime()),
+      Optional
+        .ofNullable(timetabledPassingTime.getDepartureTime())
+        .orElse(timetabledPassingTime.getArrivalTime()),
       Optional
         .ofNullable(timetabledPassingTime.getArrivalDayOffset())
         .map(BigInteger::intValue)

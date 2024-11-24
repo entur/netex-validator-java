@@ -25,7 +25,7 @@ public record QuayId(String id) {
   }
 
   public static QuayId ofValidId(String id) {
-    return id != null && isValid(id) ? new QuayId(id) : null;
+    return isValid(id) ? new QuayId(id) : null;
   }
 
   public static QuayId ofNullable(String id) {
@@ -33,7 +33,7 @@ public record QuayId(String id) {
   }
 
   public static boolean isValid(String quayId) {
-    return quayId.contains(":Quay:");
+    return quayId != null && quayId.contains(":Quay:");
   }
 
   @Override
