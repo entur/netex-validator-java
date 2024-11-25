@@ -873,8 +873,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
    * CompositeFrame validation rules that apply both to Line files and common files.
    *
    */
-  protected List<ValidationRule> getCompositeFrameBaseValidationRules() {
-    List<ValidationRule> validationRules = new ArrayList<>();
+  protected List<XPathValidationRule> getCompositeFrameBaseValidationRules() {
+    List<XPathValidationRule> validationRules = new ArrayList<>();
     validationRules.add(
       new ValidateNotExist(
         "frames/SiteFrame",
@@ -1106,8 +1106,8 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
    * Validation rules that apply both to Line files and Common files.
    *
    */
-  protected List<ValidationRule> getServiceFrameBaseValidationRules() {
-    List<ValidationRule> validationRules = new ArrayList<>();
+  protected List<XPathValidationRule> getServiceFrameBaseValidationRules() {
+    List<XPathValidationRule> validationRules = new ArrayList<>();
     validationRules.add(
       new ValidateNotExist(
         "Network[not(AuthorityRef)]",

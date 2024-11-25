@@ -3,8 +3,8 @@ package org.entur.netex.validation.validator.xpath.rules;
 import java.util.List;
 import java.util.Set;
 import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -87,15 +87,15 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         TEST_CODESPACE,
         null
       );
-    List<XPathValidationReportEntry> xPathValidationReportEntries =
+    List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(xPathValidationReportEntries);
-    Assertions.assertFalse(xPathValidationReportEntries.isEmpty());
+    Assertions.assertNotNull(validationIssues);
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.getCode(),
-      xPathValidationReportEntries.get(0).code()
+      validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.rule(),
+      validationIssues.get(0).rule()
     );
   }
 
@@ -117,12 +117,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         TEST_CODESPACE,
         null
       );
-    List<XPathValidationReportEntry> xPathValidationReportEntries =
+    List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(xPathValidationReportEntries);
-    Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
+    Assertions.assertNotNull(validationIssues);
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 
   @Test
@@ -146,12 +146,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         TEST_CODESPACE,
         null
       );
-    List<XPathValidationReportEntry> xPathValidationReportEntries =
+    List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(xPathValidationReportEntries);
-    Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
+    Assertions.assertNotNull(validationIssues);
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 
   @Test
@@ -175,11 +175,11 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         TEST_CODESPACE,
         null
       );
-    List<XPathValidationReportEntry> xPathValidationReportEntries =
+    List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(xPathValidationReportEntries);
-    Assertions.assertTrue(xPathValidationReportEntries.isEmpty());
+    Assertions.assertNotNull(validationIssues);
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

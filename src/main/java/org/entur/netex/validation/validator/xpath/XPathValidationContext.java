@@ -24,6 +24,7 @@ public class XPathValidationContext implements ValidationContext {
   private final Set<IdVersion> localIds;
   private final List<IdVersion> localRefs;
   private final Map<String, IdVersion> localIdsMap;
+  private final String validationReportId;
 
   /**
    * Build the validation context for a validation run
@@ -40,7 +41,8 @@ public class XPathValidationContext implements ValidationContext {
     String codespace,
     String fileName,
     Set<IdVersion> localIds,
-    List<IdVersion> localRefs
+    List<IdVersion> localRefs,
+    String validationReportId
   ) {
     this.xmlNode = document;
     this.netexXMLParser = netexXMLParser;
@@ -59,6 +61,7 @@ public class XPathValidationContext implements ValidationContext {
           )
         );
     this.localRefs = Objects.requireNonNull(localRefs);
+    this.validationReportId = validationReportId;
   }
 
   public XdmNode getXmlNode() {
@@ -95,5 +98,9 @@ public class XPathValidationContext implements ValidationContext {
    */
   public Map<String, IdVersion> getLocalIdsMap() {
     return localIdsMap;
+  }
+
+  public String getValidationReportId() {
+    return validationReportId;
   }
 }

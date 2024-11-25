@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.entur.netex.validation.validator.Severity.ERROR;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -7,9 +9,10 @@ import java.util.Set;
 import net.sf.saxon.s9api.*;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
  * Validate that there is no duplicated TimetabledPassingTimes NeTEx id within a Line file.
@@ -19,9 +22,12 @@ import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 public class ValidateDuplicatedTimetabledPassingTimeId
   extends AbstractXPathValidationRule {
 
-  private static final String MESSAGE =
-    "Non-unique NeTEx id for TimetabledPassingTime";
-  public static final String RULE_NAME = "SERVICE_JOURNEY_17";
+  static final ValidationRule RULE = new ValidationRule(
+    "SERVICE_JOURNEY_17",
+    "Non-unique NeTEx id for TimetabledPassingTime",
+    ERROR
+  );
+
   private final String context;
 
   public ValidateDuplicatedTimetabledPassingTimeId(String context) {
@@ -29,7 +35,7 @@ public class ValidateDuplicatedTimetabledPassingTimeId
   }
 
   @Override
-  public List<XPathValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     try {
@@ -44,8 +50,7 @@ public class ValidateDuplicatedTimetabledPassingTimeId
       selector.setContextItem(validationContext.getXmlNode());
       XdmValue nodes = selector.evaluate();
       Set<String> foundIds = new HashSet<>();
-      List<XPathValidationReportEntry> validationReportEntries =
-        new ArrayList<>();
+      List<ValidationIssue> validationIssues = new ArrayList<>();
       for (XdmItem item : nodes) {
         XdmNode xdmNode = (XdmNode) item;
         String id = xdmNode.getAttributeValue(new QName("id"));
@@ -54,26 +59,19 @@ public class ValidateDuplicatedTimetabledPassingTimeId
             validationContext.getFileName(),
             xdmNode
           );
-          validationReportEntries.add(
-            new XPathValidationReportEntry(MESSAGE, RULE_NAME, dataLocation)
-          );
+          validationIssues.add(new ValidationIssue(RULE, dataLocation));
         } else {
           foundIds.add(id);
         }
       }
-      return validationReportEntries;
+      return validationIssues;
     } catch (SaxonApiException e) {
       throw new NetexValidationException("Error while validating rule", e);
     }
   }
 
   @Override
-  public String getMessage() {
-    return MESSAGE;
-  }
-
-  @Override
-  public String getCode() {
-    return RULE_NAME;
+  public ValidationRule rule() {
+    return RULE;
   }
 }

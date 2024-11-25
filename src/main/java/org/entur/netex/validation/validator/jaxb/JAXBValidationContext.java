@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.function.Function;
 import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
+import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.jaxb.support.DatedServiceJourneyUtils;
@@ -73,6 +74,19 @@ public class JAXBValidationContext implements ValidationContext {
 
   public Map<String, IdVersion> getLocalIdsMap() {
     return localIdsMap;
+  }
+
+  public DataLocation dataLocation(String entityId) {
+    IdVersion idVersion = localIdsMap.get(entityId);
+
+    return idVersion != null
+      ? new DataLocation(
+        idVersion.getId(),
+        fileName,
+        idVersion.getLineNumber(),
+        idVersion.getColumnNumber()
+      )
+      : new DataLocation(entityId, fileName, 0, 0);
   }
 
   /**

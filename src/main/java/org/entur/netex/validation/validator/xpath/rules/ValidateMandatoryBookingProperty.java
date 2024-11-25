@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.entur.netex.validation.validator.Severity.ERROR;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -11,9 +13,10 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
  * Validate the booking properties against the Nordic NeTEx profile.
@@ -21,9 +24,7 @@ import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 public class ValidateMandatoryBookingProperty
   extends AbstractXPathValidationRule {
 
-  private static final String MESSAGE_FORMAT =
-    "Mandatory booking property %s not specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns";
-  public static final String RULE_NAME = "BOOKING_4";
+  private final ValidationRule rule;
 
   private final String bookingProperty;
   private final String context;
@@ -34,10 +35,19 @@ public class ValidateMandatoryBookingProperty
   ) {
     this.bookingProperty = Objects.requireNonNull(bookingProperty);
     this.context = Objects.requireNonNull(context);
+    rule =
+      new ValidationRule(
+        "BOOKING_4",
+        "Booking property",
+        "Mandatory booking property %s not specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns".formatted(
+            bookingProperty
+          ),
+        ERROR
+      );
   }
 
   @Override
-  public List<XPathValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     try {
@@ -99,8 +109,7 @@ public class ValidateMandatoryBookingProperty
           }
         }
       }
-      List<XPathValidationReportEntry> validationReportEntries =
-        new ArrayList<>();
+      List<ValidationIssue> validationIssues = new ArrayList<>();
 
       for (XdmValue errorNode : errorNodes) {
         for (XdmItem item : errorNode) {
@@ -109,25 +118,17 @@ public class ValidateMandatoryBookingProperty
             validationContext.getFileName(),
             xdmNode
           );
-          String message = String.format(MESSAGE_FORMAT, bookingProperty);
-          validationReportEntries.add(
-            new XPathValidationReportEntry(message, RULE_NAME, dataLocation)
-          );
+          validationIssues.add(new ValidationIssue(rule, dataLocation));
         }
       }
-      return validationReportEntries;
+      return validationIssues;
     } catch (SaxonApiException e) {
       throw new NetexValidationException("Error while validating rule", e);
     }
   }
 
   @Override
-  public String getMessage() {
-    return String.format(MESSAGE_FORMAT, bookingProperty);
-  }
-
-  @Override
-  public String getCode() {
-    return RULE_NAME;
+  public ValidationRule rule() {
+    return rule;
   }
 }

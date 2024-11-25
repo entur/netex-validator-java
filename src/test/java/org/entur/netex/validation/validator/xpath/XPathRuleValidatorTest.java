@@ -5,11 +5,8 @@ import static org.entur.netex.validation.validator.ValidatorTestUtil.validateXPa
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
-import org.entur.netex.validation.configuration.ValidationConfigLoader;
-import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -58,55 +55,27 @@ class XPathRuleValidatorTest {
 
   private final ValidationTreeFactory validationTreeFactory =
     new DefaultValidationTreeFactory();
-  private final ValidationConfigLoader validationConfigLoader =
-    new DefaultValidationConfigLoader();
+
   private final XPathRuleValidator xPathRuleValidator = new XPathRuleValidator(
-    validationTreeFactory,
-    new DefaultValidationEntryFactory(validationConfigLoader)
+    validationTreeFactory
   );
   private final NetexXMLParser netexXMLParser = new NetexXMLParser();
-
-  @Test
-  void testXPathValidator() throws IOException {
-    InputStream testDatasetAsStream = getClass()
-      .getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
-      "FLB",
-      xPathRuleValidator,
-      netexXMLParser,
-      testDatasetAsStream
-    );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
-    Assertions.assertTrue(
-      validationReportEntries
-        .stream()
-        .allMatch(validationReportEntry ->
-          validationReportEntry.getFileName().endsWith(".xml")
-        )
-    );
-  }
 
   @Test
   void testDayTypeAllAssigned() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_DATASET_AUTHORITY_VALIDATION_FILE_NAME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_CALENDAR_1")
-                .getName()
-            )
+        .noneMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_CALENDAR_1")
         )
     );
   }
@@ -115,24 +84,18 @@ class XPathRuleValidatorTest {
   void testDayTypeNotAssigned() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_DATASET_DAY_TYPE_NOT_ASSIGNED);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_CALENDAR_1")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_CALENDAR_1")
         )
     );
   }
@@ -141,32 +104,24 @@ class XPathRuleValidatorTest {
   void testValidColourCoding() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_DATASET_COLOUR_VALID_CODING_FILE_NAME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_8").getName()
-            )
+        .noneMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_8")
         )
     );
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_9").getName()
-            )
+        .noneMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_9")
         )
     );
   }
@@ -177,33 +132,25 @@ class XPathRuleValidatorTest {
       .getResourceAsStream(
         '/' + TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME
       );
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_8").getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_8")
         )
     );
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_9").getName()
-            )
+        .noneMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_9")
         )
     );
   }
@@ -214,33 +161,25 @@ class XPathRuleValidatorTest {
       .getResourceAsStream(
         '/' + TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME
       );
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_9").getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_9")
         )
     );
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader.getValidationRuleConfig("LINE_8").getName()
-            )
+        .noneMatch(validationIssue ->
+          validationIssue.rule().code().equals("LINE_8")
         )
     );
   }
@@ -250,24 +189,18 @@ class XPathRuleValidatorTest {
     throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_DSJ_MULTIPLE_REFERENCE_TO_SAME_DSJ);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("DATED_SERVICE_JOURNEY_5")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("DATED_SERVICE_JOURNEY_5")
         )
     );
   }
@@ -276,24 +209,18 @@ class XPathRuleValidatorTest {
   void testNonNumericNetexVersion() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_NON_NUMERIC_NETEX_VERSION);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("VERSION_NON_NUMERIC")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("VERSION_NON_NUMERIC")
         )
     );
   }
@@ -302,19 +229,18 @@ class XPathRuleValidatorTest {
   void testValidFlexibleLine() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_VALID);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .noneMatch(validationReportEntry ->
-          validationReportEntry.getSeverity() ==
-          ValidationReportEntrySeverity.ERROR
+        .noneMatch(validationIssue ->
+          validationIssue.rule().severity() == Severity.ERROR
         )
     );
   }
@@ -326,24 +252,18 @@ class XPathRuleValidatorTest {
       .getResourceAsStream(
         '/' + TEST_FLEXIBLE_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES
       );
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_4")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_JOURNEY_4")
         )
     );
   }
@@ -354,24 +274,18 @@ class XPathRuleValidatorTest {
       .getResourceAsStream(
         '/' + TEST_FLEXIBLE_LINE_MISSING_EARLIEST_DEPARTURE_TIME
       );
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_5")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_JOURNEY_5")
         )
     );
   }
@@ -380,24 +294,18 @@ class XPathRuleValidatorTest {
   void testInValidFlexibleLineMissingLastArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_LAST_ARRIVAL_TIME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_6")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_JOURNEY_6")
         )
     );
   }
@@ -406,24 +314,18 @@ class XPathRuleValidatorTest {
   void testInValidineMissingDepartureAndArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
         .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_4")
-                .getName()
-            )
+          validationReportEntry.rule().code().equals("SERVICE_JOURNEY_4")
         )
     );
   }
@@ -432,24 +334,18 @@ class XPathRuleValidatorTest {
   void testInValidLineMissingDepartureTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_TIME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
         .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_5")
-                .getName()
-            )
+          validationReportEntry.rule().code().equals("SERVICE_JOURNEY_5")
         )
     );
   }
@@ -458,24 +354,18 @@ class XPathRuleValidatorTest {
   void testInValidLineMissingLastArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_LINE_MISSING_LAST_ARRIVAL_TIME);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "FLB",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("SERVICE_JOURNEY_6")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("SERVICE_JOURNEY_6")
         )
     );
   }
@@ -484,24 +374,18 @@ class XPathRuleValidatorTest {
   void testMissingNoticedObjectRef() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICED_OBJECT_REF);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("NOTICE_6")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("NOTICE_6")
         )
     );
   }
@@ -510,24 +394,18 @@ class XPathRuleValidatorTest {
   void testMissingNoticeRef() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_NOTICE_REF);
-    List<ValidationReportEntry> validationReportEntries = validateXPath(
+    List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
       netexXMLParser,
       testDatasetAsStream
     );
-    Assertions.assertFalse(validationReportEntries.isEmpty());
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertTrue(
-      validationReportEntries
+      validationIssues
         .stream()
-        .anyMatch(validationReportEntry ->
-          validationReportEntry
-            .getName()
-            .equals(
-              validationConfigLoader
-                .getValidationRuleConfig("NOTICE_7")
-                .getName()
-            )
+        .anyMatch(validationIssue ->
+          validationIssue.rule().code().equals("NOTICE_7")
         )
     );
   }

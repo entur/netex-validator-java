@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,43 +21,44 @@ import org.slf4j.LoggerFactory;
 public class ReferenceToValidEntityTypeValidator
   extends AbstractXPathValidator {
 
-  static final String RULE_CODE_NETEX_ID_6 = "NETEX_ID_6";
-  static final String RULE_CODE_NETEX_ID_7 = "NETEX_ID_7";
+  static final ValidationRule RULE_INVALID_REFERENCE = new ValidationRule(
+    "NETEX_ID_6",
+    "NeTEx ID reference to invalid element",
+    "Reference to %s is not allowed from element %s. Generally an element named XXXXRef may only reference elements if type XXXX",
+    Severity.ERROR
+  );
 
-  private static final String MESSAGE_FORMAT_INVALID_REFERENCE =
-    "Reference to %s is not allowed from element %s. Generally an element named XXXXRef may only reference elements if type XXXX";
-  private static final String MESSAGE_FORMAT_INVALID_ID_STRUCTURE =
-    "Invalid id structure on element";
+  static final ValidationRule RULE_INVALID_ID_STRUCTURE = new ValidationRule(
+    "NETEX_ID_7",
+    "NeTEx ID invalid value",
+    "Invalid id structure on element",
+    Severity.ERROR
+  );
+
   private static final Logger LOGGER = LoggerFactory.getLogger(
     ReferenceToValidEntityTypeValidator.class
   );
 
   private final Map<String, Set<String>> allowedSubstitutions;
 
-  public ReferenceToValidEntityTypeValidator(
-    ValidationReportEntryFactory validationReportEntryFactory
-  ) {
-    super(validationReportEntryFactory);
+  public ReferenceToValidEntityTypeValidator() {
     this.allowedSubstitutions = getAllowedSubstitutions();
   }
 
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
-      validationReport.getValidationReportId()
+      xPathValidationContext.getValidationReportId()
     );
-    validationReport.addAllValidationReportEntries(
-      validate(xPathValidationContext.getLocalRefs())
-    );
+    return validate(xPathValidationContext.getLocalRefs());
   }
 
-  protected List<ValidationReportEntry> validate(List<IdVersion> localRefs) {
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+  protected List<ValidationIssue> validate(List<IdVersion> localRefs) {
+    List<ValidationIssue> validationIssues = new ArrayList<>();
 
     for (IdVersion id : localRefs) {
       String referencingElement = id.getElementName();
@@ -71,32 +72,24 @@ public class ReferenceToValidEntityTypeValidator
           !("Default" + referencedElement + "Ref").equals(referencingElement) &&
           !canSubstitute(referencingElement, referencedElement)
         ) {
-          String validationReportEntryMessage = String.format(
-            MESSAGE_FORMAT_INVALID_REFERENCE,
-            referencedElement,
-            referencingElement
-          );
           DataLocation dataLocation = getIdVersionLocation(id);
-          validationReportEntries.add(
-            createValidationReportEntry(
-              RULE_CODE_NETEX_ID_6,
+          validationIssues.add(
+            new ValidationIssue(
+              RULE_INVALID_REFERENCE,
               dataLocation,
-              validationReportEntryMessage
+              referencedElement,
+              referencingElement
             )
           );
         }
       } else {
         DataLocation dataLocation = getIdVersionLocation(id);
-        validationReportEntries.add(
-          createValidationReportEntry(
-            RULE_CODE_NETEX_ID_7,
-            dataLocation,
-            MESSAGE_FORMAT_INVALID_ID_STRUCTURE
-          )
+        validationIssues.add(
+          new ValidationIssue(RULE_INVALID_ID_STRUCTURE, dataLocation)
         );
       }
     }
-    return validationReportEntries;
+    return validationIssues;
   }
 
   private boolean canSubstitute(
@@ -210,16 +203,7 @@ public class ReferenceToValidEntityTypeValidator
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return Set.of(
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_6,
-        MESSAGE_FORMAT_INVALID_REFERENCE
-      ),
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_7,
-        MESSAGE_FORMAT_INVALID_ID_STRUCTURE
-      )
-    );
+  public Set<ValidationRule> getRules() {
+    return Set.of(RULE_INVALID_REFERENCE, RULE_INVALID_ID_STRUCTURE);
   }
 }

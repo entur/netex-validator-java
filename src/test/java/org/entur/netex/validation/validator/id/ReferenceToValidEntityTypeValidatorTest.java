@@ -2,10 +2,8 @@ package org.entur.netex.validation.validator.id;
 
 import java.util.List;
 import java.util.Set;
+import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,18 +22,8 @@ class ReferenceToValidEntityTypeValidatorTest {
 
   @BeforeEach
   void setUpTest() {
-    ValidationReportEntryFactory validationReportEntryFactory = (
-        code,
-        validationReportEntryMessage,
-        dataLocation
-      ) ->
-      new ValidationReportEntry(
-        validationReportEntryMessage,
-        code,
-        ValidationReportEntrySeverity.INFO
-      );
     referenceToValidEntityTypeValidator =
-      new ReferenceToValidEntityTypeValidator(validationReportEntryFactory);
+      new ReferenceToValidEntityTypeValidator();
     validationReport =
       new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
@@ -58,23 +46,15 @@ class ReferenceToValidEntityTypeValidatorTest {
       TEST_CODESPACE,
       null,
       Set.of(),
-      localRefs
+      localRefs,
+      validationReport.getValidationReportId()
     );
-    referenceToValidEntityTypeValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      ReferenceToValidEntityTypeValidator.RULE_CODE_NETEX_ID_6,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      ReferenceToValidEntityTypeValidator.RULE_INVALID_REFERENCE,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -96,23 +76,15 @@ class ReferenceToValidEntityTypeValidatorTest {
       TEST_CODESPACE,
       null,
       Set.of(),
-      localRefs
+      localRefs,
+      validationReport.getValidationReportId()
     );
-    referenceToValidEntityTypeValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      ReferenceToValidEntityTypeValidator.RULE_CODE_NETEX_ID_7,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      ReferenceToValidEntityTypeValidator.RULE_INVALID_ID_STRUCTURE,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -134,14 +106,11 @@ class ReferenceToValidEntityTypeValidatorTest {
       TEST_CODESPACE,
       null,
       Set.of(),
-      localRefs
+      localRefs,
+      validationReport.getValidationReportId()
     );
-    referenceToValidEntityTypeValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertTrue(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

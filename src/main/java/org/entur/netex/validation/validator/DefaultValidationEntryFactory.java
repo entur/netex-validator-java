@@ -6,7 +6,8 @@ import org.entur.netex.validation.exception.NetexValidationException;
 
 /**
  * Default implementation of the validation report entry factory.
- * The entry name and severity are retrieved from the validation configuration file.
+ * The name, message and severity are retrieved from the validation configuration file and override the default name,
+ * message and severity of the validation rule.
  */
 public class DefaultValidationEntryFactory
   implements ValidationReportEntryFactory {
@@ -21,23 +22,32 @@ public class DefaultValidationEntryFactory
 
   @Override
   public ValidationReportEntry createValidationReportEntry(
-    String code,
-    String validationReportEntryMessage,
-    DataLocation dataLocation
+    ValidationIssue validationIssue
   ) {
     ValidationRuleConfig validationRuleConfig = validationConfigLoader
       .getValidationRuleConfigs()
-      .get(code);
+      .get(validationIssue.rule().code());
     if (validationRuleConfig == null) {
       throw new NetexValidationException(
-        "Configuration not found for rule " + code
+        "Configuration not found for rule " + validationIssue.rule().code()
       );
     }
+
+    String message = validationRuleConfig.getMessage() != null
+      ? validationRuleConfig.getMessage().formatted(validationIssue.arguments())
+      : validationIssue.message();
+    String name = validationRuleConfig.getName() != null
+      ? validationRuleConfig.getName()
+      : validationIssue.rule().name();
+    Severity severity = validationRuleConfig.getSeverity() != null
+      ? validationRuleConfig.getSeverity()
+      : validationIssue.rule().severity();
+
     return new ValidationReportEntry(
-      validationReportEntryMessage,
-      validationRuleConfig.getName(),
-      validationRuleConfig.getSeverity(),
-      dataLocation
+      message,
+      name,
+      severity,
+      validationIssue.dataLocation()
     );
   }
 }

@@ -5,8 +5,6 @@ import static org.entur.netex.validation.validator.ValidatorTestUtil.getReport;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
-import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -60,8 +58,7 @@ class NetexReferenceValidatorIntegrationTest {
           .collect(Collectors.toSet());
     return new NetexReferenceValidator(
       netexIdRepository,
-      List.of(acceptAllStopPlacesAndQuays),
-      new DefaultValidationEntryFactory(new DefaultValidationConfigLoader())
+      List.of(acceptAllStopPlacesAndQuays)
     );
   }
 }

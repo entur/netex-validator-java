@@ -2,11 +2,11 @@ package org.entur.netex.validation.validator.xpath;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,34 +22,28 @@ public class XPathRuleValidator extends AbstractXPathValidator {
 
   private final ValidationTree topLevelValidationTree;
 
-  public XPathRuleValidator(
-    ValidationTreeFactory validationTreeFactory,
-    ValidationReportEntryFactory validationReportEntryFactory
-  ) {
-    super(validationReportEntryFactory);
+  public XPathRuleValidator(ValidationTreeFactory validationTreeFactory) {
     this.topLevelValidationTree = validationTreeFactory.buildValidationTree();
   }
 
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
-      validationReport.getValidationReportId()
+      xPathValidationContext.getValidationReportId()
     );
-    List<ValidationReportEntry> validationReportEntries = validate(
-      validationReport.getCodespace(),
+    return validate(
+      xPathValidationContext.getCodespace(),
       xPathValidationContext.getFileName(),
       xPathValidationContext.getXmlNode(),
       xPathValidationContext.getNetexXMLParser()
     );
-    validationReport.addAllValidationReportEntries(validationReportEntries);
   }
 
-  protected List<ValidationReportEntry> validate(
+  protected List<ValidationIssue> validate(
     String codespace,
     String fileName,
     XdmNode document,
@@ -65,25 +59,10 @@ public class XPathRuleValidator extends AbstractXPathValidator {
     return this.validate(validationContext);
   }
 
-  public List<ValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
-    List<XPathValidationReportEntry> xPathValidationReportEntries =
-      topLevelValidationTree.validate(validationContext);
-    return xPathValidationReportEntries
-      .stream()
-      .map(this::createValidationReportEntry)
-      .toList();
-  }
-
-  private ValidationReportEntry createValidationReportEntry(
-    XPathValidationReportEntry xPathValidationReportEntry
-  ) {
-    return createValidationReportEntry(
-      xPathValidationReportEntry.code(),
-      xPathValidationReportEntry.dataLocation(),
-      xPathValidationReportEntry.message()
-    );
+    return topLevelValidationTree.validate(validationContext);
   }
 
   public String describe() {
@@ -91,7 +70,11 @@ public class XPathRuleValidator extends AbstractXPathValidator {
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return topLevelValidationTree.getRuleMessages();
+  public Set<ValidationRule> getRules() {
+    return topLevelValidationTree
+      .getRules()
+      .stream()
+      .map(XPathValidationRule::rule)
+      .collect(Collectors.toUnmodifiableSet());
   }
 }

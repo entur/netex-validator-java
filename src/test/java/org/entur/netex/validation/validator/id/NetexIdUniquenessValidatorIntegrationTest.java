@@ -3,8 +3,6 @@ package org.entur.netex.validation.validator.id;
 import static org.entur.netex.validation.validator.ValidatorTestUtil.getReport;
 
 import java.io.IOException;
-import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
-import org.entur.netex.validation.validator.DefaultValidationEntryFactory;
 import org.entur.netex.validation.validator.ValidationReport;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -47,9 +45,6 @@ class NetexIdUniquenessValidatorIntegrationTest {
   }
 
   private NetexIdUniquenessValidator createValidator() {
-    return new NetexIdUniquenessValidator(
-      new DefaultNetexIdRepository(),
-      new DefaultValidationEntryFactory(new DefaultValidationConfigLoader())
-    );
+    return new NetexIdUniquenessValidator(new DefaultNetexIdRepository());
   }
 }

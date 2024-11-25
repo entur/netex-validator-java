@@ -1,10 +1,14 @@
 package org.entur.netex.validation.validator.demo;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
+import net.sf.saxon.s9api.XdmItem;
+import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.validator.*;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
@@ -55,9 +59,14 @@ public class Demo {
    */
   private static class CustomNetexValidator implements XPathValidator {
 
+    private static final ValidationRule RULE = new ValidationRule(
+      "DEMO_RULE_1",
+      "URL should start with 'https://'",
+      Severity.ERROR
+    );
+
     @Override
-    public void validate(
-      ValidationReport validationReport,
+    public List<ValidationIssue> validate(
       XPathValidationContext validationContext
     ) {
       XPathSelector selector;
@@ -70,23 +79,27 @@ public class Demo {
             .load();
         selector.setContextItem(validationContext.getXmlNode());
         XdmValue result = selector.evaluate();
-        if (!result.isEmpty()) {
-          validationReport.addValidationReportEntry(
-            new ValidationReportEntry(
-              "URL should start with 'https://",
-              "DEMO_RULE_1",
-              ValidationReportEntrySeverity.WARNING
-            )
+        List<ValidationIssue> issues = new ArrayList<>();
+        for (XdmItem item : result) {
+          XdmNode node = (XdmNode) item;
+          String objectId = node.getAttributeValue(new QName("id"));
+          DataLocation dataLocation = new DataLocation(
+            objectId,
+            validationContext.getFileName(),
+            node.getLineNumber(),
+            node.getColumnNumber()
           );
+          issues.add(new ValidationIssue(RULE, dataLocation));
         }
+        return issues;
       } catch (SaxonApiException e) {
         throw new RuntimeException(e);
       }
     }
 
     @Override
-    public Set<String> getRuleDescriptions() {
-      return Set.of("URL should start with 'https://'");
+    public Set<ValidationRule> getRules() {
+      return Set.of(RULE);
     }
   }
 }

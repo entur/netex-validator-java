@@ -7,27 +7,36 @@ import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.xpath.ValidationRule;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
+import org.entur.netex.validation.validator.xpath.XPathValidationRule;
 
 /**
  * Validate that at least one node is returned by the XPath query.
  */
-public class ValidateAtLeastOne implements ValidationRule {
+public class ValidateAtLeastOne implements XPathValidationRule {
 
   private final String xpath;
-  private final String message;
-  private final String code;
+  private final ValidationRule rule;
 
   public ValidateAtLeastOne(String xpath, String message, String code) {
+    this(xpath, message, code, Severity.UNSET);
+  }
+
+  public ValidateAtLeastOne(
+    String xpath,
+    String message,
+    String code,
+    Severity severity
+  ) {
     this.xpath = xpath;
-    this.message = message;
-    this.code = code;
+    this.rule = new ValidationRule(code, message, severity);
   }
 
   @Override
-  public List<XPathValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     try {
@@ -40,9 +49,8 @@ public class ValidateAtLeastOne implements ValidationRule {
       XdmValue nodes = selector.evaluate();
       if (nodes.isEmpty()) {
         return List.of(
-          new XPathValidationReportEntry(
-            message,
-            code,
+          new ValidationIssue(
+            rule,
             new DataLocation(null, validationContext.getFileName(), null, null)
           )
         );
@@ -57,12 +65,7 @@ public class ValidateAtLeastOne implements ValidationRule {
   }
 
   @Override
-  public String getMessage() {
-    return message;
-  }
-
-  @Override
-  public String getCode() {
-    return code;
+  public ValidationRule rule() {
+    return rule;
   }
 }

@@ -2,10 +2,8 @@ package org.entur.netex.validation.validator.id;
 
 import java.util.List;
 import java.util.Set;
+import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,16 +22,6 @@ class NetexIdUniquenessValidatorTest {
 
   @BeforeEach
   void setUpTest() {
-    ValidationReportEntryFactory validationReportEntryFactory = (
-        code,
-        validationReportEntryMessage,
-        dataLocation
-      ) ->
-      new ValidationReportEntry(
-        validationReportEntryMessage,
-        code,
-        ValidationReportEntrySeverity.INFO
-      );
     NetexIdRepository netexIdRepository = new NetexIdRepository() {
       @Override
       public Set<String> getDuplicateNetexIds(
@@ -63,10 +51,7 @@ class NetexIdUniquenessValidatorTest {
       public void cleanUp(String reportId) {}
     };
     netexIdUniquenessValidator =
-      new NetexIdUniquenessValidator(
-        netexIdRepository,
-        validationReportEntryFactory
-      );
+      new NetexIdUniquenessValidator(netexIdRepository);
     validationReport =
       new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
@@ -89,23 +74,15 @@ class NetexIdUniquenessValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      List.of()
+      List.of(),
+      validationReport.getValidationReportId()
     );
-    netexIdUniquenessValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      netexIdUniquenessValidator.validate(xPathValidationContext);
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      NetexIdUniquenessValidator.RULE_CODE_NETEX_ID_1,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      NetexIdUniquenessValidator.RULE_DUPLICATE_ID_ACROSS_FILES,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -127,23 +104,15 @@ class NetexIdUniquenessValidatorTest {
       TEST_CODESPACE,
       "_common.xml",
       localIds,
-      List.of()
+      List.of(),
+      validationReport.getValidationReportId()
     );
-    netexIdUniquenessValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      netexIdUniquenessValidator.validate(xPathValidationContext);
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      NetexIdUniquenessValidator.RULE_CODE_NETEX_ID_10,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      NetexIdUniquenessValidator.RULE_DUPLICATE_ID_ACROSS_COMMON_FILES,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -165,14 +134,11 @@ class NetexIdUniquenessValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      List.of()
+      List.of(),
+      validationReport.getValidationReportId()
     );
-    netexIdUniquenessValidator.validate(
-      validationReport,
-      xPathValidationContext
-    );
-    Assertions.assertTrue(
-      validationReport.getValidationReportEntries().isEmpty()
-    );
+    List<ValidationIssue> validationIssues =
+      netexIdUniquenessValidator.validate(xPathValidationContext);
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 }
