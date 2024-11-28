@@ -31,7 +31,7 @@ public class NetexSchemaValidator
     "XML_SCHEMA_ERROR",
     "NeTEx XML Schema validation error",
     "%s",
-    Severity.ERROR
+    Severity.CRITICAL
   );
 
   static final ValidationRule RULE_WARNING = new ValidationRule(
@@ -131,7 +131,9 @@ public class NetexSchemaValidator
               );
               validationIssues.add(
                 new ValidationIssue(
-                  severity == Severity.ERROR ? RULE_ERROR : RULE_WARNING,
+                  severity == Severity.CRITICAL || severity == Severity.ERROR
+                    ? RULE_ERROR
+                    : RULE_WARNING,
                   dataLocation,
                   message
                 )

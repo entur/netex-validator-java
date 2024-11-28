@@ -29,13 +29,13 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
   }
 
   public DefaultValidationConfigLoader(List<String> configurationFiles) {
-    this.validationRuleConfigs =
-      loadConfigurationFile(DEFAULT_VALIDATION_CONFIG_FILE);
+    Map<String, ValidationRuleConfig> configs = loadConfigurationFile(
+      DEFAULT_VALIDATION_CONFIG_FILE
+    );
     for (String configurationFile : configurationFiles) {
-      this.validationRuleConfigs.putAll(
-          loadConfigurationFile(configurationFile)
-        );
+      configs.putAll(loadConfigurationFile(configurationFile));
     }
+    validationRuleConfigs = Map.copyOf(configs);
   }
 
   private Map<String, ValidationRuleConfig> loadConfigurationFile(
@@ -60,10 +60,5 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
   @Override
   public Map<String, ValidationRuleConfig> getValidationRuleConfigs() {
     return validationRuleConfigs;
-  }
-
-  @Override
-  public ValidationRuleConfig getValidationRuleConfig(String ruleCode) {
-    return validationRuleConfigs.get(ruleCode);
   }
 }

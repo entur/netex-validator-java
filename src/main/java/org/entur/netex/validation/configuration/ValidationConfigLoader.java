@@ -8,12 +8,13 @@ import java.util.Map;
 public interface ValidationConfigLoader {
   /**
    * Return a mapping of rule configuration by rule code.
-   * @return a mapping of rule configuration by rule code.
    */
   Map<String, ValidationRuleConfig> getValidationRuleConfigs();
 
   /**
    * Return a validation rule configuration for a given rule code.
    */
-  ValidationRuleConfig getValidationRuleConfig(String ruleCode);
+  default ValidationRuleConfig getValidationRuleConfig(String ruleCode) {
+    return getValidationRuleConfigs().get(ruleCode);
+  }
 }

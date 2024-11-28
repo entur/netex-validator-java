@@ -2,7 +2,6 @@ package org.entur.netex.validation.validator;
 
 import org.entur.netex.validation.configuration.ValidationConfigLoader;
 import org.entur.netex.validation.configuration.ValidationRuleConfig;
-import org.entur.netex.validation.exception.NetexValidationException;
 
 /**
  * Default implementation of the validation report entry factory.
@@ -28,8 +27,11 @@ public class DefaultValidationEntryFactory
       .getValidationRuleConfigs()
       .get(validationIssue.rule().code());
     if (validationRuleConfig == null) {
-      throw new NetexValidationException(
-        "Configuration not found for rule " + validationIssue.rule().code()
+      return new ValidationReportEntry(
+        validationIssue.message(),
+        validationIssue.rule().name(),
+        validationIssue.rule().severity(),
+        validationIssue.dataLocation()
       );
     }
 
