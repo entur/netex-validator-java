@@ -11,9 +11,11 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
  * Validate that either BookWhen or MinimumBookingPeriod is present for Flexible lines, either at the line level, the stop point level or the service journey level
@@ -21,10 +23,13 @@ import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
   extends AbstractXPathValidationRule {
 
-  private static final String RULE_NAME = "BOOKING_5";
+  static final ValidationRule RULE = new ValidationRule(
+    "BOOKING_5",
+    "Missing BookWhen or MinimumBookingPeriod",
+    "Either BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns",
+    Severity.WARNING
+  );
 
-  private static final String MESSAGE_FORMAT =
-    "Either BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties, FlexibleLine or on all StopPointInJourneyPatterns";
   private final String context;
 
   public ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty(
@@ -34,7 +39,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
   }
 
   @Override
-  public List<XPathValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     try {
@@ -90,8 +95,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
           }
         }
       }
-      List<XPathValidationReportEntry> validationReportEntries =
-        new ArrayList<>();
+      List<ValidationIssue> validationIssues = new ArrayList<>();
 
       for (XdmValue errorNode : errorNodes) {
         for (XdmItem item : errorNode) {
@@ -100,28 +104,17 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
             validationContext.getFileName(),
             xdmNode
           );
-          validationReportEntries.add(
-            new XPathValidationReportEntry(
-              MESSAGE_FORMAT,
-              RULE_NAME,
-              dataLocation
-            )
-          );
+          validationIssues.add(new ValidationIssue(RULE, dataLocation));
         }
       }
-      return validationReportEntries;
+      return validationIssues;
     } catch (SaxonApiException e) {
       throw new NetexValidationException("Error while validating rule", e);
     }
   }
 
   @Override
-  public String getMessage() {
-    return MESSAGE_FORMAT;
-  }
-
-  @Override
-  public String getCode() {
-    return RULE_NAME;
+  public ValidationRule rule() {
+    return RULE;
   }
 }

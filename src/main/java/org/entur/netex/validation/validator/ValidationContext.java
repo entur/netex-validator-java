@@ -16,7 +16,6 @@ public interface ValidationContext {
 
   /**
    * Return true if the current file is a common (shared) file.
-   * @return
    */
   default boolean isCommonFile() {
     return getFileName() != null && getFileName().startsWith("_");

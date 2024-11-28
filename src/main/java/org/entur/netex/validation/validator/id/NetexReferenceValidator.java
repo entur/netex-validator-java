@@ -6,10 +6,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
-import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,55 +18,53 @@ import org.slf4j.LoggerFactory;
  */
 public class NetexReferenceValidator extends AbstractXPathValidator {
 
-  static final String RULE_CODE_NETEX_ID_5 = "NETEX_ID_5";
+  static final ValidationRule RULE = new ValidationRule(
+    "NETEX_ID_5",
+    "NeTEx ID unresolved reference",
+    "Unresolved reference to external reference data",
+    Severity.ERROR
+  );
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     NetexReferenceValidator.class
   );
 
-  private static final String MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE =
-    "Unresolved reference to external reference data";
   private final List<ExternalReferenceValidator> externalReferenceValidators;
   private final NetexIdRepository netexIdRepository;
 
   public NetexReferenceValidator(
     NetexIdRepository netexIdRepository,
-    List<ExternalReferenceValidator> externalReferenceValidators,
-    ValidationReportEntryFactory validationReportEntryFactory
+    List<ExternalReferenceValidator> externalReferenceValidators
   ) {
-    super(validationReportEntryFactory);
     this.netexIdRepository = Objects.requireNonNull(netexIdRepository);
     this.externalReferenceValidators =
       Objects.requireNonNull(externalReferenceValidators);
   }
 
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
-      validationReport.getValidationReportId()
+      xPathValidationContext.getValidationReportId()
     );
-    validationReport.addAllValidationReportEntries(
-      validate(
-        validationReport.getValidationReportId(),
-        xPathValidationContext.getLocalRefs(),
-        xPathValidationContext.getLocalIds(),
-        xPathValidationContext.isCommonFile()
-      )
+    return validate(
+      xPathValidationContext.getValidationReportId(),
+      xPathValidationContext.getLocalRefs(),
+      xPathValidationContext.getLocalIds(),
+      xPathValidationContext.isCommonFile()
     );
   }
 
-  protected List<ValidationReportEntry> validate(
+  protected List<ValidationIssue> validate(
     String reportId,
     List<IdVersion> netexRefs,
     Set<IdVersion> localIds,
     boolean isCommonFile
   ) {
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    List<ValidationIssue> validationIssues = new ArrayList<>();
 
     // Remove duplicates, that is: references that have the same id and version (see #IdVersion.equals)
     Set<IdVersion> possibleExternalReferences = new HashSet<>(netexRefs);
@@ -88,7 +85,9 @@ public class NetexReferenceValidator extends AbstractXPathValidator {
         if (!possibleExternalReferences.isEmpty()) {
           for (IdVersion id : possibleExternalReferences) {
             LOGGER.debug("Unable to validate external reference {}", id);
-            validationReportEntries.add(createValidationReportEntry(id));
+            validationIssues.add(
+              new ValidationIssue(RULE, getIdVersionLocation(id))
+            );
           }
         }
       }
@@ -98,25 +97,11 @@ public class NetexReferenceValidator extends AbstractXPathValidator {
       netexIdRepository.addSharedNetexIds(reportId, localIds);
     }
 
-    return validationReportEntries;
-  }
-
-  private ValidationReportEntry createValidationReportEntry(IdVersion id) {
-    DataLocation dataLocation = getIdVersionLocation(id);
-    return createValidationReportEntry(
-      RULE_CODE_NETEX_ID_5,
-      dataLocation,
-      MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE
-    );
+    return validationIssues;
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return Set.of(
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_5,
-        MESSAGE_FORMAT_UNRESOLVED_EXTERNAL_REFERENCE
-      )
-    );
+  public Set<ValidationRule> getRules() {
+    return Set.of(RULE);
   }
 }

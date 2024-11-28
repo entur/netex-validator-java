@@ -45,8 +45,8 @@ public class NetexValidatorsRunner {
   private final List<NetexDataCollector> netexDataCollectors;
   private final CommonDataRepositoryLoader commonDataRepository;
   private final Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository;
-
   private final NetexXMLParser netexXMLParser;
+  private final ValidationReportEntryFactory validationReportEntryFactory;
 
   NetexValidatorsRunner(NetexValidatorsRunnerBuilder builder) {
     this.netexXMLParser = builder.getNetexXMLParser();
@@ -64,6 +64,8 @@ public class NetexValidatorsRunner {
     this.netexDataCollectors = builder.getNetexDataCollectors();
     this.commonDataRepository = builder.getCommonDataRepository();
     this.stopPlaceRepository = builder.getStopPlaceRepository();
+    this.validationReportEntryFactory =
+      Objects.requireNonNull(builder.getValidationReportEntryFactory());
   }
 
   public static NetexValidatorsRunnerBuilder of() {
@@ -113,11 +115,12 @@ public class NetexValidatorsRunner {
     } else {
       NetexSchemaValidationContext netexSchemaValidationContext =
         new NetexSchemaValidationContext(filename, codespace, fileContent);
-      runSchemaValidation(
-        validationReportId,
-        netexSchemaValidationContext,
-        netexValidationProgressCallBack,
-        validationReport
+      validationReport.addAllValidationReportEntries(
+        runSchemaValidation(
+          validationReportId,
+          netexSchemaValidationContext,
+          netexValidationProgressCallBack
+        )
       );
     }
 
@@ -132,15 +135,21 @@ public class NetexValidatorsRunner {
     }
 
     XPathValidationContext xPathValidationContext =
-      prepareXPathValidationContext(codespace, filename, fileContent);
+      prepareXPathValidationContext(
+        validationReportId,
+        codespace,
+        filename,
+        fileContent
+      );
 
-    runXPathValidators(
-      codespace,
-      validationReportId,
-      filename,
-      xPathValidationContext,
-      netexValidationProgressCallBack,
-      validationReport
+    validationReport.addAllValidationReportEntries(
+      runXPathValidators(
+        codespace,
+        validationReportId,
+        filename,
+        xPathValidationContext,
+        netexValidationProgressCallBack
+      )
     );
 
     if (validationReport.hasError()) {
@@ -174,13 +183,14 @@ public class NetexValidatorsRunner {
       netexDataCollector.collect(jaxbValidationContext)
     );
 
-    runJAXBValidators(
-      codespace,
-      validationReportId,
-      filename,
-      jaxbValidationContext,
-      netexValidationProgressCallBack,
-      validationReport
+    validationReport.addAllValidationReportEntries(
+      runJAXBValidators(
+        codespace,
+        validationReportId,
+        filename,
+        jaxbValidationContext,
+        netexValidationProgressCallBack
+      )
     );
 
     return validationReport;
@@ -210,19 +220,8 @@ public class NetexValidatorsRunner {
     return !datasetValidators.isEmpty();
   }
 
-  protected void postPrepareXPathValidationContext(
-    JAXBValidationContext validationContext
-  ) {
-    LOGGER.info(
-      "Collecting NeTEx data for file {}",
-      validationContext.getFileName()
-    );
-    netexDataCollectors.forEach(netexDataCollector ->
-      netexDataCollector.collect(validationContext)
-    );
-  }
-
   protected XPathValidationContext prepareXPathValidationContext(
+    String validationReportId,
     String codespace,
     String filename,
     byte[] fileContent
@@ -250,7 +249,8 @@ public class NetexValidatorsRunner {
       codespace,
       filename,
       localIds,
-      localRefs
+      localRefs,
+      validationReportId
     );
   }
 
@@ -280,18 +280,16 @@ public class NetexValidatorsRunner {
   /**
    * Run the XML schema validation.
    */
-  private void runSchemaValidation(
+  private List<ValidationReportEntry> runSchemaValidation(
     String validationReportId,
     NetexSchemaValidationContext netexSchemaValidationContext,
-    NetexValidationProgressCallBack netexValidationProgressCallBack,
-    ValidationReport validationReport
+    NetexValidationProgressCallBack netexValidationProgressCallBack
   ) {
-    runValidator(
+    return runValidator(
       netexSchemaValidationContext.getCodespace(),
       validationReportId,
       netexSchemaValidationContext.getFileName(),
       netexSchemaValidator,
-      validationReport,
       netexValidationProgressCallBack,
       netexSchemaValidationContext
     );
@@ -300,49 +298,53 @@ public class NetexValidatorsRunner {
   /**
    * Run the NeTEx validators.
    */
-  private void runXPathValidators(
+  private List<ValidationReportEntry> runXPathValidators(
     String codespace,
     String validationReportId,
     String filename,
     XPathValidationContext xPathValidationContext,
-    NetexValidationProgressCallBack netexValidationProgressCallBack,
-    ValidationReport validationReport
+    NetexValidationProgressCallBack netexValidationProgressCallBack
   ) {
-    for (XPathValidator xPathValidator : xPathValidators) {
-      runValidator(
-        codespace,
-        validationReportId,
-        filename,
-        xPathValidator,
-        validationReport,
-        netexValidationProgressCallBack,
-        xPathValidationContext
-      );
-    }
+    return xPathValidators
+      .stream()
+      .map(xPathValidator ->
+        runValidator(
+          codespace,
+          validationReportId,
+          filename,
+          xPathValidator,
+          netexValidationProgressCallBack,
+          xPathValidationContext
+        )
+      )
+      .flatMap(Collection::stream)
+      .toList();
   }
 
   /**
    * Run the NeTEx validators.
    */
-  private void runJAXBValidators(
+  private List<ValidationReportEntry> runJAXBValidators(
     String codespace,
     String validationReportId,
     String filename,
     JAXBValidationContext jaxbValidationContext,
-    NetexValidationProgressCallBack netexValidationProgressCallBack,
-    ValidationReport validationReport
+    NetexValidationProgressCallBack netexValidationProgressCallBack
   ) {
-    for (JAXBValidator jaxbValidator : jaxbValidators) {
-      runValidator(
-        codespace,
-        validationReportId,
-        filename,
-        jaxbValidator,
-        validationReport,
-        netexValidationProgressCallBack,
-        jaxbValidationContext
-      );
-    }
+    return jaxbValidators
+      .stream()
+      .map(jaxbValidator ->
+        runValidator(
+          codespace,
+          validationReportId,
+          filename,
+          jaxbValidator,
+          netexValidationProgressCallBack,
+          jaxbValidationContext
+        )
+      )
+      .flatMap(Collection::stream)
+      .toList();
   }
 
   /**
@@ -426,12 +428,13 @@ public class NetexValidatorsRunner {
     });
   }
 
-  private <C extends ValidationContext> void runValidator(
+  private <
+    C extends ValidationContext
+  > List<ValidationReportEntry> runValidator(
     String codespace,
     String validationReportId,
     String filename,
     NetexValidator<C> validator,
-    ValidationReport validationReport,
     NetexValidationProgressCallBack progressCallback,
     C validationContext
   ) {
@@ -449,38 +452,42 @@ public class NetexValidatorsRunner {
     );
 
     try {
-      validator.validate(validationReport, validationContext);
+      return validator
+        .validate(validationContext)
+        .stream()
+        .map(validationReportEntryFactory::createValidationReportEntry)
+        .toList();
     } finally {
       validatorComplete.set(true);
-    }
-
-    stopWatch.stop();
-    if (stopWatch.getTime() > 30000) {
-      LOGGER.warn(
-        "Validator {} for {}/{}/{} completed in {} ms",
-        netexValidatorName,
-        codespace,
-        validationReportId,
-        filename,
-        stopWatch.getTime()
-      );
-    } else {
-      LOGGER.debug(
-        "Validator {} for {}/{}/{} completed in {} ms",
-        netexValidatorName,
-        codespace,
-        validationReportId,
-        filename,
-        stopWatch.getTime()
-      );
+      stopWatch.stop();
+      if (stopWatch.getTime() > 30000) {
+        LOGGER.warn(
+          "Validator {} for {}/{}/{} completed in {} ms",
+          netexValidatorName,
+          codespace,
+          validationReportId,
+          filename,
+          stopWatch.getTime()
+        );
+      } else {
+        LOGGER.debug(
+          "Validator {} for {}/{}/{} completed in {} ms",
+          netexValidatorName,
+          codespace,
+          validationReportId,
+          filename,
+          stopWatch.getTime()
+        );
+      }
     }
   }
 
   public Set<String> getRuleDescriptions() {
     return Stream
       .concat(xPathValidators.stream(), jaxbValidators.stream())
-      .map(NetexValidator::getRuleDescriptions)
+      .map(NetexValidator::getRules)
       .flatMap(Collection::stream)
+      .map(ValidationRule::name)
       .collect(Collectors.toSet());
   }
 }

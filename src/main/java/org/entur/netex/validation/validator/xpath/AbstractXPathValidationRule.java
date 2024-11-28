@@ -9,7 +9,8 @@ import org.entur.netex.validation.validator.DataLocation;
 /**
  * Base class for XPath validation rules.
  */
-public abstract class AbstractXPathValidationRule implements ValidationRule {
+public abstract class AbstractXPathValidationRule
+  implements XPathValidationRule {
 
   /**
    * Return a string representation of the location of the node in the XML document.

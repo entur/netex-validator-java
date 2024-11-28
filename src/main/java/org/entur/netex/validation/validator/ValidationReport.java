@@ -58,10 +58,8 @@ public class ValidationReport {
     return validationReportEntries
       .stream()
       .anyMatch(validationReportEntry ->
-        ValidationReportEntrySeverity.ERROR ==
-        validationReportEntry.getSeverity() ||
-        ValidationReportEntrySeverity.CRITICAL ==
-        validationReportEntry.getSeverity()
+        Severity.ERROR == validationReportEntry.getSeverity() ||
+        Severity.CRITICAL == validationReportEntry.getSeverity()
       );
   }
 

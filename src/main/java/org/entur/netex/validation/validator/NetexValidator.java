@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -9,10 +10,10 @@ public interface NetexValidator<V extends ValidationContext> {
   /**
    * Validate NeTEx data provided by the validation context and report issues in the validation report.
    */
-  void validate(ValidationReport validationReport, V validationContext);
+  List<ValidationIssue> validate(V validationContext);
 
   /**
-   * Return the textual descriptions of the validation rules verified by this validator.
+   * Return the  validation rules verified by this validator.
    */
-  Set<String> getRuleDescriptions();
+  Set<ValidationRule> getRules();
 }

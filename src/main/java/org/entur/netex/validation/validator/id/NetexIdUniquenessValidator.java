@@ -11,9 +11,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +23,22 @@ import org.slf4j.LoggerFactory;
  */
 public class NetexIdUniquenessValidator extends AbstractXPathValidator {
 
-  static final String RULE_CODE_NETEX_ID_1 = "NETEX_ID_1";
-  static final String RULE_CODE_NETEX_ID_10 = "NETEX_ID_10";
+  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_FILES =
+    new ValidationRule(
+      "NETEX_ID_1",
+      "NeTEx ID duplicated across files",
+      "Duplicate element identifiers across files",
+      Severity.ERROR
+    );
+
+  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_COMMON_FILES =
+    new ValidationRule(
+      "NETEX_ID_10",
+      " Duplicate NeTEx ID across common files",
+      "Duplicate element identifiers across common files",
+      Severity.WARNING
+    );
+
   /**
    * Set of NeTEx elements for which id-uniqueness across lines is not verified.
    * These IDs need not be stored.
@@ -50,11 +64,6 @@ public class NetexIdUniquenessValidator extends AbstractXPathValidator {
     )
   );
 
-  private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES =
-    "Duplicate element identifiers across files";
-  private static final String MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES =
-    "Duplicate element identifiers across common files";
-
   private static final Logger LOGGER = LoggerFactory.getLogger(
     NetexIdUniquenessValidator.class
   );
@@ -62,54 +71,42 @@ public class NetexIdUniquenessValidator extends AbstractXPathValidator {
   private final NetexIdRepository netexIdRepository;
   private final Set<String> ignorableElements;
 
-  public NetexIdUniquenessValidator(
-    NetexIdRepository netexIdRepository,
-    ValidationReportEntryFactory validationReportEntryFactory
-  ) {
-    this(
-      netexIdRepository,
-      validationReportEntryFactory,
-      DEFAULT_IGNORABLE_ELEMENTS
-    );
+  public NetexIdUniquenessValidator(NetexIdRepository netexIdRepository) {
+    this(netexIdRepository, DEFAULT_IGNORABLE_ELEMENTS);
   }
 
   public NetexIdUniquenessValidator(
     NetexIdRepository netexIdRepository,
-    ValidationReportEntryFactory validationReportEntryFactory,
     Set<String> ignorableElements
   ) {
-    super(validationReportEntryFactory);
     this.netexIdRepository = Objects.requireNonNull(netexIdRepository);
     this.ignorableElements = ignorableElements;
   }
 
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
-      validationReport.getValidationReportId()
+      xPathValidationContext.getValidationReportId()
     );
-    validationReport.addAllValidationReportEntries(
-      validate(
-        validationReport.getValidationReportId(),
-        xPathValidationContext.getFileName(),
-        xPathValidationContext.getLocalIds(),
-        xPathValidationContext.isCommonFile()
-      )
+    return validate(
+      xPathValidationContext.getValidationReportId(),
+      xPathValidationContext.getFileName(),
+      xPathValidationContext.getLocalIds(),
+      xPathValidationContext.isCommonFile()
     );
   }
 
-  protected List<ValidationReportEntry> validate(
+  protected List<ValidationIssue> validate(
     String reportId,
     String fileName,
     Set<IdVersion> netexFileLocalIds,
     boolean isCommonFile
   ) {
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    List<ValidationIssue> validationIssues = new ArrayList<>();
     final Map<String, IdVersion> netexIds;
     if (netexFileLocalIds == null) {
       // no ids were stored if the XMLSchema validation failed
@@ -141,41 +138,30 @@ public class NetexIdUniquenessValidator extends AbstractXPathValidator {
       if (isCommonFile) {
         for (String id : duplicateIds) {
           DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
-          validationReportEntries.add(
-            createValidationReportEntry(
-              RULE_CODE_NETEX_ID_10,
-              dataLocation,
-              MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES
+          validationIssues.add(
+            new ValidationIssue(
+              RULE_DUPLICATE_ID_ACROSS_COMMON_FILES,
+              dataLocation
             )
           );
         }
       } else {
         for (String id : duplicateIds) {
           DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
-          validationReportEntries.add(
-            createValidationReportEntry(
-              RULE_CODE_NETEX_ID_1,
-              dataLocation,
-              MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES
-            )
+          validationIssues.add(
+            new ValidationIssue(RULE_DUPLICATE_ID_ACROSS_FILES, dataLocation)
           );
         }
       }
     }
-    return validationReportEntries;
+    return validationIssues;
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
+  public Set<ValidationRule> getRules() {
     return Set.of(
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_1,
-        MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_FILES
-      ),
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_10,
-        MESSAGE_FORMAT_DUPLICATE_ID_ACROSS_COMMON_FILES
-      )
+      RULE_DUPLICATE_ID_ACROSS_FILES,
+      RULE_DUPLICATE_ID_ACROSS_COMMON_FILES
     );
   }
 

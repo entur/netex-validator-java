@@ -12,32 +12,16 @@ class ValidationReportTest {
   void addValidationReportEntry() {
     ValidationReport validationReport = new ValidationReport("TST", "TST01");
     validationReport.addValidationReportEntry(
-      new ValidationReportEntry(
-        "",
-        "Rule1",
-        ValidationReportEntrySeverity.WARNING
-      )
+      new ValidationReportEntry("", "Rule1", Severity.WARNING)
     );
     validationReport.addValidationReportEntry(
-      new ValidationReportEntry(
-        "",
-        "Rule2",
-        ValidationReportEntrySeverity.ERROR
-      )
+      new ValidationReportEntry("", "Rule2", Severity.ERROR)
     );
     validationReport.addValidationReportEntry(
-      new ValidationReportEntry(
-        "",
-        "Rule1",
-        ValidationReportEntrySeverity.WARNING
-      )
+      new ValidationReportEntry("", "Rule1", Severity.WARNING)
     );
     validationReport.addValidationReportEntry(
-      new ValidationReportEntry(
-        "",
-        "Rule3",
-        ValidationReportEntrySeverity.WARNING
-      )
+      new ValidationReportEntry("", "Rule3", Severity.WARNING)
     );
 
     Map<String, Long> numberOfValidationEntriesPerRule =
@@ -53,26 +37,10 @@ class ValidationReportTest {
     ValidationReport validationReport = new ValidationReport("TST", "TST01");
     validationReport.addAllValidationReportEntries(
       List.of(
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule2",
-          ValidationReportEntrySeverity.ERROR
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule3",
-          ValidationReportEntrySeverity.WARNING
-        )
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule2", Severity.ERROR),
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule3", Severity.WARNING)
       )
     );
 
@@ -90,26 +58,10 @@ class ValidationReportTest {
       "TST",
       "TST01",
       List.of(
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule2",
-          ValidationReportEntrySeverity.ERROR
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule3",
-          ValidationReportEntrySeverity.WARNING
-        )
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule2", Severity.ERROR),
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule3", Severity.WARNING)
       )
     );
 
@@ -127,26 +79,10 @@ class ValidationReportTest {
       "TST",
       "TST01",
       List.of(
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule2",
-          ValidationReportEntrySeverity.ERROR
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule1",
-          ValidationReportEntrySeverity.WARNING
-        ),
-        new ValidationReportEntry(
-          "",
-          "Rule3",
-          ValidationReportEntrySeverity.WARNING
-        )
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule2", Severity.ERROR),
+        new ValidationReportEntry("", "Rule1", Severity.WARNING),
+        new ValidationReportEntry("", "Rule3", Severity.WARNING)
       ),
       Map.of("Rule1", 1L, "Rule2", 2L)
     );

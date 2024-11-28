@@ -7,7 +7,7 @@ public class ValidationReportEntry {
 
   private String name;
   private String message;
-  private ValidationReportEntrySeverity severity;
+  private Severity severity;
   private String objectId;
   private String fileName;
   private Integer lineNumber;
@@ -16,18 +16,14 @@ public class ValidationReportEntry {
 
   public ValidationReportEntry() {}
 
-  public ValidationReportEntry(
-    String message,
-    String name,
-    ValidationReportEntrySeverity severity
-  ) {
+  public ValidationReportEntry(String message, String name, Severity severity) {
     this(message, name, severity, DataLocation.EMPTY_LOCATION);
   }
 
   public ValidationReportEntry(
     String message,
     String name,
-    ValidationReportEntrySeverity severity,
+    Severity severity,
     DataLocation dataLocation
   ) {
     this.message = message;
@@ -47,7 +43,7 @@ public class ValidationReportEntry {
     return name;
   }
 
-  public ValidationReportEntrySeverity getSeverity() {
+  public Severity getSeverity() {
     return severity;
   }
 

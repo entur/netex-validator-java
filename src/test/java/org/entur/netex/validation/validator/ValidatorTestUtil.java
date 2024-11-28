@@ -31,6 +31,7 @@ public class ValidatorTestUtil {
       .withNetexXMLParser(netexXMLParser)
       .withNetexSchemaValidator(netexSchemaValidator)
       .withXPathValidators(List.of(netexValidator))
+      .withValidationReportEntryFactory(new SimpleValidationEntryFactory())
       .build();
     ValidationReport aggregatedValidationReport = new ValidationReport(
       codespace,
@@ -84,14 +85,14 @@ public class ValidatorTestUtil {
     );
   }
 
-  public static List<ValidationReportEntry> validateXPath(
+  public static List<ValidationIssue> validateXPath(
     String codespace,
     XPathRuleValidator xPathRuleValidator,
     NetexXMLParser netexXMLParser,
     InputStream testDatasetAsStream
   ) throws IOException {
     assert testDatasetAsStream != null;
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    List<ValidationIssue> validationIssues = new ArrayList<>();
 
     try (
       ZipInputStream zipInputStream = new ZipInputStream(testDatasetAsStream)
@@ -107,12 +108,12 @@ public class ValidatorTestUtil {
             codespace,
             zipEntry.getName()
           );
-        validationReportEntries.addAll(
+        validationIssues.addAll(
           xPathRuleValidator.validate(xPathRuleValidationContext)
         );
         zipEntry = zipInputStream.getNextEntry();
       }
     }
-    return validationReportEntries;
+    return validationIssues;
   }
 }

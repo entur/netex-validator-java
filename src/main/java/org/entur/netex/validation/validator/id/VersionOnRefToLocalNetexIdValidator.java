@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,27 +19,22 @@ import org.slf4j.LoggerFactory;
 public class VersionOnRefToLocalNetexIdValidator
   extends AbstractXPathValidator {
 
-  static final String RULE_CODE_NETEX_ID_9 = "NETEX_ID_9";
+  static final ValidationRule RULE = new ValidationRule(
+    "NETEX_ID_9",
+    "NeTEx ID missing version on reference",
+    "Missing version attribute on reference to local elements",
+    Severity.ERROR
+  );
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     VersionOnRefToLocalNetexIdValidator.class
   );
 
-  private static final String MESSAGE_FORMAT_MISSING_VERSION_ON_REF_TO_LOCAL_ID =
-    "Missing version attribute on reference to local elements";
-
-  public VersionOnRefToLocalNetexIdValidator(
-    ValidationReportEntryFactory validationReportEntryFactory
-  ) {
-    super(validationReportEntryFactory);
-  }
-
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    List<ValidationIssue> validationIssues = new ArrayList<>();
     Set<IdVersion> localIds = xPathValidationContext.getLocalIds();
     List<IdVersion> localRefs = xPathValidationContext.getLocalRefs();
 
@@ -54,29 +49,18 @@ public class VersionOnRefToLocalNetexIdValidator
     for (IdVersion id : nonVersionedLocalRefs) {
       if (localIdsWithoutVersion.contains(id.getId())) {
         DataLocation dataLocation = getIdVersionLocation(id);
-        validationReportEntries.add(
-          createValidationReportEntry(
-            RULE_CODE_NETEX_ID_9,
-            dataLocation,
-            MESSAGE_FORMAT_MISSING_VERSION_ON_REF_TO_LOCAL_ID
-          )
-        );
+        validationIssues.add(new ValidationIssue(RULE, dataLocation));
         LOGGER.debug(
           "Found local reference to {} in line file without use of version-attribute",
           id.getId()
         );
       }
     }
-    validationReport.addAllValidationReportEntries(validationReportEntries);
+    return validationIssues;
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return Set.of(
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_9,
-        MESSAGE_FORMAT_MISSING_VERSION_ON_REF_TO_LOCAL_ID
-      )
-    );
+  public Set<ValidationRule> getRules() {
+    return Set.of(RULE);
   }
 }

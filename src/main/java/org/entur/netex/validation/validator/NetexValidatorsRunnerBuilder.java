@@ -23,6 +23,8 @@ public class NetexValidatorsRunnerBuilder {
   private List<JAXBValidator> jaxbValidators = List.of();
   private List<DatasetValidator> datasetValidators = List.of();
   private List<NetexDataCollector> netexDataCollectors = List.of();
+  private ValidationReportEntryFactory validationReportEntryFactory =
+    new SimpleValidationEntryFactory();
 
   NetexValidatorsRunnerBuilder() {}
 
@@ -60,6 +62,10 @@ public class NetexValidatorsRunnerBuilder {
 
   public List<NetexDataCollector> getNetexDataCollectors() {
     return netexDataCollectors;
+  }
+
+  public ValidationReportEntryFactory getValidationReportEntryFactory() {
+    return validationReportEntryFactory;
   }
 
   public NetexValidatorsRunnerBuilder withNetexXMLParser(
@@ -129,6 +135,13 @@ public class NetexValidatorsRunnerBuilder {
     List<NetexDataCollector> netexDataCollectors
   ) {
     this.netexDataCollectors = netexDataCollectors;
+    return this;
+  }
+
+  public NetexValidatorsRunnerBuilder withValidationReportEntryFactory(
+    ValidationReportEntryFactory validationReportEntryFactory
+  ) {
+    this.validationReportEntryFactory = validationReportEntryFactory;
     return this;
   }
 

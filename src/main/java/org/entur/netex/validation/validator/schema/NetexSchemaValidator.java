@@ -27,6 +27,20 @@ public class NetexSchemaValidator
     NetexSchemaValidator.class
   );
 
+  static final ValidationRule RULE_ERROR = new ValidationRule(
+    "XML_SCHEMA_ERROR",
+    "NeTEx XML Schema validation error",
+    "%s",
+    Severity.CRITICAL
+  );
+
+  static final ValidationRule RULE_WARNING = new ValidationRule(
+    "XML_SCHEMA_WARNING",
+    "NeTEx XML Schema validation warning",
+    "%s",
+    Severity.WARNING
+  );
+
   private final NetexSchemaRepository netexSchemaRepository;
   private final int maxValidationReportEntries;
 
@@ -51,12 +65,11 @@ public class NetexSchemaValidator
   }
 
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     NetexSchemaValidationContext validationContext
   ) {
     LOGGER.debug("Validating file {}", validationContext.getFileName());
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+    List<ValidationIssue> validationIssues = new ArrayList<>();
     try {
       NeTExValidator.NetexVersion schemaVersion =
         NetexSchemaRepository.detectNetexSchemaVersion(
@@ -80,10 +93,10 @@ public class NetexSchemaValidator
           @Override
           public void warning(SAXParseException exception)
             throws SAXParseException {
-            addValidationReportEntry(
+            addValidationIssue(
               validationContext.getFileName(),
               exception,
-              ValidationReportEntrySeverity.WARNING
+              Severity.WARNING
             );
             errorCount++;
           }
@@ -91,10 +104,10 @@ public class NetexSchemaValidator
           @Override
           public void error(SAXParseException exception)
             throws SAXParseException {
-            addValidationReportEntry(
+            addValidationIssue(
               validationContext.getFileName(),
               exception,
-              ValidationReportEntrySeverity.CRITICAL
+              Severity.CRITICAL
             );
             errorCount++;
           }
@@ -105,10 +118,10 @@ public class NetexSchemaValidator
             error(exception);
           }
 
-          private void addValidationReportEntry(
+          private void addValidationIssue(
             String fileName,
             SAXParseException saxParseException,
-            ValidationReportEntrySeverity severity
+            Severity severity
           ) throws SAXParseException {
             if (errorCount < maxValidationReportEntries) {
               String message = saxParseException.getMessage();
@@ -116,12 +129,13 @@ public class NetexSchemaValidator
                 fileName,
                 saxParseException
               );
-              validationReportEntries.add(
-                new ValidationReportEntry(
-                  message,
-                  "NETEX_SCHEMA",
-                  severity,
-                  dataLocation
+              validationIssues.add(
+                new ValidationIssue(
+                  severity == Severity.CRITICAL || severity == Severity.ERROR
+                    ? RULE_ERROR
+                    : RULE_WARNING,
+                  dataLocation,
+                  message
                 )
               );
             } else {
@@ -147,11 +161,11 @@ public class NetexSchemaValidator
       LOGGER.info("Found schema validation errors");
     }
 
-    validationReport.addAllValidationReportEntries(validationReportEntries);
+    return validationIssues;
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return Set.of("NeTEx XML Schema validation");
+  public Set<ValidationRule> getRules() {
+    return Set.of(RULE_ERROR, RULE_WARNING);
   }
 }

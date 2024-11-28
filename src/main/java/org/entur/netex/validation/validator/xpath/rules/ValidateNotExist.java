@@ -9,9 +9,11 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.DataLocation;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.AbstractXPathValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 
 /**
  * Validate that the XPath query does not return any node.
@@ -19,17 +21,24 @@ import org.entur.netex.validation.validator.xpath.XPathValidationReportEntry;
 public class ValidateNotExist extends AbstractXPathValidationRule {
 
   private final String xpath;
-  private final String message;
-  private final String code;
+  private final ValidationRule rule;
 
   public ValidateNotExist(String xpath, String message, String code) {
+    this(xpath, message, code, Severity.UNSET);
+  }
+
+  public ValidateNotExist(
+    String xpath,
+    String message,
+    String code,
+    Severity severity
+  ) {
     this.xpath = xpath;
-    this.message = message;
-    this.code = code;
+    this.rule = new ValidationRule(code, message, severity);
   }
 
   @Override
-  public List<XPathValidationReportEntry> validate(
+  public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     try {
@@ -40,19 +49,16 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
         .load();
       selector.setContextItem(validationContext.getXmlNode());
       XdmValue nodes = selector.evaluate();
-      List<XPathValidationReportEntry> validationReportEntries =
-        new ArrayList<>();
+      List<ValidationIssue> validationIssues = new ArrayList<>();
       for (XdmItem item : nodes) {
         XdmNode xdmNode = (XdmNode) item;
         DataLocation dataLocation = getXdmNodeLocation(
           validationContext.getFileName(),
           xdmNode
         );
-        validationReportEntries.add(
-          new XPathValidationReportEntry(message, code, dataLocation)
-        );
+        validationIssues.add(new ValidationIssue(rule, dataLocation));
       }
-      return validationReportEntries;
+      return validationIssues;
     } catch (SaxonApiException e) {
       throw new NetexValidationException(
         "Error while validating rule " + xpath,
@@ -62,12 +68,7 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
   }
 
   @Override
-  public String getMessage() {
-    return message;
-  }
-
-  @Override
-  public String getCode() {
-    return code;
+  public ValidationRule rule() {
+    return rule;
   }
 }

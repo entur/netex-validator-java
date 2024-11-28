@@ -17,14 +17,10 @@ public abstract class AbstractDatasetValidator implements DatasetValidator {
   }
 
   protected ValidationReportEntry createValidationReportEntry(
-    String code,
-    DataLocation dataLocation,
-    String validationReportEntryMessage
+    ValidationIssue validationIssue
   ) {
     return validationReportEntryFactory.createValidationReportEntry(
-      code,
-      validationReportEntryMessage,
-      dataLocation
+      validationIssue
     );
   }
 }

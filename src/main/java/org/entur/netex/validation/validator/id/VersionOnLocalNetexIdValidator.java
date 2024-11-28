@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
+import org.entur.netex.validation.validator.Severity;
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,38 +18,31 @@ import org.slf4j.LoggerFactory;
  */
 public class VersionOnLocalNetexIdValidator extends AbstractXPathValidator {
 
-  static final String RULE_CODE_NETEX_ID_8 = "NETEX_ID_8";
+  static final ValidationRule RULE = new ValidationRule(
+    "NETEX_ID_8",
+    "NeTEx ID missing version on elements",
+    "Missing version attribute on elements with id attribute",
+    Severity.ERROR
+  );
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     VersionOnLocalNetexIdValidator.class
   );
 
-  private static final String MESSAGE_FORMAT_MISSING_VERSION =
-    "Missing version attribute on elements with id attribute";
-
-  public VersionOnLocalNetexIdValidator(
-    ValidationReportEntryFactory validationReportEntryFactory
-  ) {
-    super(validationReportEntryFactory);
-  }
-
   @Override
-  public void validate(
-    ValidationReport validationReport,
+  public List<ValidationIssue> validate(
     XPathValidationContext xPathValidationContext
   ) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
-      validationReport.getValidationReportId()
+      xPathValidationContext.getValidationReportId()
     );
-    validationReport.addAllValidationReportEntries(
-      validate(xPathValidationContext.getLocalIds())
-    );
+    return validate(xPathValidationContext.getLocalIds());
   }
 
-  protected List<ValidationReportEntry> validate(Set<IdVersion> localIds) {
-    List<ValidationReportEntry> validationReportEntries = new ArrayList<>();
+  protected List<ValidationIssue> validate(Set<IdVersion> localIds) {
+    List<ValidationIssue> validationIssues = new ArrayList<>();
     Set<IdVersion> nonVersionedLocalIds = localIds
       .stream()
       .filter(e -> e.getVersion() == null)
@@ -57,26 +50,15 @@ public class VersionOnLocalNetexIdValidator extends AbstractXPathValidator {
     if (!nonVersionedLocalIds.isEmpty()) {
       for (IdVersion id : nonVersionedLocalIds) {
         DataLocation dataLocation = getIdVersionLocation(id);
-        validationReportEntries.add(
-          createValidationReportEntry(
-            RULE_CODE_NETEX_ID_8,
-            dataLocation,
-            MESSAGE_FORMAT_MISSING_VERSION
-          )
-        );
+        validationIssues.add(new ValidationIssue(RULE, dataLocation));
         LOGGER.debug("Id {} does not have version attribute set", id.getId());
       }
     }
-    return validationReportEntries;
+    return validationIssues;
   }
 
   @Override
-  public Set<String> getRuleDescriptions() {
-    return Set.of(
-      createRuleDescription(
-        RULE_CODE_NETEX_ID_8,
-        MESSAGE_FORMAT_MISSING_VERSION
-      )
-    );
+  public Set<ValidationRule> getRules() {
+    return Set.of(RULE);
   }
 }

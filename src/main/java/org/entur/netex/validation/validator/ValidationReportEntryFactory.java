@@ -5,8 +5,6 @@ package org.entur.netex.validation.validator;
  */
 public interface ValidationReportEntryFactory {
   ValidationReportEntry createValidationReportEntry(
-    String code,
-    String validationReportEntryMessage,
-    DataLocation dataLocation
+    ValidationIssue validationIssue
   );
 }

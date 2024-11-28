@@ -3,10 +3,7 @@ package org.entur.netex.validation.validator.id;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import org.entur.netex.validation.validator.ValidationReport;
-import org.entur.netex.validation.validator.ValidationReportEntry;
-import org.entur.netex.validation.validator.ValidationReportEntryFactory;
-import org.entur.netex.validation.validator.ValidationReportEntrySeverity;
+import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,19 +16,10 @@ class NetexReferenceValidatorTest {
     "TEST_VALIDATION_REPORT_ID";
   private static final String TEST_LOCAL_ID = "XXX:YY:1";
   private static final String TEST_MISSING_EXTERNAL_ID = "XXX:YY:2";
-  private ValidationReport validationReport;
   private NetexIdRepository netexIdRepository;
-  private ValidationReportEntryFactory validationReportEntryFactory;
 
   @BeforeEach
   void setUpTest() {
-    validationReportEntryFactory =
-      (code, validationReportEntryMessage, dataLocation) ->
-        new ValidationReportEntry(
-          validationReportEntryMessage,
-          code,
-          ValidationReportEntrySeverity.INFO
-        );
     netexIdRepository =
       new NetexIdRepository() {
         @Override
@@ -61,9 +49,6 @@ class NetexReferenceValidatorTest {
         @Override
         public void cleanUp(String reportId) {}
       };
-
-    validationReport =
-      new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
 
   @Test
@@ -94,26 +79,18 @@ class NetexReferenceValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      localRefs
+      localRefs,
+      TEST_VALIDATION_REPORT_ID
     );
     NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(
-        netexIdRepository,
-        List.of(),
-        validationReportEntryFactory
-      );
-    netexReferenceValidator.validate(validationReport, xPathValidationContext);
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
+      new NetexReferenceValidator(netexIdRepository, List.of());
+    List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
+      xPathValidationContext
     );
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      NetexReferenceValidator.RULE_CODE_NETEX_ID_5,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      NetexReferenceValidator.RULE,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -136,18 +113,15 @@ class NetexReferenceValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      localRefs
+      localRefs,
+      TEST_VALIDATION_REPORT_ID
     );
     NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(
-        netexIdRepository,
-        List.of(),
-        validationReportEntryFactory
-      );
-    netexReferenceValidator.validate(validationReport, xPathValidationContext);
-    Assertions.assertTrue(
-      validationReport.getValidationReportEntries().isEmpty()
+      new NetexReferenceValidator(netexIdRepository, List.of());
+    List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
+      xPathValidationContext
     );
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 
   @Test
@@ -169,7 +143,8 @@ class NetexReferenceValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      localRefs
+      localRefs,
+      TEST_VALIDATION_REPORT_ID
     );
 
     ExternalReferenceValidator externalReferenceValidator =
@@ -177,21 +152,15 @@ class NetexReferenceValidatorTest {
     NetexReferenceValidator netexReferenceValidator =
       new NetexReferenceValidator(
         netexIdRepository,
-        List.of(externalReferenceValidator),
-        validationReportEntryFactory
+        List.of(externalReferenceValidator)
       );
-    netexReferenceValidator.validate(validationReport, xPathValidationContext);
-    Assertions.assertFalse(
-      validationReport.getValidationReportEntries().isEmpty()
+    List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
+      xPathValidationContext
     );
+    Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
-      NetexReferenceValidator.RULE_CODE_NETEX_ID_5,
-      validationReport
-        .getValidationReportEntries()
-        .stream()
-        .findFirst()
-        .orElseThrow()
-        .getName()
+      NetexReferenceValidator.RULE,
+      validationIssues.stream().findFirst().orElseThrow().rule()
     );
   }
 
@@ -214,7 +183,8 @@ class NetexReferenceValidatorTest {
       TEST_CODESPACE,
       null,
       localIds,
-      localRefs
+      localRefs,
+      TEST_VALIDATION_REPORT_ID
     );
 
     ExternalReferenceValidator externalReferenceValidator =
@@ -222,12 +192,11 @@ class NetexReferenceValidatorTest {
     NetexReferenceValidator netexReferenceValidator =
       new NetexReferenceValidator(
         netexIdRepository,
-        List.of(externalReferenceValidator),
-        validationReportEntryFactory
+        List.of(externalReferenceValidator)
       );
-    netexReferenceValidator.validate(validationReport, xPathValidationContext);
-    Assertions.assertTrue(
-      validationReport.getValidationReportEntries().isEmpty()
+    List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
+      xPathValidationContext
     );
+    Assertions.assertTrue(validationIssues.isEmpty());
   }
 }
