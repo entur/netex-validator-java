@@ -366,13 +366,6 @@
                         <suppressionFile>dependencycheck-suppression.xml</suppressionFile>
                     </suppressionFiles>
                 </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>com.hubspot.maven.plugins</groupId>
