@@ -8,7 +8,6 @@ import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.jaxb.support.DatedServiceJourneyUtils;
-import org.entur.netex.validation.validator.jaxb.support.FlexibleLineUtils;
 import org.entur.netex.validation.validator.model.*;
 import org.rutebanken.netex.model.*;
 import org.slf4j.Logger;
@@ -119,6 +118,16 @@ public class JAXBValidationContext implements ValidationContext {
   @Nullable
   public QuayCoordinates coordinatesForQuayId(QuayId quayId) {
     return stopPlaceRepository.getCoordinatesForQuayId(quayId);
+  }
+
+  /**
+   * Return the transport mode for a given Quay.
+   */
+  @Nullable
+  public TransportModeAndSubMode transportModeAndSubModeForQuayId(
+    QuayId quayId
+  ) {
+    return stopPlaceRepository.getTransportModesForQuayId(quayId);
   }
 
   /**
@@ -332,23 +341,29 @@ public class JAXBValidationContext implements ValidationContext {
    * If the transport mode is not set on the service journey,
    * it will be looked up from the line or flexible line.
    */
-  public AllVehicleModesOfTransportEnumeration transportMode(
+  @Nullable
+  public TransportModeAndSubMode transportModeAndSubMode(
     ServiceJourney serviceJourney
   ) {
     AllVehicleModesOfTransportEnumeration transportMode =
       serviceJourney.getTransportMode();
+
+    TransportSubmodeStructure subModeStructure =
+      serviceJourney.getTransportSubmode();
+
     if (transportMode == null) {
       JourneyPattern journeyPattern = journeyPattern(serviceJourney);
-      return transportMode(journeyPattern);
+      return transportModeAndSubMode(journeyPattern);
     }
-    return transportMode;
+    return TransportModeAndSubMode.of(transportMode, subModeStructure);
   }
 
   /**
    * Find the transport mode for the given journey pattern.
    * it will be looked up from the line or flexible line with FIXED Type
    */
-  public AllVehicleModesOfTransportEnumeration transportMode(
+  @Nullable
+  public TransportModeAndSubMode transportModeAndSubMode(
     JourneyPattern journeyPattern
   ) {
     Route route = netexEntitiesIndex
@@ -359,15 +374,19 @@ public class JAXBValidationContext implements ValidationContext {
       .get(route.getLineRef().getValue().getRef());
 
     if (line != null) {
-      return line.getTransportMode();
+      return TransportModeAndSubMode.of(
+        line.getTransportMode(),
+        line.getTransportSubmode()
+      );
     }
 
     FlexibleLine flexibleLine = netexEntitiesIndex
       .getFlexibleLineIndex()
       .get(route.getLineRef().getValue().getRef());
 
-    return FlexibleLineUtils.isFixedFlexibleLine(flexibleLine)
-      ? flexibleLine.getTransportMode()
-      : null;
+    return TransportModeAndSubMode.of(
+      flexibleLine.getTransportMode(),
+      flexibleLine.getTransportSubmode()
+    );
   }
 }

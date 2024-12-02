@@ -14,9 +14,9 @@ import static org.rutebanken.netex.model.WaterSubmodeEnumeration.*;
 /**
  * Validate the transport sub-mode against the Nordic NeTEx profile.
  */
-public class ValidatedAllowedTransportSubMode extends ValidateNotExist {
+public class ValidateAllowedTransportSubMode extends ValidateNotExist {
 
-  private static final String VALID_TRANSPORT_SUBMODES =
+  public static final String DEFAULT_VALID_TRANSPORT_SUBMODES =
     "'" +
     String.join(
       "','",
@@ -76,10 +76,14 @@ public class ValidatedAllowedTransportSubMode extends ValidateNotExist {
 
   private static final String MESSAGE = "Illegal TransportSubMode";
 
-  public ValidatedAllowedTransportSubMode() {
+  public ValidateAllowedTransportSubMode() {
+    this(DEFAULT_VALID_TRANSPORT_SUBMODES);
+  }
+
+  public ValidateAllowedTransportSubMode(String validTransportSubModes) {
     super(
       "lines/*[self::Line or self::FlexibleLine]/TransportSubmode[not(. = (" +
-      VALID_TRANSPORT_SUBMODES +
+      validTransportSubModes +
       "))]",
       MESSAGE,
       "TRANSPORT_SUB_MODE"

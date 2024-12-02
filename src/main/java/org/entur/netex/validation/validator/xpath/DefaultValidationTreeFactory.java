@@ -422,12 +422,10 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     );
 
     serviceFrameValidationTree.addValidationRule(
-      new ValidatedAllowedTransportMode(
-        ValidatedAllowedTransportMode.DEFAULT_VALID_TRANSPORT_MODES
-      )
+      new ValidateAllowedTransportMode()
     );
     serviceFrameValidationTree.addValidationRule(
-      new ValidatedAllowedTransportSubMode()
+      new ValidateAllowedTransportSubMode()
     );
 
     serviceFrameValidationTree.addValidationRule(

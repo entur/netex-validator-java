@@ -1,8 +1,10 @@
 package org.entur.netex.validation.validator.model;
 
+import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
+import org.rutebanken.netex.model.TransportSubmodeStructure;
 
 /**
  * A pair of mode and sub-mode.
@@ -18,6 +20,19 @@ public record TransportModeAndSubMode(
     );
   }
 
+  public static TransportModeAndSubMode of(
+    AllVehicleModesOfTransportEnumeration transportMode,
+    TransportSubmodeStructure submodeStructure
+  ) {
+    if (transportMode == null) {
+      return null;
+    }
+    return new TransportModeAndSubMode(
+      transportMode,
+      TransportSubMode.of(transportMode, submodeStructure).orElse(null)
+    );
+  }
+
   @Override
   public String toString() {
     return (
@@ -27,10 +42,10 @@ public record TransportModeAndSubMode(
   }
 
   public static TransportModeAndSubMode fromString(
-    String stopPlaceTransportModeAndSubMode
+    String submodeStructureTransportModeAndSubMode
   ) {
-    if (stopPlaceTransportModeAndSubMode != null) {
-      String[] split = stopPlaceTransportModeAndSubMode.split("§");
+    if (submodeStructureTransportModeAndSubMode != null) {
+      String[] split = submodeStructureTransportModeAndSubMode.split("§");
       if (split.length == 1) {
         return new TransportModeAndSubMode(
           AllVehicleModesOfTransportEnumeration.fromValue(split[0]),
@@ -43,8 +58,8 @@ public record TransportModeAndSubMode(
         );
       } else {
         throw new NetexValidationException(
-          "Invalid stopPlaceTransportModeAndSubMode string: " +
-          stopPlaceTransportModeAndSubMode
+          "Invalid submodeStructureTransportModeAndSubMode string: " +
+          submodeStructureTransportModeAndSubMode
         );
       }
     }
