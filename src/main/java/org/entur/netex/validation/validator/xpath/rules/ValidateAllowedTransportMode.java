@@ -32,9 +32,10 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
   public ValidateAllowedTransportMode(
     String contexPath,
     String code,
-    String message
+    String message,
+    Severity severity
   ) {
-    this(contexPath, code, message, DEFAULT_VALID_TRANSPORT_MODES);
+    this(contexPath, code, message, severity, DEFAULT_VALID_TRANSPORT_MODES);
   }
 
   /**
@@ -45,13 +46,14 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
     String contexPath,
     String code,
     String message,
+    Severity severity,
     String validTransportModes
   ) {
     super(
       contexPath + "/TransportMode[not(. = (" + validTransportModes + "))]",
       message,
       code,
-      Severity.ERROR
+      severity
     );
   }
 }

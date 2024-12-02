@@ -79,15 +79,23 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
   public ValidateAllowedTransportSubMode(
     String contextPath,
     String code,
-    String message
+    String message,
+    Severity severity
   ) {
-    this(contextPath, code, message, DEFAULT_VALID_TRANSPORT_SUBMODES);
+    this(
+      contextPath,
+      code,
+      message,
+      severity,
+      DEFAULT_VALID_TRANSPORT_SUBMODES
+    );
   }
 
   public ValidateAllowedTransportSubMode(
     String contextPath,
     String code,
     String message,
+    Severity severity,
     String validTransportSubModes
   ) {
     super(
@@ -97,7 +105,7 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       "))]",
       message,
       code,
-      Severity.ERROR
+      severity
     );
   }
 }

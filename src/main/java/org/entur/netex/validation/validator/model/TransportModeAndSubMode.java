@@ -48,14 +48,8 @@ public record TransportModeAndSubMode(
     return TransportSubMode
       .of(transportMode, submodeStructure)
       .map(submode -> new TransportModeAndSubMode(transportMode, submode))
-      .orElseGet(() -> {
-        LOGGER.warn(
-          "Cannot map the transport submode. This should have been caught in prior validation steps"
-        );
-        return new TransportModeAndSubMode(
-          transportMode,
-          TransportSubMode.MISSING
-        );
-      });
+      .orElse(
+        new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING)
+      );
   }
 }

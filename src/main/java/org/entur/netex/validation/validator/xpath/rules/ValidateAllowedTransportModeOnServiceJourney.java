@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.Severity;
+
 public class ValidateAllowedTransportModeOnServiceJourney
   extends ValidateAllowedTransportMode {
 
@@ -8,6 +10,6 @@ public class ValidateAllowedTransportModeOnServiceJourney
     "Illegal TransportMode on ServiceJourney";
 
   public ValidateAllowedTransportModeOnServiceJourney() {
-    super("vehicleJourneys/ServiceJourney", CODE, MESSAGE);
+    super("vehicleJourneys/ServiceJourney", CODE, MESSAGE, Severity.WARNING);
   }
 }
