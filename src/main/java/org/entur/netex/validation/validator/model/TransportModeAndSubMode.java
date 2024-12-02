@@ -2,7 +2,6 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Objects;
 import javax.annotation.Nullable;
-import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;
@@ -58,38 +57,5 @@ public record TransportModeAndSubMode(
           TransportSubMode.MISSING
         );
       });
-  }
-
-  @Override
-  public String toString() {
-    return (
-      (mode != null ? mode.value() : "") +
-      (subMode != null ? "§" + subMode.name() : "")
-    );
-  }
-
-  public static TransportModeAndSubMode fromString(
-    String submodeStructureTransportModeAndSubMode
-  ) {
-    if (submodeStructureTransportModeAndSubMode != null) {
-      String[] split = submodeStructureTransportModeAndSubMode.split("§");
-      if (split.length == 1) {
-        return new TransportModeAndSubMode(
-          AllVehicleModesOfTransportEnumeration.fromValue(split[0]),
-          null
-        );
-      } else if (split.length == 2) {
-        return new TransportModeAndSubMode(
-          AllVehicleModesOfTransportEnumeration.fromValue(split[0]),
-          new TransportSubMode(split[1])
-        );
-      } else {
-        throw new NetexValidationException(
-          "Invalid submodeStructureTransportModeAndSubMode string: " +
-          submodeStructureTransportModeAndSubMode
-        );
-      }
-    }
-    return null;
   }
 }
