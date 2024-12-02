@@ -1,10 +1,13 @@
 package org.entur.netex.validation.validator.model;
 
-import java.util.Optional;
+import java.util.Objects;
+import javax.annotation.Nullable;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A pair of mode and sub-mode.
@@ -13,13 +16,29 @@ public record TransportModeAndSubMode(
   AllVehicleModesOfTransportEnumeration mode,
   TransportSubMode subMode
 ) {
-  public static TransportModeAndSubMode of(StopPlace stopPlace) {
-    return new TransportModeAndSubMode(
-      stopPlace.getTransportMode(),
-      TransportSubMode.of(stopPlace).orElse(null)
-    );
+  private static final Logger LOGGER = LoggerFactory.getLogger(
+    TransportModeAndSubMode.class
+  );
+
+  public TransportModeAndSubMode {
+    Objects.requireNonNull(mode, "Transport mode cannot be null");
+    Objects.requireNonNull(mode, "Transport submode cannot be null");
   }
 
+  @Nullable
+  public static TransportModeAndSubMode of(StopPlace stopPlace) {
+    AllVehicleModesOfTransportEnumeration transportMode =
+      stopPlace.getTransportMode();
+    if (transportMode == null) {
+      return null;
+    }
+    return TransportSubMode
+      .of(stopPlace)
+      .map(submode -> new TransportModeAndSubMode(transportMode, submode))
+      .orElse(null);
+  }
+
+  @Nullable
   public static TransportModeAndSubMode of(
     AllVehicleModesOfTransportEnumeration transportMode,
     TransportSubmodeStructure submodeStructure
@@ -27,10 +46,18 @@ public record TransportModeAndSubMode(
     if (transportMode == null) {
       return null;
     }
-    return new TransportModeAndSubMode(
-      transportMode,
-      TransportSubMode.of(transportMode, submodeStructure).orElse(null)
-    );
+    return TransportSubMode
+      .of(transportMode, submodeStructure)
+      .map(submode -> new TransportModeAndSubMode(transportMode, submode))
+      .orElseGet(() -> {
+        LOGGER.warn(
+          "Cannot map the transport submode. This should have been caught in prior validation steps"
+        );
+        return new TransportModeAndSubMode(
+          transportMode,
+          TransportSubMode.MISSING
+        );
+      });
   }
 
   @Override

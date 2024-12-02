@@ -11,8 +11,10 @@ import org.rutebanken.netex.model.TransportSubmodeStructure;
  * A NeTEx transport sub-mode.
  */
 public record TransportSubMode(String name) {
+  public static final TransportSubMode MISSING = new TransportSubMode("");
+
   public TransportSubMode {
-    Objects.requireNonNull(name, "Invalid transport sub mode " + name);
+    Objects.requireNonNull(name, "Transport submode cannot be null");
   }
 
   public static Optional<TransportSubMode> of(StopPlace stopPlace) {
@@ -65,49 +67,50 @@ public record TransportSubMode(String name) {
     AllVehicleModesOfTransportEnumeration transportMode,
     TransportSubmodeStructure subModeStructure
   ) {
-    {
-      if (transportMode == null || subModeStructure == null) {
-        return Optional.empty();
-      }
-      String subModeName =
-        switch (transportMode) {
-          case AIR -> subModeStructure.getAirSubmode() == null
-            ? null
-            : subModeStructure.getAirSubmode().value();
-          case BUS -> subModeStructure.getBusSubmode() == null
-            ? null
-            : subModeStructure.getBusSubmode().value();
-          case COACH -> subModeStructure.getCoachSubmode() == null
-            ? null
-            : subModeStructure.getCoachSubmode().value();
-          case METRO -> subModeStructure.getMetroSubmode() == null
-            ? null
-            : subModeStructure.getMetroSubmode().value();
-          case RAIL -> subModeStructure.getRailSubmode() == null
-            ? null
-            : subModeStructure.getRailSubmode().value();
-          case TRAM -> subModeStructure.getTramSubmode() == null
-            ? null
-            : subModeStructure.getTramSubmode().value();
-          case WATER -> subModeStructure.getWaterSubmode() == null
-            ? null
-            : subModeStructure.getWaterSubmode().value();
-          case CABLEWAY -> subModeStructure.getTelecabinSubmode() == null
-            ? null
-            : subModeStructure.getTelecabinSubmode().value();
-          case FUNICULAR -> subModeStructure.getFunicularSubmode() == null
-            ? null
-            : subModeStructure.getFunicularSubmode().value();
-          case SNOW_AND_ICE -> subModeStructure.getSnowAndIceSubmode() == null
-            ? null
-            : subModeStructure.getSnowAndIceSubmode().value();
-          default -> null;
-        };
-
-      if (subModeName == null) {
-        return Optional.empty();
-      }
-      return Optional.of(new TransportSubMode(subModeName));
+    if (transportMode == null || subModeStructure == null) {
+      return Optional.empty();
     }
+    String subModeName =
+      switch (transportMode) {
+        case AIR -> subModeStructure.getAirSubmode() == null
+          ? null
+          : subModeStructure.getAirSubmode().value();
+        case BUS -> subModeStructure.getBusSubmode() == null
+          ? null
+          : subModeStructure.getBusSubmode().value();
+        case COACH -> subModeStructure.getCoachSubmode() == null
+          ? null
+          : subModeStructure.getCoachSubmode().value();
+        case METRO -> subModeStructure.getMetroSubmode() == null
+          ? null
+          : subModeStructure.getMetroSubmode().value();
+        case RAIL -> subModeStructure.getRailSubmode() == null
+          ? null
+          : subModeStructure.getRailSubmode().value();
+        case TAXI -> subModeStructure.getTaxiSubmode() == null
+          ? null
+          : subModeStructure.getTaxiSubmode().value();
+        case TRAM -> subModeStructure.getTramSubmode() == null
+          ? null
+          : subModeStructure.getTramSubmode().value();
+        case WATER -> subModeStructure.getWaterSubmode() == null
+          ? null
+          : subModeStructure.getWaterSubmode().value();
+        case CABLEWAY -> subModeStructure.getTelecabinSubmode() == null
+          ? null
+          : subModeStructure.getTelecabinSubmode().value();
+        case FUNICULAR -> subModeStructure.getFunicularSubmode() == null
+          ? null
+          : subModeStructure.getFunicularSubmode().value();
+        case SNOW_AND_ICE -> subModeStructure.getSnowAndIceSubmode() == null
+          ? null
+          : subModeStructure.getSnowAndIceSubmode().value();
+        default -> null;
+      };
+
+    if (subModeName == null) {
+      return Optional.empty();
+    }
+    return Optional.of(new TransportSubMode(subModeName));
   }
 }

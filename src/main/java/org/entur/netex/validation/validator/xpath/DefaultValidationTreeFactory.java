@@ -422,10 +422,10 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     );
 
     serviceFrameValidationTree.addValidationRule(
-      new ValidateAllowedTransportMode()
+      new ValidateAllowedTransportModeOnLine()
     );
     serviceFrameValidationTree.addValidationRule(
-      new ValidateAllowedTransportSubMode()
+      new ValidateAllowedTransportSubModeOnLine()
     );
 
     serviceFrameValidationTree.addValidationRule(
@@ -626,6 +626,14 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_2"
       )
     );
+
+    validationTree.addValidationRule(
+      new ValidateAllowedTransportModeOnServiceJourney()
+    );
+    validationTree.addValidationRule(
+      new ValidateAllowedTransportSubModeOnServiceJourney()
+    );
+
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(passingTimes)]",

@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.Severity;
+
 /**
  * Validate the transport mode against the Nordic NeTEx profile.
  */
@@ -23,19 +25,33 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
     ) +
     "'";
 
-  private static final String MESSAGE = "Illegal TransportMode";
-
-  public ValidateAllowedTransportMode() {
-    this(DEFAULT_VALID_TRANSPORT_MODES);
+  /**
+   * Validate that the transport mode set on the given contex path (either Line, FlexibleLine or ServiceJourney) is valid
+   * for the default set of transport modes.
+   */
+  public ValidateAllowedTransportMode(
+    String contexPath,
+    String code,
+    String message
+  ) {
+    this(contexPath, code, message, DEFAULT_VALID_TRANSPORT_MODES);
   }
 
-  public ValidateAllowedTransportMode(String validTransportModes) {
+  /**
+   * Validate that the transport mode set on the container entity (either Line, FlexibleLine or ServiceJourney) is valid
+   * for the given set of transport modes.
+   */
+  public ValidateAllowedTransportMode(
+    String contexPath,
+    String code,
+    String message,
+    String validTransportModes
+  ) {
     super(
-      "lines/*[self::Line or self::FlexibleLine]/TransportMode[not(. = (" +
-      validTransportModes +
-      "))]",
-      MESSAGE,
-      "TRANSPORT_MODE"
+      contexPath + "/TransportMode[not(. = (" + validTransportModes + "))]",
+      message,
+      code,
+      Severity.ERROR
     );
   }
 }

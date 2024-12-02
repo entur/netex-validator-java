@@ -10,7 +10,7 @@ import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Test;
 
-class ValidateAllowedTransportModeAndSubmodeTest {
+class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
   public static final String TEST_CODESPACE = "FLB";
   private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
@@ -42,7 +42,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
-      new ValidateAllowedTransportMode();
+      new ValidateAllowedTransportModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportMode.validate(xpathRuleValidationContext);
     assertTrue(validationIssues.isEmpty());
@@ -58,7 +58,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
-      new ValidateAllowedTransportMode();
+      new ValidateAllowedTransportModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportMode.validate(xpathRuleValidationContext);
     assertTrue(validationIssues.isEmpty());
@@ -74,7 +74,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
-      new ValidateAllowedTransportMode();
+      new ValidateAllowedTransportModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportMode.validate(xpathRuleValidationContext);
     assertEquals(1, validationIssues.size());
@@ -92,7 +92,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
-      new ValidateAllowedTransportMode();
+      new ValidateAllowedTransportModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportMode.validate(xpathRuleValidationContext);
     assertEquals(1, validationIssues.size());
@@ -110,7 +110,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportSubMode validateAllowedTransportSubMode =
-      new ValidateAllowedTransportSubMode();
+      new ValidateAllowedTransportSubModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportSubMode.validate(xpathRuleValidationContext);
     assertTrue(validationIssues.isEmpty());
@@ -126,7 +126,7 @@ class ValidateAllowedTransportModeAndSubmodeTest {
       );
 
     ValidateAllowedTransportSubMode validateAllowedTransportSubMode =
-      new ValidateAllowedTransportSubMode();
+      new ValidateAllowedTransportSubModeOnLine();
     List<ValidationIssue> validationIssues =
       validateAllowedTransportSubMode.validate(xpathRuleValidationContext);
     assertEquals(1, validationIssues.size());

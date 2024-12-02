@@ -11,6 +11,8 @@ import static org.rutebanken.netex.model.TelecabinSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.TramSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.WaterSubmodeEnumeration.*;
 
+import org.entur.netex.validation.validator.Severity;
+
 /**
  * Validate the transport sub-mode against the Nordic NeTEx profile.
  */
@@ -74,19 +76,28 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
     ) +
     "'";
 
-  private static final String MESSAGE = "Illegal TransportSubMode";
-
-  public ValidateAllowedTransportSubMode() {
-    this(DEFAULT_VALID_TRANSPORT_SUBMODES);
+  public ValidateAllowedTransportSubMode(
+    String contextPath,
+    String code,
+    String message
+  ) {
+    this(contextPath, code, message, DEFAULT_VALID_TRANSPORT_SUBMODES);
   }
 
-  public ValidateAllowedTransportSubMode(String validTransportSubModes) {
+  public ValidateAllowedTransportSubMode(
+    String contextPath,
+    String code,
+    String message,
+    String validTransportSubModes
+  ) {
     super(
-      "lines/*[self::Line or self::FlexibleLine]/TransportSubmode[not(. = (" +
+      contextPath +
+      "/TransportSubmode[not(. = (" +
       validTransportSubModes +
       "))]",
-      MESSAGE,
-      "TRANSPORT_SUB_MODE"
+      message,
+      code,
+      Severity.ERROR
     );
   }
 }
