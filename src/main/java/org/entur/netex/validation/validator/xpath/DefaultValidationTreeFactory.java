@@ -533,6 +533,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         new ValidateAtLeastOne(
           "routes/Route",
           "ROUTE_1",
+          "Route missing",
           "There should be at least one Route",
           Severity.ERROR
         )
@@ -543,21 +544,27 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "routes/Route[not(Name) or normalize-space(Name) = '']",
         "ROUTE_2",
-        "Missing Name on Route"
+        "Route missing Name",
+        "Missing Name on Route",
+              Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "routes/Route[not(LineRef) and not(FlexibleLineRef)]",
         "ROUTE_3",
-        "Missing lineRef on Route"
+        "Route missing LineRef",
+        "Missing lineRef on Route",
+              Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "routes/Route[not(pointsInSequence)]",
         "ROUTE_4",
-        "Missing pointsInSequence on Route"
+        "Route missing pointsInSequence",
+        "Missing pointsInSequence on Route",
+              Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
