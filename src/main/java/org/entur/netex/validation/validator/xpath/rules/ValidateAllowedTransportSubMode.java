@@ -11,12 +11,15 @@ import static org.rutebanken.netex.model.TelecabinSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.TramSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.WaterSubmodeEnumeration.*;
 
+import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.validator.Severity;
+
 /**
  * Validate the transport sub-mode against the Nordic NeTEx profile.
  */
-public class ValidatedAllowedTransportSubMode extends ValidateNotExist {
+public class ValidateAllowedTransportSubMode extends ValidateNotExist {
 
-  private static final String VALID_TRANSPORT_SUBMODES =
+  public static final String DEFAULT_VALID_TRANSPORT_SUBMODES =
     "'" +
     String.join(
       "','",
@@ -74,15 +77,41 @@ public class ValidatedAllowedTransportSubMode extends ValidateNotExist {
     ) +
     "'";
 
-  private static final String MESSAGE = "Illegal TransportSubMode";
-
-  public ValidatedAllowedTransportSubMode() {
-    super(
-      "lines/*[self::Line or self::FlexibleLine]/TransportSubmode[not(. = (" +
-      VALID_TRANSPORT_SUBMODES +
-      "))]",
-      MESSAGE,
-      "TRANSPORT_SUB_MODE"
+  public ValidateAllowedTransportSubMode(
+    String contextPath,
+    String code,
+    String message,
+    Severity severity
+  ) {
+    this(
+      contextPath,
+      code,
+      message,
+      severity,
+      DEFAULT_VALID_TRANSPORT_SUBMODES
     );
+  }
+
+  public ValidateAllowedTransportSubMode(
+    String contextPath,
+    String code,
+    String message,
+    Severity severity,
+    String validTransportSubModes
+  ) {
+    super(
+      contextPath +
+      "/TransportSubmode[not(. = (" +
+      validTransportSubModes +
+      "))]",
+      message,
+      code,
+      severity
+    );
+  }
+
+  @Override
+  public String formatMatchedItem(XdmNode xdmNode) {
+    return xdmNode.getStringValue();
   }
 }

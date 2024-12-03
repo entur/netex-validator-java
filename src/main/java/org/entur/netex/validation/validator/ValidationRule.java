@@ -1,5 +1,7 @@
 package org.entur.netex.validation.validator;
 
+import java.util.Objects;
+
 /**
  * A validation rule, identified by a unique code.
  * The validation rule has a default name, message and severity that can be overridden by configuration.
@@ -21,10 +23,10 @@ public class ValidationRule {
     String message,
     Severity severity
   ) {
-    this.code = code;
-    this.name = name;
-    this.message = message;
-    this.severity = severity;
+    this.code = Objects.requireNonNull(code);
+    this.name = Objects.requireNonNull(name);
+    this.message = Objects.requireNonNull(message);
+    this.severity = Objects.requireNonNull(severity);
   }
 
   /**
@@ -58,5 +60,18 @@ public class ValidationRule {
    */
   public Severity severity() {
     return severity;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ValidationRule that = (ValidationRule) o;
+    return Objects.equals(code, that.code);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hashCode(code);
   }
 }

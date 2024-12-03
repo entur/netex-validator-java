@@ -56,7 +56,16 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
           validationContext.getFileName(),
           xdmNode
         );
-        validationIssues.add(new ValidationIssue(rule, dataLocation));
+        String formattedItem = formatMatchedItem(xdmNode);
+        ValidationIssue validationIssue;
+        if (formattedItem != null) {
+          validationIssue =
+            new ValidationIssue(rule, dataLocation, formattedItem);
+        } else {
+          validationIssue = new ValidationIssue(rule, dataLocation);
+        }
+
+        validationIssues.add(validationIssue);
       }
       return validationIssues;
     } catch (SaxonApiException e) {
@@ -65,6 +74,14 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
         e
       );
     }
+  }
+
+  /**
+   * Optionally provide a text format for the captured item, for use in the validation issue message format.
+   * By default, no format is applied.
+   */
+  public String formatMatchedItem(XdmNode xdmNode) {
+    return null;
   }
 
   @Override
