@@ -52,4 +52,8 @@ public class XPathRuleValidationContext {
   public boolean isCommonFile() {
     return fileName != null && fileName.startsWith("_");
   }
+
+  public boolean isLineFile() {
+    return !isCommonFile();
+  }
 }

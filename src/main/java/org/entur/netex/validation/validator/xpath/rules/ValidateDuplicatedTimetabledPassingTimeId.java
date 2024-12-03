@@ -28,12 +28,6 @@ public class ValidateDuplicatedTimetabledPassingTimeId
     ERROR
   );
 
-  private final String context;
-
-  public ValidateDuplicatedTimetabledPassingTimeId(String context) {
-    this.context = context;
-  }
-
   @Override
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
@@ -43,7 +37,6 @@ public class ValidateDuplicatedTimetabledPassingTimeId
         .getNetexXMLParser()
         .getXPathCompiler()
         .compile(
-          context +
           "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[@id]"
         )
         .load();

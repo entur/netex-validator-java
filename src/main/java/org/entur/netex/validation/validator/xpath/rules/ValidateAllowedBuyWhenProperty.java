@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.Severity;
 import org.rutebanken.netex.model.PurchaseMomentEnumeration;
 
 /**
@@ -18,16 +19,16 @@ public class ValidateAllowedBuyWhenProperty extends ValidateNotExist {
     ) +
     "'";
 
-  private static final String MESSAGE = "Illegal value for BuyWhen";
-
   public ValidateAllowedBuyWhenProperty(String context) {
     super(
       context +
       "/BuyWhen[tokenize(.,' ')[not(. = (" +
       VALID_BUY_WHEN_PROPERTIES +
       "))]]",
-      MESSAGE,
-      "BUY_WHEN_1"
+      "BUY_WHEN_1",
+      "BuyWhen illegal value",
+      "Illegal value for BuyWhen",
+      Severity.ERROR
     );
   }
 }

@@ -19,13 +19,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A tree of XPath validation rules to be applied to a NeTEx document. See {@link XPathValidationRule}.
- * The tree can be structured in subtrees that validate a part of the XML documents.
+ * The tree can be structured in subtrees that validate a part of the XML document.
  * The tree leaves are instances {@link XPathValidationRule}.
  */
 public class ValidationTree {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     ValidationTree.class
+  );
+  private static final ValidationTree EMPTY = new ValidationTree(
+    "(empty)",
+    "."
   );
 
   private final String name;
@@ -59,11 +63,48 @@ public class ValidationTree {
     this.subTrees = new ArrayList<>();
   }
 
+  /**
+   * Return an empty (NOOP) validation tree.
+   */
+  public static ValidationTree empty() {
+    return EMPTY;
+  }
+
+  /**
+   * Apply all validation rules in the tree and return validation issues.
+   */
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
+    return validate(validationContext, validationRule -> true);
+  }
+
+  /**
+   * Apply the given validation rule and return validation issues.
+   */
+  public List<ValidationIssue> validate(
+    XPathRuleValidationContext validationContext,
+    String validationRuleCode
+  ) {
+    return validate(
+      validationContext,
+      validationRule -> validationRule.rule().code().equals(validationRuleCode)
+    );
+  }
+
+  /**
+   * Apply the validation rules matching the given rule filter and return validation issues.
+   */
+  public List<ValidationIssue> validate(
+    XPathRuleValidationContext validationContext,
+    Predicate<XPathValidationRule> filter
+  ) {
     List<ValidationIssue> validationIssues = new ArrayList<>();
     for (XPathValidationRule xPathValidationRule : xPathValidationRules) {
+      if (!filter.test(xPathValidationRule)) {
+        continue;
+      }
+
       LOGGER.debug(
         "Running validation rule '{}'/'{}'",
         name,
@@ -102,7 +143,7 @@ public class ValidationTree {
             validationSubTree.getName()
           );
           validationIssues.addAll(
-            validationSubTree.validate(validationSubContext)
+            validationSubTree.validate(validationSubContext, filter)
           );
         } else {
           LOGGER.debug(

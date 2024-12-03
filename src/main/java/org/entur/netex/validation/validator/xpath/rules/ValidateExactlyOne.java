@@ -1,6 +1,5 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.Collections;
 import java.util.List;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
@@ -21,18 +20,19 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
   private final String xpath;
   private final ValidationRule rule;
 
-  public ValidateExactlyOne(String xpath, String message, String code) {
-    this(xpath, message, code, Severity.UNSET);
-  }
-
   public ValidateExactlyOne(
     String xpath,
-    String message,
     String code,
+    String name,
+    String message,
     Severity severity
   ) {
+    this(xpath, new ValidationRule(code, name, message, severity));
+  }
+
+  public ValidateExactlyOne(String xpath, ValidationRule validationRule) {
     this.xpath = xpath;
-    this.rule = new ValidationRule(code, message, severity);
+    this.rule = validationRule;
   }
 
   @Override
@@ -56,7 +56,7 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
         );
         return List.of(new ValidationIssue(rule, dataLocation));
       }
-      return Collections.emptyList();
+      return List.of();
     } catch (SaxonApiException e) {
       throw new NetexValidationException(
         "Error while validating rule " + xpath,

@@ -5,11 +5,13 @@ import org.entur.netex.validation.validator.Severity;
 public class ValidateAllowedTransportModeOnServiceJourney
   extends ValidateAllowedTransportMode {
 
-  private static final String CODE = "TRANSPORT_MODE_ON_SERVICE_JOURNEY";
-  private static final String MESSAGE =
-    "Illegal TransportMode on ServiceJourney: %s";
-
   public ValidateAllowedTransportModeOnServiceJourney() {
-    super("vehicleJourneys/ServiceJourney", CODE, MESSAGE, Severity.WARNING);
+    super(
+      "vehicleJourneys/ServiceJourney",
+      "TRANSPORT_MODE_ON_SERVICE_JOURNEY",
+      "Service Journey Illegal TransportMode",
+      "Illegal TransportMode on ServiceJourney: %s",
+      Severity.WARNING
+    );
   }
 }

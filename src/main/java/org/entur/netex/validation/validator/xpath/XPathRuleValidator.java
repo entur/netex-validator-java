@@ -23,7 +23,7 @@ public class XPathRuleValidator extends AbstractXPathValidator {
   private final ValidationTree topLevelValidationTree;
 
   public XPathRuleValidator(ValidationTreeFactory validationTreeFactory) {
-    this.topLevelValidationTree = validationTreeFactory.buildValidationTree();
+    this.topLevelValidationTree = validationTreeFactory.builder().build();
   }
 
   @Override
