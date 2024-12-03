@@ -6,7 +6,7 @@ public class ValidateAllowedTransportSubModeOnLine
   extends ValidateAllowedTransportSubMode {
 
   private static final String CODE = "TRANSPORT_SUB_MODE_ON_LINE";
-  private static final String MESSAGE = "Illegal TransportSubMode on Line";
+  private static final String MESSAGE = "Illegal TransportSubMode on Line: %s";
 
   public ValidateAllowedTransportSubModeOnLine() {
     super(

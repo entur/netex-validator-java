@@ -6,7 +6,7 @@ public class ValidateAllowedTransportModeOnLine
   extends ValidateAllowedTransportMode {
 
   private static final String CODE = "TRANSPORT_MODE_ON_LINE";
-  private static final String MESSAGE = "Illegal TransportMode on Line";
+  private static final String MESSAGE = "Illegal TransportMode on Line: %s";
 
   public ValidateAllowedTransportModeOnLine() {
     super(

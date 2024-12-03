@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.Severity;
 
 /**
@@ -55,5 +56,10 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
       code,
       severity
     );
+  }
+
+  @Override
+  public String formatMatchedItem(XdmNode xdmNode) {
+    return xdmNode.getStringValue();
   }
 }

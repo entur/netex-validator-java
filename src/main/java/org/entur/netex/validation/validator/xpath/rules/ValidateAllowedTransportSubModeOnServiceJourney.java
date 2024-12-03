@@ -7,7 +7,7 @@ public class ValidateAllowedTransportSubModeOnServiceJourney
 
   private static final String CODE = "TRANSPORT_SUB_MODE_ON_SERVICE_JOURNEY";
   private static final String MESSAGE =
-    "Illegal TransportSubMode on ServiceJourney";
+    "Illegal TransportSubMode on ServiceJourney: %s";
 
   public ValidateAllowedTransportSubModeOnServiceJourney() {
     super("vehicleJourneys/ServiceJourney", CODE, MESSAGE, Severity.WARNING);

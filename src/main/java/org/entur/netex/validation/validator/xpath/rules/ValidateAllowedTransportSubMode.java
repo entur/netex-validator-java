@@ -11,6 +11,7 @@ import static org.rutebanken.netex.model.TelecabinSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.TramSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.WaterSubmodeEnumeration.*;
 
+import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.Severity;
 
 /**
@@ -107,5 +108,10 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       code,
       severity
     );
+  }
+
+  @Override
+  public String formatMatchedItem(XdmNode xdmNode) {
+    return xdmNode.getStringValue();
   }
 }
