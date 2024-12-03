@@ -23,18 +23,19 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
   private final String xpath;
   private final ValidationRule rule;
 
-  public ValidateNotExist(String xpath, String message, String code) {
-    this(xpath, message, code, Severity.UNSET);
-  }
-
   public ValidateNotExist(
     String xpath,
-    String message,
     String code,
+    String name,
+    String message,
     Severity severity
   ) {
+    this(xpath, new ValidationRule(code, name, message, severity));
+  }
+
+  public ValidateNotExist(String xpath, ValidationRule validationRule) {
     this.xpath = xpath;
-    this.rule = new ValidationRule(code, message, severity);
+    this.rule = validationRule;
   }
 
   @Override

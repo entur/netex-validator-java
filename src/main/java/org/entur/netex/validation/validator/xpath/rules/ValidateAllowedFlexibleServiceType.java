@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.Severity;
 import org.rutebanken.netex.model.FlexibleServiceEnumeration;
 
 /**
@@ -18,16 +19,15 @@ public class ValidateAllowedFlexibleServiceType extends ValidateNotExist {
     ) +
     "'";
 
-  public static final String MESSAGE =
-    "Illegal FlexibleServiceType on ServiceJourney";
-
   public ValidateAllowedFlexibleServiceType() {
     super(
       "vehicleJourneys/ServiceJourney/FlexibleServiceProperties/FlexibleServiceType[not(. = (" +
       VALID_FLEXIBLE_SERVICE_TYPES +
       "))]",
-      MESSAGE,
-      "FLEXIBLE_LINE_9"
+      "FLEXIBLE_LINE_9",
+      "FlexibleLine illegal FlexibleServiceType",
+      "Illegal FlexibleServiceType on ServiceJourney",
+      Severity.ERROR
     );
   }
 }

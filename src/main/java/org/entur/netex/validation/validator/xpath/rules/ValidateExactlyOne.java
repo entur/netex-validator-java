@@ -21,18 +21,19 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
   private final String xpath;
   private final ValidationRule rule;
 
-  public ValidateExactlyOne(String xpath, String message, String code) {
-    this(xpath, message, code, Severity.UNSET);
-  }
-
   public ValidateExactlyOne(
     String xpath,
-    String message,
     String code,
+    String name,
+    String message,
     Severity severity
   ) {
+    this(xpath, new ValidationRule(code, name, message, severity));
+  }
+
+  public ValidateExactlyOne(String xpath, ValidationRule validationRule) {
     this.xpath = xpath;
-    this.rule = new ValidationRule(code, message, severity);
+    this.rule = validationRule;
   }
 
   @Override

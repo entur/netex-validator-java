@@ -15,8 +15,8 @@ class ValidationTreeTest {
     ValidationTree tree = new ValidationTree("Root", "/");
     XPathValidationRule xPathValidationRule = new ValidateNotExist(
       "//Block",
-      "Blocks are not present",
-      RULE_CODE
+      RULE_CODE,
+      "Blocks are not present"
     );
     tree.addValidationRule(xPathValidationRule);
     Set<XPathValidationRule> rules = tree.getRules();
