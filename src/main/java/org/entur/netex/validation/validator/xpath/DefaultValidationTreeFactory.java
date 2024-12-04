@@ -1234,35 +1234,45 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "//DayType[not(//DayTypeAssignment/DayTypeRef/@ref = @id)]",
         "SERVICE_CALENDAR_1",
-        "The DayType is not assigned to any calendar dates or periods"
+        "ServiceCalendar unused DayType",
+        "The DayType is not assigned to any calendar dates or periods",
+              Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "//ServiceCalendar[not(dayTypes) and not(dayTypeAssignments)]",
         "SERVICE_CALENDAR_2",
-        "ServiceCalendar does not contain neither DayTypes nor DayTypeAssignments"
+        "ServiceCalendar empty ServiceCalendar",
+        "ServiceCalendar does not contain neither DayTypes nor DayTypeAssignments",
+              Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "//ServiceCalendar[not(ToDate)]",
         "SERVICE_CALENDAR_3",
-        "Missing ToDate on ServiceCalendar"
+        "ServiceCalendar missing ToDate",
+        "Missing ToDate on ServiceCalendar",
+              Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "//ServiceCalendar[not(FromDate)]",
         "SERVICE_CALENDAR_4",
-        "Missing FromDate on ServiceCalendar"
+        "ServiceCalendar missing FromDate",
+        "Missing FromDate on ServiceCalendar",
+              Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "//ServiceCalendar[FromDate and ToDate and ToDate < FromDate]",
         "SERVICE_CALENDAR_5",
-        "FromDate cannot be after ToDate on ServiceCalendar"
+        "ServiceCalendar invalid time interval",
+        "FromDate cannot be after ToDate on ServiceCalendar",
+              Severity.ERROR
       )
     );
 
@@ -1288,14 +1298,18 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "blocks/Block[not(journeys)]",
         "BLOCK_2",
-        "At least one Journey must be defined for Block"
+        "Block missing Journey",
+        "At least one Journey must be defined for Block",
+              Severity.ERROR
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "blocks/Block[not(dayTypes)]",
         "BLOCK_3",
-        "At least one DayType must be defined for Block"
+        "Block missing DayType",
+        "At least one DayType must be defined for Block",
+              Severity.WARNING
       )
     );
 
@@ -1312,42 +1326,54 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "Network[not(AuthorityRef)]",
         "NETWORK_1",
-        "Missing AuthorityRef on Network"
+        "Network missing AuthorityRef",
+        "Missing AuthorityRef on Network",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "Network[not(Name) or normalize-space(Name) = '']",
         "NETWORK_2",
-        "Missing Name element on Network"
+        "Network missing Name on Network",
+        "Missing Name element on Network",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "Network/groupsOfLines/GroupOfLines[not(Name)  or normalize-space(Name) = '']",
         "NETWORK_3",
-        "Missing Name element on GroupOfLines"
+        "Network missing Name on GroupOfLines",
+        "Missing Name element on GroupOfLines",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "groupsOfLines",
         "SERVICE_FRAME_1",
-        "Unexpected element groupsOfLines outside of Network"
+        "ServiceFrame unexpected element GroupOfLines",
+        "Unexpected element groupsOfLines outside of Network",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "timingPoints",
         "SERVICE_FRAME_2",
-        "Unexpected element timingPoints. Content ignored"
+        "ServiceFrame unexpected element timingPoints",
+        "Unexpected element timingPoints. Content ignored",
+              Severity.WARNING
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "routePoints/RoutePoint[not(projections)]",
         "SERVICE_FRAME_3",
-        "Missing Projection on RoutePoint"
+        "ServiceFrame missing Projection on RoutePoint",
+        "Missing Projection on RoutePoint",
+              Severity.ERROR
       )
     );
 
@@ -1355,7 +1381,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "stopAssignments/PassengerStopAssignment[not(ScheduledStopPointRef)]",
         "PASSENGER_STOP_ASSIGNMENT_1",
-        "Missing ScheduledStopPointRef on PassengerStopAssignment"
+        "PassengerStopAssignment missing ScheduledStopPointRef",
+        "Missing ScheduledStopPointRef on PassengerStopAssignment",
+              Severity.ERROR
       )
     );
     validationRules.add(
