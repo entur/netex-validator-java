@@ -546,7 +546,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "ROUTE_2",
         "Route missing Name",
         "Missing Name on Route",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
@@ -555,7 +555,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "ROUTE_3",
         "Route missing LineRef",
         "Missing lineRef on Route",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
@@ -564,21 +564,25 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "ROUTE_4",
         "Route missing pointsInSequence",
         "Missing pointsInSequence on Route",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "routes/Route/DirectionRef",
         "ROUTE_5",
-        "DirectionRef not allowed on Route (use DirectionType)"
+        "Route illegal DirectionRef",
+        "DirectionRef not allowed on Route (use DirectionType)",
+        Severity.WARNING
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "routes/Route/pointsInSequence/PointOnRoute[@order = preceding-sibling::PointOnRoute/@order]",
         "ROUTE_6",
-        "Several points on route have the same order"
+        "Route duplicated order",
+        "Several points on route have the same order",
+        Severity.WARNING
       )
     );
 
@@ -587,7 +591,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         new ValidateNotExist(
           "journeyPatterns/ServiceJourneyPattern",
           "JOURNEY_PATTERN_1",
-          "ServiceJourneyPattern not allowed"
+          "JourneyPattern illegal element ServiceJourneyPattern",
+          "ServiceJourneyPattern not allowed",
+          Severity.ERROR
         )
       )
     );
@@ -596,6 +602,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         new ValidateAtLeastOne(
           "journeyPatterns/JourneyPattern",
           "JOURNEY_PATTERN_2",
+          "JourneyPattern missing JourneyPattern",
           "No JourneyPattern defined in the Service Frame",
           Severity.ERROR
         )
@@ -606,35 +613,45 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern[not(RouteRef)]",
         "JOURNEY_PATTERN_3",
-        "Missing RouteRef on JourneyPattern"
+        "JourneyPattern missing RouteRef",
+        "Missing RouteRef on JourneyPattern",
+        Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[1][not(DestinationDisplayRef)]",
         "JOURNEY_PATTERN_4",
-        "Missing DestinationDisplayRef on first StopPointInJourneyPattern"
+        "JourneyPattern missing DestinationDisplayRef on first stop point",
+        "Missing DestinationDisplayRef on first StopPointInJourneyPattern",
+        Severity.ERROR
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[last()][DestinationDisplayRef]",
         "JOURNEY_PATTERN_5",
-        "DestinationDisplayRef not allowed on last StopPointInJourneyPattern"
+        "JourneyPattern illegal DestinationDisplayRef on last stop point",
+        "DestinationDisplayRef not allowed on last StopPointInJourneyPattern",
+        Severity.WARNING
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[ForAlighting = 'false' and ForBoarding = 'false']",
         "JOURNEY_PATTERN_6",
-        "StopPointInJourneyPattern neither allows boarding nor alighting"
+        "JourneyPattern stop point without boarding or alighting",
+        "StopPointInJourneyPattern neither allows boarding nor alighting",
+        Severity.WARNING
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[DestinationDisplayRef/@ref = preceding-sibling::StopPointInJourneyPattern[1]/DestinationDisplayRef/@ref and number(@order) >  number(preceding-sibling::StopPointInJourneyPattern[1]/@order)]",
         "JOURNEY_PATTERN_7",
-        "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern"
+        "JourneyPattern illegal repetition of DestinationDisplay",
+        "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern",
+        Severity.ERROR
       )
     );
 
@@ -663,14 +680,18 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[BookWhen and MinimumBookingPeriod]",
         "JOURNEY_PATTERN_8",
-        "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern"
+        "JourneyPattern  illegal use of both BookWhen and MinimumBookingPeriod",
+        "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern",
+        Severity.WARNING
       )
     );
     serviceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]",
         "JOURNEY_PATTERN_9",
-        "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern"
+        "JourneyPattern  BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
+        "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern",
+        Severity.WARNING
       )
     );
 
@@ -686,6 +707,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateAtLeastOne(
         "vehicleJourneys/ServiceJourney",
         "SERVICE_JOURNEY_1",
+        "ServiceJourney must exist",
         "There should be at least one ServiceJourney",
         Severity.ERROR
       )
@@ -694,7 +716,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/calls",
         "SERVICE_JOURNEY_2",
-        "Element Call not allowed"
+        "ServiceJourney illegal element Call",
+        "Element Call not allowed",
+        Severity.ERROR
       )
     );
 
@@ -709,7 +733,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(passingTimes)]",
         "SERVICE_JOURNEY_3",
-        "The ServiceJourney does not specify any TimetabledPassingTimes"
+        "ServiceJourney missing element PassingTimes",
+        "The ServiceJourney does not specify any TimetabledPassingTimes",
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
