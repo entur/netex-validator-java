@@ -3,6 +3,7 @@ package org.entur.netex.validation.validator.xpath;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
+import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +17,9 @@ class ValidationTreeTest {
     XPathValidationRule xPathValidationRule = new ValidateNotExist(
       "//Block",
       RULE_CODE,
-      "Blocks are not present"
+      "Block Missing",
+      "Blocks are not present",
+      Severity.ERROR
     );
     tree.addValidationRule(xPathValidationRule);
     Set<XPathValidationRule> rules = tree.getRules();

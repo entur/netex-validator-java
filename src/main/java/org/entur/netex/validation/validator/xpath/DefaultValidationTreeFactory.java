@@ -744,7 +744,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_4",
         "ServiceJourney missing arrival and departure",
         "TimetabledPassingTime contains neither DepartureTime/EarliestDepartureTime nor ArrivalTime/LatestArrivalTime",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -753,7 +753,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_5",
         "ServiceJourney missing departure times",
         "All TimetabledPassingTime except last call must have DepartureTime",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -762,7 +762,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_6",
         "ServiceJourney missing arrival time for last stop",
         "Last TimetabledPassingTime must have ArrivalTime",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -771,7 +771,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_7",
         "ServiceJourney identical arrival and departure",
         "ArrivalTime is identical to DepartureTime",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -780,7 +780,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_8",
         "ServiceJourney missing id on TimetabledPassingTime",
         "Missing id on TimetabledPassingTime",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -789,7 +789,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_9",
         "ServiceJourney missing version on TimetabledPassingTime",
         "Missing version on TimetabledPassingTime",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -803,7 +803,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_10",
         "ServiceJourney missing reference to JourneyPattern",
         "The ServiceJourney does not refer to a JourneyPattern",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -812,7 +812,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_11",
         "ServiceJourney invalid overriding of transport modes",
         "If overriding Line TransportMode or TransportSubmode on a ServiceJourney, both elements must be present",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -821,7 +821,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_12",
         "ServiceJourney missing OperatorRef",
         "Missing OperatorRef on ServiceJourney (not defined on Line)",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -830,7 +830,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_13",
         "ServiceJourney missing reference to calendar data",
         "The ServiceJourney does not refer to DayTypes nor DatedServiceJourneys",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -839,7 +839,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_14",
         "ServiceJourney duplicated reference to calendar data",
         "The ServiceJourney references both DayTypes and DatedServiceJourneys",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -848,7 +848,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_15",
         "ServiceJourney missing some passing times",
         "ServiceJourney does not specify passing time for all StopPointInJourneyPattern",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -857,7 +857,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_JOURNEY_16",
         "ServiceJourney multiple versions",
         "ServiceJourney is repeated with a different version",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -867,7 +867,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DATED_SERVICE_JOURNEY_1",
         "DatedServiceJourney missing OperatingDayRef",
         "Missing OperatingDayRef on DatedServiceJourney",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -876,7 +876,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DATED_SERVICE_JOURNEY_2",
         "DatedServiceJourney missing ServiceJourneyRef",
         "Missing ServiceJourneyRef on DatedServiceJourney",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -885,7 +885,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DATED_SERVICE_JOURNEY_3",
         "DatedServiceJourney multiple ServiceJourneyRef",
         "Multiple ServiceJourneyRef on DatedServiceJourney",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -894,7 +894,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DATED_SERVICE_JOURNEY_4",
         "DatedServiceJourney multiple versions",
         "DatedServiceJourney is repeated with a different version",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -903,7 +903,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DATED_SERVICE_JOURNEY_5",
         "DatedServiceJourney multiple references to the same DatedServiceJourney",
         "Multiple references from a DatedServiceJourney to the same DatedServiceJourney",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -913,7 +913,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DEAD_RUN_1",
         "DeadRun missing PassingTime references",
         "The Dead run does not reference passing times",
-              Severity.INFO
+        Severity.INFO
       )
     );
     validationTree.addValidationRule(
@@ -922,7 +922,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DEAD_RUN_2",
         "DeadRun missing JourneyPattern references",
         "The Dead run does not reference a journey pattern",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -931,7 +931,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "DEAD_RUN_3",
         "DeadRun missing DayType references",
         "The Dead run does not reference day types",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -941,7 +941,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "FLEXIBLE_SERVICE_1",
         "FlexibleService missing Id on FlexibleServiceProperties",
         "Missing id on FlexibleServiceProperties",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -950,7 +950,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "FLEXIBLE_SERVICE_2",
         "FlexibleService missing version on FlexibleServiceProperties",
         "Missing version on FlexibleServiceProperties",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -981,7 +981,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "FLEXIBLE_SERVICE_3",
         "FlexibleService illegal use of both BookWhen and MinimumBookingPeriod",
         "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -990,7 +990,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "FLEXIBLE_SERVICE_4",
         "FlexibleService BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
         "BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1000,7 +1000,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "INTERCHANGE_1",
         "Interchange invalid properties",
         "The 'Planned' and 'Advertised' properties of an Interchange should not be specified",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -1009,7 +1009,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "INTERCHANGE_2",
         "Interchange unexpected MaximumWaitTime",
         "Guaranteed Interchange should not have a maximum wait time value of zero",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationTree.addValidationRule(
@@ -1018,7 +1018,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "INTERCHANGE_3",
         "Interchange excessive MaximumWaitTime",
         "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1040,7 +1040,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_SITE_FRAME_IN_COMMON_FILE",
         "CompositeFrame unexpected SiteFrame",
         "Unexpected element SiteFrame. It will be ignored",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1050,7 +1050,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_FRAME_1",
         "CompositeFrame missing ValidityCondition",
         "A CompositeFrame must define a ValidityCondition valid for all data within the CompositeFrame",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1059,7 +1059,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_FRAME_2",
         "CompositeFrame invalid nested ValidityCondition",
         "ValidityConditions defined inside a frame inside a CompositeFrame",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1069,7 +1069,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_FRAME_3",
         "CompositeFrame missing ValidBetween",
         "ValidBetween missing either or both of FromDate/ToDate",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1078,7 +1078,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_FRAME_4",
         "CompositeFrame invalid ValidBetween",
         "FromDate cannot be after ToDate on ValidBetween",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -1088,18 +1088,18 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "COMPOSITE_FRAME_5",
         "CompositeFrame invalid AvailabilityCondition",
         "FromDate cannot be after ToDate on AvailabilityCondition",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
     validationRules.add(
-            new ValidateNotExist(
-                    "//AvailabilityCondition[not(FromDate) and not(ToDate)]",
-                    "COMPOSITE_FRAME_6",
-                    "CompositeFrame missing AvailabilityCondition",
-                    "AvailabilityCondition must have either FromDate or ToDate or both present",
-                    Severity.ERROR
-            )
+      new ValidateNotExist(
+        "//AvailabilityCondition[not(FromDate) and not(ToDate)]",
+        "COMPOSITE_FRAME_6",
+        "CompositeFrame missing AvailabilityCondition",
+        "AvailabilityCondition must have either FromDate or ToDate or both present",
+        Severity.ERROR
+      )
     );
 
     return validationRules;
@@ -1117,7 +1117,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_1",
         "Operator missing CompanyNumber",
         "Missing CompanyNumber element on Operator",
-              Severity.INFO
+        Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1126,7 +1126,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_2",
         "Operator missing Name",
         "Missing Name on Operator",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1135,7 +1135,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_3",
         "Operator missing LegalName",
         "Missing LegalName element on Operator",
-              Severity.INFO
+        Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1144,7 +1144,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_4",
         "Operator missing ContactDetails",
         "Missing ContactDetails element on Operator",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1153,7 +1153,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_5",
         "Operator missing Url for ContactDetails",
         "At least one of Url, Phone or Email must be defined for ContactDetails on Operator",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1162,7 +1162,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_6",
         "Operator missing CustomerServiceContactDetails",
         "Missing CustomerServiceContactDetails element on Operator",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1171,7 +1171,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "OPERATOR_7",
         "Operator missing Url for CustomerServiceContactDetails",
         "Missing Url element for CustomerServiceContactDetails on Operator",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1181,7 +1181,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "AUTHORITY_1",
         "Authority missing CompanyNumber",
         "Missing CompanyNumber element on Authority",
-              Severity.INFO
+        Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1190,7 +1190,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "AUTHORITY_2",
         "Authority missing Name",
         "Missing Name element on Authority",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1199,7 +1199,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "AUTHORITY_3",
         "Authority missing LegalName",
         "Missing LegalName element on Authority",
-              Severity.INFO
+        Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1208,7 +1208,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "AUTHORITY_4",
         "Authority missing ContactDetails",
         "Missing ContactDetails on Authority",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
@@ -1217,7 +1217,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "AUTHORITY_5",
         "Authority missing Url for ContactDetails",
         "The Url must be defined for ContactDetails on Authority and it must start with 'http://' or 'https://'",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -1236,7 +1236,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_CALENDAR_1",
         "ServiceCalendar unused DayType",
         "The DayType is not assigned to any calendar dates or periods",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
@@ -1245,7 +1245,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_CALENDAR_2",
         "ServiceCalendar empty ServiceCalendar",
         "ServiceCalendar does not contain neither DayTypes nor DayTypeAssignments",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
@@ -1254,7 +1254,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_CALENDAR_3",
         "ServiceCalendar missing ToDate",
         "Missing ToDate on ServiceCalendar",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
@@ -1263,7 +1263,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_CALENDAR_4",
         "ServiceCalendar missing FromDate",
         "Missing FromDate on ServiceCalendar",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
@@ -1272,7 +1272,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_CALENDAR_5",
         "ServiceCalendar invalid time interval",
         "FromDate cannot be after ToDate on ServiceCalendar",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -1300,7 +1300,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "BLOCK_2",
         "Block missing Journey",
         "At least one Journey must be defined for Block",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     serviceCalendarFrameValidationTree.addValidationRule(
@@ -1309,7 +1309,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "BLOCK_3",
         "Block missing DayType",
         "At least one DayType must be defined for Block",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
 
@@ -1328,7 +1328,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "NETWORK_1",
         "Network missing AuthorityRef",
         "Missing AuthorityRef on Network",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1337,7 +1337,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "NETWORK_2",
         "Network missing Name on Network",
         "Missing Name element on Network",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1346,7 +1346,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "NETWORK_3",
         "Network missing Name on GroupOfLines",
         "Missing Name element on GroupOfLines",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1355,7 +1355,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_FRAME_1",
         "ServiceFrame unexpected element GroupOfLines",
         "Unexpected element groupsOfLines outside of Network",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
@@ -1364,7 +1364,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_FRAME_2",
         "ServiceFrame unexpected element timingPoints",
         "Unexpected element timingPoints. Content ignored",
-              Severity.WARNING
+        Severity.WARNING
       )
     );
     validationRules.add(
@@ -1373,7 +1373,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "SERVICE_FRAME_3",
         "ServiceFrame missing Projection on RoutePoint",
         "Missing Projection on RoutePoint",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
 
@@ -1383,21 +1383,25 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         "PASSENGER_STOP_ASSIGNMENT_1",
         "PassengerStopAssignment missing ScheduledStopPointRef",
         "Missing ScheduledStopPointRef on PassengerStopAssignment",
-              Severity.ERROR
+        Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "stopAssignments/PassengerStopAssignment[not(QuayRef)]",
         "PASSENGER_STOP_ASSIGNMENT_2",
-        "Missing QuayRef on PassengerStopAssignment"
+        "PassengerStopAssignment missing QuayRef",
+        "Missing QuayRef on PassengerStopAssignment",
+        Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "stopAssignments/PassengerStopAssignment[QuayRef/@ref = following-sibling::PassengerStopAssignment/QuayRef/@ref]",
         "PASSENGER_STOP_ASSIGNMENT_3",
-        "The same quay is assigned more than once in PassengerStopAssignments"
+        "PassengerStopAssignment duplicated Quay assignment",
+        "The same quay is assigned more than once in PassengerStopAssignments",
+        Severity.WARNING
       )
     );
 
@@ -1405,21 +1409,27 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "serviceLinks/ServiceLink[not(FromPointRef)]",
         "SERVICE_LINK_1",
-        "Missing FromPointRef on ServiceLink"
+        "ServiceLink missing FromPointRef",
+        "Missing FromPointRef on ServiceLink",
+        Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "serviceLinks/ServiceLink[not(ToPointRef)]",
         "SERVICE_LINK_2",
-        "Missing ToPointRef on ServiceLink"
+        "ServiceLink missing ToPointRef",
+        "Missing ToPointRef on ServiceLink",
+        Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString/g:posList[not(normalize-space(text()))]",
         "SERVICE_LINK_3",
-        "Missing projections element on ServiceLink"
+        "ServiceLink missing element Projections",
+        "Missing projections element on ServiceLink",
+        Severity.ERROR
       )
     );
 
@@ -1428,7 +1438,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay[not(FrontText) or normalize-space(FrontText) = '']",
           "DESTINATION_DISPLAY_1",
-          "Missing FrontText on DestinationDisplay"
+          "DestinationDisplay missing FrontText",
+          "Missing FrontText on DestinationDisplay",
+          Severity.ERROR
         )
       )
     );
@@ -1437,7 +1449,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay/vias/Via[not(DestinationDisplayRef)]",
           "DESTINATION_DISPLAY_2",
-          "Missing DestinationDisplayRef on Via"
+          "DestinationDisplay missing DestinationDisplayRef on Via",
+          "Missing DestinationDisplayRef on Via",
+          Severity.ERROR
         )
       )
     );
@@ -1455,28 +1469,36 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "Notice[not(Text) or normalize-space(Text/text()) = '']",
         "NOTICE_1",
-        "Missing element Text for Notice"
+        "Notice missing Text",
+        "Missing element Text for Notice",
+        Severity.ERROR
       )
     );
     noticesValidationTree.addValidationRule(
       new ValidateNotExist(
         "Notice/alternativeTexts/AlternativeText[not(Text) or normalize-space(Text/text()) = '']",
         "NOTICE_2",
-        "Missing or empty element Text for Notice Alternative Text"
+        "Notice missing Text with alternative text",
+        "Missing or empty element Text for Notice Alternative Text",
+        Severity.ERROR
       )
     );
     noticesValidationTree.addValidationRule(
       new ValidateNotExist(
         "Notice/alternativeTexts/AlternativeText/Text[not(@lang)]",
         "NOTICE_3",
-        "Missing element Lang for Notice Alternative Text"
+        "Notice missing language with alternative text",
+        "Missing element Lang for Notice Alternative Text",
+        Severity.ERROR
       )
     );
     noticesValidationTree.addValidationRule(
       new ValidateNotExist(
         "Notice/alternativeTexts/AlternativeText[Text/@lang = following-sibling::AlternativeText/Text/@lang or Text/@lang = preceding-sibling::AlternativeText/Text/@lang]",
         "NOTICE_4",
-        "The Notice has two Alternative Texts with the same language"
+        "Notice duplicated alternative texts",
+        "The Notice has two Alternative Texts with the same language",
+        Severity.ERROR
       )
     );
 
@@ -1492,21 +1514,27 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "NoticeAssignment[for $a in following-sibling::NoticeAssignment return if(NoticeRef/@ref= $a/NoticeRef/@ref and NoticedObjectRef/@ref= $a/NoticedObjectRef/@ref) then $a else ()]",
         "NOTICE_5",
-        "The notice is assigned multiple times to the same object"
+        "Notice duplicated assignment",
+        "The notice is assigned multiple times to the same object",
+        Severity.WARNING
       )
     );
     noticesAssignmentsValidationTree.addValidationRule(
       new ValidateNotExist(
         "NoticeAssignment[not(NoticedObjectRef)]",
         "NOTICE_6",
-        "The notice assignment does not reference an object"
+        "Notice assignment missing reference to noticed object",
+        "The notice assignment does not reference an object",
+        Severity.ERROR
       )
     );
     noticesAssignmentsValidationTree.addValidationRule(
       new ValidateNotExist(
         "NoticeAssignment[not(NoticeRef)]",
         "NOTICE_7",
-        "The notice assignment does not reference a notice"
+        "Notice assignment missing reference to notice",
+        "The notice assignment does not reference a notice",
+        Severity.ERROR
       )
     );
 
