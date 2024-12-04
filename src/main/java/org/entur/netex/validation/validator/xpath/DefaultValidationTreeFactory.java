@@ -948,7 +948,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[not(@version)]",
         "FLEXIBLE_SERVICE_2",
-        "Missing version on FlexibleServiceProperties"
+        "FlexibleService missing version on FlexibleServiceProperties",
+        "Missing version on FlexibleServiceProperties",
+              Severity.ERROR
       )
     );
 
@@ -977,14 +979,18 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[BookWhen and MinimumBookingPeriod]",
         "FLEXIBLE_SERVICE_3",
-        "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties"
+        "FlexibleService illegal use of both BookWhen and MinimumBookingPeriod",
+        "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]",
         "FLEXIBLE_SERVICE_4",
-        "BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties"
+        "FlexibleService BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
+        "BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties",
+              Severity.WARNING
       )
     );
 
@@ -992,21 +998,27 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "journeyInterchanges/ServiceJourneyInterchange[Advertised or Planned]",
         "INTERCHANGE_1",
-        "The 'Planned' and 'Advertised' properties of an Interchange should not be specified"
+        "Interchange invalid properties",
+        "The 'Planned' and 'Advertised' properties of an Interchange should not be specified",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]",
         "INTERCHANGE_2",
-        "Guaranteed Interchange should not have a maximum wait time value of zero"
+        "Interchange unexpected MaximumWaitTime",
+        "Guaranteed Interchange should not have a maximum wait time value of zero",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "journeyInterchanges/ServiceJourneyInterchange[MaximumWaitTime > xs:dayTimeDuration('PT1H')]",
         "INTERCHANGE_3",
-        "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour"
+        "Interchange excessive MaximumWaitTime",
+        "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour",
+              Severity.WARNING
       )
     );
 
@@ -1026,7 +1038,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "frames/SiteFrame",
         "COMPOSITE_SITE_FRAME_IN_COMMON_FILE",
-        "Unexpected element SiteFrame. It will be ignored"
+        "CompositeFrame unexpected SiteFrame",
+        "Unexpected element SiteFrame. It will be ignored",
+              Severity.WARNING
       )
     );
 
@@ -1034,14 +1048,18 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         ".[not(validityConditions)]",
         "COMPOSITE_FRAME_1",
-        "A CompositeFrame must define a ValidityCondition valid for all data within the CompositeFrame"
+        "CompositeFrame missing ValidityCondition",
+        "A CompositeFrame must define a ValidityCondition valid for all data within the CompositeFrame",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "frames//validityConditions",
         "COMPOSITE_FRAME_2",
-        "ValidityConditions defined inside a frame inside a CompositeFrame"
+        "CompositeFrame invalid nested ValidityCondition",
+        "ValidityConditions defined inside a frame inside a CompositeFrame",
+              Severity.WARNING
       )
     );
 
@@ -1049,30 +1067,39 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "//ValidBetween[not(FromDate) and not(ToDate)]",
         "COMPOSITE_FRAME_3",
-        "ValidBetween missing either or both of FromDate/ToDate"
+        "CompositeFrame missing ValidBetween",
+        "ValidBetween missing either or both of FromDate/ToDate",
+              Severity.ERROR
       )
     );
     validationRules.add(
       new ValidateNotExist(
         "//ValidBetween[FromDate and ToDate and ToDate < FromDate]",
         "COMPOSITE_FRAME_4",
-        "FromDate cannot be after ToDate on ValidBetween"
+        "CompositeFrame invalid ValidBetween",
+        "FromDate cannot be after ToDate on ValidBetween",
+              Severity.ERROR
       )
     );
 
     validationRules.add(
       new ValidateNotExist(
-        "//AvailabilityCondition[not(FromDate) and not(ToDate)]",
-        "COMPOSITE_FRAME_4",
-        "AvailabilityCondition must have either FromDate or ToDate or both present"
-      )
-    );
-    validationRules.add(
-      new ValidateNotExist(
         "//AvailabilityCondition[FromDate and ToDate and ToDate < FromDate]",
         "COMPOSITE_FRAME_5",
-        "FromDate cannot be after ToDate on AvailabilityCondition"
+        "CompositeFrame invalid AvailabilityCondition",
+        "FromDate cannot be after ToDate on AvailabilityCondition",
+              Severity.ERROR
       )
+    );
+
+    validationRules.add(
+            new ValidateNotExist(
+                    "//AvailabilityCondition[not(FromDate) and not(ToDate)]",
+                    "COMPOSITE_FRAME_6",
+                    "CompositeFrame missing AvailabilityCondition",
+                    "AvailabilityCondition must have either FromDate or ToDate or both present",
+                    Severity.ERROR
+            )
     );
 
     return validationRules;
@@ -1088,49 +1115,63 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "organisations/Operator[not(CompanyNumber) or normalize-space(CompanyNumber) = '']",
         "OPERATOR_1",
-        "Missing CompanyNumber element on Operator"
+        "Operator missing CompanyNumber",
+        "Missing CompanyNumber element on Operator",
+              Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator[not(Name) or normalize-space(Name) = '']",
         "OPERATOR_2",
-        "Missing Name on Operator"
+        "Operator missing Name",
+        "Missing Name on Operator",
+              Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator[not(LegalName) or normalize-space(LegalName) = '']",
         "OPERATOR_3",
-        "Missing LegalName element on Operator"
+        "Operator missing LegalName",
+        "Missing LegalName element on Operator",
+              Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator[not(ContactDetails)]",
         "OPERATOR_4",
-        "Missing ContactDetails element on Operator"
+        "Operator missing ContactDetails",
+        "Missing ContactDetails element on Operator",
+              Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator/ContactDetails[(not(Email) or normalize-space(Email) = '') and (not(Phone) or normalize-space(Phone) = '') and (not(Url) or normalize-space(Url) = '')]",
         "OPERATOR_5",
-        "At least one of Url, Phone or Email must be defined for ContactDetails on Operator"
+        "Operator missing Url for ContactDetails",
+        "At least one of Url, Phone or Email must be defined for ContactDetails on Operator",
+              Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator[not(CustomerServiceContactDetails)]",
         "OPERATOR_6",
-        "Missing CustomerServiceContactDetails element on Operator"
+        "Operator missing CustomerServiceContactDetails",
+        "Missing CustomerServiceContactDetails element on Operator",
+              Severity.WARNING
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Operator/CustomerServiceContactDetails[not(Url) or normalize-space(Url) = '']",
         "OPERATOR_7",
-        "Missing Url element for CustomerServiceContactDetails on Operator"
+        "Operator missing Url for CustomerServiceContactDetails",
+        "Missing Url element for CustomerServiceContactDetails on Operator",
+              Severity.WARNING
       )
     );
 
@@ -1138,35 +1179,45 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "organisations/Authority[not(CompanyNumber) or normalize-space(CompanyNumber) = '']",
         "AUTHORITY_1",
-        "Missing CompanyNumber element on Authority"
+        "Authority missing CompanyNumber",
+        "Missing CompanyNumber element on Authority",
+              Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Authority[not(Name) or normalize-space(Name) = '']",
         "AUTHORITY_2",
-        "Missing Name element on Authority"
+        "Authority missing Name",
+        "Missing Name element on Authority",
+              Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Authority[not(LegalName) or normalize-space(LegalName) = '']",
         "AUTHORITY_3",
-        "Missing LegalName element on Authority"
+        "Authority missing LegalName",
+        "Missing LegalName element on Authority",
+              Severity.INFO
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Authority[not(ContactDetails)]",
         "AUTHORITY_4",
-        "Missing ContactDetails on Authority"
+        "Authority missing ContactDetails",
+        "Missing ContactDetails on Authority",
+              Severity.ERROR
       )
     );
     resourceFrameValidationTree.addValidationRule(
       new ValidateNotExist(
         "organisations/Authority/ContactDetails[not(Url) or not(starts-with(Url, 'http://') or (starts-with(Url, 'https://')) )]",
         "AUTHORITY_5",
-        "The Url must be defined for ContactDetails on Authority and it must start with 'http://' or 'https://'"
+        "Authority missing Url for ContactDetails",
+        "The Url must be defined for ContactDetails on Authority and it must start with 'http://' or 'https://'",
+              Severity.ERROR
       )
     );
 
