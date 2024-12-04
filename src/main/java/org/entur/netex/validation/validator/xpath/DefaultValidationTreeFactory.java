@@ -742,42 +742,54 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[not(DepartureTime or EarliestDepartureTime) and not(ArrivalTime or LatestArrivalTime)]",
         "SERVICE_JOURNEY_4",
-        "TimetabledPassingTime contains neither DepartureTime/EarliestDepartureTime nor ArrivalTime/LatestArrivalTime"
+        "ServiceJourney missing arrival and departure",
+        "TimetabledPassingTime contains neither DepartureTime/EarliestDepartureTime nor ArrivalTime/LatestArrivalTime",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(passingTimes/TimetabledPassingTime[1]/DepartureTime) and not(passingTimes/TimetabledPassingTime[1]/EarliestDepartureTime)]",
         "SERVICE_JOURNEY_5",
-        "All TimetabledPassingTime except last call must have DepartureTime"
+        "ServiceJourney missing departure times",
+        "All TimetabledPassingTime except last call must have DepartureTime",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[count(passingTimes/TimetabledPassingTime[last()]/ArrivalTime) = 0 and count(passingTimes/TimetabledPassingTime[last()]/LatestArrivalTime) = 0]",
         "SERVICE_JOURNEY_6",
-        "Last TimetabledPassingTime must have ArrivalTime"
+        "ServiceJourney missing arrival time for last stop",
+        "Last TimetabledPassingTime must have ArrivalTime",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[DepartureTime = ArrivalTime]",
         "SERVICE_JOURNEY_7",
-        "ArrivalTime is identical to DepartureTime"
+        "ServiceJourney identical arrival and departure",
+        "ArrivalTime is identical to DepartureTime",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[not(@id)]",
         "SERVICE_JOURNEY_8",
-        "Missing id on TimetabledPassingTime"
+        "ServiceJourney missing id on TimetabledPassingTime",
+        "Missing id on TimetabledPassingTime",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[not(@version)]",
         "SERVICE_JOURNEY_9",
-        "Missing version on TimetabledPassingTime"
+        "ServiceJourney missing version on TimetabledPassingTime",
+        "Missing version on TimetabledPassingTime",
+              Severity.WARNING
       )
     );
 
@@ -789,49 +801,63 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(JourneyPatternRef)]",
         "SERVICE_JOURNEY_10",
-        "The ServiceJourney does not refer to a JourneyPattern"
+        "ServiceJourney missing reference to JourneyPattern",
+        "The ServiceJourney does not refer to a JourneyPattern",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[(TransportMode and not(TransportSubmode))  or (not(TransportMode) and TransportSubmode)]",
         "SERVICE_JOURNEY_11",
-        "If overriding Line TransportMode or TransportSubmode on a ServiceJourney, both elements must be present"
+        "ServiceJourney invalid overriding of transport modes",
+        "If overriding Line TransportMode or TransportSubmode on a ServiceJourney, both elements must be present",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(OperatorRef) and not(//ServiceFrame/lines/*[self::Line or self::FlexibleLine]/OperatorRef)]",
         "SERVICE_JOURNEY_12",
-        "Missing OperatorRef on ServiceJourney (not defined on Line)"
+        "ServiceJourney missing OperatorRef",
+        "Missing OperatorRef on ServiceJourney (not defined on Line)",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[not(dayTypes/DayTypeRef) and not(@id=//TimetableFrame/vehicleJourneys/DatedServiceJourney/ServiceJourneyRef/@ref)]",
         "SERVICE_JOURNEY_13",
-        "The ServiceJourney does not refer to DayTypes nor DatedServiceJourneys"
+        "ServiceJourney missing reference to calendar data",
+        "The ServiceJourney does not refer to DayTypes nor DatedServiceJourneys",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[dayTypes/DayTypeRef and @id=//TimetableFrame/vehicleJourneys/DatedServiceJourney/ServiceJourneyRef/@ref]",
         "SERVICE_JOURNEY_14",
-        "The ServiceJourney references both DayTypes and DatedServiceJourneys"
+        "ServiceJourney duplicated reference to calendar data",
+        "The ServiceJourney references both DayTypes and DatedServiceJourneys",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "for $a in vehicleJourneys/ServiceJourney return if(count(//ServiceFrame/journeyPatterns/*[@id = $a/JourneyPatternRef/@ref]/pointsInSequence/StopPointInJourneyPattern) != count($a/passingTimes/TimetabledPassingTime)) then $a else ()",
         "SERVICE_JOURNEY_15",
-        "ServiceJourney does not specify passing time for all StopPointInJourneyPattern"
+        "ServiceJourney missing some passing times",
+        "ServiceJourney does not specify passing time for all StopPointInJourneyPattern",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney[@id = preceding-sibling::ServiceJourney/@id]",
         "SERVICE_JOURNEY_16",
-        "ServiceJourney is repeated with a different version"
+        "ServiceJourney multiple versions",
+        "ServiceJourney is repeated with a different version",
+              Severity.WARNING
       )
     );
 
@@ -839,35 +865,45 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/DatedServiceJourney[not(OperatingDayRef)]",
         "DATED_SERVICE_JOURNEY_1",
-        "Missing OperatingDayRef on DatedServiceJourney"
+        "DatedServiceJourney missing OperatingDayRef",
+        "Missing OperatingDayRef on DatedServiceJourney",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DatedServiceJourney[not(ServiceJourneyRef)]",
         "DATED_SERVICE_JOURNEY_2",
-        "Missing ServiceJourneyRef on DatedServiceJourney"
+        "DatedServiceJourney missing ServiceJourneyRef",
+        "Missing ServiceJourneyRef on DatedServiceJourney",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DatedServiceJourney[count(ServiceJourneyRef) > 1]",
         "DATED_SERVICE_JOURNEY_3",
-        "Multiple ServiceJourneyRef on DatedServiceJourney"
+        "DatedServiceJourney multiple ServiceJourneyRef",
+        "Multiple ServiceJourneyRef on DatedServiceJourney",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DatedServiceJourney[@id = preceding-sibling::DatedServiceJourney/@id]",
         "DATED_SERVICE_JOURNEY_4",
-        "DatedServiceJourney is repeated with a different version"
+        "DatedServiceJourney multiple versions",
+        "DatedServiceJourney is repeated with a different version",
+              Severity.WARNING
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DatedServiceJourney/DatedServiceJourneyRef[@ref = preceding-sibling::DatedServiceJourneyRef/@ref]",
         "DATED_SERVICE_JOURNEY_5",
-        "Multiple references from a DatedServiceJourney to the same DatedServiceJourney"
+        "DatedServiceJourney multiple references to the same DatedServiceJourney",
+        "Multiple references from a DatedServiceJourney to the same DatedServiceJourney",
+              Severity.ERROR
       )
     );
 
@@ -875,21 +911,27 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/DeadRun[not(passingTimes)]",
         "DEAD_RUN_1",
-        "The Dead run does not reference passing times"
+        "DeadRun missing PassingTime references",
+        "The Dead run does not reference passing times",
+              Severity.INFO
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DeadRun[not(JourneyPatternRef)]",
         "DEAD_RUN_2",
-        "The Dead run does not reference a journey pattern"
+        "DeadRun missing JourneyPattern references",
+        "The Dead run does not reference a journey pattern",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
       new ValidateNotExist(
         "vehicleJourneys/DeadRun[not(dayTypes/DayTypeRef)]",
         "DEAD_RUN_3",
-        "The Dead run does not reference day types"
+        "DeadRun missing DayType references",
+        "The Dead run does not reference day types",
+              Severity.ERROR
       )
     );
 
@@ -897,7 +939,9 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateNotExist(
         "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[not(@id)]",
         "FLEXIBLE_SERVICE_1",
-        "Missing id on FlexibleServiceProperties"
+        "FlexibleService missing Id on FlexibleServiceProperties",
+        "Missing id on FlexibleServiceProperties",
+              Severity.ERROR
       )
     );
     validationTree.addValidationRule(
@@ -1184,6 +1228,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       new ValidateAtLeastOne(
         "blocks/Block | blocks/TrainBlock",
         "BLOCK_1",
+        "Block missing VehicleScheduleFrame",
         "At least one Block or TrainBlock required in VehicleScheduleFrame",
         Severity.ERROR
       )
