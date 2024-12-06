@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.Quay;
+import org.rutebanken.netex.model.QuayRefStructure;
 
 /**
  * The NeTEx id of Quay.
@@ -14,6 +15,10 @@ public record QuayId(String id) {
     if (!isValid(id)) {
       throw new NetexValidationException("Invalid quay id: " + id);
     }
+  }
+
+  public static QuayId of(QuayRefStructure quayRef) {
+    return new QuayId(quayRef.getRef());
   }
 
   public static QuayId ofValidId(Quay quay) {
