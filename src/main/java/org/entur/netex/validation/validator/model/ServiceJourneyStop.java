@@ -25,12 +25,8 @@ public record ServiceJourneyStop(
   ) {
     return new ServiceJourneyStop(
       scheduledStopPointId,
-      Optional
-        .ofNullable(timetabledPassingTime.getArrivalTime())
-        .orElse(timetabledPassingTime.getDepartureTime()),
-      Optional
-        .ofNullable(timetabledPassingTime.getDepartureTime())
-        .orElse(timetabledPassingTime.getArrivalTime()),
+      timetabledPassingTime.getArrivalTime(),
+      timetabledPassingTime.getDepartureTime(),
       Optional
         .ofNullable(timetabledPassingTime.getArrivalDayOffset())
         .map(BigInteger::intValue)
@@ -49,6 +45,36 @@ public record ServiceJourneyStop(
       arrivalDayOffset >= 0 &&
       departureDayOffset >= 0
     );
+  }
+
+  public static ServiceJourneyStop fixMissingTimeValues(
+    ServiceJourneyStop serviceJourneyStop
+  ) {
+    boolean fixArrivalTime =
+      serviceJourneyStop.arrivalTime() == null &&
+      serviceJourneyStop.departureTime() != null;
+    boolean fixDepartureTime =
+      serviceJourneyStop.departureTime() == null &&
+      serviceJourneyStop.arrivalTime() != null;
+
+    if (fixArrivalTime || fixDepartureTime) {
+      return new ServiceJourneyStop(
+        serviceJourneyStop.scheduledStopPointId(),
+        fixArrivalTime
+          ? serviceJourneyStop.departureTime()
+          : serviceJourneyStop.arrivalTime(),
+        fixDepartureTime
+          ? serviceJourneyStop.arrivalTime()
+          : serviceJourneyStop.departureTime(),
+        fixArrivalTime
+          ? serviceJourneyStop.departureDayOffset()
+          : serviceJourneyStop.arrivalDayOffset(),
+        fixDepartureTime
+          ? serviceJourneyStop.arrivalDayOffset()
+          : serviceJourneyStop.departureDayOffset()
+      );
+    }
+    return serviceJourneyStop;
   }
 
   /*
