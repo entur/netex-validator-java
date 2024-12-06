@@ -5,14 +5,12 @@ import org.entur.netex.validation.validator.Severity;
 public class ValidateAllowedTransportSubModeOnLine
   extends ValidateAllowedTransportSubMode {
 
-  private static final String CODE = "TRANSPORT_SUB_MODE_ON_LINE";
-  private static final String MESSAGE = "Illegal TransportSubMode on Line: %s";
-
   public ValidateAllowedTransportSubModeOnLine() {
     super(
       "lines/*[self::Line or self::FlexibleLine]",
-      CODE,
-      MESSAGE,
+      "TRANSPORT_SUB_MODE_ON_LINE",
+      "Line Illegal TransportSubMode",
+      "Illegal TransportSubMode on Line: %s",
       Severity.ERROR
     );
   }

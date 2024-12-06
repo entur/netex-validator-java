@@ -8,5 +8,4 @@ public enum Severity {
   WARNING,
   ERROR,
   CRITICAL,
-  UNSET,
 }
