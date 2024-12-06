@@ -62,8 +62,29 @@ public class ValidationTree {
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
+    return validate(validationContext, validationRule -> true);
+  }
+
+  public List<ValidationIssue> validate(
+    XPathRuleValidationContext validationContext,
+    String validationRuleCode
+  ) {
+    return validate(
+      validationContext,
+      validationRule -> validationRule.rule().code().equals(validationRuleCode)
+    );
+  }
+
+  public List<ValidationIssue> validate(
+    XPathRuleValidationContext validationContext,
+    Predicate<XPathValidationRule> filter
+  ) {
     List<ValidationIssue> validationIssues = new ArrayList<>();
     for (XPathValidationRule xPathValidationRule : xPathValidationRules) {
+      if (!filter.test(xPathValidationRule)) {
+        continue;
+      }
+
       LOGGER.debug(
         "Running validation rule '{}'/'{}'",
         name,
@@ -102,7 +123,7 @@ public class ValidationTree {
             validationSubTree.getName()
           );
           validationIssues.addAll(
-            validationSubTree.validate(validationSubContext)
+            validationSubTree.validate(validationSubContext, filter)
           );
         } else {
           LOGGER.debug(
