@@ -68,7 +68,7 @@ public class DefaultServiceFrameValidationTreeFactory
     return builder
       .withRule(
         new ValidateNotExist(
-          "ServiceFrame/Network[not(AuthorityRef)]",
+          "Network[not(AuthorityRef)]",
           CODE_NETWORK_1,
           "Network missing AuthorityRef",
           "Missing AuthorityRef on Network",

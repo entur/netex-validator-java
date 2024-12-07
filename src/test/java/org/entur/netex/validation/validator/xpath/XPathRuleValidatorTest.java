@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.xpath.tree.PublicationDeliveryValidationTreeFactory;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ class XPathRuleValidatorTest {
     "rb_flb-aggregated-netex-missing-last-arrival-time.zip";
 
   private final ValidationTreeFactory validationTreeFactory =
-    new DefaultValidationTreeFactory();
+    new PublicationDeliveryValidationTreeFactory();
 
   private final XPathRuleValidator xPathRuleValidator = new XPathRuleValidator(
     validationTreeFactory
@@ -246,7 +247,7 @@ class XPathRuleValidatorTest {
   }
 
   @Test
-  void testInValidFlexibleLineMissingDepartureAndArrivalTime()
+  void testInvalidFlexibleLineMissingDepartureAndArrivalTime()
     throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream(
@@ -269,7 +270,7 @@ class XPathRuleValidatorTest {
   }
 
   @Test
-  void testInValidFlexibleLineMissingDepartureTime() throws IOException {
+  void testInvalidFlexibleLineMissingDepartureTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream(
         '/' + TEST_FLEXIBLE_LINE_MISSING_EARLIEST_DEPARTURE_TIME
@@ -291,7 +292,7 @@ class XPathRuleValidatorTest {
   }
 
   @Test
-  void testInValidFlexibleLineMissingLastArrivalTime() throws IOException {
+  void testInvalidFlexibleLineMissingLastArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_LAST_ARRIVAL_TIME);
     List<ValidationIssue> validationIssues = validateXPath(
@@ -311,7 +312,7 @@ class XPathRuleValidatorTest {
   }
 
   @Test
-  void testInValidineMissingDepartureAndArrivalTime() throws IOException {
+  void testInvalidLineMissingDepartureAndArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
       .getResourceAsStream('/' + TEST_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES);
     List<ValidationIssue> validationIssues = validateXPath(

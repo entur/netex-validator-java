@@ -24,7 +24,7 @@ public class DefaultVehicleScheduleFrameValidationTreeFactory
       .withRule(
         new ValidateAtLeastOne(
           "blocks/Block | blocks/TrainBlock",
-                CODE_BLOCK_1,
+          CODE_BLOCK_1,
           "Block missing VehicleScheduleFrame",
           "At least one Block or TrainBlock required in VehicleScheduleFrame",
           Severity.ERROR
@@ -33,7 +33,7 @@ public class DefaultVehicleScheduleFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "blocks/Block[not(journeys)]",
-                CODE_BLOCK_2,
+          CODE_BLOCK_2,
           "Block missing Journey",
           "At least one Journey must be defined for Block",
           Severity.ERROR
@@ -42,7 +42,7 @@ public class DefaultVehicleScheduleFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "blocks/Block[not(dayTypes)]",
-                CODE_BLOCK_3,
+          CODE_BLOCK_3,
           "Block missing DayType",
           "At least one DayType must be defined for Block",
           Severity.WARNING

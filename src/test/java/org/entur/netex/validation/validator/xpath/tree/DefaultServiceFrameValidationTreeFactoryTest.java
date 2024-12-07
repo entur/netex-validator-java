@@ -178,7 +178,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @MethodSource("ruleCodes")
   void testInvalidServiceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
-            NETEX_FRAGMENT_INVALID
+      NETEX_FRAGMENT_INVALID
     );
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
@@ -192,7 +192,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @MethodSource("ruleCodes")
   void testValidServiceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
-            NETEX_FRAGMENT_VALID
+      NETEX_FRAGMENT_VALID
     );
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,

@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
+import java.util.stream.Stream;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 
@@ -30,23 +31,23 @@ public class PublicationDeliveryValidationTreeFactory
     validationTree.addSubTree(singleFramesValidationTree);
     validationTree.addSubTree(framesInCompositeFramesValidationTree);
 
-    ValidationTree serviceFrameValidationTree =
-      new DefaultServiceFrameValidationTreeFactory().buildValidationTree();
-    ValidationTree timetableFrameValidationTree =
-      new DefaultTimetableFrameValidationTreeFactory().buildValidationTree();
+    Stream
+      .of(
+        new DefaultResourceFrameValidationTreeFactory().buildValidationTree(),
+        new DefaultServiceFrameValidationTreeFactory().buildValidationTree(),
+        new DefaultTimetableFrameValidationTreeFactory().buildValidationTree(),
+        new DefaultVehicleScheduleFrameValidationTreeFactory()
+          .buildValidationTree()
+      )
+      .forEach(tree -> {
+        singleFramesValidationTree.addSubTree(tree);
+        framesInCompositeFramesValidationTree.addSubTree(tree);
+      });
+
     ValidationTree noticeValidationTree =
       new DefaultNoticeValidationTreeFactory().buildValidationTree();
 
-    singleFramesValidationTree.addSubTree(serviceFrameValidationTree);
-    singleFramesValidationTree.addSubTree(timetableFrameValidationTree);
     singleFramesValidationTree.addSubTree(noticeValidationTree);
-
-    framesInCompositeFramesValidationTree.addSubTree(
-      serviceFrameValidationTree
-    );
-    framesInCompositeFramesValidationTree.addSubTree(
-      timetableFrameValidationTree
-    );
     framesInCompositeFramesValidationTree.addSubTree(noticeValidationTree);
 
     return validationTree;

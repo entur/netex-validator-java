@@ -37,7 +37,6 @@ public class ValidationTreeBuilder {
 
   public ValidationTree build() {
     ValidationTree validationTree = new ValidationTree(name, context);
-    validationTree.addValidationRules(rules);
 
     if (!rules.isEmpty()) {
       ValidationTree lineAndCommonTree = new ValidationTree(
