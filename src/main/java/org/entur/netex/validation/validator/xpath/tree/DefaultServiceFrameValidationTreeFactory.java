@@ -47,11 +47,16 @@ public class DefaultServiceFrameValidationTreeFactory
   public static final String CODE_SERVICE_FRAME_1 = "SERVICE_FRAME_1";
   public static final String CODE_SERVICE_FRAME_2 = "SERVICE_FRAME_2";
   public static final String CODE_SERVICE_FRAME_3 = "SERVICE_FRAME_3";
-  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_1 = "PASSENGER_STOP_ASSIGNMENT_1";
-  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_2 = "PASSENGER_STOP_ASSIGNMENT_2";
-  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_3 = "PASSENGER_STOP_ASSIGNMENT_3";
-  public static final String CODE_DESTINATION_DISPLAY_1 = "DESTINATION_DISPLAY_1";
-  public static final String CODE_DESTINATION_DISPLAY_2 = "DESTINATION_DISPLAY_2";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_1 =
+    "PASSENGER_STOP_ASSIGNMENT_1";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_2 =
+    "PASSENGER_STOP_ASSIGNMENT_2";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_3 =
+    "PASSENGER_STOP_ASSIGNMENT_3";
+  public static final String CODE_DESTINATION_DISPLAY_1 =
+    "DESTINATION_DISPLAY_1";
+  public static final String CODE_DESTINATION_DISPLAY_2 =
+    "DESTINATION_DISPLAY_2";
 
   @Override
   public ValidationTree buildValidationTree() {
@@ -63,7 +68,7 @@ public class DefaultServiceFrameValidationTreeFactory
     return builder
       .withRule(
         new ValidateNotExist(
-          "Network[not(AuthorityRef)]",
+          "ServiceFrame/Network[not(AuthorityRef)]",
           CODE_NETWORK_1,
           "Network missing AuthorityRef",
           "Missing AuthorityRef on Network",
@@ -91,7 +96,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "groupsOfLines",
-                CODE_SERVICE_FRAME_1,
+          CODE_SERVICE_FRAME_1,
           "ServiceFrame unexpected element GroupOfLines",
           "Unexpected element groupsOfLines outside of Network",
           Severity.ERROR
@@ -100,7 +105,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "timingPoints",
-                CODE_SERVICE_FRAME_2,
+          CODE_SERVICE_FRAME_2,
           "ServiceFrame unexpected element timingPoints",
           "Unexpected element timingPoints. Content ignored",
           Severity.WARNING
@@ -109,7 +114,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "routePoints/RoutePoint[not(projections)]",
-                CODE_SERVICE_FRAME_3,
+          CODE_SERVICE_FRAME_3,
           "ServiceFrame missing Projection on RoutePoint",
           "Missing Projection on RoutePoint",
           Severity.ERROR
@@ -118,7 +123,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[not(ScheduledStopPointRef)]",
-                CODE_PASSENGER_STOP_ASSIGNMENT_1,
+          CODE_PASSENGER_STOP_ASSIGNMENT_1,
           "PassengerStopAssignment missing ScheduledStopPointRef",
           "Missing ScheduledStopPointRef on PassengerStopAssignment",
           Severity.ERROR
@@ -127,7 +132,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[not(QuayRef)]",
-                CODE_PASSENGER_STOP_ASSIGNMENT_2,
+          CODE_PASSENGER_STOP_ASSIGNMENT_2,
           "PassengerStopAssignment missing QuayRef",
           "Missing QuayRef on PassengerStopAssignment",
           Severity.ERROR
@@ -136,7 +141,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[QuayRef/@ref = following-sibling::PassengerStopAssignment/QuayRef/@ref]",
-                CODE_PASSENGER_STOP_ASSIGNMENT_3,
+          CODE_PASSENGER_STOP_ASSIGNMENT_3,
           "PassengerStopAssignment duplicated Quay assignment",
           "The same quay is assigned more than once in PassengerStopAssignments",
           Severity.WARNING
@@ -172,7 +177,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay[not(FrontText) or normalize-space(FrontText) = '']",
-                CODE_DESTINATION_DISPLAY_1,
+          CODE_DESTINATION_DISPLAY_1,
           "DestinationDisplay missing FrontText",
           "Missing FrontText on DestinationDisplay",
           Severity.ERROR
@@ -181,7 +186,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay/vias/Via[not(DestinationDisplayRef)]",
-                CODE_DESTINATION_DISPLAY_2,
+          CODE_DESTINATION_DISPLAY_2,
           "DestinationDisplay missing DestinationDisplayRef on Via",
           "Missing DestinationDisplayRef on Via",
           Severity.ERROR

@@ -10,9 +10,10 @@ public class ValidationTreeBuilder {
 
   private final String context;
   private final String name;
-  private List<XPathValidationRule> rules = new ArrayList<>();
-  private List<XPathValidationRule> rulesForCommonFile = new ArrayList<>();
-  private List<XPathValidationRule> rulesForLineFile = new ArrayList<>();
+  private final List<XPathValidationRule> rules = new ArrayList<>();
+  private final List<XPathValidationRule> rulesForCommonFile =
+    new ArrayList<>();
+  private final List<XPathValidationRule> rulesForLineFile = new ArrayList<>();
 
   public ValidationTreeBuilder(String context, String name) {
     this.context = context;
@@ -37,6 +38,15 @@ public class ValidationTreeBuilder {
   public ValidationTree build() {
     ValidationTree validationTree = new ValidationTree(name, context);
     validationTree.addValidationRules(rules);
+
+    if (!rules.isEmpty()) {
+      ValidationTree lineAndCommonTree = new ValidationTree(
+        name + " (Line and Common File)",
+        context
+      );
+      lineAndCommonTree.addValidationRules(rules);
+      validationTree.addSubTree(lineAndCommonTree);
+    }
 
     if (!rulesForCommonFile.isEmpty()) {
       ValidationTree commonTree = new ValidationTree(
