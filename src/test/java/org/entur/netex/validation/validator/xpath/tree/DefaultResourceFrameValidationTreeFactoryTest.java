@@ -1,8 +1,9 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
 import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
-import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.entur.netex.validation.validator.xpath.tree.DefaultResourceFrameValidationTreeFactory.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -17,125 +18,69 @@ class DefaultResourceFrameValidationTreeFactoryTest {
 
   private static final String NETEX_FRAGMENT_INVALID =
     """
-        <ServiceFrame xmlns="http://www.netex.org.uk/netex">
-          <Network version="0" id="ENT:Network:e7f2a84e-2a94-4899-b833-37d18cddb26f">
-          </Network>
-          <routePoints>
-            <RoutePoint/>
-          </routePoints>
-          <routes>
-              <Route version="0" id="ENT:Route:79-R">
-                  <DirectionRef/>
-              </Route>
-          </routes>
-          <lines>
-            <Line id="ENT:Line:2_1" version="2223">
-                <routes>
-                  <Route/>
-                </routes>
-                <Presentation>
-                    <Colour>E13</Colour>
-                    <TextColour>XXXXXX</TextColour>
-                  </Presentation>
-            </Line>
-          </lines>
-          <groupsOfLines/>
-          <timingPoints/>
-          <destinationDisplays>
-            <DestinationDisplay version="0" id="ENT:DestinationDisplay:21-1_OsloS">
-                <vias>
-                   <Via/>
-                </vias>
-            </DestinationDisplay>
-          </destinationDisplays>
-          <stopAssignments>
-              <PassengerStopAssignment order="1" version="0" id="ENT:PassengerStopAssignment:ALV-1"/>
-              <PassengerStopAssignment order="2" version="0" id="ENT:PassengerStopAssignment:ATN-1">
-                <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:ATN-1" version="0" />
-                <QuayRef ref="NSR:Quay:714" />
-              </PassengerStopAssignment>
-              <PassengerStopAssignment order="3" version="0" id="ENT:PassengerStopAssignment:ATN-2">
-                <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:ATN-2" version="0" />
-                <QuayRef ref="NSR:Quay:714" />
-              </PassengerStopAssignment>
-          </stopAssignments>
-        </ServiceFrame>
+            <ResourceFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ResourceFrame:Shared">
+                 <organisations>
+                   <Authority version="1" id="SJN:Authority:SJN">
+                     <CompanyNumber>917 58 77 28</CompanyNumber>
+                     <Name>SJ Nord</Name>
+                     <LegalName>SJ Nord</LegalName>
+                     <ContactDetails>
+                       <Email>post@sj.no</Email>
+                       <Url>https://www.sj.no</Url>
+                     </ContactDetails>
+                   </Authority>
+                   <Operator version="1" id="SJN:Operator:SJN">
+                     <keyList>
+                       <KeyValue>
+                         <Key>RICS code</Key>
+                         <Value>3781</Value>
+                       </KeyValue>
+                     </keyList>
+                     <CompanyNumber>917 58 77 28</CompanyNumber>
+                     <Name>SJ Nord</Name>
+                     <LegalName>SJ Nord</LegalName>
+                     <CustomerServiceContactDetails>
+                       <Email>kundeservice@sj.no</Email>
+                       <Phone>+61 25 22 00</Phone>
+                       <Url>https://www.sj.no</Url>
+                     </CustomerServiceContactDetails>
+                   </Operator>
+                 </organisations>
+            </ResourceFrame>
         
         """;
 
   private static final String NETEX_FRAGMENT_VALID =
     """
-                <ServiceFrame xmlns="http://www.netex.org.uk/netex">
-                  <Network version="0" id="ENT:Network:ENT">
-                          <Name>ENT</Name>
-                          <AuthorityRef ref="ENT:Authority:ENT" version="1" />
-                  </Network>
-                  <routePoints>
-                  <RoutePoint version="0" id="ENT:RoutePoint:ALV">
-                    <keyList>
-                      <KeyValue>
-                        <Key>UIC</Key>
-                        <Value>007600926</Value>
-                      </KeyValue>
-                    </keyList>
-                    <Name>Alvdal</Name>
-                    <Location>
-                      <Longitude>10.632059</Longitude>
-                      <Latitude>62.109443</Latitude>
-                    </Location>
-                    <projections>
-                      <PointProjection version="0" id="ENT:PointProjection:ALV-1">
-                        <ProjectedPointRef ref="ENT:ScheduledStopPoint:ALV-1" version="0" />
-                      </PointProjection>
-                    </projections>
-                  </RoutePoint>
-                 </routePoints>
-                <routes>
-                  <Route version="0" id="ENT:Route:79-R">
-                      <Name>BO - ROG</Name>
-                      <ShortName>BO-ROG</ShortName>
-                      <LineRef ref="ENT:Line:79" version="3" />
-                      <pointsInSequence>
-                        <PointOnRoute order="1" version="0" id="ENT:PointOnRoute:79-R-1">
-                          <RoutePointRef ref="ENT:RoutePoint:BO" />
-                        </PointOnRoute>
-                        <PointOnRoute order="2" version="0" id="ENT:PointOnRoute:79-R-2">
-                          <RoutePointRef ref="ENT:RoutePoint:MOeR" />
-                        </PointOnRoute>
-                      </pointsInSequence>
-                    </Route>
-                </routes>
-                <lines>
-                  <Line id="ENT:Line:2_1" version="2223">
-                  <Name>Harstad/Narvik-Ørland</Name>
-                  <TransportMode>air</TransportMode>
-                  <TransportSubmode><AirSubmode>domesticFlight</AirSubmode></TransportSubmode>
-                  <PublicCode>R75</PublicCode>
-                  <RepresentedByGroupRef ref="AVI:Network:DX"/>
-                  <Presentation>
-                    <Colour>E13E2E</Colour>
-                    <TextColour>FFFFFF</TextColour>
-                  </Presentation>
-                  </Line>
-                </lines>
-                <destinationDisplays>
-                  <DestinationDisplay version="0" id="ENT:DestinationDisplay:21-1_OsloS">
-                    <FrontText>Oslo S</FrontText>
-                    <PublicCode>F6</PublicCode>
-                    <vias>
-                      <Via>
-                        <DestinationDisplayRef ref="OST:DestinationDisplay:133" version="1"></DestinationDisplayRef>
-                      </Via>
-                    </vias>
-                  </DestinationDisplay>
-                </destinationDisplays>
-                <stopAssignments>
-                  <PassengerStopAssignment order="1" version="0" id="ENT:PassengerStopAssignment:ALV-1">
-                    <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:ALV-1" version="0" />
-                    <QuayRef ref="NSR:Quay:650" />
-                  </PassengerStopAssignment>
-                </stopAssignments>
-                </ServiceFrame>
+                  <ResourceFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ResourceFrame:Shared">
+                       <organisations>
+                         <Authority version="1" id="SJN:Authority:SJN">
+                           <CompanyNumber>917 58 77 28</CompanyNumber>
+                           <Name>SJ Nord</Name>
+                           <LegalName>SJ Nord</LegalName>
+                           <ContactDetails>
+                             <Email>post@sj.no</Email>
+                             <Url>https://www.sj.no</Url>
+                           </ContactDetails>
+                         </Authority>
+                         <Operator version="1" id="SJN:Operator:SJN">
+                           <keyList>
+                             <KeyValue>
+                               <Key>RICS code</Key>
+                               <Value>3781</Value>
+                             </KeyValue>
+                           </keyList>
+                           <CompanyNumber>917 58 77 28</CompanyNumber>
+                           <Name>SJ Nord</Name>
+                           <LegalName>SJ Nord</LegalName>
+                           <CustomerServiceContactDetails>
+                             <Email>kundeservice@sj.no</Email>
+                             <Phone>+61 25 22 00</Phone>
+                             <Url>https://www.sj.no</Url>
+                           </CustomerServiceContactDetails>
+                         </Operator>
+                       </organisations>
+                  </ResourceFrame>
               
               """;
 
@@ -144,17 +89,29 @@ class DefaultResourceFrameValidationTreeFactoryTest {
   @BeforeEach
   void setUp() {
     validationTree =
-      new DefaultServiceFrameValidationTreeFactory().buildValidationTree();
+      new DefaultResourceFrameValidationTreeFactory().buildValidationTree();
   }
 
   static Stream<String> ruleCodes() {
     return Stream.of(
+      CODE_OPERATOR_1,
+      CODE_OPERATOR_2,
+      CODE_OPERATOR_3,
+      CODE_OPERATOR_4,
+      CODE_OPERATOR_5,
+      CODE_OPERATOR_6,
+      CODE_OPERATOR_7,
+      CODE_AUTHORITY_1,
+      CODE_AUTHORITY_2,
+      CODE_AUTHORITY_3,
+      CODE_AUTHORITY_4,
+      CODE_AUTHORITY_5
     );
   }
 
   @ParameterizedTest
   @MethodSource("ruleCodes")
-  void testInvalidServiceFrame(String code) {
+  void testInvalidResourceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
       NETEX_FRAGMENT_INVALID
     );
@@ -168,7 +125,7 @@ class DefaultResourceFrameValidationTreeFactoryTest {
 
   @ParameterizedTest
   @MethodSource("ruleCodes")
-  void testValidServiceFrame(String code) {
+  void testValidResourceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
       NETEX_FRAGMENT_VALID
     );

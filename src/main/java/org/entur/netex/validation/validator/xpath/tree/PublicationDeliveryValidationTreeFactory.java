@@ -35,6 +35,8 @@ public class PublicationDeliveryValidationTreeFactory
       .of(
         new DefaultResourceFrameValidationTreeFactory().buildValidationTree(),
         new DefaultServiceFrameValidationTreeFactory().buildValidationTree(),
+        new DefaultServiceCalendarFrameValidationTreeFactory()
+          .buildValidationTree(),
         new DefaultTimetableFrameValidationTreeFactory().buildValidationTree(),
         new DefaultVehicleScheduleFrameValidationTreeFactory()
           .buildValidationTree()

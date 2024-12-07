@@ -13,13 +13,15 @@ class ValidateAllowedTransportModeAndSubmodeOnServiceJourneyTest {
 
   private static final String NETEX_FRAGMENT =
     """
-            <vehicleJourneys  xmlns="http://www.netex.org.uk/netex">
+    <TimetableFrame xmlns="http://www.netex.org.uk/netex">
+            <vehicleJourneys  >
                <ServiceJourney version="1" id="AVI:ServiceJourney:DX592-01-1078498752">
                   ${TRANSPORT_MODE}
                   ${TRANSPORT_SUBMODE}
                </ServiceJourney>
             </vehicleJourneys>
-         """;
+    </TimetableFrame>
+    """;
 
   @Test
   void testValidTransportModeOnServiceJourney() {

@@ -41,7 +41,7 @@ public class ValidationTreeBuilder {
     if (!rules.isEmpty()) {
       ValidationTree lineAndCommonTree = new ValidationTree(
         name + " (Line and Common File)",
-        context
+        "."
       );
       lineAndCommonTree.addValidationRules(rules);
       validationTree.addSubTree(lineAndCommonTree);
@@ -50,7 +50,7 @@ public class ValidationTreeBuilder {
     if (!rulesForCommonFile.isEmpty()) {
       ValidationTree commonTree = new ValidationTree(
         name + " (Common File Only)",
-        context,
+        ".",
         XPathRuleValidationContext::isCommonFile
       );
       commonTree.addValidationRules(rulesForCommonFile);
@@ -60,7 +60,7 @@ public class ValidationTreeBuilder {
     if (!rulesForLineFile.isEmpty()) {
       ValidationTree commonTree = new ValidationTree(
         name + " (Line File Only)",
-        context,
+        ".",
         XPathRuleValidationContext::isLineFile
       );
       commonTree.addValidationRules(rulesForLineFile);

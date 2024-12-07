@@ -20,15 +20,7 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       "PublicationDelivery",
       "/"
     );
-    validationTree.addValidationRule(
-      new ValidateNotExist(
-        "PublicationDelivery//*[@version != 'any' and number(@version) != number(@version)]",
-        "VERSION_NON_NUMERIC",
-        "Non-numeric NeTEx version",
-        "Non-numeric NeTEx version",
-        Severity.WARNING
-      )
-    );
+
     validationTree.addSubTree(getCommonFileValidationTree());
     validationTree.addSubTree(getLineFileValidationTree());
     return validationTree;
@@ -425,52 +417,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     ValidationTree serviceCalendarFrameValidationTree = new ValidationTree(
       "Service Calendar frame",
       path
-    );
-
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "//DayType[not(//DayTypeAssignment/DayTypeRef/@ref = @id)]",
-        "SERVICE_CALENDAR_1",
-        "ServiceCalendar unused DayType",
-        "The DayType is not assigned to any calendar dates or periods",
-        Severity.WARNING
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "//ServiceCalendar[not(dayTypes) and not(dayTypeAssignments)]",
-        "SERVICE_CALENDAR_2",
-        "ServiceCalendar empty ServiceCalendar",
-        "ServiceCalendar does not contain neither DayTypes nor DayTypeAssignments",
-        Severity.WARNING
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "//ServiceCalendar[not(ToDate)]",
-        "SERVICE_CALENDAR_3",
-        "ServiceCalendar missing ToDate",
-        "Missing ToDate on ServiceCalendar",
-        Severity.WARNING
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "//ServiceCalendar[not(FromDate)]",
-        "SERVICE_CALENDAR_4",
-        "ServiceCalendar missing FromDate",
-        "Missing FromDate on ServiceCalendar",
-        Severity.WARNING
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "//ServiceCalendar[FromDate and ToDate and ToDate < FromDate]",
-        "SERVICE_CALENDAR_5",
-        "ServiceCalendar invalid time interval",
-        "FromDate cannot be after ToDate on ServiceCalendar",
-        Severity.ERROR
-      )
     );
 
     return serviceCalendarFrameValidationTree;

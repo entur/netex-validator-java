@@ -41,7 +41,7 @@ class ValidateExactlyOneTest {
   @Test
   void validateExactlyOneNoMatch() {
     ValidateExactlyOne validateExactlyOne = new ValidateExactlyOne(
-      "ServiceFrame/lines/Line",
+      "lines/Line",
       VALIDATION_RULE
     );
 
@@ -54,7 +54,7 @@ class ValidateExactlyOneTest {
   @Test
   void validateExactlyOneMatchMoreThanOne() {
     ValidateExactlyOne validateExactlyOne = new ValidateExactlyOne(
-      "ServiceFrame/lines/FlexibleLine",
+      "lines/FlexibleLine",
       VALIDATION_RULE
     );
 
@@ -68,7 +68,7 @@ class ValidateExactlyOneTest {
   @Test
   void validateExactlyOneMatchLessThanOne() {
     ValidateExactlyOne validateExactlyOne = new ValidateExactlyOne(
-      "ServiceFrame/routes/Route",
+      "routes/Route",
       VALIDATION_RULE
     );
 

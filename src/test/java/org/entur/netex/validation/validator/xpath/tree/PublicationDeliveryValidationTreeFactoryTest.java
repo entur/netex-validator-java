@@ -1,6 +1,6 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
-import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.CODE_LINE_1;
+import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.CODE_LINE_2;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -58,7 +58,7 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
     List<ValidationIssue> validationIssues = validationTree.validate(
       validationContext,
-      CODE_LINE_1
+      CODE_LINE_2
     );
     assertFalse(validationIssues.isEmpty());
   }
@@ -75,7 +75,7 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
     List<ValidationIssue> validationIssues = validationTree.validate(
       validationContext,
-      CODE_LINE_1
+      CODE_LINE_2
     );
     assertFalse(validationIssues.isEmpty());
   }

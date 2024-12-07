@@ -15,7 +15,7 @@ class ValidationTreeTest {
 
   private static final String RULE_CODE = "NO_LINE";
   private static final XPathValidationRule RULE_NO_LINE = new ValidateNotExist(
-    "ServiceFrame/lines/Line",
+    "lines/Line",
     RULE_CODE,
     "Line Not allowed",
     "Illegal element Line",

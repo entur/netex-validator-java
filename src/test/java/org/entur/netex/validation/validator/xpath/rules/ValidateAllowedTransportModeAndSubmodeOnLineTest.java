@@ -13,7 +13,8 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
   private static final String NETEX_FRAGMENT =
     """
-               <lines xmlns="http://www.netex.org.uk/netex">
+      <ServiceFrame xmlns="http://www.netex.org.uk/netex">
+               <lines >
                       <${LINE} version="325" id="ATB:FlexibleLine:0a115187-d3c9-532f-afa4-3302534b1a40">
                         <Name>Nærøysund TB</Name>
                         ${TRANSPORT_MODE}
@@ -24,8 +25,8 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
                         <RepresentedByGroupRef ref="ATB:Network:78977cc2-ba79-5492-af19-4d3fd5191876"/>
                       </${LINE}>
                </lines>
-               
-               """;
+      </ServiceFrame>
+      """;
 
   @Test
   void testValidTransportModeOnLine() {

@@ -40,7 +40,7 @@ class ValidateNotExistAndAtLeastOneTest {
   @Test
   void validateNotExistMatch() {
     ValidateNotExist validateNotExist = new ValidateNotExist(
-      "ServiceFrame/lines/Line",
+      "lines/Line",
       VALIDATION_RULE
     );
 
@@ -54,7 +54,7 @@ class ValidateNotExistAndAtLeastOneTest {
   @Test
   void validateNotExistNoMatch() {
     ValidateNotExist validateNotExist = new ValidateNotExist(
-      "ServiceFrame/lines/FlexibleLine",
+      "lines/FlexibleLine",
       VALIDATION_RULE
     );
 
@@ -67,7 +67,7 @@ class ValidateNotExistAndAtLeastOneTest {
   @Test
   void validateAtLeastOneMatch() {
     ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
-      "ServiceFrame/lines/FlexibleLine",
+      "lines/FlexibleLine",
       VALIDATION_RULE
     );
 
@@ -81,7 +81,7 @@ class ValidateNotExistAndAtLeastOneTest {
   @Test
   void validateAtLeastOneNoMatch() {
     ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
-      "ServiceFrame/lines/Line",
+      "lines/Line",
       VALIDATION_RULE
     );
 

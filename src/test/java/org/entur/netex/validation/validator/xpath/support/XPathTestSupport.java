@@ -19,12 +19,8 @@ public class XPathTestSupport {
    */
   public static XdmNode parseDocument(String netexFragment) {
     XdmNode xdmItems = NETEX_XML_PARSER.parseStringToXdmNode(netexFragment);
-    String namespaceURI = xdmItems
-      .children()
-      .iterator()
-      .next()
-      .getNodeName()
-      .getNamespaceURI();
+    XdmNode rootElement = xdmItems.children().iterator().next();
+    String namespaceURI = rootElement.getNodeName().getNamespaceURI();
     if (!NetexXMLParser.NETEX_NAMESPACE.equals(namespaceURI)) {
       throw new IllegalStateException(
         "The XML fragment is not namespaced under the NeTEx namespace. Provided namespace: '" +
@@ -32,7 +28,7 @@ public class XPathTestSupport {
         "'"
       );
     }
-    return xdmItems;
+    return rootElement;
   }
 
   /**
