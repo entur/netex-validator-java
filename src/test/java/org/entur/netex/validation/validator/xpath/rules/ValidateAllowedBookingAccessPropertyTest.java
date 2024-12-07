@@ -1,14 +1,13 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
+import java.util.List;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.rutebanken.netex.model.BookingAccessEnumeration;
-
-import java.util.List;
-
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 
 class ValidateAllowedBookingAccessPropertyTest {
 
@@ -46,7 +45,9 @@ class ValidateAllowedBookingAccessPropertyTest {
       BookingAccessEnumeration.OTHER.value()
     );
 
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      flexibleLineWithInvalidBookingAccess
+    );
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -61,7 +62,9 @@ class ValidateAllowedBookingAccessPropertyTest {
       "${BOOKING_ACCESS}",
       BookingAccessEnumeration.PUBLIC.value()
     );
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithValidBookingAccess);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      flexibleLineWithValidBookingAccess
+    );
 
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);

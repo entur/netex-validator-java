@@ -45,7 +45,7 @@ class DefaultNoticeValidationTreeFactoryTest {
       XPathTestSupport.validationContext(NETEX_FRAGMENT);
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
-            CODE_NOTICE_7
+      CODE_NOTICE_7
     );
     assertEquals(1, validationIssues.size());
     assertEquals(CODE_NOTICE_7, validationIssues.get(0).rule().code());

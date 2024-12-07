@@ -1,14 +1,13 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.List;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
@@ -138,10 +137,11 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
     String transportMode,
     String transportSubmode
   ) {
-    return XPathTestSupport.validationContext(NETEX_FRAGMENT
-            .replace("${TRANSPORT_MODE}", transportMode)
-            .replace("${TRANSPORT_SUBMODE}", transportSubmode)
-            .replace("${LINE}", line));
-
+    return XPathTestSupport.validationContext(
+      NETEX_FRAGMENT
+        .replace("${TRANSPORT_MODE}", transportMode)
+        .replace("${TRANSPORT_SUBMODE}", transportSubmode)
+        .replace("${LINE}", line)
+    );
   }
 }

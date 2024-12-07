@@ -64,17 +64,15 @@ class ValidateNotExistAndAtLeastOneTest {
     assertTrue(validationIssues.isEmpty());
   }
 
-
   @Test
   void validateAtLeastOneMatch() {
     ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
-            "ServiceFrame/lines/FlexibleLine",
-            VALIDATION_RULE
+      "ServiceFrame/lines/FlexibleLine",
+      VALIDATION_RULE
     );
 
-
     List<ValidationIssue> validationIssues = validateAtLeastOne.validate(
-            xpathRuleValidationContext
+      xpathRuleValidationContext
     );
     assertEquals(1, validationIssues.size());
     assertEquals(VALIDATION_RULE, validationIssues.get(0).rule());
@@ -83,12 +81,12 @@ class ValidateNotExistAndAtLeastOneTest {
   @Test
   void validateAtLeastOneNoMatch() {
     ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
-            "ServiceFrame/lines/Line",
-            VALIDATION_RULE
+      "ServiceFrame/lines/Line",
+      VALIDATION_RULE
     );
 
     List<ValidationIssue> validationIssues = validateAtLeastOne.validate(
-            xpathRuleValidationContext
+      xpathRuleValidationContext
     );
     assertTrue(validationIssues.isEmpty());
   }

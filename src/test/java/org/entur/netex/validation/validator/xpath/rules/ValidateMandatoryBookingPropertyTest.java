@@ -1,13 +1,12 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
+import java.util.List;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 
 class ValidateMandatoryBookingPropertyTest {
 
@@ -74,7 +73,9 @@ class ValidateMandatoryBookingPropertyTest {
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      flexibleLineWithInvalidBookingAccess
+    );
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -97,7 +98,9 @@ class ValidateMandatoryBookingPropertyTest {
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      flexibleLineWithInvalidBookingAccess
+    );
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
@@ -117,7 +120,9 @@ class ValidateMandatoryBookingPropertyTest {
       )
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(journeyPatternWithBookingArrangement);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      journeyPatternWithBookingArrangement
+    );
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
@@ -136,7 +141,9 @@ class ValidateMandatoryBookingPropertyTest {
         "${FLEXIBLE_PROPERTIES}",
         "<FlexibleServiceProperties><BookingMethods>callOffice online</BookingMethods></FlexibleServiceProperties>"
       );
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(serviceJourneyWithFlexibleProperties);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      serviceJourneyWithFlexibleProperties
+    );
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);

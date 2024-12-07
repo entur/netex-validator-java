@@ -1,15 +1,14 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
+import java.util.List;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.List;
-
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 
 class ValidateDuplicatedTimetabledPassingTimeIdTest {
 
@@ -107,8 +106,9 @@ class ValidateDuplicatedTimetabledPassingTimeIdTest {
       .replace("${ID_3}", ids.get(2))
       .replace("${ID_4}", ids.get(3));
 
-
-    XPathRuleValidationContext xpathRuleValidationContext = validationContext(vehicleJourneysFragment);
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(
+      vehicleJourneysFragment
+    );
     List<ValidationIssue> validationIssues =
       validateDuplicatedTimetabledPassingTimeId.validate(
         xpathRuleValidationContext

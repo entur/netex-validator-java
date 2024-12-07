@@ -29,9 +29,12 @@ public class DefaultServiceFrameValidationTreeFactory
   public static final String CODE_LINE_7 = "LINE_7";
   public static final String CODE_LINE_8 = "LINE_8";
   public static final String CODE_LINE_9 = "LINE_9";
-  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_1 = "SERVICE_FRAME_IN_COMMON_FILE_1";
-  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_2 = "SERVICE_FRAME_IN_COMMON_FILE_2";
-  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_3 = "SERVICE_FRAME_IN_COMMON_FILE_3";
+  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_1 =
+    "SERVICE_FRAME_IN_COMMON_FILE_1";
+  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_2 =
+    "SERVICE_FRAME_IN_COMMON_FILE_2";
+  public static final String CODE_SERVICE_FRAME_IN_COMMON_FILE_3 =
+    "SERVICE_FRAME_IN_COMMON_FILE_3";
   public static final String CODE_NETWORK_1 = "NETWORK_1";
   public static final String CODE_NETWORK_2 = "NETWORK_2";
   public static final String CODE_NETWORK_3 = "NETWORK_3";
@@ -41,6 +44,14 @@ public class DefaultServiceFrameValidationTreeFactory
   public static final String CODE_ROUTE_4 = "ROUTE_4";
   public static final String CODE_ROUTE_5 = "ROUTE_5";
   public static final String CODE_ROUTE_6 = "ROUTE_6";
+  public static final String CODE_SERVICE_FRAME_1 = "SERVICE_FRAME_1";
+  public static final String CODE_SERVICE_FRAME_2 = "SERVICE_FRAME_2";
+  public static final String CODE_SERVICE_FRAME_3 = "SERVICE_FRAME_3";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_1 = "PASSENGER_STOP_ASSIGNMENT_1";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_2 = "PASSENGER_STOP_ASSIGNMENT_2";
+  public static final String CODE_PASSENGER_STOP_ASSIGNMENT_3 = "PASSENGER_STOP_ASSIGNMENT_3";
+  public static final String CODE_DESTINATION_DISPLAY_1 = "DESTINATION_DISPLAY_1";
+  public static final String CODE_DESTINATION_DISPLAY_2 = "DESTINATION_DISPLAY_2";
 
   @Override
   public ValidationTree buildValidationTree() {
@@ -53,7 +64,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "Network[not(AuthorityRef)]",
-                CODE_NETWORK_1,
+          CODE_NETWORK_1,
           "Network missing AuthorityRef",
           "Missing AuthorityRef on Network",
           Severity.ERROR
@@ -62,7 +73,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "Network[not(Name) or normalize-space(Name) = '']",
-                CODE_NETWORK_2,
+          CODE_NETWORK_2,
           "Network missing Name on Network",
           "Missing Name element on Network",
           Severity.ERROR
@@ -71,7 +82,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "Network/groupsOfLines/GroupOfLines[not(Name)  or normalize-space(Name) = '']",
-                CODE_NETWORK_3,
+          CODE_NETWORK_3,
           "Network missing Name on GroupOfLines",
           "Missing Name element on GroupOfLines",
           Severity.ERROR
@@ -80,7 +91,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "groupsOfLines",
-          "SERVICE_FRAME_1",
+                CODE_SERVICE_FRAME_1,
           "ServiceFrame unexpected element GroupOfLines",
           "Unexpected element groupsOfLines outside of Network",
           Severity.ERROR
@@ -89,7 +100,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "timingPoints",
-          "SERVICE_FRAME_2",
+                CODE_SERVICE_FRAME_2,
           "ServiceFrame unexpected element timingPoints",
           "Unexpected element timingPoints. Content ignored",
           Severity.WARNING
@@ -98,7 +109,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "routePoints/RoutePoint[not(projections)]",
-          "SERVICE_FRAME_3",
+                CODE_SERVICE_FRAME_3,
           "ServiceFrame missing Projection on RoutePoint",
           "Missing Projection on RoutePoint",
           Severity.ERROR
@@ -107,7 +118,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[not(ScheduledStopPointRef)]",
-          "PASSENGER_STOP_ASSIGNMENT_1",
+                CODE_PASSENGER_STOP_ASSIGNMENT_1,
           "PassengerStopAssignment missing ScheduledStopPointRef",
           "Missing ScheduledStopPointRef on PassengerStopAssignment",
           Severity.ERROR
@@ -116,7 +127,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[not(QuayRef)]",
-          "PASSENGER_STOP_ASSIGNMENT_2",
+                CODE_PASSENGER_STOP_ASSIGNMENT_2,
           "PassengerStopAssignment missing QuayRef",
           "Missing QuayRef on PassengerStopAssignment",
           Severity.ERROR
@@ -125,7 +136,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "stopAssignments/PassengerStopAssignment[QuayRef/@ref = following-sibling::PassengerStopAssignment/QuayRef/@ref]",
-          "PASSENGER_STOP_ASSIGNMENT_3",
+                CODE_PASSENGER_STOP_ASSIGNMENT_3,
           "PassengerStopAssignment duplicated Quay assignment",
           "The same quay is assigned more than once in PassengerStopAssignments",
           Severity.WARNING
@@ -161,7 +172,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay[not(FrontText) or normalize-space(FrontText) = '']",
-          "DESTINATION_DISPLAY_1",
+                CODE_DESTINATION_DISPLAY_1,
           "DestinationDisplay missing FrontText",
           "Missing FrontText on DestinationDisplay",
           Severity.ERROR
@@ -170,7 +181,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "destinationDisplays/DestinationDisplay/vias/Via[not(DestinationDisplayRef)]",
-          "DESTINATION_DISPLAY_2",
+                CODE_DESTINATION_DISPLAY_2,
           "DestinationDisplay missing DestinationDisplayRef on Via",
           "Missing DestinationDisplayRef on Via",
           Severity.ERROR
@@ -188,7 +199,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine][not(Name) or normalize-space(Name) = '']",
-                CODE_LINE_2,
+          CODE_LINE_2,
           "Line missing Name",
           "Missing Name on Line",
           Severity.ERROR
@@ -197,7 +208,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine][not(PublicCode) or normalize-space(PublicCode) = '']",
-                CODE_LINE_3,
+          CODE_LINE_3,
           "Line missing PublicCode",
           "Missing PublicCode on Line",
           Severity.WARNING
@@ -206,7 +217,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine][not(TransportMode)]",
-                CODE_LINE_4,
+          CODE_LINE_4,
           "Line missing TransportMode",
           "Missing TransportMode on Line",
           Severity.ERROR
@@ -215,7 +226,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine][not(TransportSubmode)]",
-                CODE_LINE_5,
+          CODE_LINE_5,
           "Line missing TransportSubmode",
           "Missing TransportSubmode on Line",
           Severity.WARNING
@@ -224,7 +235,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine]/routes/Route",
-                CODE_LINE_6,
+          CODE_LINE_6,
           "Line with incorrect use of Route",
           "Routes should not be defined within a Line or FlexibleLine",
           Severity.ERROR
@@ -233,7 +244,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine][not(RepresentedByGroupRef)]",
-                CODE_LINE_7,
+          CODE_LINE_7,
           "Line missing Network or GroupOfLines",
           "A Line must refer to a GroupOfLines or a Network through element RepresentedByGroupRef",
           Severity.ERROR
@@ -242,7 +253,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][string-length(text())!=6]",
-                CODE_LINE_8,
+          CODE_LINE_8,
           "Invalid color coding length on Presentation",
           "Line colour should be encoded with 6 hexadecimal digits",
           Severity.WARNING
@@ -251,7 +262,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/*[self::Line or self::FlexibleLine]/*[self::Presentation or self::AlternativePresentation]/*[self::Colour or self::TextColour][text()][not(matches(text(),'[0-9A-Fa-f]{6}'))]",
-                CODE_LINE_9,
+          CODE_LINE_9,
           "Invalid color coding value on Presentation",
           "Line colour should be encoded with valid hexadecimal digits",
           Severity.WARNING
@@ -303,7 +314,7 @@ public class DefaultServiceFrameValidationTreeFactory
         (
           new ValidateAtLeastOne(
             "routes/Route",
-                  CODE_ROUTE_1,
+            CODE_ROUTE_1,
             "Route missing",
             "There should be at least one Route",
             Severity.ERROR
@@ -313,7 +324,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "routes/Route[not(Name) or normalize-space(Name) = '']",
-                CODE_ROUTE_2,
+          CODE_ROUTE_2,
           "Route missing Name",
           "Missing Name on Route",
           Severity.ERROR
@@ -322,7 +333,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "routes/Route[not(LineRef) and not(FlexibleLineRef)]",
-                CODE_ROUTE_3,
+          CODE_ROUTE_3,
           "Route missing LineRef",
           "Missing lineRef on Route",
           Severity.ERROR
@@ -331,7 +342,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "routes/Route[not(pointsInSequence)]",
-                CODE_ROUTE_4,
+          CODE_ROUTE_4,
           "Route missing pointsInSequence",
           "Missing pointsInSequence on Route",
           Severity.ERROR
@@ -340,7 +351,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "routes/Route/DirectionRef",
-                CODE_ROUTE_5,
+          CODE_ROUTE_5,
           "Route illegal DirectionRef",
           "DirectionRef not allowed on Route (use DirectionType)",
           Severity.WARNING
@@ -349,7 +360,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "routes/Route/pointsInSequence/PointOnRoute[@order = preceding-sibling::PointOnRoute/@order]",
-                CODE_ROUTE_6,
+          CODE_ROUTE_6,
           "Route duplicated order",
           "Several points on route have the same order",
           Severity.WARNING
@@ -463,7 +474,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForCommonFile(
         new ValidateNotExist(
           "lines/Line",
-                CODE_SERVICE_FRAME_IN_COMMON_FILE_1,
+          CODE_SERVICE_FRAME_IN_COMMON_FILE_1,
           "ServiceFrame unexpected element Line",
           "Line not allowed in common files",
           Severity.ERROR
@@ -472,7 +483,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForCommonFile(
         new ValidateNotExist(
           "routes/Route",
-                CODE_SERVICE_FRAME_IN_COMMON_FILE_2,
+          CODE_SERVICE_FRAME_IN_COMMON_FILE_2,
           "ServiceFrame unexpected element Route",
           "Route not allowed in common files",
           Severity.ERROR
@@ -481,7 +492,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForCommonFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern | journeyPatterns/ServiceJourneyPattern",
-                CODE_SERVICE_FRAME_IN_COMMON_FILE_3,
+          CODE_SERVICE_FRAME_IN_COMMON_FILE_3,
           "ServiceFrame unexpected element JourneyPattern",
           "JourneyPattern not allowed in common files",
           Severity.ERROR
