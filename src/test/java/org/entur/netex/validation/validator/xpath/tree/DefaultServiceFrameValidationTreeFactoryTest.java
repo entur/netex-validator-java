@@ -16,7 +16,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 class DefaultServiceFrameValidationTreeFactoryTest {
 
-  private static final String NETEX_FRAGMENT_LINE_INVALID =
+  private static final String NETEX_FRAGMENT_INVALID =
     """
 <ServiceFrame xmlns="http://www.netex.org.uk/netex">
   <Network version="0" id="ENT:Network:e7f2a84e-2a94-4899-b833-37d18cddb26f">
@@ -64,7 +64,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
 """;
 
-  private static final String NETEX_FRAGMENT_LINE_VALID =
+  private static final String NETEX_FRAGMENT_VALID =
     """
         <ServiceFrame xmlns="http://www.netex.org.uk/netex">
           <Network version="0" id="ENT:Network:ENT">
@@ -178,7 +178,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @MethodSource("ruleCodes")
   void testInvalidServiceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_LINE_INVALID
+            NETEX_FRAGMENT_INVALID
     );
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
@@ -192,7 +192,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @MethodSource("ruleCodes")
   void testValidServiceFrame(String code) {
     XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_LINE_VALID
+            NETEX_FRAGMENT_VALID
     );
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,

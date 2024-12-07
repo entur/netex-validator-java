@@ -911,34 +911,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
       path
     );
 
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateAtLeastOne(
-        "blocks/Block | blocks/TrainBlock",
-        "BLOCK_1",
-        "Block missing VehicleScheduleFrame",
-        "At least one Block or TrainBlock required in VehicleScheduleFrame",
-        Severity.ERROR
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "blocks/Block[not(journeys)]",
-        "BLOCK_2",
-        "Block missing Journey",
-        "At least one Journey must be defined for Block",
-        Severity.ERROR
-      )
-    );
-    serviceCalendarFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "blocks/Block[not(dayTypes)]",
-        "BLOCK_3",
-        "Block missing DayType",
-        "At least one DayType must be defined for Block",
-        Severity.WARNING
-      )
-    );
-
     return serviceCalendarFrameValidationTree;
   }
 

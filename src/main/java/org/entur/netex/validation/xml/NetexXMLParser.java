@@ -19,7 +19,6 @@ import net.sf.saxon.s9api.XPathCompiler;
 import net.sf.saxon.s9api.XPathSelector;
 import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XdmValue;
-import org.entur.netex.validation.Constants;
 import org.entur.netex.validation.exception.NetexValidationException;
 
 /**
@@ -27,9 +26,9 @@ import org.entur.netex.validation.exception.NetexValidationException;
  */
 public class NetexXMLParser {
 
-  private static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
-  private static final String SIRI_NAMESPACE = "http://www.siri.org.uk/siri";
-  private static final String OPENGIS_NAMESPACE =
+  public static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
+  public static final String SIRI_NAMESPACE = "http://www.siri.org.uk/siri";
+  public static final String OPENGIS_NAMESPACE =
     "http://www.opengis.net/gml/3.2";
 
   private final XPathCompiler xpathCompiler;
@@ -46,7 +45,7 @@ public class NetexXMLParser {
     this.ignorableNeTexElements =
       ignorableNetexElements
         .stream()
-        .map(elementName -> new QName(Constants.NETEX_NAMESPACE, elementName))
+        .map(elementName -> new QName(NETEX_NAMESPACE, elementName))
         .collect(Collectors.toSet());
   }
 

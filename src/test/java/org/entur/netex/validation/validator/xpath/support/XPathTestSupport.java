@@ -18,7 +18,12 @@ public class XPathTestSupport {
    * The XML fragment must be namespaced with the NeTEx schema namespace http://www.netex.org.uk/netex
    */
   public static XdmNode parseDocument(String netexFragment) {
-    return NETEX_XML_PARSER.parseStringToXdmNode(netexFragment);
+    XdmNode xdmItems = NETEX_XML_PARSER.parseStringToXdmNode(netexFragment);
+    String namespaceURI = xdmItems.children().iterator().next().getNodeName().getNamespaceURI();
+    if(! NetexXMLParser.NETEX_NAMESPACE.equals(namespaceURI)) {
+      throw new IllegalStateException("The XML fragment is not namespaced under the NeTEx namespace. Provided namespace: '" + namespaceURI + "'");
+    }
+    return xdmItems;
   }
 
   /**
