@@ -17,19 +17,37 @@ public class PublicationDeliveryValidationTreeFactory
       new DefaultRootValidationTreeFactory().buildValidationTree()
     );
 
-    ValidationTree allFramesValidationTree = new ValidationTree(
-      "All Frames",
-      "(PublicationDelivery/dataObjects/frames|PublicationDelivery/dataObjects/CompositeFrame/frames)"
+    ValidationTree singleFramesValidationTree = new ValidationTree(
+      "All Single Frames",
+      "PublicationDelivery/dataObjects/frames"
     );
 
-    validationTree.addSubTree(allFramesValidationTree);
+    ValidationTree framesInCompositeFramesValidationTree = new ValidationTree(
+      "All Frames in Composite Frame",
+      "PublicationDelivery/dataObjects/CompositeFrame/frames"
+    );
 
-    allFramesValidationTree.addSubTree(
-      new DefaultServiceFrameValidationTreeFactory().buildValidationTree()
+    validationTree.addSubTree(singleFramesValidationTree);
+    validationTree.addSubTree(framesInCompositeFramesValidationTree);
+
+    ValidationTree serviceFrameValidationTree =
+      new DefaultServiceFrameValidationTreeFactory().buildValidationTree();
+    ValidationTree timetableFrameValidationTree =
+      new DefaultTimetableFrameValidationTreeFactory().buildValidationTree();
+    ValidationTree noticeValidationTree =
+      new DefaultNoticeValidationTreeFactory().buildValidationTree();
+
+    singleFramesValidationTree.addSubTree(serviceFrameValidationTree);
+    singleFramesValidationTree.addSubTree(timetableFrameValidationTree);
+    singleFramesValidationTree.addSubTree(noticeValidationTree);
+
+    framesInCompositeFramesValidationTree.addSubTree(
+      serviceFrameValidationTree
     );
-    allFramesValidationTree.addSubTree(
-      new DefaultTimetableFrameValidationTreeFactory().buildValidationTree()
+    framesInCompositeFramesValidationTree.addSubTree(
+      timetableFrameValidationTree
     );
+    framesInCompositeFramesValidationTree.addSubTree(noticeValidationTree);
 
     return validationTree;
   }

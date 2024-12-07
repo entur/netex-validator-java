@@ -1,6 +1,5 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.Collections;
 import java.util.List;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
@@ -57,7 +56,7 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
         );
         return List.of(new ValidationIssue(rule, dataLocation));
       }
-      return Collections.emptyList();
+      return List.of();
     } catch (SaxonApiException e) {
       throw new NetexValidationException(
         "Error while validating rule " + xpath,

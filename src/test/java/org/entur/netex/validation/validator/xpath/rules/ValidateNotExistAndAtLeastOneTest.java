@@ -3,28 +3,26 @@ package org.entur.netex.validation.validator.xpath.rules;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
+import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class ValidateNotExistTest {
+class ValidateNotExistAndAtLeastOneTest {
 
-  private static final String TEST_CODESPACE = "FLB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser();
   private static final String NETEX_FRAGMENT =
     """
-                    <ServiceFrame xmlns="http://www.netex.org.uk/netex" id="ATB:ServiceFrame:1" version="2223">
-                      <lines>
-                        <Line id="ATB:Line:2_1" version="2223">
-                        </Line>
-                      </lines>
-                    </ServiceFrame>
-                    """;
+  <ServiceFrame xmlns="http://www.netex.org.uk/netex" id="ENT:ServiceFrame:1" version="2223">
+  <lines>
+    <Line id="ENT:Line:2_1" version="2223">
+    </Line>
+  </lines>
+</ServiceFrame>
+""";
+
   private static final ValidationRule VALIDATION_RULE = new ValidationRule(
     "RULE_CODE",
     "RULE_NAME",
@@ -35,18 +33,12 @@ class ValidateNotExistTest {
 
   @BeforeEach
   void setUp() {
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(NETEX_FRAGMENT);
     xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+      XPathTestSupport.validationContext(NETEX_FRAGMENT);
   }
 
   @Test
-  void testMatch() {
+  void validateNotExistMatch() {
     ValidateNotExist validateNotExist = new ValidateNotExist(
       "ServiceFrame/lines/Line",
       VALIDATION_RULE
@@ -60,7 +52,7 @@ class ValidateNotExistTest {
   }
 
   @Test
-  void testNoMatch() {
+  void validateNotExistNoMatch() {
     ValidateNotExist validateNotExist = new ValidateNotExist(
       "ServiceFrame/lines/FlexibleLine",
       VALIDATION_RULE
@@ -68,6 +60,35 @@ class ValidateNotExistTest {
 
     List<ValidationIssue> validationIssues = validateNotExist.validate(
       xpathRuleValidationContext
+    );
+    assertTrue(validationIssues.isEmpty());
+  }
+
+
+  @Test
+  void validateAtLeastOneMatch() {
+    ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
+            "ServiceFrame/lines/FlexibleLine",
+            VALIDATION_RULE
+    );
+
+
+    List<ValidationIssue> validationIssues = validateAtLeastOne.validate(
+            xpathRuleValidationContext
+    );
+    assertEquals(1, validationIssues.size());
+    assertEquals(VALIDATION_RULE, validationIssues.get(0).rule());
+  }
+
+  @Test
+  void validateAtLeastOneNoMatch() {
+    ValidateAtLeastOne validateAtLeastOne = new ValidateAtLeastOne(
+            "ServiceFrame/lines/Line",
+            VALIDATION_RULE
+    );
+
+    List<ValidationIssue> validationIssues = validateAtLeastOne.validate(
+            xpathRuleValidationContext
     );
     assertTrue(validationIssues.isEmpty());
   }

@@ -1,20 +1,16 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
 class ValidateMandatoryBookingPropertyTest {
 
-  public static final String TEST_CODESPACE = "FLB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of("SiteFrame")
-  );
   private static final String NETEX_FRAGMENT =
     """
                                   <frames xmlns="http://www.netex.org.uk/netex"><ServiceFrame>
@@ -77,16 +73,8 @@ class ValidateMandatoryBookingPropertyTest {
       .replace("${BOOKING_METHOD}", "")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithInvalidBookingAccess
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -108,16 +96,9 @@ class ValidateMandatoryBookingPropertyTest {
       )
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithInvalidBookingAccess
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -135,16 +116,9 @@ class ValidateMandatoryBookingPropertyTest {
         "<BookingArrangements><BookingMethods>callOffice online</BookingMethods></BookingArrangements>"
       )
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      journeyPatternWithBookingArrangement
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(journeyPatternWithBookingArrangement);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -162,16 +136,8 @@ class ValidateMandatoryBookingPropertyTest {
         "${FLEXIBLE_PROPERTIES}",
         "<FlexibleServiceProperties><BookingMethods>callOffice online</BookingMethods></FlexibleServiceProperties>"
       );
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      serviceJourneyWithFlexibleProperties
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(serviceJourneyWithFlexibleProperties);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);

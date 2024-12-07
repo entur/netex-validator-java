@@ -1,21 +1,17 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.rutebanken.netex.model.BookingAccessEnumeration;
 
+import java.util.List;
+
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
 class ValidateAllowedBookingAccessPropertyTest {
 
-  public static final String TEST_CODESPACE = "FLB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of("SiteFrame")
-  );
   private static final String NETEX_FRAGMENT =
     """
                   <FlexibleLine xmlns="http://www.netex.org.uk/netex" version="46" id="BRA:FlexibleLine:9204411c-bf86-4b6a-b8fa-5c40b8702213">
@@ -49,16 +45,8 @@ class ValidateAllowedBookingAccessPropertyTest {
       "${BOOKING_ACCESS}",
       BookingAccessEnumeration.OTHER.value()
     );
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithInvalidBookingAccess
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithInvalidBookingAccess);
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -73,16 +61,8 @@ class ValidateAllowedBookingAccessPropertyTest {
       "${BOOKING_ACCESS}",
       BookingAccessEnumeration.PUBLIC.value()
     );
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithValidBookingAccess
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithValidBookingAccess);
+
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);

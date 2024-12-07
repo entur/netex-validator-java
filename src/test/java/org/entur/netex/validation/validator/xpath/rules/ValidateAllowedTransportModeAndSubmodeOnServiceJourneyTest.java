@@ -1,22 +1,17 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
+import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.ValidationIssue;
-import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
-import org.junit.jupiter.api.Test;
-
 class ValidateAllowedTransportModeAndSubmodeOnServiceJourneyTest {
 
-  public static final String TEST_CODESPACE = "FLB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of("SiteFrame")
-  );
   private static final String NETEX_FRAGMENT =
     """
             <vehicleJourneys  xmlns="http://www.netex.org.uk/netex">
@@ -98,16 +93,10 @@ class ValidateAllowedTransportModeAndSubmodeOnServiceJourneyTest {
     String transportMode,
     String transportSubmode
   ) {
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
+    return XPathTestSupport.validationContext(
       NETEX_FRAGMENT
         .replace("${TRANSPORT_MODE}", transportMode)
         .replace("${TRANSPORT_SUBMODE}", transportSubmode)
-    );
-    return new XPathRuleValidationContext(
-      document,
-      NETEX_XML_PARSER,
-      TEST_CODESPACE,
-      null
     );
   }
 }

@@ -1,20 +1,16 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
 class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
 
-  public static final String TEST_CODESPACE = "FLB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of("SiteFrame")
-  );
   private static final String NETEX_FRAGMENT =
     """
                                   <frames xmlns="http://www.netex.org.uk/netex"><ServiceFrame>
@@ -77,21 +73,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
       .replace("${BOOK_WHEN}", "")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithMissingBookWhen
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithMissingBookWhen);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(validationIssues);
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.rule(),
@@ -107,21 +94,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
       .replace("${BOOK_WHEN}", "<BookWhen>advanceAndDayOfTravel</BookWhen>")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      flexibleLineWithBookWhen
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(flexibleLineWithBookWhen);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 
@@ -136,21 +114,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         "<BookingArrangements><BookWhen>advanceAndDayOfTravel</BookWhen></BookingArrangements>"
       )
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      journeyPatternWithBookingArrangement
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(journeyPatternWithBookingArrangement);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 
@@ -165,21 +134,12 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         "${FLEXIBLE_PROPERTIES}",
         "<FlexibleServiceProperties><BookWhen>advanceAndDayOfTravel</BookWhen></FlexibleServiceProperties>"
       );
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      serviceJourneyWithFlexibleProperties
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(serviceJourneyWithFlexibleProperties);
+
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
         xpathRuleValidationContext
       );
-    Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

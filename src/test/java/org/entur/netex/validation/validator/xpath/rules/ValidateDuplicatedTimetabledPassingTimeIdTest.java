@@ -1,22 +1,18 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
+
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+
 class ValidateDuplicatedTimetabledPassingTimeIdTest {
 
-  public static final String TEST_CODESPACE = "FLI";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of()
-  );
   private static final String NETEX_FRAGMENT =
     """
                     <vehicleJourneys xmlns="http://www.netex.org.uk/netex">
@@ -111,16 +107,8 @@ class ValidateDuplicatedTimetabledPassingTimeIdTest {
       .replace("${ID_3}", ids.get(2))
       .replace("${ID_4}", ids.get(3));
 
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      vehicleJourneysFragment
-    );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+
+    XPathRuleValidationContext xpathRuleValidationContext = validationContext(vehicleJourneysFragment);
     List<ValidationIssue> validationIssues =
       validateDuplicatedTimetabledPassingTimeId.validate(
         xpathRuleValidationContext

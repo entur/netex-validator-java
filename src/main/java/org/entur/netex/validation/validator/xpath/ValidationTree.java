@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A tree of XPath validation rules to be applied to a NeTEx document. See {@link XPathValidationRule}.
- * The tree can be structured in subtrees that validate a part of the XML documents.
+ * The tree can be structured in subtrees that validate a part of the XML document.
  * The tree leaves are instances {@link XPathValidationRule}.
  */
 public class ValidationTree {
@@ -59,12 +59,18 @@ public class ValidationTree {
     this.subTrees = new ArrayList<>();
   }
 
+  /**
+   * Apply all validation rules in the tree and return validation issues.
+   */
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
   ) {
     return validate(validationContext, validationRule -> true);
   }
 
+  /**
+   * Apply the given validation rule and return validation issues.
+   */
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext,
     String validationRuleCode
@@ -75,6 +81,9 @@ public class ValidationTree {
     );
   }
 
+  /**
+   * Apply the validation rules matching the given rule filter and return validation issues.
+   */
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext,
     Predicate<XPathValidationRule> filter

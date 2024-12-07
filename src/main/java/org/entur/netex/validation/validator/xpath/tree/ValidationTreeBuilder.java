@@ -1,6 +1,5 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
-import com.fasterxml.jackson.databind.deser.std.CollectionDeserializer;
 import java.util.ArrayList;
 import java.util.List;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
@@ -42,7 +41,7 @@ public class ValidationTreeBuilder {
     if (!rulesForCommonFile.isEmpty()) {
       ValidationTree commonTree = new ValidationTree(
         name + " (Common File Only)",
-        ".",
+        context,
         XPathRuleValidationContext::isCommonFile
       );
       commonTree.addValidationRules(rulesForCommonFile);
@@ -52,7 +51,7 @@ public class ValidationTreeBuilder {
     if (!rulesForLineFile.isEmpty()) {
       ValidationTree commonTree = new ValidationTree(
         name + " (Line File Only)",
-        ".",
+        context,
         XPathRuleValidationContext::isLineFile
       );
       commonTree.addValidationRules(rulesForLineFile);

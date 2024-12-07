@@ -1,55 +1,82 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
+import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.CODE_LINE_1;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import java.util.Set;
-import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.xml.NetexXMLParser;
+import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.Test;
 
 class PublicationDeliveryValidationTreeFactoryTest {
 
-  public static final String TEST_CODESPACE = "ATB";
-  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser(
-    Set.of("SiteFrame")
-  );
-
-  private static final String NETEX_FRAGMENT_LINE =
+  private static final String COMPOSITE_FRAME_FRAGMENT =
     """
-                    <ServiceFrame xmlns="http://www.netex.org.uk/netex" id="ATB:ServiceFrame:1" version="2223">
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="1.15:NO-NeTEx-networktimetable:1.5">
+    <dataObjects>
+        <CompositeFrame created="2024-11-28T02:58:39.64" version="1" id="ENT:CompositeFrame:3126575">
+            <frames>
+              <ServiceFrame id="ENT:ServiceFrame:1" version="2223">
+                <lines>
+                  <Line id="ENT:Line:2_1" version="2223">
+                  </Line>
+                </lines>
+              </ServiceFrame>
+            </frames>
+        </CompositeFrame>
+    </dataObjects>
+</PublicationDelivery>
+                    """;
+
+  private static final String SINGLE_FRAME_FRAGMENT =
+    """
+      <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="1.15:NO-NeTEx-networktimetable:1.5">
+          <dataObjects>
+                  <frames>
+                    <ServiceFrame id="ENT:ServiceFrame:1" version="2223">
                       <lines>
-                        <Line id="ATB:Line:2_1" version="2223">
+                        <Line id="ENT:Line:2_1" version="2223">
                         </Line>
                       </lines>
                     </ServiceFrame>
-                    """;
+                  </frames>
+          </dataObjects>
+      </PublicationDelivery>
+      """;
 
   @Test
-  void test() {
+  void testMatchFrameInCompositeFrame() {
     PublicationDeliveryValidationTreeFactory factory =
       new PublicationDeliveryValidationTreeFactory();
     ValidationTree validationTree = factory.buildValidationTree();
     assertNotNull(validationTree);
 
-    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(
-      NETEX_FRAGMENT_LINE
-    );
-    XPathRuleValidationContext xpathValidationContext =
-      new XPathRuleValidationContext(
-        document,
-        NETEX_XML_PARSER,
-        TEST_CODESPACE,
-        null
-      );
+    XPathRuleValidationContext validationContext =
+      XPathTestSupport.validationContext(COMPOSITE_FRAME_FRAGMENT);
 
     List<ValidationIssue> validationIssues = validationTree.validate(
-      xpathValidationContext,
-      "LINE_1"
+      validationContext,
+      CODE_LINE_1
     );
-    assertNotNull(validationIssues);
+    assertFalse(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testMatchSingleFrame() {
+    PublicationDeliveryValidationTreeFactory factory =
+      new PublicationDeliveryValidationTreeFactory();
+    ValidationTree validationTree = factory.buildValidationTree();
+    assertNotNull(validationTree);
+
+    XPathRuleValidationContext validationContext =
+      XPathTestSupport.validationContext(SINGLE_FRAME_FRAGMENT);
+
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      validationContext,
+      CODE_LINE_1
+    );
+    assertFalse(validationIssues.isEmpty());
   }
 }
