@@ -36,14 +36,6 @@ class DefaultResourceFrameValidationTreeFactoryTest {
                          <Value>3781</Value>
                        </KeyValue>
                      </keyList>
-                     <CompanyNumber>917 58 77 28</CompanyNumber>
-                     <Name>SJ Nord</Name>
-                     <LegalName>SJ Nord</LegalName>
-                     <CustomerServiceContactDetails>
-                       <Email>kundeservice@sj.no</Email>
-                       <Phone>+61 25 22 00</Phone>
-                       <Url>https://www.sj.no</Url>
-                     </CustomerServiceContactDetails>
                    </Operator>
                  </organisations>
             </ResourceFrame>
@@ -97,15 +89,7 @@ class DefaultResourceFrameValidationTreeFactoryTest {
       CODE_OPERATOR_1,
       CODE_OPERATOR_2,
       CODE_OPERATOR_3,
-      CODE_OPERATOR_4,
-      CODE_OPERATOR_5,
-      CODE_OPERATOR_6,
-      CODE_OPERATOR_7,
-      CODE_AUTHORITY_1,
-      CODE_AUTHORITY_2,
-      CODE_AUTHORITY_3,
-      CODE_AUTHORITY_4,
-      CODE_AUTHORITY_5
+      CODE_OPERATOR_6
     );
   }
 

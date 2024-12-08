@@ -18,8 +18,15 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
   private static final String NETEX_FRAGMENT_INVALID =
     """
 <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
+     <ServiceCalendar>
+     <!-- FromDate after ToDate -->
+     <FromDate>2024-02-01</FromDate>
+     <ToDate>2024-01-01</ToDate>
+     </ServiceCalendar>
      <dayTypes>
        <DayType version="0" id="SJN:DayType:2024-11-28-Thu" />
+       <!-- Unused DayType-->
+       <DayType version="0" id="SJN:DayType:2024-11-29-Fre" />
      </dayTypes>
      <operatingDays>
        <OperatingDay version="0" id="SJN:OperatingDay:2024-11-28-Thu">
@@ -40,6 +47,11 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
   private static final String NETEX_FRAGMENT_VALID =
     """
 <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
+     <ServiceCalendar>
+     <FromDate>2024-01-01</FromDate>
+     <ToDate>2024-01-02</ToDate>
+      <dayTypes/>
+     </ServiceCalendar>
      <dayTypes>
        <DayType version="0" id="SJN:DayType:2024-11-28-Thu" />
      </dayTypes>
@@ -72,8 +84,6 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
     return Stream.of(
       CODE_SERVICE_CALENDAR_1,
       CODE_SERVICE_CALENDAR_2,
-      CODE_SERVICE_CALENDAR_3,
-      CODE_SERVICE_CALENDAR_4,
       CODE_SERVICE_CALENDAR_5
     );
   }

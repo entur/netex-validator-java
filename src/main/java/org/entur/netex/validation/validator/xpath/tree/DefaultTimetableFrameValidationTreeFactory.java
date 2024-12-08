@@ -127,7 +127,7 @@ public class DefaultTimetableFrameValidationTreeFactory
           Severity.WARNING
         )
       )
-      .withRuleForLineFile(new ValidateDuplicatedTimetabledPassingTimeId(""))
+      .withRuleForLineFile(new ValidateDuplicatedTimetabledPassingTimeId())
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney[not(JourneyPatternRef)]",

@@ -49,9 +49,9 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
         .getXPathCompiler()
         .compile(
           context +
-          "ServiceFrame/lines/FlexibleLine and " +
+          "/ServiceFrame/lines/FlexibleLine and " +
           context +
-          "ServiceFrame/lines/FlexibleLine[not(BookWhen) and not(MinimumBookingPeriod)]"
+          "/ServiceFrame/lines/FlexibleLine[not(BookWhen) and not(MinimumBookingPeriod)]"
         )
         .load();
       missingFieldSelector.setContextItem(validationContext.getXmlNode());
@@ -62,7 +62,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
           .getXPathCompiler()
           .compile(
             context +
-            "ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/BookWhen) and not(BookingArrangements/MinimumBookingPeriod)  ]]"
+            "/ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/BookWhen) and not(BookingArrangements/MinimumBookingPeriod)  ]]"
           )
           .load();
         selector.setContextItem(validationContext.getXmlNode());
@@ -80,7 +80,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
               .getXPathCompiler()
               .compile(
                 context +
-                "TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or (not(FlexibleServiceProperties/BookWhen) and not(FlexibleServiceProperties/MinimumBookingPeriod) )) and JourneyPatternRef/@ref='" +
+                "/TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or (not(FlexibleServiceProperties/BookWhen) and not(FlexibleServiceProperties/MinimumBookingPeriod) )) and JourneyPatternRef/@ref='" +
                 id +
                 "' and JourneyPatternRef/@version='" +
                 version +

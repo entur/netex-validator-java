@@ -57,9 +57,9 @@ public class ValidateMandatoryBookingProperty
         .getXPathCompiler()
         .compile(
           context +
-          "ServiceFrame/lines/FlexibleLine and " +
+          "/ServiceFrame/lines/FlexibleLine and " +
           context +
-          "ServiceFrame/lines/FlexibleLine[not(" +
+          "/ServiceFrame/lines/FlexibleLine[not(" +
           bookingProperty +
           ")]"
         )
@@ -72,7 +72,7 @@ public class ValidateMandatoryBookingProperty
           .getXPathCompiler()
           .compile(
             context +
-            "ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/" +
+            "/ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/" +
             bookingProperty +
             ")]]"
           )
@@ -92,7 +92,7 @@ public class ValidateMandatoryBookingProperty
               .getXPathCompiler()
               .compile(
                 context +
-                "TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or not(FlexibleServiceProperties/" +
+                "/TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or not(FlexibleServiceProperties/" +
                 bookingProperty +
                 ")) and JourneyPatternRef/@ref='" +
                 id +
