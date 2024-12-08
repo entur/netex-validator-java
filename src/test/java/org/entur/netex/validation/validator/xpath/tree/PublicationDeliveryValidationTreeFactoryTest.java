@@ -34,14 +34,12 @@ class PublicationDeliveryValidationTreeFactoryTest {
     """
       <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="1.15:NO-NeTEx-networktimetable:1.5">
           <dataObjects>
-                  <frames>
-                    <ServiceFrame id="ENT:ServiceFrame:1" version="2223">
-                      <lines>
-                        <Line id="ENT:Line:2_1" version="2223">
-                        </Line>
-                      </lines>
-                    </ServiceFrame>
-                  </frames>
+            <ServiceFrame id="ENT:ServiceFrame:1" version="2223">
+              <lines>
+                <Line id="ENT:Line:2_1" version="2223">
+                </Line>
+              </lines>
+            </ServiceFrame>
           </dataObjects>
       </PublicationDelivery>
       """;

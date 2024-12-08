@@ -5,15 +5,16 @@ import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
+/**
+ * Build a validation tree for rules applied at the PublicationDelivery level (top-level).
+ */
 public class DefaultRootValidationTreeFactory implements ValidationTreeFactory {
 
   public static final String CODE_VERSION_NON_NUMERIC = "VERSION_NON_NUMERIC";
 
   @Override
   public ValidationTree buildValidationTree() {
-    ValidationTreeBuilder builder = new ValidationTreeBuilder("Root", ".");
-
-    return builder
+    return new ValidationTreeBuilder("PublicationDelivery", "Root")
       .withRule(
         new ValidateNotExist(
           ".//*[@version != 'any' and number(@version) != number(@version)]",

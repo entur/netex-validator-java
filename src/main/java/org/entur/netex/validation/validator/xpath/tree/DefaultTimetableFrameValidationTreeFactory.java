@@ -12,8 +12,12 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedTransport
 import org.entur.netex.validation.validator.xpath.rules.ValidateAllowedTransportSubModeOnServiceJourney;
 import org.entur.netex.validation.validator.xpath.rules.ValidateAtLeastOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateDuplicatedTimetabledPassingTimeId;
+import org.entur.netex.validation.validator.xpath.rules.ValidateInconsistentNumberOfTimetablePassingTimes;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
+/**
+ * Build a validation tree for TimetableFrames.
+ */
 public class DefaultTimetableFrameValidationTreeFactory
   implements ValidationTreeFactory {
 
@@ -31,17 +35,11 @@ public class DefaultTimetableFrameValidationTreeFactory
   public static final String CODE_SERVICE_JOURNEY_12 = "SERVICE_JOURNEY_12";
   public static final String CODE_SERVICE_JOURNEY_13 = "SERVICE_JOURNEY_13";
   public static final String CODE_SERVICE_JOURNEY_14 = "SERVICE_JOURNEY_14";
-  public static final String CODE_SERVICE_JOURNEY_15 = "SERVICE_JOURNEY_15";
   public static final String CODE_SERVICE_JOURNEY_16 = "SERVICE_JOURNEY_16";
 
   @Override
   public ValidationTree buildValidationTree() {
-    ValidationTreeBuilder builder = new ValidationTreeBuilder(
-      "TimetableFrame",
-      "Timetable Frame"
-    );
-
-    return builder
+    return new ValidationTreeBuilder("TimetableFrame", "Timetable Frame")
       .withRuleForLineFile(
         new ValidateAtLeastOne(
           "vehicleJourneys/ServiceJourney",
@@ -174,13 +172,7 @@ public class DefaultTimetableFrameValidationTreeFactory
         )
       )
       .withRuleForLineFile(
-        new ValidateNotExist(
-          "for $a in vehicleJourneys/ServiceJourney return if(count(//ServiceFrame/journeyPatterns/*[@id = $a/JourneyPatternRef/@ref]/pointsInSequence/StopPointInJourneyPattern) != count($a/passingTimes/TimetabledPassingTime)) then $a else ()",
-          CODE_SERVICE_JOURNEY_15,
-          "ServiceJourney missing some passing times",
-          "ServiceJourney does not specify passing time for all StopPointInJourneyPattern",
-          Severity.ERROR
-        )
+        new ValidateInconsistentNumberOfTimetablePassingTimes()
       )
       .withRuleForLineFile(
         new ValidateNotExist(

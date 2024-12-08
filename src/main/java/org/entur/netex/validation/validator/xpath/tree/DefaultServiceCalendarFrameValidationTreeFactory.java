@@ -5,6 +5,9 @@ import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
+/**
+ * Build a validation tree for ServiceCalendarFrames.
+ */
 public class DefaultServiceCalendarFrameValidationTreeFactory
   implements ValidationTreeFactory {
 

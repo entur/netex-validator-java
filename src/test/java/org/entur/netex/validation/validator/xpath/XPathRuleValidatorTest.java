@@ -55,11 +55,8 @@ class XPathRuleValidatorTest {
   private static final String TEST_LINE_MISSING_LAST_ARRIVAL_TIME =
     "rb_flb-aggregated-netex-missing-last-arrival-time.zip";
 
-  private final ValidationTreeFactory validationTreeFactory =
-    new PublicationDeliveryValidationTreeFactory();
-
   private final XPathRuleValidator xPathRuleValidator = new XPathRuleValidator(
-    validationTreeFactory
+    new PublicationDeliveryValidationTreeFactory()
   );
   private final NetexXMLParser netexXMLParser = new NetexXMLParser();
 
@@ -222,7 +219,10 @@ class XPathRuleValidatorTest {
       validationIssues
         .stream()
         .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals(DefaultRootValidationTreeFactory.CODE_VERSION_NON_NUMERIC)
+          validationIssue
+            .rule()
+            .code()
+            .equals(DefaultRootValidationTreeFactory.CODE_VERSION_NON_NUMERIC)
         )
     );
   }

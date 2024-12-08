@@ -51,8 +51,8 @@ class DefaultRootValidationTreeFactoryTest {
 
   @Test
   void testNonNumericVersion() {
-    ValidationTree validationTree =
-      new DefaultRootValidationTreeFactory().buildValidationTree();
+    ValidationTree validationTree = new DefaultRootValidationTreeFactory()
+      .buildValidationTree();
     XPathRuleValidationContext xpathValidationContext =
       XPathTestSupport.validationContext(NETEX_FRAGMENT_INVALID);
     List<ValidationIssue> validationIssues = validationTree.validate(
@@ -68,8 +68,8 @@ class DefaultRootValidationTreeFactoryTest {
 
   @Test
   void testNumericVersion() {
-    ValidationTree validationTree =
-      new DefaultRootValidationTreeFactory().buildValidationTree();
+    ValidationTree validationTree = new DefaultRootValidationTreeFactory()
+      .buildValidationTree();
     XPathRuleValidationContext xpathValidationContext =
       XPathTestSupport.validationContext(NETEX_FRAGMENT_VALID);
     List<ValidationIssue> validationIssues = validationTree.validate(

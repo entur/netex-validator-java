@@ -15,7 +15,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateExactlyOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
 /**
- * Build a validation tree factory for ServiceFrames.
+ * Build a validation tree for ServiceFrames.
  */
 public class DefaultServiceFrameValidationTreeFactory
   implements ValidationTreeFactory {
@@ -60,12 +60,7 @@ public class DefaultServiceFrameValidationTreeFactory
 
   @Override
   public ValidationTree buildValidationTree() {
-    ValidationTreeBuilder builder = new ValidationTreeBuilder(
-      "ServiceFrame",
-      "Service Frame"
-    );
-
-    return builder
+    return new ValidationTreeBuilder("ServiceFrame", "Service Frame")
       .withRule(
         new ValidateNotExist(
           "Network[not(AuthorityRef)]",

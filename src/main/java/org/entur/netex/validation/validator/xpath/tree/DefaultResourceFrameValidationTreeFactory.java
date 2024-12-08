@@ -5,6 +5,9 @@ import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
+/**
+ * Build a validation tree for ResourceFrames.
+ */
 public class DefaultResourceFrameValidationTreeFactory
   implements ValidationTreeFactory {
 
@@ -23,12 +26,7 @@ public class DefaultResourceFrameValidationTreeFactory
 
   @Override
   public ValidationTree buildValidationTree() {
-    ValidationTreeBuilder builder = new ValidationTreeBuilder(
-      "ResourceFrame",
-      "Resource Frame"
-    );
-
-    return builder
+    return new ValidationTreeBuilder("ResourceFrame", "Resource Frame")
       .withRule(
         new ValidateNotExist(
           "organisations/Operator[not(CompanyNumber) or normalize-space(CompanyNumber) = '']",

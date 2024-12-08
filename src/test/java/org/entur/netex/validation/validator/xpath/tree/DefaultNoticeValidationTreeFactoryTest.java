@@ -18,14 +18,14 @@ class DefaultNoticeValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    DefaultNoticeValidationTreeFactory factory =
-      new DefaultNoticeValidationTreeFactory();
-    validationTree = factory.buildValidationTree();
+    validationTree =
+      new DefaultNoticeValidationTreeFactory().buildValidationTree();
   }
 
   private static final String NETEX_FRAGMENT =
     """
-        <ServiceFrame xmlns="http://www.netex.org.uk/netex" id="ENT:ServiceFrame:1" version="2223">
+    <frames xmlns="http://www.netex.org.uk/netex">
+        <ServiceFrame  id="ENT:ServiceFrame:1" version="2223">
            <notices>
              <Notice version="0" id="NYC:Notice:4e14a5b2-c4fc-49f5-9dd0-107ed6ee702a">
                     <Text>Denne avgangen tar ikke med rullestoler, sykler eller barnevogner. Turen kan i sjeldne tilfeller bli kansellert.</Text>
@@ -37,6 +37,7 @@ class DefaultNoticeValidationTreeFactoryTest {
               </NoticeAssignment>
           </noticeAssignments>
         </ServiceFrame>
+    </frames>
     """;
 
   @Test

@@ -134,15 +134,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
     compositeFrameValidationTree.addValidationRules(
       getCompositeFrameBaseValidationRules()
     );
-    compositeFrameValidationTree.addValidationRule(
-      new ValidateNotExist(
-        "frames/TimetableFrame",
-        "COMPOSITE_TIMETABLE_FRAME_IN_COMMON_FILE",
-        "CompositeFrame illegal Timetable",
-        "Timetable frame not allowed in common files",
-        Severity.ERROR
-      )
-    );
 
     compositeFrameValidationTree.addSubTree(
       getResourceFrameValidationTree("frames/ResourceFrame")
@@ -333,73 +324,6 @@ public class DefaultValidationTreeFactory implements ValidationTreeFactory {
    */
   protected List<XPathValidationRule> getCompositeFrameBaseValidationRules() {
     List<XPathValidationRule> validationRules = new ArrayList<>();
-    validationRules.add(
-      new ValidateNotExist(
-        "frames/SiteFrame",
-        "COMPOSITE_SITE_FRAME_IN_COMMON_FILE",
-        "CompositeFrame unexpected SiteFrame",
-        "Unexpected element SiteFrame. It will be ignored",
-        Severity.WARNING
-      )
-    );
-
-    validationRules.add(
-      new ValidateNotExist(
-        ".[not(validityConditions)]",
-        "COMPOSITE_FRAME_1",
-        "CompositeFrame missing ValidityCondition",
-        "A CompositeFrame must define a ValidityCondition valid for all data within the CompositeFrame",
-        Severity.ERROR
-      )
-    );
-    validationRules.add(
-      new ValidateNotExist(
-        "frames//validityConditions",
-        "COMPOSITE_FRAME_2",
-        "CompositeFrame invalid nested ValidityCondition",
-        "ValidityConditions defined inside a frame inside a CompositeFrame",
-        Severity.WARNING
-      )
-    );
-
-    validationRules.add(
-      new ValidateNotExist(
-        "//ValidBetween[not(FromDate) and not(ToDate)]",
-        "COMPOSITE_FRAME_3",
-        "CompositeFrame missing ValidBetween",
-        "ValidBetween missing either or both of FromDate/ToDate",
-        Severity.ERROR
-      )
-    );
-    validationRules.add(
-      new ValidateNotExist(
-        "//ValidBetween[FromDate and ToDate and ToDate < FromDate]",
-        "COMPOSITE_FRAME_4",
-        "CompositeFrame invalid ValidBetween",
-        "FromDate cannot be after ToDate on ValidBetween",
-        Severity.ERROR
-      )
-    );
-
-    validationRules.add(
-      new ValidateNotExist(
-        "//AvailabilityCondition[FromDate and ToDate and ToDate < FromDate]",
-        "COMPOSITE_FRAME_5",
-        "CompositeFrame invalid AvailabilityCondition",
-        "FromDate cannot be after ToDate on AvailabilityCondition",
-        Severity.ERROR
-      )
-    );
-
-    validationRules.add(
-      new ValidateNotExist(
-        "//AvailabilityCondition[not(FromDate) and not(ToDate)]",
-        "COMPOSITE_FRAME_6",
-        "CompositeFrame missing AvailabilityCondition",
-        "AvailabilityCondition must have either FromDate or ToDate or both present",
-        Severity.ERROR
-      )
-    );
 
     return validationRules;
   }

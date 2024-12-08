@@ -6,6 +6,11 @@ import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.entur.netex.validation.validator.xpath.XPathValidationRule;
 
+/**
+ * Build a validation tree.
+ * Rules that should be applied to common files only, line files only or both line files and
+ * common files are stored in dedicated sub-trees.
+ */
 public class ValidationTreeBuilder {
 
   private final String context;
@@ -58,13 +63,13 @@ public class ValidationTreeBuilder {
     }
 
     if (!rulesForLineFile.isEmpty()) {
-      ValidationTree commonTree = new ValidationTree(
+      ValidationTree lineTree = new ValidationTree(
         name + " (Line File Only)",
         ".",
         XPathRuleValidationContext::isLineFile
       );
-      commonTree.addValidationRules(rulesForLineFile);
-      validationTree.addSubTree(commonTree);
+      lineTree.addValidationRules(rulesForLineFile);
+      validationTree.addSubTree(lineTree);
     }
 
     return validationTree;

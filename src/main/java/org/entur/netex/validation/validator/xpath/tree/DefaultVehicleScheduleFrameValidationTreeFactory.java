@@ -6,6 +6,9 @@ import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.rules.ValidateAtLeastOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
+/**
+ * Build a validation tree for VehicleScheduleFrames.
+ */
 public class DefaultVehicleScheduleFrameValidationTreeFactory
   implements ValidationTreeFactory {
 
@@ -15,12 +18,10 @@ public class DefaultVehicleScheduleFrameValidationTreeFactory
 
   @Override
   public ValidationTree buildValidationTree() {
-    ValidationTreeBuilder builder = new ValidationTreeBuilder(
+    return new ValidationTreeBuilder(
       "VehicleScheduleFrame",
       "Vehicle Schedule Frame"
-    );
-
-    return builder
+    )
       .withRule(
         new ValidateAtLeastOne(
           "blocks/Block | blocks/TrainBlock",

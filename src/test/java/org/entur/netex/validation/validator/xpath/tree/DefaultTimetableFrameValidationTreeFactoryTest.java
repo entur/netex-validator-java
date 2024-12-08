@@ -1,15 +1,18 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
+import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.parseDocument;
 import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 import static org.entur.netex.validation.validator.xpath.tree.DefaultTimetableFrameValidationTreeFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.stream.Stream;
+import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -96,6 +99,7 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
 </vehicleJourneys>
 </TimetableFrame>
 """;
+
   private ValidationTree validationTree;
 
   @BeforeEach
