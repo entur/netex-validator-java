@@ -27,6 +27,10 @@ public class ValidationTree {
   private static final Logger LOGGER = LoggerFactory.getLogger(
     ValidationTree.class
   );
+  private static final ValidationTree EMPTY = new ValidationTree(
+    "(empty)",
+    "."
+  );
 
   private final String name;
   private final String context;
@@ -57,6 +61,13 @@ public class ValidationTree {
     this.executionCondition = executionCondition;
     this.xPathValidationRules = new ArrayList<>();
     this.subTrees = new ArrayList<>();
+  }
+
+  /**
+   * Return an empty (NOOP) validation tree.
+   */
+  public static ValidationTree empty() {
+    return EMPTY;
   }
 
   /**

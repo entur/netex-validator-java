@@ -56,7 +56,7 @@ class XPathRuleValidatorTest {
     "rb_flb-aggregated-netex-missing-last-arrival-time.zip";
 
   private final XPathRuleValidator xPathRuleValidator = new XPathRuleValidator(
-    new PublicationDeliveryValidationTreeFactory()
+    PublicationDeliveryValidationTreeFactory.ofDefaults()
   );
   private final NetexXMLParser netexXMLParser = new NetexXMLParser();
 

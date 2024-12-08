@@ -14,34 +14,47 @@ import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 public class PublicationDeliveryValidationTreeFactory
   implements ValidationTreeFactory {
 
-  private ValidationTree rootValidationTree;
-  private ValidationTree compositeFrameValidationTree;
-  private ValidationTree resourceFrameValidationTree;
-  private ValidationTree serviceFrameValidationTree;
-  private ValidationTree serviceCalendarFrameValidationTree;
-  private ValidationTree timetableFrameValidationTree;
-  private ValidationTree vehicleScheduleFrameValidationTree;
-  private ValidationTree noticeValidationTree;
+  private ValidationTree rootValidationTree = ValidationTree.empty();
+  private ValidationTree compositeFrameValidationTree = ValidationTree.empty();
+  private ValidationTree resourceFrameValidationTree = ValidationTree.empty();
+  private ValidationTree serviceFrameValidationTree = ValidationTree.empty();
+  private ValidationTree serviceCalendarFrameValidationTree =
+    ValidationTree.empty();
+  private ValidationTree timetableFrameValidationTree = ValidationTree.empty();
+  private ValidationTree vehicleScheduleFrameValidationTree =
+    ValidationTree.empty();
+  private ValidationTree noticeValidationTree = ValidationTree.empty();
 
-  public PublicationDeliveryValidationTreeFactory() {
-    rootValidationTree =
-      new DefaultRootValidationTreeFactory().buildValidationTree();
-    compositeFrameValidationTree =
-      new DefaultCompositeFrameTreeFactory().buildValidationTree();
-    resourceFrameValidationTree =
-      new DefaultResourceFrameValidationTreeFactory().buildValidationTree();
-    serviceFrameValidationTree =
-      new DefaultServiceFrameValidationTreeFactory().buildValidationTree();
-    serviceCalendarFrameValidationTree =
+  public static PublicationDeliveryValidationTreeFactory ofDefaults() {
+    PublicationDeliveryValidationTreeFactory factory =
+      new PublicationDeliveryValidationTreeFactory();
+    factory.setRootValidationTree(
+      new DefaultRootValidationTreeFactory().buildValidationTree()
+    );
+    factory.setCompositeFrameValidationTree(
+      new DefaultCompositeFrameTreeFactory().buildValidationTree()
+    );
+    factory.setResourceFrameValidationTree(
+      new DefaultResourceFrameValidationTreeFactory().buildValidationTree()
+    );
+    factory.setServiceFrameValidationTree(
+      new DefaultServiceFrameValidationTreeFactory().buildValidationTree()
+    );
+    factory.setServiceCalendarFrameValidationTree(
       new DefaultServiceCalendarFrameValidationTreeFactory()
-        .buildValidationTree();
-    timetableFrameValidationTree =
-      new DefaultTimetableFrameValidationTreeFactory().buildValidationTree();
-    vehicleScheduleFrameValidationTree =
+        .buildValidationTree()
+    );
+    factory.setTimetableFrameValidationTree(
+      new DefaultTimetableFrameValidationTreeFactory().buildValidationTree()
+    );
+    factory.setVehicleScheduleFrameValidationTree(
       new DefaultVehicleScheduleFrameValidationTreeFactory()
-        .buildValidationTree();
-    noticeValidationTree =
-      new DefaultNoticeValidationTreeFactory().buildValidationTree();
+        .buildValidationTree()
+    );
+    factory.setNoticeValidationTree(
+      new DefaultNoticeValidationTreeFactory().buildValidationTree()
+    );
+    return factory;
   }
 
   @Override
@@ -82,5 +95,95 @@ public class PublicationDeliveryValidationTreeFactory
       });
 
     return validationTree;
+  }
+
+  public ValidationTree rootValidationTree() {
+    return rootValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setRootValidationTree(
+    ValidationTree rootValidationTree
+  ) {
+    this.rootValidationTree = rootValidationTree;
+    return this;
+  }
+
+  public ValidationTree compositeFrameValidationTree() {
+    return compositeFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setCompositeFrameValidationTree(
+    ValidationTree compositeFrameValidationTree
+  ) {
+    this.compositeFrameValidationTree = compositeFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree resourceFrameValidationTree() {
+    return resourceFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setResourceFrameValidationTree(
+    ValidationTree resourceFrameValidationTree
+  ) {
+    this.resourceFrameValidationTree = resourceFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree serviceFrameValidationTree() {
+    return serviceFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setServiceFrameValidationTree(
+    ValidationTree serviceFrameValidationTree
+  ) {
+    this.serviceFrameValidationTree = serviceFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree serviceCalendarFrameValidationTree() {
+    return serviceCalendarFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setServiceCalendarFrameValidationTree(
+    ValidationTree serviceCalendarFrameValidationTree
+  ) {
+    this.serviceCalendarFrameValidationTree =
+      serviceCalendarFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree timetableFrameValidationTree() {
+    return timetableFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setTimetableFrameValidationTree(
+    ValidationTree timetableFrameValidationTree
+  ) {
+    this.timetableFrameValidationTree = timetableFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree vehicleScheduleFrameValidationTree() {
+    return vehicleScheduleFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setVehicleScheduleFrameValidationTree(
+    ValidationTree vehicleScheduleFrameValidationTree
+  ) {
+    this.vehicleScheduleFrameValidationTree =
+      vehicleScheduleFrameValidationTree;
+    return this;
+  }
+
+  public ValidationTree noticeValidationTree() {
+    return noticeValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setNoticeValidationTree(
+    ValidationTree noticeValidationTree
+  ) {
+    this.noticeValidationTree = noticeValidationTree;
+    return this;
   }
 }

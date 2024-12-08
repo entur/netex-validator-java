@@ -46,9 +46,9 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
   @Test
   void testMatchFrameInCompositeFrame() {
-    PublicationDeliveryValidationTreeFactory factory =
-      new PublicationDeliveryValidationTreeFactory();
-    ValidationTree validationTree = factory.buildValidationTree();
+    ValidationTree validationTree = PublicationDeliveryValidationTreeFactory
+      .ofDefaults()
+      .buildValidationTree();
     assertNotNull(validationTree);
 
     XPathRuleValidationContext validationContext =
@@ -63,9 +63,9 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
   @Test
   void testMatchSingleFrame() {
-    PublicationDeliveryValidationTreeFactory factory =
-      new PublicationDeliveryValidationTreeFactory();
-    ValidationTree validationTree = factory.buildValidationTree();
+    ValidationTree validationTree = PublicationDeliveryValidationTreeFactory
+      .ofDefaults()
+      .buildValidationTree();
     assertNotNull(validationTree);
 
     XPathRuleValidationContext validationContext =
