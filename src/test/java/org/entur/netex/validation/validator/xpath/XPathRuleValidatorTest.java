@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
+import org.entur.netex.validation.validator.xpath.tree.DefaultRootValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.tree.PublicationDeliveryValidationTreeFactory;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Assertions;
@@ -221,7 +222,7 @@ class XPathRuleValidatorTest {
       validationIssues
         .stream()
         .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals("VERSION_NON_NUMERIC")
+          validationIssue.rule().code().equals(DefaultRootValidationTreeFactory.CODE_VERSION_NON_NUMERIC)
         )
     );
   }

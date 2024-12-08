@@ -28,7 +28,6 @@ public class ValidateDuplicatedTimetabledPassingTimeId
     ERROR
   );
 
-
   @Override
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext

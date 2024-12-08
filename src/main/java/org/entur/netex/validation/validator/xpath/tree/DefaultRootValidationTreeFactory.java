@@ -16,7 +16,7 @@ public class DefaultRootValidationTreeFactory implements ValidationTreeFactory {
     return builder
       .withRule(
         new ValidateNotExist(
-          "PublicationDelivery//*[@version != 'any' and number(@version) != number(@version)]",
+          ".//*[@version != 'any' and number(@version) != number(@version)]",
           CODE_VERSION_NON_NUMERIC,
           "Non-numeric NeTEx version",
           "Non-numeric NeTEx version",
