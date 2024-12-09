@@ -1,5 +1,3 @@
-[//]: # (Adapted from https://github.com/opentripplanner/OpenTripPlanner/blob/dev-2.x/.github/pull_request_template.md)
-
 ## PR Instructions
 
 When creating a pull request, please follow the format below. For each section, *replace* the
