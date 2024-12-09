@@ -15,7 +15,9 @@ public class PublicationDeliveryValidationTreeFactory
   implements ValidationTreeFactory {
 
   private ValidationTree rootValidationTree = ValidationTree.empty();
+  private ValidationTree singleFramesValidationTree = ValidationTree.empty();
   private ValidationTree compositeFrameValidationTree = ValidationTree.empty();
+  private ValidationTree siteFrameValidationTree = ValidationTree.empty();
   private ValidationTree resourceFrameValidationTree = ValidationTree.empty();
   private ValidationTree serviceFrameValidationTree = ValidationTree.empty();
   private ValidationTree serviceCalendarFrameValidationTree =
@@ -31,12 +33,23 @@ public class PublicationDeliveryValidationTreeFactory
     factory.setRootValidationTree(
       new DefaultRootValidationTreeFactory().buildValidationTree()
     );
+
+    factory.setSingleFramesValidationTree(
+      new DefaultSingleFramesValidationTreeFactory().buildValidationTree()
+    );
+
     factory.setCompositeFrameValidationTree(
       new DefaultCompositeFrameTreeFactory().buildValidationTree()
     );
+
+    factory.setSiteFrameValidationTree(
+      new DefaultSiteFrameValidationTreeFactory().buildValidationTree()
+    );
+
     factory.setResourceFrameValidationTree(
       new DefaultResourceFrameValidationTreeFactory().buildValidationTree()
     );
+
     factory.setServiceFrameValidationTree(
       new DefaultServiceFrameValidationTreeFactory().buildValidationTree()
     );
@@ -67,21 +80,28 @@ public class PublicationDeliveryValidationTreeFactory
     validationTree.addSubTree(rootValidationTree);
     validationTree.addSubTree(compositeFrameValidationTree);
 
-    ValidationTree singleFramesValidationTree = new ValidationTree(
-      "All Single Frames",
-      "PublicationDelivery/dataObjects"
+    ValidationTree dataObjectsValidationTree = new ValidationTree(
+      "Data Objects",
+      "PublicationDelivery/dataObjects",
+      validationContext ->
+        validationContext
+          .getNetexXMLParser()
+          .selectNodeSet("CompositeFrame", validationContext.getXmlNode())
+          .isEmpty()
     );
+    dataObjectsValidationTree.addSubTree(singleFramesValidationTree);
 
-    ValidationTree framesInCompositeFramesValidationTree = new ValidationTree(
+    ValidationTree framesInCompositeFrameValidationTree = new ValidationTree(
       "All Frames in Composite Frame",
       "PublicationDelivery/dataObjects/CompositeFrame/frames"
     );
 
-    validationTree.addSubTree(singleFramesValidationTree);
-    validationTree.addSubTree(framesInCompositeFramesValidationTree);
+    validationTree.addSubTree(dataObjectsValidationTree);
+    validationTree.addSubTree(framesInCompositeFrameValidationTree);
 
     Stream
       .of(
+        siteFrameValidationTree,
         resourceFrameValidationTree,
         serviceFrameValidationTree,
         serviceCalendarFrameValidationTree,
@@ -90,8 +110,8 @@ public class PublicationDeliveryValidationTreeFactory
         noticeValidationTree
       )
       .forEach(tree -> {
-        singleFramesValidationTree.addSubTree(tree);
-        framesInCompositeFramesValidationTree.addSubTree(tree);
+        dataObjectsValidationTree.addSubTree(tree);
+        framesInCompositeFrameValidationTree.addSubTree(tree);
       });
 
     return validationTree;
@@ -105,6 +125,17 @@ public class PublicationDeliveryValidationTreeFactory
     ValidationTree rootValidationTree
   ) {
     this.rootValidationTree = rootValidationTree;
+    return this;
+  }
+
+  public ValidationTree singleFramesValidationTree() {
+    return singleFramesValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setSingleFramesValidationTree(
+    ValidationTree singleFramesValidationTree
+  ) {
+    this.singleFramesValidationTree = singleFramesValidationTree;
     return this;
   }
 
@@ -184,6 +215,17 @@ public class PublicationDeliveryValidationTreeFactory
     ValidationTree noticeValidationTree
   ) {
     this.noticeValidationTree = noticeValidationTree;
+    return this;
+  }
+
+  public ValidationTree siteFrameValidationTree() {
+    return siteFrameValidationTree;
+  }
+
+  public PublicationDeliveryValidationTreeFactory setSiteFrameValidationTree(
+    ValidationTree siteFrameValidationTree
+  ) {
+    this.siteFrameValidationTree = siteFrameValidationTree;
     return this;
   }
 }
