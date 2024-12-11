@@ -279,9 +279,12 @@ public class JAXBValidationContext implements ValidationContext {
   public Collection<TimetabledPassingTime> timetabledPassingTimes(
     ServiceJourney serviceJourney
   ) {
-    return Collections.unmodifiableCollection(
-      serviceJourney.getPassingTimes().getTimetabledPassingTime()
-    );
+    return Optional
+      .ofNullable(serviceJourney)
+      .map(ServiceJourney::getPassingTimes)
+      .map(TimetabledPassingTimes_RelStructure::getTimetabledPassingTime)
+      .map(Collections::unmodifiableCollection)
+      .orElse(List.of());
   }
 
   /**
