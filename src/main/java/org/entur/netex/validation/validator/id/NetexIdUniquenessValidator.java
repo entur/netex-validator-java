@@ -9,11 +9,11 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
+import org.entur.netex.validation.validator.XPathValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Verify that NeTEx ids in the current file are not present in one of the files already validated.
  */
-public class NetexIdUniquenessValidator extends AbstractXPathValidator {
+public class NetexIdUniquenessValidator implements XPathValidator {
 
   static final ValidationRule RULE_DUPLICATE_ID_ACROSS_FILES =
     new ValidationRule(
@@ -137,7 +137,7 @@ public class NetexIdUniquenessValidator extends AbstractXPathValidator {
     if (!duplicateIds.isEmpty()) {
       if (isCommonFile) {
         for (String id : duplicateIds) {
-          DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
+          DataLocation dataLocation = netexIds.get(id).dataLocation();
           validationIssues.add(
             new ValidationIssue(
               RULE_DUPLICATE_ID_ACROSS_COMMON_FILES,
@@ -147,7 +147,7 @@ public class NetexIdUniquenessValidator extends AbstractXPathValidator {
         }
       } else {
         for (String id : duplicateIds) {
-          DataLocation dataLocation = getIdVersionLocation(netexIds.get(id));
+          DataLocation dataLocation = netexIds.get(id).dataLocation();
           validationIssues.add(
             new ValidationIssue(RULE_DUPLICATE_ID_ACROSS_FILES, dataLocation)
           );
