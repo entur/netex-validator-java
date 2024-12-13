@@ -11,9 +11,9 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 public class DefaultVehicleScheduleFrameValidationTreeFactory
   implements ValidationTreeFactory {
 
-  static final String CODE_BLOCK_1 = "BLOCK_1";
-  static final String CODE_BLOCK_2 = "BLOCK_2";
-  static final String CODE_BLOCK_3 = "BLOCK_3";
+  public static final String CODE_BLOCK_1 = "BLOCK_1";
+  public static final String CODE_BLOCK_2 = "BLOCK_2";
+  public static final String CODE_BLOCK_3 = "BLOCK_3";
 
   @Override
   public ValidationTreeBuilder builder() {

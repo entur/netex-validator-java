@@ -56,6 +56,21 @@ public class DefaultServiceFrameValidationTreeFactory
     "DESTINATION_DISPLAY_1";
   public static final String CODE_DESTINATION_DISPLAY_2 =
     "DESTINATION_DISPLAY_2";
+  public static final String CODE_SERVICE_LINK_1 = "SERVICE_LINK_1";
+  public static final String CODE_SERVICE_LINK_2 = "SERVICE_LINK_2";
+  public static final String CODE_SERVICE_LINK_3 = "SERVICE_LINK_3";
+  public static final String CODE_FLEXIBLE_LINE_1 = "FLEXIBLE_LINE_1";
+  public static final String CODE_FLEXIBLE_LINE_10 = "FLEXIBLE_LINE_10";
+  public static final String CODE_FLEXIBLE_LINE_11 = "FLEXIBLE_LINE_11";
+  public static final String CODE_JOURNEY_PATTERN_1 = "JOURNEY_PATTERN_1";
+  public static final String CODE_JOURNEY_PATTERN_2 = "JOURNEY_PATTERN_2";
+  public static final String CODE_JOURNEY_PATTERN_3 = "JOURNEY_PATTERN_3";
+  public static final String CODE_JOURNEY_PATTERN_4 = "JOURNEY_PATTERN_4";
+  public static final String CODE_JOURNEY_PATTERN_5 = "JOURNEY_PATTERN_5";
+  public static final String CODE_JOURNEY_PATTERN_6 = "JOURNEY_PATTERN_6";
+  public static final String CODE_JOURNEY_PATTERN_7 = "JOURNEY_PATTERN_7";
+  public static final String CODE_JOURNEY_PATTERN_8 = "JOURNEY_PATTERN_8";
+  public static final String CODE_JOURNEY_PATTERN_9 = "JOURNEY_PATTERN_9";
 
   @Override
   public ValidationTreeBuilder builder() {
@@ -144,7 +159,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "serviceLinks/ServiceLink[not(FromPointRef)]",
-          "SERVICE_LINK_1",
+          CODE_SERVICE_LINK_1,
           "ServiceLink missing FromPointRef",
           "Missing FromPointRef on ServiceLink",
           Severity.ERROR
@@ -153,7 +168,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "serviceLinks/ServiceLink[not(ToPointRef)]",
-          "SERVICE_LINK_2",
+          CODE_SERVICE_LINK_2,
           "ServiceLink missing ToPointRef",
           "Missing ToPointRef on ServiceLink",
           Severity.ERROR
@@ -162,7 +177,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRule(
         new ValidateNotExist(
           "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString/g:posList[not(normalize-space(text()))]",
-          "SERVICE_LINK_3",
+          CODE_SERVICE_LINK_3,
           "ServiceLink missing element Projections",
           "Missing projections element on ServiceLink",
           Severity.ERROR
@@ -272,7 +287,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/FlexibleLine[not(FlexibleLineType)]",
-          "FLEXIBLE_LINE_1",
+          CODE_FLEXIBLE_LINE_1,
           "FlexibleLine missing FlexibleLineType",
           "Missing FlexibleLineType on FlexibleLine",
           Severity.ERROR
@@ -281,7 +296,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/FlexibleLine[BookWhen and MinimumBookingPeriod]",
-          "FLEXIBLE_LINE_10",
+          CODE_FLEXIBLE_LINE_10,
           "FlexibleLine illegal use of both BookWhen and MinimumBookingPeriod",
           "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleLine",
           Severity.WARNING
@@ -290,7 +305,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "lines/FlexibleLine[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]",
-          "FLEXIBLE_LINE_11",
+          CODE_FLEXIBLE_LINE_11,
           "FlexibleLine BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
           "BookWhen must be used together with LatestBookingTime on FlexibleLine",
           Severity.WARNING
@@ -369,7 +384,7 @@ public class DefaultServiceFrameValidationTreeFactory
         (
           new ValidateNotExist(
             "journeyPatterns/ServiceJourneyPattern",
-            "JOURNEY_PATTERN_1",
+            CODE_JOURNEY_PATTERN_1,
             "JourneyPattern illegal element ServiceJourneyPattern",
             "ServiceJourneyPattern not allowed",
             Severity.ERROR
@@ -380,7 +395,7 @@ public class DefaultServiceFrameValidationTreeFactory
         (
           new ValidateAtLeastOne(
             "journeyPatterns/JourneyPattern",
-            "JOURNEY_PATTERN_2",
+            CODE_JOURNEY_PATTERN_2,
             "JourneyPattern missing JourneyPattern",
             "No JourneyPattern defined in the Service Frame",
             Severity.ERROR
@@ -390,7 +405,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern[not(RouteRef)]",
-          "JOURNEY_PATTERN_3",
+          CODE_JOURNEY_PATTERN_3,
           "JourneyPattern missing RouteRef",
           "Missing RouteRef on JourneyPattern",
           Severity.ERROR
@@ -399,7 +414,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[1][not(DestinationDisplayRef)]",
-          "JOURNEY_PATTERN_4",
+          CODE_JOURNEY_PATTERN_4,
           "JourneyPattern missing DestinationDisplayRef on first stop point",
           "Missing DestinationDisplayRef on first StopPointInJourneyPattern",
           Severity.ERROR
@@ -408,7 +423,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[last()][DestinationDisplayRef]",
-          "JOURNEY_PATTERN_5",
+          CODE_JOURNEY_PATTERN_5,
           "JourneyPattern illegal DestinationDisplayRef on last stop point",
           "DestinationDisplayRef not allowed on last StopPointInJourneyPattern",
           Severity.WARNING
@@ -417,7 +432,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[ForAlighting = 'false' and ForBoarding = 'false']",
-          "JOURNEY_PATTERN_6",
+          CODE_JOURNEY_PATTERN_6,
           "JourneyPattern stop point without boarding or alighting",
           "StopPointInJourneyPattern neither allows boarding nor alighting",
           Severity.WARNING
@@ -426,7 +441,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern[DestinationDisplayRef/@ref = preceding-sibling::StopPointInJourneyPattern[1]/DestinationDisplayRef/@ref and number(@order) >  number(preceding-sibling::StopPointInJourneyPattern[1]/@order)]",
-          "JOURNEY_PATTERN_7",
+          CODE_JOURNEY_PATTERN_7,
           "JourneyPattern illegal repetition of DestinationDisplay",
           "StopPointInJourneyPattern declares reference to the same DestinationDisplay as previous StopPointInJourneyPattern",
           Severity.ERROR
@@ -455,7 +470,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[BookWhen and MinimumBookingPeriod]",
-          "JOURNEY_PATTERN_8",
+          CODE_JOURNEY_PATTERN_8,
           "JourneyPattern  illegal use of both BookWhen and MinimumBookingPeriod",
           "Only one of BookWhen or MinimumBookingPeriod should be specified on StopPointInJourneyPattern",
           Severity.WARNING
@@ -464,7 +479,7 @@ public class DefaultServiceFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyPatterns/JourneyPattern/pointsInSequence/StopPointInJourneyPattern/BookingArrangements[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]",
-          "JOURNEY_PATTERN_9",
+          CODE_JOURNEY_PATTERN_9,
           "JourneyPattern  BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
           "BookWhen must be used together with LatestBookingTime on StopPointInJourneyPattern",
           Severity.WARNING

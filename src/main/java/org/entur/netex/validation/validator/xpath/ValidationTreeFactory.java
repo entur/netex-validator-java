@@ -8,7 +8,6 @@ import org.entur.netex.validation.validator.xpath.tree.ValidationTreeBuilder;
 public interface ValidationTreeFactory {
   /**
    * Build a tree of XPath validation rules.
-   * @return a tree of XPath validation rules.
    */
   ValidationTreeBuilder builder();
 }

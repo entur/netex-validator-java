@@ -14,13 +14,13 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 public class DefaultMultipleFramesValidationTreeFactory
   implements ValidationTreeFactory {
 
-  static final String CODE_NOTICE_1 = "NOTICE_1";
-  static final String CODE_NOTICE_2 = "NOTICE_2";
-  static final String CODE_NOTICE_3 = "NOTICE_3";
-  static final String CODE_NOTICE_4 = "NOTICE_4";
-  static final String CODE_NOTICE_5 = "NOTICE_5";
-  static final String CODE_NOTICE_6 = "NOTICE_6";
-  static final String CODE_NOTICE_7 = "NOTICE_7";
+  public static final String CODE_NOTICE_1 = "NOTICE_1";
+  public static final String CODE_NOTICE_2 = "NOTICE_2";
+  public static final String CODE_NOTICE_3 = "NOTICE_3";
+  public static final String CODE_NOTICE_4 = "NOTICE_4";
+  public static final String CODE_NOTICE_5 = "NOTICE_5";
+  public static final String CODE_NOTICE_6 = "NOTICE_6";
+  public static final String CODE_NOTICE_7 = "NOTICE_7";
 
   @Override
   public ValidationTreeBuilder builder() {

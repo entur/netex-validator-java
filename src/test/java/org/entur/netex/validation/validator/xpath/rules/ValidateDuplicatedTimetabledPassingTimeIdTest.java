@@ -57,8 +57,8 @@ class ValidateDuplicatedTimetabledPassingTimeIdTest {
              </passingTimes>
          </ServiceJourney>
   </vehicleJourneys>
-</TimetableFrame>  
-                    """;
+</TimetableFrame>
+""";
 
   static List<Arguments> timetabledPassingTimesIdCases() {
     return List.of(

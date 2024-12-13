@@ -45,6 +45,16 @@ public class DefaultTimetableFrameValidationTreeFactory
     "DATED_SERVICE_JOURNEY_4";
   public static final String CODE_DATED_SERVICE_JOURNEY_5 =
     "DATED_SERVICE_JOURNEY_5";
+  public static final String CODE_DEAD_RUN_1 = "DEAD_RUN_1";
+  public static final String CODE_DEAD_RUN_2 = "DEAD_RUN_2";
+  public static final String CODE_DEAD_RUN_3 = "DEAD_RUN_3";
+  public static final String CODE_FLEXIBLE_SERVICE_1 = "FLEXIBLE_SERVICE_1";
+  public static final String CODE_FLEXIBLE_SERVICE_2 = "FLEXIBLE_SERVICE_2";
+  public static final String CODE_FLEXIBLE_SERVICE_3 = "FLEXIBLE_SERVICE_3";
+  public static final String CODE_FLEXIBLE_SERVICE_4 = "FLEXIBLE_SERVICE_4";
+  public static final String CODE_INTERCHANGE_1 = "INTERCHANGE_1";
+  public static final String CODE_INTERCHANGE_2 = "INTERCHANGE_2";
+  public static final String CODE_INTERCHANGE_3 = "INTERCHANGE_3";
 
   @Override
   public ValidationTreeBuilder builder() {
@@ -240,7 +250,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/DeadRun[not(passingTimes)]",
-          "DEAD_RUN_1",
+          CODE_DEAD_RUN_1,
           "DeadRun missing PassingTime references",
           "The Dead run does not reference passing times",
           Severity.INFO
@@ -249,7 +259,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/DeadRun[not(JourneyPatternRef)]",
-          "DEAD_RUN_2",
+          CODE_DEAD_RUN_2,
           "DeadRun missing JourneyPattern references",
           "The Dead run does not reference a journey pattern",
           Severity.ERROR
@@ -258,7 +268,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/DeadRun[not(dayTypes/DayTypeRef)]",
-          "DEAD_RUN_3",
+          CODE_DEAD_RUN_3,
           "DeadRun missing DayType references",
           "The Dead run does not reference day types",
           Severity.ERROR
@@ -267,7 +277,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[not(@id)]",
-          "FLEXIBLE_SERVICE_1",
+          CODE_FLEXIBLE_SERVICE_1,
           "FlexibleService missing Id on FlexibleServiceProperties",
           "Missing id on FlexibleServiceProperties",
           Severity.ERROR
@@ -276,7 +286,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[not(@version)]",
-          "FLEXIBLE_SERVICE_2",
+          CODE_FLEXIBLE_SERVICE_2,
           "FlexibleService missing version on FlexibleServiceProperties",
           "Missing version on FlexibleServiceProperties",
           Severity.ERROR
@@ -306,7 +316,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[BookWhen and MinimumBookingPeriod]",
-          "FLEXIBLE_SERVICE_3",
+          CODE_FLEXIBLE_SERVICE_3,
           "FlexibleService illegal use of both BookWhen and MinimumBookingPeriod",
           "Only one of BookWhen or MinimumBookingPeriod should be specified on FlexibleServiceProperties",
           Severity.WARNING
@@ -315,7 +325,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney/FlexibleServiceProperties[(BookWhen and not(LatestBookingTime)) or (not(BookWhen) and LatestBookingTime)]",
-          "FLEXIBLE_SERVICE_4",
+          CODE_FLEXIBLE_SERVICE_4,
           "FlexibleService BookWhen without LatestBookingTime or LatestBookingTime without BookWhen",
           "BookWhen must be used together with LatestBookingTime on FlexibleServiceProperties",
           Severity.WARNING
@@ -324,7 +334,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyInterchanges/ServiceJourneyInterchange[Advertised or Planned]",
-          "INTERCHANGE_1",
+          CODE_INTERCHANGE_1,
           "Interchange invalid properties",
           "The 'Planned' and 'Advertised' properties of an Interchange should not be specified",
           Severity.WARNING
@@ -333,7 +343,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyInterchanges/ServiceJourneyInterchange[Guaranteed='true' and  (MaximumWaitTime='PT0S' or MaximumWaitTime='PT0M') ]",
-          "INTERCHANGE_2",
+          CODE_INTERCHANGE_2,
           "Interchange unexpected MaximumWaitTime",
           "Guaranteed Interchange should not have a maximum wait time value of zero",
           Severity.WARNING
@@ -342,7 +352,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       .withRuleForLineFile(
         new ValidateNotExist(
           "journeyInterchanges/ServiceJourneyInterchange[MaximumWaitTime > xs:dayTimeDuration('PT1H')]",
-          "INTERCHANGE_3",
+          CODE_INTERCHANGE_3,
           "Interchange excessive MaximumWaitTime",
           "The maximum waiting time after planned departure for the interchange consumer journey (MaximumWaitTime) should not be longer than one hour",
           Severity.WARNING
