@@ -1,7 +1,5 @@
 # NeTEx validator Java
 
-[![CircleCI](https://circleci.com/gh/entur/netex-validator-java/tree/main.svg?style=svg)](https://circleci.com/gh/entur/netex-validator-java/tree/main)
-
 Validation library for NeTEx data.  
 The library analyzes NeTEx datasets and generates a validation report. 
 In addition to XML schema validation, the library applies a configurable set of validation rules (See list below).  
@@ -38,7 +36,18 @@ The library offers default implementations for:
 The library can be extended with custom NetexValidator implementations (see [Antu](https://github.com/entur/antu) for examples of Entur-specific validators)
 
 # Configurable rule severity and description
-The rule severity (INFO, WARNING, ERROR) and the rule message displayed in the validation report are specified in a configuration file (YAML). The default configuration can be found in ```configuration.default.yaml```
+Each rule is defined with a default name, severity (INFO, WARNING, ERROR, CRITICAL) and a parameterized message in English.
+The name, severity and message can be customized/internationalized in a configuration file (YAML).  
+The message field can contain placeholders that follow the String.format() conventions.  
+The default configuration file is named ```configuration.default.yaml```
+
+Internationalization example: 
+```
+- code: TRANSPORT_MODE_ON_LINE
+  name: Mode de transport invalide
+  message: Le mode de transport %s est invalide
+  severity: WARNING
+ ```
 
 # Parallel processing and thread-safety
 The library is thread-safe and can execute validations in parallel within the same JVM, though some NetexValidator implementations may require synchronization.
@@ -80,7 +89,7 @@ NetexXMLParser netexXMLParser = new NetexXMLParser(Set.of("SiteFrame"));
 // create a NeTEx schema validator, limit the number of findings to 100
 NetexSchemaValidator netexSchemaValidator = new NetexSchemaValidator(100);
 // create a custom NeTex validator
-NetexValidator netexValidator = new CustomNetexValidator()
+NetexValidator netexValidator = new CustomNetexValidator();
 // create a NeTEx validator runner that registers the NeTEx schema validator and the custom NeTEx validator
 NetexValidatorsRunner netexValidatorsRunner = NetexValidatorsRunner
         .of()
