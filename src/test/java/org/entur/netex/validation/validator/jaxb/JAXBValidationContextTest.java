@@ -1,6 +1,6 @@
 package org.entur.netex.validation.validator.jaxb;
 
-import static org.entur.netex.validation.validator.jaxb.support.JAXBUtils.createJaxbElement;
+import static org.entur.netex.validation.test.jaxb.support.JAXBUtils.createJaxbElement;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

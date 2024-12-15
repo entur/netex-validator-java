@@ -4,10 +4,10 @@ import static org.entur.netex.validation.validator.xpath.tree.DefaultMultipleFra
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +42,7 @@ class DefaultMultipleFramesValidationTreeFactoryTest {
   @Test
   void test() {
     XPathRuleValidationContext xpathValidationContext =
-      XPathTestSupport.validationContext(NETEX_FRAGMENT);
+      TestValidationContextBuilder.ofNetexFragment(NETEX_FRAGMENT).build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_NOTICE_7

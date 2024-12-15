@@ -1,11 +1,11 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 import static org.entur.netex.validation.validator.xpath.tree.DefaultTimetableFrameValidationTreeFactory.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.stream.Stream;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
@@ -124,9 +124,10 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidTimetableFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_INVALID
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -138,9 +139,10 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidTimetableFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_VALID
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_VALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code

@@ -1,12 +1,11 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.parseDocument;
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 import static org.entur.netex.validation.validator.xpath.tree.DefaultSiteFrameValidationTreeFactory.CODE_SITE_FRAME_IN_COMMON_FILE;
 import static org.entur.netex.validation.validator.xpath.tree.DefaultSiteFrameValidationTreeFactory.CODE_SITE_FRAME_IN_LINE_FILE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
@@ -30,9 +29,10 @@ class DefaultSiteFrameValidationTreeFactoryTest {
 
   @Test
   void testSiteFrameInLineFile() {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_INVALID
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SITE_FRAME_IN_LINE_FILE
@@ -46,10 +46,11 @@ class DefaultSiteFrameValidationTreeFactoryTest {
 
   @Test
   void testSiteFrameInCommonFile() {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      parseDocument(NETEX_FRAGMENT_INVALID),
-      "_common.xml"
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+        .withFilename("_common.xml")
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SITE_FRAME_IN_COMMON_FILE

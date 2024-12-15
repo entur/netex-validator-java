@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.Test;
 
 class ValidateAllowedTransportModeAndSubmodeOnLineTest {
@@ -138,11 +138,13 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
     String transportMode,
     String transportSubmode
   ) {
-    return XPathTestSupport.validationContext(
-      NETEX_FRAGMENT
-        .replace("${TRANSPORT_MODE}", transportMode)
-        .replace("${TRANSPORT_SUBMODE}", transportSubmode)
-        .replace("${LINE}", line)
-    );
+    return TestValidationContextBuilder
+      .ofNetexFragment(
+        NETEX_FRAGMENT
+          .replace("${TRANSPORT_MODE}", transportMode)
+          .replace("${TRANSPORT_SUBMODE}", transportSubmode)
+          .replace("${LINE}", line)
+      )
+      .build();
   }
 }

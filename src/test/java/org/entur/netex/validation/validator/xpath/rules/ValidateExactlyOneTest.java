@@ -3,11 +3,11 @@ package org.entur.netex.validation.validator.xpath.rules;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +35,7 @@ class ValidateExactlyOneTest {
   @BeforeEach
   void setUp() {
     xpathRuleValidationContext =
-      XPathTestSupport.validationContext(NETEX_FRAGMENT);
+      TestValidationContextBuilder.ofNetexFragment(NETEX_FRAGMENT).build();
   }
 
   @Test

@@ -5,10 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
 import org.junit.jupiter.api.Test;
 
 class DefaultRootValidationTreeFactoryTest {
@@ -55,7 +55,9 @@ class DefaultRootValidationTreeFactoryTest {
       .builder()
       .build();
     XPathRuleValidationContext xpathValidationContext =
-      XPathTestSupport.validationContext(NETEX_FRAGMENT_INVALID);
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_VERSION_NON_NUMERIC
@@ -73,7 +75,9 @@ class DefaultRootValidationTreeFactoryTest {
       .builder()
       .build();
     XPathRuleValidationContext xpathValidationContext =
-      XPathTestSupport.validationContext(NETEX_FRAGMENT_VALID);
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_VALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_VERSION_NON_NUMERIC

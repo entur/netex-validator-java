@@ -1,17 +1,21 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
 import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.CODE_LINE_2;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
+import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.test.xpath.support.XPathTestSupport;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
-import org.entur.netex.validation.validator.xpath.support.XPathTestSupport;
-import org.junit.jupiter.api.Disabled;
+import org.entur.netex.validation.xml.NetexXMLParser;
 import org.junit.jupiter.api.Test;
 
 class PublicationDeliveryValidationTreeFactoryTest {
+
+  private static final NetexXMLParser NETEX_XML_PARSER = new NetexXMLParser();
 
   private static final String COMPOSITE_FRAME_FRAGMENT =
     """
@@ -45,15 +49,15 @@ class PublicationDeliveryValidationTreeFactoryTest {
       </PublicationDelivery>
       """;
 
-  @Disabled
   @Test
   void testMatchFrameInCompositeFrame() {
     ValidationTree validationTree =
       new PublicationDeliveryValidationTreeFactory().builder().build();
     assertNotNull(validationTree);
 
-    XPathRuleValidationContext validationContext =
-      XPathTestSupport.validationContext(COMPOSITE_FRAME_FRAGMENT);
+    XPathRuleValidationContext validationContext = getValidationContext(
+      COMPOSITE_FRAME_FRAGMENT
+    );
 
     List<ValidationIssue> validationIssues = validationTree.validate(
       validationContext,
@@ -62,15 +66,27 @@ class PublicationDeliveryValidationTreeFactoryTest {
     assertFalse(validationIssues.isEmpty());
   }
 
-  @Disabled
+  private static XPathRuleValidationContext getValidationContext(
+    String netexFragment
+  ) {
+    XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(netexFragment);
+    return new XPathRuleValidationContext(
+      document,
+      NETEX_XML_PARSER,
+      XPathTestSupport.TEST_CODESPACE,
+      XPathTestSupport.TEST_FILENAME
+    );
+  }
+
   @Test
   void testMatchSingleFrame() {
     ValidationTree validationTree =
       new PublicationDeliveryValidationTreeFactory().builder().build();
     assertNotNull(validationTree);
 
-    XPathRuleValidationContext validationContext =
-      XPathTestSupport.validationContext(SINGLE_FRAME_FRAGMENT);
+    XPathRuleValidationContext validationContext = getValidationContext(
+      SINGLE_FRAME_FRAGMENT
+    );
 
     List<ValidationIssue> validationIssues = validationTree.validate(
       validationContext,

@@ -1,11 +1,11 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.parseDocument;
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
+import static org.entur.netex.validation.test.xpath.support.XPathTestSupport.parseDocument;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import net.sf.saxon.s9api.XdmNode;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.Test;
@@ -82,9 +82,8 @@ class ValidateInconsistentNumberOfTimetablePassingTimesTest {
       .children("TimetableFrame")
       .iterator()
       .next();
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      timetableFrame
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder.ofDocument(timetableFrame).build();
     List<ValidationIssue> validationIssues = validator.validate(
       xpathValidationContext
     );
@@ -106,9 +105,8 @@ class ValidateInconsistentNumberOfTimetablePassingTimesTest {
       .children("TimetableFrame")
       .iterator()
       .next();
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      timetableFrame
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder.ofDocument(timetableFrame).build();
     List<ValidationIssue> validationIssues = validator.validate(
       xpathValidationContext
     );

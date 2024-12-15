@@ -1,12 +1,12 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
-import static org.entur.netex.validation.validator.xpath.support.XPathTestSupport.validationContext;
 import static org.entur.netex.validation.validator.xpath.tree.DefaultResourceFrameValidationTreeFactory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import java.util.stream.Stream;
+import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
@@ -96,9 +96,10 @@ class DefaultResourceFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_INVALID
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -110,9 +111,10 @@ class DefaultResourceFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext = validationContext(
-      NETEX_FRAGMENT_VALID
-    );
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_VALID)
+        .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
