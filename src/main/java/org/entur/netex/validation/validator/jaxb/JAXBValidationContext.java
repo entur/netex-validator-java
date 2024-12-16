@@ -1,8 +1,8 @@
 package org.entur.netex.validation.validator.jaxb;
 
+import jakarta.annotation.Nullable;
 import java.util.*;
 import java.util.function.Function;
-import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.ValidationContext;
