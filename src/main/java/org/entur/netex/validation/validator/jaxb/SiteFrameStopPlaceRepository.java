@@ -1,6 +1,6 @@
 package org.entur.netex.validation.validator.jaxb;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.model.QuayCoordinates;
 import org.entur.netex.validation.validator.model.QuayId;

@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.model;
 
+import jakarta.annotation.Nullable;
 import java.util.Objects;
-import javax.annotation.Nullable;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;

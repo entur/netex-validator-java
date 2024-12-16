@@ -1,7 +1,6 @@
 package org.entur.netex.validation.test.jaxb.support;
 
 import jakarta.xml.bind.JAXBElement;
-import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 
@@ -53,7 +52,7 @@ public class JAXBUtils {
    * @return the value wrapped in a JAXBElement
    */
   @SuppressWarnings("unchecked")
-  public static <T> JAXBElement<T> createJaxbElement(@Nonnull T value) {
+  public static <T> JAXBElement<T> createJaxbElement(T value) {
     return new JAXBElement<>(
       new QName("x"),
       (Class<T>) value.getClass(),
