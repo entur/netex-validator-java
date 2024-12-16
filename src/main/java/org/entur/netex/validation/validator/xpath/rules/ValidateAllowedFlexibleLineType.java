@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
+import org.entur.netex.validation.validator.Severity;
 import org.rutebanken.netex.model.FlexibleLineTypeEnumeration;
 
 /**
@@ -30,8 +31,10 @@ public class ValidateAllowedFlexibleLineType extends ValidateNotExist {
       "lines/FlexibleLine/FlexibleLineType[not(. = (" +
       VALID_FLEXIBLE_LINE_TYPES +
       "))]",
+      "FLEXIBLE_LINE_8",
+      "FlexibleLine illegal FlexibleLineType",
       MESSAGE,
-      "FLEXIBLE_LINE_8"
+      Severity.ERROR
     );
   }
 }

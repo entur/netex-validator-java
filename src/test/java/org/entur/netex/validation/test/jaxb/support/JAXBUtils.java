@@ -1,4 +1,4 @@
-package org.entur.netex.validation.validator.jaxb.support;
+package org.entur.netex.validation.test.jaxb.support;
 
 import jakarta.xml.bind.JAXBElement;
 import javax.annotation.Nonnull;

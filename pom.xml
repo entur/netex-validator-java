@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>8.0.5-SNAPSHOT</version>
+    <version>9.0.0-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -255,6 +255,21 @@
                         </manifestEntries>
                     </archive>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>test</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/tests</outputDirectory>
+                            <includes>
+                                <include>org/entur/netex/validation/test/**/*</include>
+                            </includes>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

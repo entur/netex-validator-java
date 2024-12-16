@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
+import org.entur.netex.validation.validator.XPathValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validate that references refer to an existing element.
  */
-public class NetexReferenceValidator extends AbstractXPathValidator {
+public class NetexReferenceValidator implements XPathValidator {
 
   static final ValidationRule RULE = new ValidationRule(
     "NETEX_ID_5",
@@ -85,9 +85,7 @@ public class NetexReferenceValidator extends AbstractXPathValidator {
         if (!possibleExternalReferences.isEmpty()) {
           for (IdVersion id : possibleExternalReferences) {
             LOGGER.debug("Unable to validate external reference {}", id);
-            validationIssues.add(
-              new ValidationIssue(RULE, getIdVersionLocation(id))
-            );
+            validationIssues.add(new ValidationIssue(RULE, id.dataLocation()));
           }
         }
       }

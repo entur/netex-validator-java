@@ -2,6 +2,7 @@ package org.entur.netex.validation.validator.id;
 
 import java.util.List;
 import java.util.Objects;
+import org.entur.netex.validation.validator.DataLocation;
 
 /**
  * Represent a pair (id,version) that identifies uniquely a NeTEx object in a dataset.
@@ -34,6 +35,10 @@ public class IdVersion {
     this.filename = filename;
     this.columnNumber = columnNumber;
     this.lineNumber = lineNumber;
+  }
+
+  public DataLocation dataLocation() {
+    return new DataLocation(id, filename, lineNumber, columnNumber);
   }
 
   @Override

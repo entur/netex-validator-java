@@ -2,7 +2,6 @@ package org.entur.netex.validation.validator.xpath.rules;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.SaxonApiException;
 import net.sf.saxon.s9api.XPathSelector;
@@ -30,14 +29,6 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
     Severity.WARNING
   );
 
-  private final String context;
-
-  public ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty(
-    String context
-  ) {
-    this.context = Objects.requireNonNull(context);
-  }
-
   @Override
   public List<ValidationIssue> validate(
     XPathRuleValidationContext validationContext
@@ -48,9 +39,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
         .getNetexXMLParser()
         .getXPathCompiler()
         .compile(
-          context +
           "ServiceFrame/lines/FlexibleLine and " +
-          context +
           "ServiceFrame/lines/FlexibleLine[not(BookWhen) and not(MinimumBookingPeriod)]"
         )
         .load();
@@ -61,7 +50,6 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
           .getNetexXMLParser()
           .getXPathCompiler()
           .compile(
-            context +
             "ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/BookWhen) and not(BookingArrangements/MinimumBookingPeriod)  ]]"
           )
           .load();
@@ -79,7 +67,6 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
               .getNetexXMLParser()
               .getXPathCompiler()
               .compile(
-                context +
                 "TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or (not(FlexibleServiceProperties/BookWhen) and not(FlexibleServiceProperties/MinimumBookingPeriod) )) and JourneyPatternRef/@ref='" +
                 id +
                 "' and JourneyPatternRef/@version='" +

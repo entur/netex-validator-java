@@ -6,11 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.entur.netex.validation.validator.AbstractXPathValidator;
-import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
+import org.entur.netex.validation.validator.XPathValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +17,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validate that NeTEX references point to a valid element type.
  */
-public class ReferenceToValidEntityTypeValidator
-  extends AbstractXPathValidator {
+public class ReferenceToValidEntityTypeValidator implements XPathValidator {
 
   static final ValidationRule RULE_INVALID_REFERENCE = new ValidationRule(
     "NETEX_ID_6",
@@ -72,20 +70,18 @@ public class ReferenceToValidEntityTypeValidator
           !("Default" + referencedElement + "Ref").equals(referencingElement) &&
           !canSubstitute(referencingElement, referencedElement)
         ) {
-          DataLocation dataLocation = getIdVersionLocation(id);
           validationIssues.add(
             new ValidationIssue(
               RULE_INVALID_REFERENCE,
-              dataLocation,
+              id.dataLocation(),
               referencedElement,
               referencingElement
             )
           );
         }
       } else {
-        DataLocation dataLocation = getIdVersionLocation(id);
         validationIssues.add(
-          new ValidationIssue(RULE_INVALID_ID_STRUCTURE, dataLocation)
+          new ValidationIssue(RULE_INVALID_ID_STRUCTURE, id.dataLocation())
         );
       }
     }

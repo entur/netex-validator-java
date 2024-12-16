@@ -27,14 +27,9 @@ public class ValidateMandatoryBookingProperty
   private final ValidationRule rule;
 
   private final String bookingProperty;
-  private final String context;
 
-  public ValidateMandatoryBookingProperty(
-    String bookingProperty,
-    String context
-  ) {
+  public ValidateMandatoryBookingProperty(String bookingProperty) {
     this.bookingProperty = Objects.requireNonNull(bookingProperty);
-    this.context = Objects.requireNonNull(context);
     rule =
       new ValidationRule(
         "BOOKING_4",
@@ -56,9 +51,7 @@ public class ValidateMandatoryBookingProperty
         .getNetexXMLParser()
         .getXPathCompiler()
         .compile(
-          context +
           "ServiceFrame/lines/FlexibleLine and " +
-          context +
           "ServiceFrame/lines/FlexibleLine[not(" +
           bookingProperty +
           ")]"
@@ -71,7 +64,6 @@ public class ValidateMandatoryBookingProperty
           .getNetexXMLParser()
           .getXPathCompiler()
           .compile(
-            context +
             "ServiceFrame/journeyPatterns/*[self::JourneyPattern][pointsInSequence/StopPointInJourneyPattern[not(BookingArrangements/" +
             bookingProperty +
             ")]]"
@@ -91,7 +83,6 @@ public class ValidateMandatoryBookingProperty
               .getNetexXMLParser()
               .getXPathCompiler()
               .compile(
-                context +
                 "TimetableFrame/vehicleJourneys/ServiceJourney[(not(FlexibleServiceProperties) or not(FlexibleServiceProperties/" +
                 bookingProperty +
                 ")) and JourneyPatternRef/@ref='" +

@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import net.sf.saxon.s9api.XdmNode;
-import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
+import org.entur.netex.validation.validator.XPathValidator;
 import org.entur.netex.validation.xml.NetexXMLParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Run XPath validation rules against the dataset.
  */
-public class XPathRuleValidator extends AbstractXPathValidator {
+public class XPathRuleValidator implements XPathValidator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(
     XPathRuleValidator.class
@@ -23,7 +23,7 @@ public class XPathRuleValidator extends AbstractXPathValidator {
   private final ValidationTree topLevelValidationTree;
 
   public XPathRuleValidator(ValidationTreeFactory validationTreeFactory) {
-    this.topLevelValidationTree = validationTreeFactory.buildValidationTree();
+    this.topLevelValidationTree = validationTreeFactory.builder().build();
   }
 
   @Override

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.validator.AbstractXPathValidator;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.ValidationRule;
+import org.entur.netex.validation.validator.XPathValidator;
 import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Validate that local NeTEX IDs have a version attribute.
  */
-public class VersionOnLocalNetexIdValidator extends AbstractXPathValidator {
+public class VersionOnLocalNetexIdValidator implements XPathValidator {
 
   static final ValidationRule RULE = new ValidationRule(
     "NETEX_ID_8",
@@ -49,7 +49,7 @@ public class VersionOnLocalNetexIdValidator extends AbstractXPathValidator {
       .collect(Collectors.toSet());
     if (!nonVersionedLocalIds.isEmpty()) {
       for (IdVersion id : nonVersionedLocalIds) {
-        DataLocation dataLocation = getIdVersionLocation(id);
+        DataLocation dataLocation = id.dataLocation();
         validationIssues.add(new ValidationIssue(RULE, dataLocation));
         LOGGER.debug("Id {} does not have version attribute set", id.getId());
       }
