@@ -31,10 +31,10 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
    * The default constructor initializes synchronized data structures for storing the common data.
    */
   public DefaultCommonDataRepository() {
-    this.scheduledStopPointAndQuayIdCache =
-      Collections.synchronizedMap(new HashMap<>());
-    this.serviceLinksAndFromToScheduledStopPointIdCache =
-      Collections.synchronizedMap(new HashMap<>());
+    this(
+      Collections.synchronizedMap(new HashMap<>()),
+      Collections.synchronizedMap(new HashMap<>())
+    );
   }
 
   /**

@@ -27,14 +27,14 @@ public class NetexSchemaValidator
     NetexSchemaValidator.class
   );
 
-  static final ValidationRule RULE_ERROR = new ValidationRule(
+  public static final ValidationRule RULE_ERROR = new ValidationRule(
     "XML_SCHEMA_ERROR",
     "NeTEx XML Schema validation error",
     "%s",
     Severity.CRITICAL
   );
 
-  static final ValidationRule RULE_WARNING = new ValidationRule(
+  public static final ValidationRule RULE_WARNING = new ValidationRule(
     "XML_SCHEMA_WARNING",
     "NeTEx XML Schema validation warning",
     "%s",
