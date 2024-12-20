@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.jaxb.support;
 
+import jakarta.annotation.Nullable;
 import jakarta.xml.bind.JAXBElement;
-import javax.annotation.Nullable;
 import org.rutebanken.netex.model.DatedServiceJourney;
 import org.rutebanken.netex.model.DatedServiceJourneyRefStructure;
 import org.rutebanken.netex.model.VersionOfObjectRefStructure;
