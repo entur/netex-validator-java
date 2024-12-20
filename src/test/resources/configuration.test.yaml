@@ -1,0 +1,9 @@
+validationRuleConfigs:
+  - code: RULE_1
+    name: Rule 1
+    severity: ERROR
+
+
+
+
+
