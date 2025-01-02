@@ -21,9 +21,22 @@ A **ValidationReportEntry** represents a unique validation finding identified by
 - the name of the file being analyzed.
 
 # XML Schema validation
-The entry point **NetexValidatorsRunner** runs by default an XML Schema validation as the first step in the validation process.
-
+The entry point **NetexValidatorsRunner** runs by default an XML Schema validation as the first step in the validation process.  
 This validation step is blocking: in case of an XML Schema validation error, further validations are skipped. 
+
+# XPath validation
+The entry point **NetexValidatorsRunner** can be configured with a list of XPath validators.  
+XPath validators are run after XML schema validation.  
+XPath validators assert validation rules by executing XPath queries on the NeTEx document.   
+This validation step is blocking: in case of a validation error, further validations are skipped.
+
+# JAXB validation
+The entry point **NetexValidatorsRunner** can be configured with a list of JAXB validators.  
+JAXB validators are run after XML schema validation and XPath validation.  
+JAXB validators assert validation rules by navigating a (JAXB) object model of the NeTEx document.  
+The object model makes it easier to validate more complex rules than XPath validators. On the other hand, these
+validators expect that the NeTEx document is well-formed and that the NeTEx entities required by the NeTEx profile are present.  
+It is therefore recommended that any assumption made by JAXB validators are asserted during the XPath validation step.
 
 # Configurable validators
 The entry point **NetexValidatorsRunner** can be configured with a list of **NetexValidator** instances that are executed sequentially during a validation run, after a successful XML Schema validation.

@@ -16,7 +16,7 @@ import org.entur.netex.validation.validator.xpath.XPathValidationContext;
 import org.entur.netex.validation.xml.NetexXMLParser;
 
 /**
- * Minimal executable class that demonstrates how to run a validation.
+ * Minimal executable class that demonstrates how to run a validation with XPath validators.
  */
 public class Demo {
 
