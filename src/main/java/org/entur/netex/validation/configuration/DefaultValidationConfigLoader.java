@@ -2,11 +2,11 @@ package org.entur.netex.validation.configuration;
 
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import org.entur.netex.validation.exception.NetexValidationException;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
@@ -48,9 +48,7 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
       .getResourceAsStream(configurationFile);
 
     if (inputStream == null) {
-      throw new NetexValidationException(
-        "Validation rules configuration file not found: " + configurationFile
-      );
+      return new HashMap<>();
     }
 
     Yaml yaml = new Yaml(

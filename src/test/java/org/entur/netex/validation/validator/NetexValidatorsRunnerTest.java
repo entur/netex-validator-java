@@ -164,6 +164,14 @@ class NetexValidatorsRunnerTest {
       .map(ValidationRule::name)
       .collect(Collectors.toUnmodifiableSet());
     assertEquals(xpathRuleDescriptions, ruleDescriptions);
+
+    assertEquals(1, runner.getRuleDescriptionByCode().size());
+    assertEquals(
+      VersionOnLocalNetexIdValidator.RULE.name(),
+      runner
+        .getRuleDescriptionByCode()
+        .get(VersionOnLocalNetexIdValidator.RULE.code())
+    );
   }
 
   private static ValidationReport validationReport(

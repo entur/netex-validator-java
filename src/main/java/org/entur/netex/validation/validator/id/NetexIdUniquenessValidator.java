@@ -34,7 +34,7 @@ public class NetexIdUniquenessValidator implements XPathValidator {
   static final ValidationRule RULE_DUPLICATE_ID_ACROSS_COMMON_FILES =
     new ValidationRule(
       "NETEX_ID_10",
-      " Duplicate NeTEx ID across common files",
+      "Duplicate NeTEx ID across common files",
       "Duplicate element identifiers across common files",
       Severity.WARNING
     );
