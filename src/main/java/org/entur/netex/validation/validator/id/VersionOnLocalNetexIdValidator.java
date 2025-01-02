@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  */
 public class VersionOnLocalNetexIdValidator implements XPathValidator {
 
-  static final ValidationRule RULE = new ValidationRule(
+  public static final ValidationRule RULE = new ValidationRule(
     "NETEX_ID_8",
     "NeTEx ID missing version on elements",
     "Missing version attribute on elements with id attribute",

@@ -52,4 +52,30 @@ public class DefaultValidationEntryFactory
       validationIssue.dataLocation()
     );
   }
+
+  @Override
+  public ValidationReportEntry templateValidationReportEntry(
+    ValidationRule validationRule
+  ) {
+    ValidationRuleConfig validationRuleConfig = validationConfigLoader
+      .getValidationRuleConfigs()
+      .get(validationRule.code());
+    if (validationRuleConfig == null) {
+      return ValidationReportEntryFactory.super.templateValidationReportEntry(
+        validationRule
+      );
+    }
+
+    String message = validationRuleConfig.getMessage() != null
+      ? validationRuleConfig.getMessage()
+      : validationRule.message();
+    String name = validationRuleConfig.getName() != null
+      ? validationRuleConfig.getName()
+      : validationRule.name();
+    Severity severity = validationRuleConfig.getSeverity() != null
+      ? validationRuleConfig.getSeverity()
+      : validationRule.severity();
+
+    return new ValidationReportEntry(message, name, severity);
+  }
 }

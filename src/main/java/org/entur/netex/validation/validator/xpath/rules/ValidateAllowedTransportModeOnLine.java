@@ -8,8 +8,8 @@ public class ValidateAllowedTransportModeOnLine
   public ValidateAllowedTransportModeOnLine() {
     super(
       "lines/*[self::Line or self::FlexibleLine]",
-      "Line Illegal TransportMode",
       "TRANSPORT_MODE_ON_LINE",
+      "Line Illegal TransportMode",
       "Illegal TransportMode on Line: %s",
       Severity.ERROR
     );

@@ -3,7 +3,6 @@ package org.entur.netex.validation.configuration;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
-import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.Severity;
 import org.junit.jupiter.api.Test;
 
@@ -29,10 +28,10 @@ class DefaultValidationConfigLoaderTest {
 
   @Test
   void loadConfigurationNonExistingFile() {
-    assertThrows(
-      NetexValidationException.class,
-      () -> new DefaultValidationConfigLoader("missing.yaml")
+    DefaultValidationConfigLoader loader = new DefaultValidationConfigLoader(
+      "non existing file"
     );
+    assertTrue(loader.getValidationRuleConfigs().isEmpty());
   }
 
   @Test

@@ -1,7 +1,6 @@
 package org.entur.netex.validation.validator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 import java.util.function.Function;
@@ -28,15 +27,17 @@ class DefaultValidationEntryFactoryTest {
   private static final Severity OVERRIDEN_RULE_SEVERITY = Severity.WARNING;
 
   private ValidationIssue validationIssue;
+  private ValidationRule validationRule;
 
   @BeforeEach
   void setUp() {
-    ValidationRule validationRule = new ValidationRule(
-      RULE_CODE,
-      ORIGINAL_RULE_NAME,
-      ORIGINAL_RULE_MESSAGE,
-      ORIGINAL_RULE_SEVERITY
-    );
+    validationRule =
+      new ValidationRule(
+        RULE_CODE,
+        ORIGINAL_RULE_NAME,
+        ORIGINAL_RULE_MESSAGE,
+        ORIGINAL_RULE_SEVERITY
+      );
     DataLocation dataLocation = new DataLocation(LINE_ID, "netex.xml", 1, 2);
     validationIssue =
       new ValidationIssue(validationRule, dataLocation, LINE_ID);
@@ -90,6 +91,51 @@ class DefaultValidationEntryFactoryTest {
       validationReportEntry.getMessage()
     );
     assertEquals(OVERRIDEN_RULE_SEVERITY, validationReportEntry.getSeverity());
+  }
+
+  @Test
+  void testTemplateReportEntry() {
+    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(
+      Set.of()
+    );
+    ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
+      validationConfigLoader
+    );
+    ValidationReportEntry validationReportEntry =
+      factory.templateValidationReportEntry(validationRule);
+    assertNotNull(validationReportEntry);
+    assertEquals(ORIGINAL_RULE_NAME, validationReportEntry.getName());
+    assertEquals(ORIGINAL_RULE_MESSAGE, validationReportEntry.getMessage());
+    assertEquals(ORIGINAL_RULE_SEVERITY, validationReportEntry.getSeverity());
+    assertNull(validationReportEntry.getFileName());
+    assertNull(validationReportEntry.getLineNumber());
+    assertNull(validationReportEntry.getColumnNumber());
+  }
+
+  @Test
+  void testTemplateReportEntryWithConfigurationOverride() {
+    ValidationRuleConfig config = new ValidationRuleConfig();
+    config.setCode(RULE_CODE);
+    config.setName(OVERRIDDEN_RULE_NAME);
+    config.setMessage(OVERRIDDEN_RULE_MESSAGE);
+    config.setSeverity(OVERRIDEN_RULE_SEVERITY);
+
+    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(
+      Set.of(config)
+    );
+
+    ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
+      validationConfigLoader
+    );
+    ValidationReportEntry validationReportEntry =
+      factory.templateValidationReportEntry(validationRule);
+    assertNotNull(validationReportEntry);
+    assertEquals(OVERRIDDEN_RULE_NAME, validationReportEntry.getName());
+    assertEquals(OVERRIDDEN_RULE_MESSAGE, validationReportEntry.getMessage());
+    assertEquals(OVERRIDEN_RULE_SEVERITY, validationReportEntry.getSeverity());
+    assertNull(validationReportEntry.getFileName());
+    assertNull(validationReportEntry.getLineNumber());
+    assertNull(validationReportEntry.getColumnNumber());
   }
 
   private static ValidationConfigLoader getValidationConfigLoader(

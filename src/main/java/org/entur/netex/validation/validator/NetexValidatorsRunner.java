@@ -482,12 +482,34 @@ public class NetexValidatorsRunner {
     }
   }
 
-  public Set<String> getRuleDescriptions() {
+  public Map<String, String> getRuleDescriptionByCode() {
     return Stream
       .concat(xPathValidators.stream(), jaxbValidators.stream())
       .map(NetexValidator::getRules)
       .flatMap(Collection::stream)
-      .map(ValidationRule::name)
-      .collect(Collectors.toSet());
+      .collect(
+        Collectors.toMap(
+          ValidationRule::code,
+          validationRule ->
+            validationReportEntryFactory
+              .templateValidationReportEntry(validationRule)
+              .getName(),
+          (a, b) -> {
+            throw new IllegalStateException(
+              "Duplicate validation rule: " + a + ", " + b
+            );
+          },
+          TreeMap::new
+        )
+      );
+  }
+
+  /**
+   *
+   * @deprecated use {@link #getRuleDescriptionByCode()}
+   */
+  @Deprecated
+  public Set<String> getRuleDescriptions() {
+    return new LinkedHashSet<>(getRuleDescriptionByCode().values());
   }
 }
