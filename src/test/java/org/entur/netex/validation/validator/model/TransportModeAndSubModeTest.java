@@ -20,6 +20,16 @@ class TransportModeAndSubModeTest {
   }
 
   @Test
+  void testMissingTransportSubModeFromStopPlace() {
+    StopPlace stopPlace = new StopPlace();
+    stopPlace.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
+    TransportModeAndSubMode transportModeAndSubMode =
+      TransportModeAndSubMode.of(stopPlace);
+    assertNotNull(transportModeAndSubMode);
+    assertEquals(TransportSubMode.MISSING, transportModeAndSubMode.subMode());
+  }
+
+  @Test
   void testCreateTransportModeAndSubModeFromStopPlace() {
     StopPlace stopPlace = new StopPlace();
     stopPlace
