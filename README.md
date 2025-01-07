@@ -246,6 +246,8 @@ The NeTEx validator library comes with the following rule set by default:
 | SERVICE_LINK_1                           |                             ServiceLink missing FromPointRef                             |
 | SERVICE_LINK_2                           |                              ServiceLink missing ToPointRef                              |
 | SERVICE_LINK_3                           |                         ServiceLink missing element Projections                          |
+| SERVICE_LINK_4                           |                           ServiceLink missing coordinate list                            |
+| SERVICE_LINK_5                           |                              ServiceLink less than 2 points                              |
 | SITE_FRAME_IN_COMMON_FILE                |                      SiteFrame unexpected SiteFrame in Common file                       |
 | SITE_FRAME_IN_LINE_FILE                  |                       SiteFrame unexpected SiteFrame in Line file                        |
 | TIMETABLE_FRAME_IN_COMMON_FILE           |                          TimetableFrame illegal in Common file                           |

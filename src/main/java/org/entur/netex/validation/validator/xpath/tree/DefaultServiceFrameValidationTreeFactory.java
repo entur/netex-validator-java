@@ -59,6 +59,8 @@ public class DefaultServiceFrameValidationTreeFactory
   public static final String CODE_SERVICE_LINK_1 = "SERVICE_LINK_1";
   public static final String CODE_SERVICE_LINK_2 = "SERVICE_LINK_2";
   public static final String CODE_SERVICE_LINK_3 = "SERVICE_LINK_3";
+  public static final String CODE_SERVICE_LINK_4 = "SERVICE_LINK_4";
+  public static final String CODE_SERVICE_LINK_5 = "SERVICE_LINK_5";
   public static final String CODE_FLEXIBLE_LINE_1 = "FLEXIBLE_LINE_1";
   public static final String CODE_FLEXIBLE_LINE_10 = "FLEXIBLE_LINE_10";
   public static final String CODE_FLEXIBLE_LINE_11 = "FLEXIBLE_LINE_11";
@@ -176,11 +178,29 @@ public class DefaultServiceFrameValidationTreeFactory
       )
       .withRule(
         new ValidateNotExist(
-          "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString/g:posList[not(normalize-space(text()))]",
+          "serviceLinks/ServiceLink[not(projections)]",
           CODE_SERVICE_LINK_3,
           "ServiceLink missing element Projections",
           "Missing projections element on ServiceLink",
+          Severity.WARNING
+        )
+      )
+      .withRule(
+        new ValidateNotExist(
+          "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString/g:posList[not(normalize-space(text()))]",
+          CODE_SERVICE_LINK_4,
+          "ServiceLink missing coordinate list",
+          "Missing coordinates list on ServiceLink",
           Severity.ERROR
+        )
+      )
+      .withRule(
+        new ValidateNotExist(
+          "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString[count(g:pos) < 2]",
+          CODE_SERVICE_LINK_5,
+          "ServiceLink less than 2 points",
+          "Less then 2 points on ServiceLink",
+          Severity.WARNING
         )
       )
       .withRule(
