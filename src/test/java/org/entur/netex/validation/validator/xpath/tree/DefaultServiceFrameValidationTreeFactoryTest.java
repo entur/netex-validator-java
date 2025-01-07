@@ -11,6 +11,7 @@ import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -140,6 +141,100 @@ class DefaultServiceFrameValidationTreeFactoryTest {
       
       """;
 
+  private static final String NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_PROJECTION =
+    """
+<ServiceFrame xmlns="http://www.netex.org.uk/netex">
+     <serviceLinks>
+        <ServiceLink id="BRA:ServiceLink:210108111955158_2_210108111955389_1_2030" version="1563">
+              <Distance>2030.0</Distance>
+              <FromPointRef ref="BRA:ScheduledStopPoint:6233600_2" version="1563" />
+              <ToPointRef ref="BRA:ScheduledStopPoint:6239930_1" version="1563" />
+        </ServiceLink>
+    </serviceLinks>
+</ServiceFrame>
+       """;
+
+  private static final String NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_COORDINATE_LIST =
+    """
+<ServiceFrame xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2">
+     <serviceLinks>
+        <ServiceLink id="BRA:ServiceLink:210108111955158_2_210108111955389_1_2030" version="1563">
+              <Distance>2030.0</Distance>
+                           <projections>
+                              <LinkSequenceProjection id="BRA:LinkSequenceProjection:210108111955158_2_210108111955389_1_2030" version="1563">
+                                <gml:LineString gml:id="id_210108111955158_2_210108111955389_1_2030" srsName="WGS84">
+                                <gml:posList count="2" srsDimension="2"></gml:posList>
+                                </gml:LineString>
+                              </LinkSequenceProjection>
+                           </projections>
+              <FromPointRef ref="BRA:ScheduledStopPoint:6233600_2" version="1563" />
+              <ToPointRef ref="BRA:ScheduledStopPoint:6239930_1" version="1563" />
+        </ServiceLink>
+    </serviceLinks>
+</ServiceFrame>
+       """;
+
+  private static final String NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST =
+    """
+<ServiceFrame xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2">
+     <serviceLinks>
+        <ServiceLink id="BRA:ServiceLink:210108111955158_2_210108111955389_1_2030" version="1563">
+              <Distance>2030.0</Distance>
+                           <projections>
+                              <LinkSequenceProjection id="BRA:LinkSequenceProjection:210108111955158_2_210108111955389_1_2030" version="1563">
+                                <gml:LineString gml:id="id_210108111955158_2_210108111955389_1_2030" srsName="WGS84">
+                                  <gml:posList count="2" srsDimension="2">59.551598 9.803644  59.5307 9.805698</gml:posList>
+                                </gml:LineString>
+                              </LinkSequenceProjection>
+                           </projections>
+              <FromPointRef ref="BRA:ScheduledStopPoint:6233600_2" version="1563" />
+              <ToPointRef ref="BRA:ScheduledStopPoint:6239930_1" version="1563" />
+        </ServiceLink>
+    </serviceLinks>
+</ServiceFrame>
+       """;
+
+  private static final String NETEX_FRAGMENT_INVALID_SERVICE_LINK_LESS_THAN_TWO_POINTS =
+    """
+<ServiceFrame xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2">
+     <serviceLinks>
+        <ServiceLink id="BRA:ServiceLink:210108111955158_2_210108111955389_1_2030" version="1563">
+              <Distance>2030.0</Distance>
+                           <projections>
+                              <LinkSequenceProjection id="BRA:LinkSequenceProjection:210108111955158_2_210108111955389_1_2030" version="1563">
+                                <gml:LineString gml:id="id_210108111955158_2_210108111955389_1_2030" srsName="WGS84">
+                                   <gml:pos>60.075463 9.121449</gml:pos>
+                                </gml:LineString>
+                              </LinkSequenceProjection>
+                           </projections>
+              <FromPointRef ref="BRA:ScheduledStopPoint:6233600_2" version="1563" />
+              <ToPointRef ref="BRA:ScheduledStopPoint:6239930_1" version="1563" />
+        </ServiceLink>
+    </serviceLinks>
+</ServiceFrame>
+       """;
+
+  private static final String NETEX_FRAGMENT_SERVICE_LINK_VALID_TWO_POINTS =
+    """
+<ServiceFrame xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2">
+     <serviceLinks>
+        <ServiceLink id="BRA:ServiceLink:210108111955158_2_210108111955389_1_2030" version="1563">
+              <Distance>2030.0</Distance>
+                           <projections>
+                              <LinkSequenceProjection id="BRA:LinkSequenceProjection:210108111955158_2_210108111955389_1_2030" version="1563">
+                                <gml:LineString gml:id="id_210108111955158_2_210108111955389_1_2030" srsName="WGS84">
+                                   <gml:pos>60.075463 9.121449</gml:pos>
+                                    <gml:pos>60.07577 9.121238</gml:pos>
+                                </gml:LineString>
+                              </LinkSequenceProjection>
+                           </projections>
+              <FromPointRef ref="BRA:ScheduledStopPoint:6233600_2" version="1563" />
+              <ToPointRef ref="BRA:ScheduledStopPoint:6239930_1" version="1563" />
+        </ServiceLink>
+    </serviceLinks>
+</ServiceFrame>
+       """;
+
   private ValidationTree validationTree;
 
   @BeforeEach
@@ -199,6 +294,73 @@ class DefaultServiceFrameValidationTreeFactoryTest {
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
+    );
+    assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testMissingProjectionOnServiceLink() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_PROJECTION)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_3
+    );
+    assertEquals(1, validationIssues.size());
+  }
+
+  @Test
+  void testMissingCoordinateListOnServiceLink() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_COORDINATE_LIST)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_4
+    );
+    assertEquals(1, validationIssues.size());
+  }
+
+  @Test
+  void testValidCoordinateListOnServiceLink() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_4
+    );
+    assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testLessThanTwoPointsOnServiceLink() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(
+          NETEX_FRAGMENT_INVALID_SERVICE_LINK_LESS_THAN_TWO_POINTS
+        )
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_5
+    );
+    assertEquals(1, validationIssues.size());
+  }
+
+  @Test
+  void testServiceLinkWithTwoPoints() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_TWO_POINTS)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_5
     );
     assertTrue(validationIssues.isEmpty());
   }
