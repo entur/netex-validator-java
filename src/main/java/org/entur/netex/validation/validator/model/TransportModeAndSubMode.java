@@ -15,15 +15,16 @@ public record TransportModeAndSubMode(
   AllVehicleModesOfTransportEnumeration mode,
   TransportSubMode subMode
 ) {
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-    TransportModeAndSubMode.class
-  );
-
   public TransportModeAndSubMode {
     Objects.requireNonNull(mode, "Transport mode cannot be null");
     Objects.requireNonNull(mode, "Transport submode cannot be null");
   }
 
+  /**
+   * Return the transport mode and sub-mode for the given stop place.
+   * Return null if the transport mode is null.
+   * The submode can be missing, in which case it is mapped to TransportSubMode.MISSING.
+   */
   @Nullable
   public static TransportModeAndSubMode of(StopPlace stopPlace) {
     AllVehicleModesOfTransportEnumeration transportMode =
@@ -34,9 +35,16 @@ public record TransportModeAndSubMode(
     return TransportSubMode
       .of(stopPlace)
       .map(submode -> new TransportModeAndSubMode(transportMode, submode))
-      .orElse(null);
+      .orElse(
+        new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING)
+      );
   }
 
+  /**
+   * Return the transport mode and sub-mode for the corresponding NeTEx structures.
+   * Return null if the transport mode is null
+   * The submode can be missing, in which case it is mapped to TransportSubMode.MISSING.
+   */
   @Nullable
   public static TransportModeAndSubMode of(
     AllVehicleModesOfTransportEnumeration transportMode,
