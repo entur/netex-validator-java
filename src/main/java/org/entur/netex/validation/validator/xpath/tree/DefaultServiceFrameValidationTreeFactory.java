@@ -196,10 +196,10 @@ public class DefaultServiceFrameValidationTreeFactory
       )
       .withRule(
         new ValidateNotExist(
-          "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString[count(g:pos) < 2]",
+          "serviceLinks/ServiceLink/projections/LinkSequenceProjection/g:LineString[count(g:pos) = 1]",
           CODE_SERVICE_LINK_5,
           "ServiceLink less than 2 points",
-          "Less then 2 points on ServiceLink",
+          "Less than 2 points on ServiceLink",
           Severity.WARNING
         )
       )

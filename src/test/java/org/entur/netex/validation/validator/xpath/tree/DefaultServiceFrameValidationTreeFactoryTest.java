@@ -364,4 +364,17 @@ class DefaultServiceFrameValidationTreeFactoryTest {
     );
     assertTrue(validationIssues.isEmpty());
   }
+
+  @Test
+  void testServiceLinkWithPosList() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_SERVICE_LINK_5
+    );
+    assertTrue(validationIssues.isEmpty());
+  }
 }
