@@ -377,7 +377,7 @@ public class NetexValidatorsRunner {
 
       datasetValidatorStopWatch.stop();
       if (datasetValidatorStopWatch.getTime() > 30000) {
-        LOGGER.warn(
+        LOGGER.info(
           "Validator {} for {}/{} completed in {} ms",
           netexValidatorName,
           validationReport.getCodespace(),
@@ -461,7 +461,7 @@ public class NetexValidatorsRunner {
       validatorComplete.set(true);
       stopWatch.stop();
       if (stopWatch.getTime() > 30000) {
-        LOGGER.warn(
+        LOGGER.info(
           "Validator {} for {}/{}/{} completed in {} ms",
           netexValidatorName,
           codespace,
