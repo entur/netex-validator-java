@@ -16,6 +16,8 @@ public class DefaultServiceCalendarFrameValidationTreeFactory
   public static final String CODE_SERVICE_CALENDAR_4 = "SERVICE_CALENDAR_4";
   public static final String CODE_SERVICE_CALENDAR_5 = "SERVICE_CALENDAR_5";
 
+  public static final String CODE_OPERATING_PERIOD_1 = "OPERATING_PERIOD_1";
+
   @Override
   public ValidationTreeBuilder builder() {
     return new ValidationTreeBuilder(
@@ -64,6 +66,15 @@ public class DefaultServiceCalendarFrameValidationTreeFactory
           CODE_SERVICE_CALENDAR_5,
           "ServiceCalendar invalid time interval",
           "FromDate cannot be after ToDate on ServiceCalendar",
+          Severity.ERROR
+        )
+      )
+      .withRule(
+        new ValidateNotExist(
+          "//OperatingPeriod[FromDate and ToDate and ToDate < FromDate]",
+          CODE_OPERATING_PERIOD_1,
+          "OperatingPeriod invalid time interval",
+          "FromDate cannot be after ToDate on OperatingPeriod",
           Severity.ERROR
         )
       );

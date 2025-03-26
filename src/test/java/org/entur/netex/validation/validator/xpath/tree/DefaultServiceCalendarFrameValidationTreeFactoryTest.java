@@ -10,6 +10,7 @@ import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.ValidationTree;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -71,6 +72,23 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
               
               """;
 
+  private static final String NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD =
+    """
+        <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
+             <ServiceCalendar>
+             <FromDate>2024-01-01</FromDate>
+             <ToDate>2024-01-02</ToDate>
+              <dayTypes/>
+             </ServiceCalendar>
+             <operatingPeriods>
+              <OperatingPeriod version="0" id="AKT:OperatingPeriod:1">
+                <FromDate>2025-03-26T00:00:00</FromDate>
+                <ToDate>2025-03-25T00:00:00</ToDate>
+              </OperatingPeriod>
+              </operatingPeriods>
+        </ServiceCalendarFrame>
+        """;
+
   private ValidationTree validationTree;
 
   @BeforeEach
@@ -114,5 +132,18 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
       code
     );
     assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testNegativeOperatingPeriod() {
+    XPathRuleValidationContext xpathValidationContext =
+      TestValidationContextBuilder
+        .ofNetexFragment(NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD)
+        .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_OPERATING_PERIOD_1
+    );
+    assertEquals(1, validationIssues.size());
   }
 }
