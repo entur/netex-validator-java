@@ -15,10 +15,8 @@ public class DefaultServiceCalendarFrameValidationTreeFactory
   public static final String CODE_SERVICE_CALENDAR_3 = "SERVICE_CALENDAR_3";
   public static final String CODE_SERVICE_CALENDAR_4 = "SERVICE_CALENDAR_4";
   public static final String CODE_SERVICE_CALENDAR_5 = "SERVICE_CALENDAR_5";
-  public static final String CODE_SERVICE_CALENDAR_6 = "SERVICE_CALENDAR_6";
 
   public static final String CODE_OPERATING_PERIOD_1 = "OPERATING_PERIOD_1";
-  public static final String CODE_OPERATING_PERIOD_2 = "OPERATING_PERIOD_2";
 
   @Override
   public ValidationTreeBuilder builder() {
@@ -73,28 +71,10 @@ public class DefaultServiceCalendarFrameValidationTreeFactory
       )
       .withRule(
         new ValidateNotExist(
-          "//ServiceCalendar[FromDate and ToDate and ToDate = FromDate]",
-          CODE_SERVICE_CALENDAR_6,
-          "ServiceCalendar empty timetable",
-          "FromDate should not be equal to ToDate on ServiceCalendar",
-          Severity.ERROR
-        )
-      )
-      .withRule(
-        new ValidateNotExist(
           "//OperatingPeriod[FromDate and ToDate and ToDate < FromDate]",
           CODE_OPERATING_PERIOD_1,
           "OperatingPeriod invalid time interval",
           "FromDate cannot be after ToDate on OperatingPeriod",
-          Severity.ERROR
-        )
-      )
-      .withRule(
-        new ValidateNotExist(
-          "//OperatingPeriod[FromDate and ToDate and ToDate = FromDate]",
-          CODE_OPERATING_PERIOD_2,
-          "OperatingPeriod empty timetable",
-          "FromDate should not be equal to ToDate on OperatingPeriod",
           Severity.ERROR
         )
       );

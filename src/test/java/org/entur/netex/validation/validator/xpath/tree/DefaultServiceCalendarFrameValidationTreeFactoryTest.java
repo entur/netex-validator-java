@@ -72,39 +72,22 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
               
               """;
 
-  private static final String NETEX_FRAGMENT_EMPTY_OPERATING_PERIOD_AND_SERVICE_CALENDAR =
+  private static final String NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD =
     """
-      <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
-           <ServiceCalendar>
-           <FromDate>2024-01-01</FromDate>
-           <ToDate>2024-01-01</ToDate>
-            <dayTypes/>
-           </ServiceCalendar>
-           <operatingPeriods>
-            <OperatingPeriod version="0" id="AKT:OperatingPeriod:1">
-              <FromDate>2025-03-24T00:00:00</FromDate>
-              <ToDate>2025-03-24T00:00:00</ToDate>
-            </OperatingPeriod>
-            </operatingPeriods>
-      </ServiceCalendarFrame>
-      """;
-
-  private static final String NETEX_FRAGMENT_NON_EMPTY_OPERATING_PERIOD =
-    """
-      <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
-           <ServiceCalendar>
-           <FromDate>2024-01-01</FromDate>
-           <ToDate>2024-01-02</ToDate>
-            <dayTypes/>
-           </ServiceCalendar>
-           <operatingPeriods>
-            <OperatingPeriod version="0" id="AKT:OperatingPeriod:1">
-              <FromDate>2025-03-24T00:00:00</FromDate>
-              <ToDate>2025-03-25T00:00:00</ToDate>
-            </OperatingPeriod>
-            </operatingPeriods>
-      </ServiceCalendarFrame>
-      """;
+        <ServiceCalendarFrame xmlns="http://www.netex.org.uk/netex" version="521" id="SJN:ServiceCalendarFrame:Shared">
+             <ServiceCalendar>
+             <FromDate>2024-01-01</FromDate>
+             <ToDate>2024-01-02</ToDate>
+              <dayTypes/>
+             </ServiceCalendar>
+             <operatingPeriods>
+              <OperatingPeriod version="0" id="AKT:OperatingPeriod:1">
+                <FromDate>2025-03-26T00:00:00</FromDate>
+                <ToDate>2025-03-25T00:00:00</ToDate>
+              </OperatingPeriod>
+              </operatingPeriods>
+        </ServiceCalendarFrame>
+        """;
 
   private ValidationTree validationTree;
 
@@ -152,58 +135,15 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
   }
 
   @Test
-  void testEmptyServiceCalendarPeriod() {
+  void testNegativeOperatingPeriod() {
     XPathRuleValidationContext xpathValidationContext =
       TestValidationContextBuilder
-        .ofNetexFragment(
-          NETEX_FRAGMENT_EMPTY_OPERATING_PERIOD_AND_SERVICE_CALENDAR
-        )
+        .ofNetexFragment(NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD)
         .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
-      CODE_SERVICE_CALENDAR_6
+      CODE_OPERATING_PERIOD_1
     );
     assertEquals(1, validationIssues.size());
-  }
-
-  @Test
-  void testEmptyOperatingPeriod() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(
-          NETEX_FRAGMENT_EMPTY_OPERATING_PERIOD_AND_SERVICE_CALENDAR
-        )
-        .build();
-    List<ValidationIssue> validationIssues = validationTree.validate(
-      xpathValidationContext,
-      CODE_OPERATING_PERIOD_2
-    );
-    assertEquals(1, validationIssues.size());
-  }
-
-  @Test
-  void testExistingOperatingPeriod() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_NON_EMPTY_OPERATING_PERIOD)
-        .build();
-    List<ValidationIssue> validationIssues = validationTree.validate(
-      xpathValidationContext,
-      CODE_OPERATING_PERIOD_2
-    );
-    assertEquals(0, validationIssues.size());
-  }
-
-  @Test
-  void testExistingServiceCalendarPeriod() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_NON_EMPTY_OPERATING_PERIOD)
-        .build();
-    List<ValidationIssue> validationIssues = validationTree.validate(
-      xpathValidationContext,
-      CODE_SERVICE_CALENDAR_6
-    );
-    assertEquals(0, validationIssues.size());
   }
 }
