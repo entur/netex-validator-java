@@ -68,6 +68,20 @@ public class NetexValidatorsRunner {
       Objects.requireNonNull(builder.getValidationReportEntryFactory());
   }
 
+  public NetexValidatorsRunnerBuilder toBuilder() {
+    NetexValidatorsRunnerBuilder builder = new NetexValidatorsRunnerBuilder();
+    builder.withNetexSchemaValidator(this.netexSchemaValidator);
+    builder.withNetexXMLParser(this.netexXMLParser);
+    builder.withXPathValidators(this.xPathValidators);
+    builder.withJaxbValidators(this.jaxbValidators);
+    builder.withDatasetValidators(this.datasetValidators);
+    builder.withNetexDataCollectors(this.netexDataCollectors);
+    builder.withCommonDataRepository(this.commonDataRepository);
+    builder.withStopPlaceRepository(this.stopPlaceRepository);
+    builder.withValidationReportEntryFactory(this.validationReportEntryFactory);
+    return builder;
+  }
+
   public static NetexValidatorsRunnerBuilder of() {
     return new NetexValidatorsRunnerBuilder();
   }
