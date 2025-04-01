@@ -392,4 +392,17 @@ public class JAXBValidationContext implements ValidationContext {
       flexibleLine.getTransportSubmode()
     );
   }
+
+  /**
+   * Returns the FlexibleStopPlaceRef connected to ScheduledStopPointRef in a FlexibleStopAssignment.
+   */
+  @Nullable
+  public String flexibleStopPlaceRefFromScheduledStopPointRef(
+    String scheduledStopPointRef
+  ) {
+    return commonDataRepository.getFlexibleStopPlaceRefByStopPointRef(
+      validationReportId,
+      scheduledStopPointRef
+    );
+  }
 }

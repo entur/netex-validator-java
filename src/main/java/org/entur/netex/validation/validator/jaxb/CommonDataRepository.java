@@ -29,4 +29,12 @@ public interface CommonDataRepository {
     ServiceLinkId serviceLinkId,
     String validationReportId
   );
+
+  /**
+   * Returns flexible stop place ref mapped by provided stopPointRef.
+   */
+  String getFlexibleStopPlaceRefByStopPointRef(
+    String validationReportId,
+    String stopPointRef
+  );
 }

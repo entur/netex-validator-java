@@ -26,12 +26,14 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
 
   private final Map<String, Map<String, String>> scheduledStopPointAndQuayIdCache;
   private final Map<String, Map<String, String>> serviceLinksAndFromToScheduledStopPointIdCache;
+  private final Map<String, Map<String, String>> scheduledStopPointToFlexibleStopPlaceCache;
 
   /**
    * The default constructor initializes synchronized data structures for storing the common data.
    */
   public DefaultCommonDataRepository() {
     this(
+      Collections.synchronizedMap(new HashMap<>()),
       Collections.synchronizedMap(new HashMap<>()),
       Collections.synchronizedMap(new HashMap<>())
     );
@@ -43,11 +45,30 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
    */
   public DefaultCommonDataRepository(
     Map<String, Map<String, String>> scheduledStopPointAndQuayIdCache,
-    Map<String, Map<String, String>> serviceLinksAndFromToScheduledStopPointIdCache
+    Map<String, Map<String, String>> serviceLinksAndFromToScheduledStopPointIdCache,
+    Map<String, Map<String, String>> scheduledStopPointToFlexibleStopPlaceCache
   ) {
     this.scheduledStopPointAndQuayIdCache = scheduledStopPointAndQuayIdCache;
     this.serviceLinksAndFromToScheduledStopPointIdCache =
       serviceLinksAndFromToScheduledStopPointIdCache;
+    this.scheduledStopPointToFlexibleStopPlaceCache =
+      scheduledStopPointToFlexibleStopPlaceCache;
+  }
+
+  @Override
+  public String getFlexibleStopPlaceRefByStopPointRef(
+    String validationReportId,
+    String stopPointRef
+  ) {
+    Map<String, String> stopPlaceRefToFlexibleStopPlaceMap =
+      scheduledStopPointToFlexibleStopPlaceCache.get(validationReportId);
+    if (stopPlaceRefToFlexibleStopPlaceMap == null) {
+      throw new NetexValidationException(
+        "Flexible stop place cache not found for validation report with id: " +
+        validationReportId
+      );
+    }
+    return stopPlaceRefToFlexibleStopPlaceMap.get(stopPointRef);
   }
 
   @Override
@@ -103,6 +124,15 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
     scheduledStopPointAndQuayIdCache.merge(
       validationReportId,
       getQuayIdsPerScheduledStopPoints(netexEntitiesIndex),
+      (existingMap, newMap) -> {
+        existingMap.putAll(newMap);
+        return existingMap;
+      }
+    );
+
+    scheduledStopPointToFlexibleStopPlaceCache.merge(
+      validationReportId,
+      netexEntitiesIndex.getFlexibleStopPlaceIdByStopPointRefIndex(),
       (existingMap, newMap) -> {
         existingMap.putAll(newMap);
         return existingMap;
