@@ -57,6 +57,19 @@ class DefaultCommonDataRepositoryTest {
   }
 
   @Test
+  void testStopPlaceToFlexibleStopPlaceRefMappingThrowsWhenNoValidationReport() {
+    DefaultCommonDataRepository repository = new DefaultCommonDataRepository();
+    assertThrows(
+      NetexValidationException.class,
+      () ->
+        repository.getFlexibleStopPlaceRefByStopPointRef(
+          TEST_REPORT_ID,
+          TEST_SCHEDULED_STOP_POINT_REF_ID
+        )
+    );
+  }
+
+  @Test
   void testSharedScheduledStopPoints() {
     DefaultCommonDataRepository repository = new DefaultCommonDataRepository();
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
