@@ -400,9 +400,20 @@ public class JAXBValidationContext implements ValidationContext {
   public String flexibleStopPlaceRefFromScheduledStopPointRef(
     String scheduledStopPointRef
   ) {
-    return commonDataRepository.getFlexibleStopPlaceRefByStopPointRef(
-      validationReportId,
-      scheduledStopPointRef
-    );
+    String flexibleStopPlaceRefFromCommon =
+      commonDataRepository.getFlexibleStopPlaceRefByStopPointRef(
+        validationReportId,
+        scheduledStopPointRef
+      );
+
+    String flexibleStopPlaceRefFromNetexEntities = netexEntitiesIndex
+      .getFlexibleStopPlaceIdByStopPointRefIndex()
+      .get(scheduledStopPointRef);
+
+    if (flexibleStopPlaceRefFromNetexEntities == null) {
+      return flexibleStopPlaceRefFromCommon;
+    }
+
+    return flexibleStopPlaceRefFromNetexEntities;
   }
 }

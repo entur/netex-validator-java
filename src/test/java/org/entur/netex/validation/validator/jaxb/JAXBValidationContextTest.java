@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.index.impl.NetexEntitiesIndexImpl;
 import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.id.IdVersion;
@@ -210,11 +211,12 @@ class JAXBValidationContextTest {
   }
 
   @Test
-  void flexibleStopPlaceRefFromScheduledStopPointRefTest() {
+  void flexibleStopPlaceRefFromScheduledStopPointRefInCommonDataRepositoryTest() {
     String scheduledStopPointRef = "scheduledStopPointRef";
     String validationReportId = "testValidationReportId";
+    String flexibleStopPointRef = "flexibleStopPointRef";
     Map<String, String> scheduledStopPointRefMap = Map.ofEntries(
-      Map.entry(scheduledStopPointRef, scheduledStopPointRef)
+      Map.entry(scheduledStopPointRef, flexibleStopPointRef)
     );
 
     Map<String, Map<String, String>> validationReportMap = Map.ofEntries(
@@ -237,14 +239,54 @@ class JAXBValidationContextTest {
       FILE_NAME,
       Map.of()
     );
-    context.flexibleStopPlaceRefFromScheduledStopPointRef(
+    String result = context.flexibleStopPlaceRefFromScheduledStopPointRef(
       scheduledStopPointRef
     );
 
+    Assertions.assertEquals(flexibleStopPointRef, result);
     verify(commonDataRepositorySpy, times(1))
       .getFlexibleStopPlaceRefByStopPointRef(
         validationReportId,
         scheduledStopPointRef
       );
+  }
+
+  @Test
+  void flexibleStopPlaceRefFromScheduledStopPointRefInNetexEntitiesIndexTest() {
+    String scheduledStopPointRef = "scheduledStopPointRef";
+    String validationReportId = "testValidationReportId";
+    String flexibleStopPointRef2 = "flexibleStopPointRef2";
+
+    Map<String, String> scheduledStopPointRefMap = Map.ofEntries(
+      Map.entry(scheduledStopPointRef, "flexibleStopPointRef1")
+    );
+    Map<String, Map<String, String>> validationReportMap = Map.ofEntries(
+      Map.entry(validationReportId, scheduledStopPointRefMap)
+    );
+
+    CommonDataRepository commonDataRepository = new DefaultCommonDataRepository(
+      new HashMap<>(),
+      new HashMap<>(),
+      validationReportMap
+    );
+    NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
+    netexEntitiesIndex
+      .getFlexibleStopPlaceIdByStopPointRefIndex()
+      .put(scheduledStopPointRef, flexibleStopPointRef2);
+
+    JAXBValidationContext context = new JAXBValidationContext(
+      validationReportId,
+      netexEntitiesIndex,
+      commonDataRepository,
+      null,
+      null,
+      FILE_NAME,
+      Map.of()
+    );
+
+    String result = context.flexibleStopPlaceRefFromScheduledStopPointRef(
+      scheduledStopPointRef
+    );
+    Assertions.assertEquals(flexibleStopPointRef2, result);
   }
 }
