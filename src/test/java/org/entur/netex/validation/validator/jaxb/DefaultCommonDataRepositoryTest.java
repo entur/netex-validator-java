@@ -23,6 +23,12 @@ class DefaultCommonDataRepositoryTest {
   public static final String TEST_SCHEDULED_STOP_POINT_ID_1 =
     "TST:ScheduledStopPoint:1";
 
+  public static final String TEST_SCHEDULED_STOP_POINT_REF_ID =
+    "TST:ScheduledStopPointRef:1";
+
+  public static final String TEST_FLEXIBLE_STOP_POINT_REF_ID =
+    "TST:FlexibleStopPlaceRef:1";
+
   public static final String TEST_QUAY_ID_1 = "TST:Quay:1";
 
   public static final String TEST_SCHEDULED_STOP_POINT_ID_2 =
@@ -31,6 +37,37 @@ class DefaultCommonDataRepositoryTest {
   public static final String TEST_QUAY_ID_2 = "TST:Quay:2";
 
   public static final String TEST_SERVICE_LINK_ID = "TST:ServiceLink:1";
+
+  @Test
+  void testStopPlaceToFlexibleStopPlaceMapping() {
+    DefaultCommonDataRepository repository = new DefaultCommonDataRepository();
+    NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
+
+    netexEntitiesIndex
+      .getFlexibleStopPlaceIdByStopPointRefIndex()
+      .put(TEST_SCHEDULED_STOP_POINT_REF_ID, TEST_FLEXIBLE_STOP_POINT_REF_ID);
+    repository.collect(TEST_REPORT_ID, netexEntitiesIndex);
+    assertEquals(
+      TEST_FLEXIBLE_STOP_POINT_REF_ID,
+      repository.getFlexibleStopPlaceRefByStopPointRef(
+        TEST_REPORT_ID,
+        TEST_SCHEDULED_STOP_POINT_REF_ID
+      )
+    );
+  }
+
+  @Test
+  void testStopPlaceToFlexibleStopPlaceRefMappingThrowsWhenNoValidationReport() {
+    DefaultCommonDataRepository repository = new DefaultCommonDataRepository();
+    assertThrows(
+      NetexValidationException.class,
+      () ->
+        repository.getFlexibleStopPlaceRefByStopPointRef(
+          TEST_REPORT_ID,
+          TEST_SCHEDULED_STOP_POINT_REF_ID
+        )
+    );
+  }
 
   @Test
   void testSharedScheduledStopPoints() {
