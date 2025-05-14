@@ -466,11 +466,18 @@ public class NetexValidatorsRunner {
     );
 
     try {
-      return validator
+      List<ValidationReportEntry> validationReportEntries = validator
         .validate(validationContext)
         .stream()
         .map(validationReportEntryFactory::createValidationReportEntry)
         .toList();
+      ValidationCompleteEvent event = new ValidationCompleteEvent(
+        validationContext,
+        validationReportId,
+        validationReportEntries
+      );
+      progressCallback.notifyValidationComplete(event);
+      return validationReportEntries;
     } finally {
       validatorComplete.set(true);
       stopWatch.stop();

@@ -7,5 +7,9 @@ public enum Severity {
   INFO,
   WARNING,
   ERROR,
-  CRITICAL,
+  CRITICAL;
+
+  public boolean isErrorOrCritical() {
+    return this == Severity.ERROR || this == Severity.CRITICAL;
+  }
 }
