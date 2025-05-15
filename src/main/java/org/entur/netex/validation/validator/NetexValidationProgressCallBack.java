@@ -9,4 +9,11 @@ public interface NetexValidationProgressCallBack {
    * @param message progress message.
    */
   void notifyProgress(String message);
+
+  /**
+   * Notify that validation is complete for a single validator.
+   */
+  default void notifyValidationComplete(ValidationCompleteEvent event) {
+    // NO-OP
+  }
 }

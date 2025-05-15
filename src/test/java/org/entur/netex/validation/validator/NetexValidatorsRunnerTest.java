@@ -149,6 +149,33 @@ class NetexValidatorsRunnerTest {
   }
 
   @Test
+  void testReportValidationError() {
+    NetexValidatorsRunner runner = NetexValidatorsRunner
+      .of()
+      .withNetexXMLParser(new NetexXMLParser())
+      .withXPathValidators(List.of(new FailingXPathValidator()))
+      .build();
+    TestValidationProgressCallBack callback =
+      new TestValidationProgressCallBack();
+    runner.validate(
+      TEST_CODESPACE,
+      TEST_VALIDATION_REPORT_ID,
+      TEST_FILENAME,
+      NETEX_FRAGMENT.getBytes(StandardCharsets.UTF_8),
+      false,
+      false,
+      callback
+    );
+
+    assertNotNull(callback.event);
+    assertEquals(
+      TEST_VALIDATION_REPORT_ID,
+      callback.event.validationReportId()
+    );
+    assertTrue(callback.event.hasError());
+  }
+
+  @Test
   void testDescriptions() {
     XPathValidator xPathValidator = new VersionOnLocalNetexIdValidator();
     NetexValidatorsRunner runner = NetexValidatorsRunner
@@ -199,6 +226,40 @@ class NetexValidatorsRunnerTest {
       NetexSchemaValidationContext validationContext
     ) {
       return issues;
+    }
+  }
+
+  private static class FailingXPathValidator implements XPathValidator {
+
+    @Override
+    public List<ValidationIssue> validate(
+      XPathValidationContext validationContext
+    ) {
+      return List.of(
+        new ValidationIssue(
+          new ValidationRule("code", "name", Severity.ERROR),
+          DataLocation.EMPTY_LOCATION
+        )
+      );
+    }
+
+    @Override
+    public Set<ValidationRule> getRules() {
+      return Set.of();
+    }
+  }
+
+  private static class TestValidationProgressCallBack
+    implements NetexValidationProgressCallBack {
+
+    ValidationCompleteEvent event;
+
+    @Override
+    public void notifyProgress(String aMessage) {}
+
+    @Override
+    public void notifyValidationComplete(ValidationCompleteEvent event) {
+      this.event = event;
     }
   }
 }
