@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.jaxb;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import org.entur.netex.validation.validator.model.*;
@@ -44,6 +45,10 @@ public interface NetexDataRepository {
    * OperatingDays for ServiceJourney in DatedServiceJourney.
    */
   Map<ServiceJourneyId, List<OperatingDayId>> serviceJourneyOperatingDays(
+    String validationReportId
+  );
+
+  Map<ServiceJourneyId, List<LocalDateTime>> serviceJourneyIdToActiveDates(
     String validationReportId
   );
 }
