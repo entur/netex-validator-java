@@ -1,5 +1,6 @@
 package org.entur.netex.validation.validator.model;
 
+import java.time.Duration;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.ServiceJourneyInterchange;
@@ -11,7 +12,9 @@ public record ServiceJourneyInterchangeInfo(
   ScheduledStopPointId fromStopPoint,
   ScheduledStopPointId toStopPoint,
   ServiceJourneyId fromJourneyRef,
-  ServiceJourneyId toJourneyRef
+  ServiceJourneyId toJourneyRef,
+  Boolean guaranteed,
+  Optional<Duration> maximumWaitTime
 ) {
   public static ServiceJourneyInterchangeInfo of(
     String filename,
@@ -35,7 +38,9 @@ public record ServiceJourneyInterchangeInfo(
         .ofNullable(serviceJourneyInterchange.getToJourneyRef())
         .map(VersionOfObjectRefStructure::getRef)
         .map(ServiceJourneyId::new)
-        .orElse(null)
+        .orElse(null),
+      serviceJourneyInterchange.isGuaranteed(),
+      Optional.ofNullable(serviceJourneyInterchange.getMaximumWaitTime())
     );
   }
 
@@ -55,7 +60,8 @@ public record ServiceJourneyInterchangeInfo(
         .map(ScheduledStopPointId::isValid)
         .orElse(false) &&
       fromJourneyRef != null &&
-      toJourneyRef != null
+      toJourneyRef != null &&
+      guaranteed != null
     );
   }
 
@@ -65,7 +71,7 @@ public record ServiceJourneyInterchangeInfo(
    */
   @Override
   public String toString() {
-    return (
+    String interchangeString =
       filename +
       "§" +
       interchangeId +
@@ -76,8 +82,13 @@ public record ServiceJourneyInterchangeInfo(
       "§" +
       fromJourneyRef +
       "§" +
-      toJourneyRef
-    );
+      toJourneyRef +
+      "§" +
+      guaranteed;
+    if (maximumWaitTime.isPresent()) {
+      return interchangeString.concat("§" + maximumWaitTime.get());
+    }
+    return interchangeString;
   }
 
   /*
@@ -89,14 +100,18 @@ public record ServiceJourneyInterchangeInfo(
   ) {
     if (serviceJourneyInterchangeInfo != null) {
       String[] split = serviceJourneyInterchangeInfo.split("§");
-      if (split.length == 6) {
+      if (split.length == 7 || split.length == 8) {
         return new ServiceJourneyInterchangeInfo(
           split[0],
           split[1],
           new ScheduledStopPointId(split[2]),
           new ScheduledStopPointId(split[3]),
           new ServiceJourneyId(split[4]),
-          new ServiceJourneyId(split[5])
+          new ServiceJourneyId(split[5]),
+          Boolean.parseBoolean(split[6]),
+          split.length == 8
+            ? Optional.of(MaximumWaitTime.of(split[7]).duration())
+            : Optional.empty()
         );
       } else {
         throw new NetexValidationException(
