@@ -13,6 +13,7 @@ public record ServiceJourneyInterchangeInfo(
   ScheduledStopPointId toStopPoint,
   ServiceJourneyId fromJourneyRef,
   ServiceJourneyId toJourneyRef,
+  Boolean guaranteed,
   Optional<Duration> maximumWaitTime
 ) {
   public static ServiceJourneyInterchangeInfo of(
@@ -38,6 +39,7 @@ public record ServiceJourneyInterchangeInfo(
         .map(VersionOfObjectRefStructure::getRef)
         .map(ServiceJourneyId::new)
         .orElse(null),
+      serviceJourneyInterchange.isGuaranteed(),
       Optional.ofNullable(serviceJourneyInterchange.getMaximumWaitTime())
     );
   }
@@ -58,7 +60,8 @@ public record ServiceJourneyInterchangeInfo(
         .map(ScheduledStopPointId::isValid)
         .orElse(false) &&
       fromJourneyRef != null &&
-      toJourneyRef != null
+      toJourneyRef != null &&
+      guaranteed != null
     );
   }
 
@@ -79,7 +82,9 @@ public record ServiceJourneyInterchangeInfo(
       "§" +
       fromJourneyRef +
       "§" +
-      toJourneyRef;
+      toJourneyRef +
+      "§" +
+      guaranteed;
     if (maximumWaitTime.isPresent()) {
       return interchangeString.concat("§" + maximumWaitTime.get());
     }
@@ -95,7 +100,7 @@ public record ServiceJourneyInterchangeInfo(
   ) {
     if (serviceJourneyInterchangeInfo != null) {
       String[] split = serviceJourneyInterchangeInfo.split("§");
-      if (split.length == 6 || split.length == 7) {
+      if (split.length == 7 || split.length == 8) {
         return new ServiceJourneyInterchangeInfo(
           split[0],
           split[1],
@@ -103,8 +108,9 @@ public record ServiceJourneyInterchangeInfo(
           new ScheduledStopPointId(split[3]),
           new ServiceJourneyId(split[4]),
           new ServiceJourneyId(split[5]),
-          split.length == 7
-            ? Optional.of(MaximumWaitTime.of(split[6]).duration())
+          Boolean.parseBoolean(split[6]),
+          split.length == 8
+            ? Optional.of(MaximumWaitTime.of(split[7]).duration())
             : Optional.empty()
         );
       } else {
