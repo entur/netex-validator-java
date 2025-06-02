@@ -86,6 +86,8 @@ public final class NetexSchemaRepository {
           return NeTExValidator.NetexVersion.v1_14;
         case "1.15":
           return NeTExValidator.NetexVersion.v1_15;
+        case "1.16":
+          return NeTExValidator.NetexVersion.v1_16;
         default:
       }
     }
