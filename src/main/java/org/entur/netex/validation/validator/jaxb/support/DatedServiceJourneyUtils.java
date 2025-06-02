@@ -3,8 +3,7 @@ package org.entur.netex.validation.validator.jaxb.support;
 import jakarta.xml.bind.JAXBElement;
 import javax.annotation.Nullable;
 import org.rutebanken.netex.model.DatedServiceJourney;
-import org.rutebanken.netex.model.DatedServiceJourneyRefStructure;
-import org.rutebanken.netex.model.VersionOfObjectRefStructure;
+import org.rutebanken.netex.model.VehicleJourneyRefStructure;
 
 public class DatedServiceJourneyUtils {
 
@@ -18,12 +17,11 @@ public class DatedServiceJourneyUtils {
     DatedServiceJourney datedServiceJourney
   ) {
     return datedServiceJourney
-      .getJourneyRef()
+      .getReplacedJourneys()
+      .getDatedVehicleJourneyRefOrNormalDatedVehicleJourneyRef()
       .stream()
       .map(JAXBElement::getValue)
-      .filter(DatedServiceJourneyRefStructure.class::isInstance)
-      .map(DatedServiceJourneyRefStructure.class::cast)
-      .map(VersionOfObjectRefStructure::getRef)
+      .map(VehicleJourneyRefStructure::getRef)
       .findFirst()
       .orElse(null);
   }

@@ -150,6 +150,13 @@ public class ReferenceToValidEntityTypeValidator implements XPathValidator {
       vehicleScheduleJourneyRefSubstitutions
     );
 
+    Set<String> datedVehicleJourneyRefSubstitutions = new HashSet<>();
+    datedVehicleJourneyRefSubstitutions.add("DatedServiceJourney");
+    substitutions.put(
+      "DatedVehicleJourneyRef",
+      datedVehicleJourneyRefSubstitutions
+    );
+
     Set<String> serviceJourneyPatternRefSubstitutions = new HashSet<>();
     serviceJourneyPatternRefSubstitutions.add("ServiceJourneyPattern");
     substitutions.put(

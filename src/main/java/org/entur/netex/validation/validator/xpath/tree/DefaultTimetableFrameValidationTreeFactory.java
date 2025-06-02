@@ -240,7 +240,7 @@ public class DefaultTimetableFrameValidationTreeFactory
       )
       .withRuleForLineFile(
         new ValidateNotExist(
-          "vehicleJourneys/DatedServiceJourney/DatedServiceJourneyRef[@ref = preceding-sibling::DatedServiceJourneyRef/@ref]",
+          "vehicleJourneys/DatedServiceJourney/replacedJourneys/DatedVehicleJourneyRef[@ref = preceding-sibling::DatedVehicleJourneyRef/@ref]",
           CODE_DATED_SERVICE_JOURNEY_5,
           "DatedServiceJourney multiple references to the same DatedServiceJourney",
           "Multiple references from a DatedServiceJourney to the same DatedServiceJourney",

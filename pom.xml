@@ -5,7 +5,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>10.1.1-SNAPSHOT</version>
+    <version>11.0.0-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -54,8 +54,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>17</jdk.version>
 
-        <netex-java-model.version>2.0.15</netex-java-model.version>
-        <netex-parser-java.version>3.1.46</netex-parser-java.version>
+        <netex-java-model.version>2.0.16-SNAPSHOT</netex-java-model.version>
+        <netex-parser-java.version>4.0.0-SNAPSHOT</netex-parser-java.version>
         <saxon.version>12.5</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.4</snakeyaml.version>
