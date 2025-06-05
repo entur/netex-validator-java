@@ -20,7 +20,9 @@ class ServiceJourneyStopTest {
       null, // Missing arrival time
       departureTime,
       0,
-      departureDayOffset
+      departureDayOffset,
+      true,
+      true
     );
 
     ServiceJourneyStop result = ServiceJourneyStop.fixMissingTimeValues(input);
@@ -45,7 +47,9 @@ class ServiceJourneyStopTest {
       arrivalTime,
       null, // Missing departure time
       arrivalDayOffset,
-      0
+      0,
+      true,
+      true
     );
 
     ServiceJourneyStop result = ServiceJourneyStop.fixMissingTimeValues(input);
@@ -72,7 +76,9 @@ class ServiceJourneyStopTest {
       arrivalTime,
       departureTime,
       arrivalDayOffset,
-      departureDayOffset
+      departureDayOffset,
+      true,
+      true
     );
 
     assertEquals(input, ServiceJourneyStop.fixMissingTimeValues(input));
@@ -89,7 +95,9 @@ class ServiceJourneyStopTest {
       null, // Missing arrival time
       null, // Missing departure time
       0,
-      0
+      0,
+      true,
+      true
     );
 
     assertEquals(input, ServiceJourneyStop.fixMissingTimeValues(input));
