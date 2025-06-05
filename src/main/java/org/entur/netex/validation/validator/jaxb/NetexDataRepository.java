@@ -52,6 +52,6 @@ public interface NetexDataRepository {
    * List the active dates by ServiceJourneyIds in the dataset.
    */
   Map<ServiceJourneyId, List<LocalDateTime>> serviceJourneyIdToActiveDates(
-          String validationReportId
+    String validationReportId
   );
 }
