@@ -32,6 +32,8 @@ class ServiceJourneyStopTest {
     assertEquals(departureDayOffset, result.arrivalDayOffset());
     assertEquals(departureTime, result.departureTime());
     assertEquals(departureDayOffset, result.departureDayOffset());
+    assertTrue(result.isForAlighting());
+    assertTrue(result.isForBoarding());
   }
 
   @Test
@@ -59,6 +61,8 @@ class ServiceJourneyStopTest {
     assertEquals(arrivalDayOffset, result.departureDayOffset());
     assertEquals(arrivalTime, result.arrivalTime());
     assertEquals(arrivalDayOffset, result.arrivalDayOffset());
+    assertTrue(result.isForAlighting());
+    assertTrue(result.isForBoarding());
   }
 
   @Test
