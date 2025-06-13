@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
+import org.rutebanken.netex.model.TimetabledPassingTime;
 
 class ServiceJourneyStopTest {
 
@@ -20,7 +21,9 @@ class ServiceJourneyStopTest {
       null, // Missing arrival time
       departureTime,
       0,
-      departureDayOffset
+      departureDayOffset,
+      true,
+      true
     );
 
     ServiceJourneyStop result = ServiceJourneyStop.fixMissingTimeValues(input);
@@ -30,6 +33,49 @@ class ServiceJourneyStopTest {
     assertEquals(departureDayOffset, result.arrivalDayOffset());
     assertEquals(departureTime, result.departureTime());
     assertEquals(departureDayOffset, result.departureDayOffset());
+    assertTrue(result.isForAlighting());
+    assertTrue(result.isForBoarding());
+  }
+
+  @Test
+  void testServiceJourneyStopAlightingAndBoarding() {
+    ScheduledStopPointId stopPointId = new ScheduledStopPointId(
+      "TST:ScheduledStopPoint:1"
+    );
+
+    TimetabledPassingTime timetabledPassingTime = new TimetabledPassingTime()
+      .withArrivalTime(LocalTime.of(10, 0))
+      .withDepartureTime(LocalTime.of(11, 0));
+
+    ServiceJourneyStop serviceJourneyStop1 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      null,
+      null
+    );
+
+    assertTrue(serviceJourneyStop1.isForAlighting());
+    assertTrue(serviceJourneyStop1.isForBoarding());
+
+    ServiceJourneyStop serviceJourneyStop2 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      true,
+      true
+    );
+
+    assertTrue(serviceJourneyStop2.isForAlighting());
+    assertTrue(serviceJourneyStop2.isForBoarding());
+
+    ServiceJourneyStop serviceJourneyStop3 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      false,
+      false
+    );
+
+    assertFalse(serviceJourneyStop3.isForAlighting());
+    assertFalse(serviceJourneyStop3.isForBoarding());
   }
 
   @Test
@@ -45,7 +91,9 @@ class ServiceJourneyStopTest {
       arrivalTime,
       null, // Missing departure time
       arrivalDayOffset,
-      0
+      0,
+      true,
+      true
     );
 
     ServiceJourneyStop result = ServiceJourneyStop.fixMissingTimeValues(input);
@@ -55,6 +103,8 @@ class ServiceJourneyStopTest {
     assertEquals(arrivalDayOffset, result.departureDayOffset());
     assertEquals(arrivalTime, result.arrivalTime());
     assertEquals(arrivalDayOffset, result.arrivalDayOffset());
+    assertTrue(result.isForAlighting());
+    assertTrue(result.isForBoarding());
   }
 
   @Test
@@ -72,7 +122,9 @@ class ServiceJourneyStopTest {
       arrivalTime,
       departureTime,
       arrivalDayOffset,
-      departureDayOffset
+      departureDayOffset,
+      true,
+      true
     );
 
     assertEquals(input, ServiceJourneyStop.fixMissingTimeValues(input));
@@ -89,7 +141,9 @@ class ServiceJourneyStopTest {
       null, // Missing arrival time
       null, // Missing departure time
       0,
-      0
+      0,
+      true,
+      true
     );
 
     assertEquals(input, ServiceJourneyStop.fixMissingTimeValues(input));
