@@ -15,14 +15,14 @@ public record ServiceJourneyStop(
   LocalTime departureTime,
   int arrivalDayOffset,
   int departureDayOffset,
-  boolean isForAlighting,
-  boolean isForBoarding
+  Boolean isForAlighting,
+  Boolean isForBoarding
 ) {
   public static ServiceJourneyStop of(
     ScheduledStopPointId scheduledStopPointId,
     TimetabledPassingTime timetabledPassingTime,
-    boolean isForAlighting,
-    boolean isForBoarding
+    Boolean isForAlighting,
+    Boolean isForBoarding
   ) {
     return new ServiceJourneyStop(
       scheduledStopPointId,
@@ -36,8 +36,8 @@ public record ServiceJourneyStop(
         .ofNullable(timetabledPassingTime.getDepartureDayOffset())
         .map(BigInteger::intValue)
         .orElse(0),
-      isForAlighting,
-      isForBoarding
+      Optional.ofNullable(isForAlighting).orElse(true),
+      Optional.ofNullable(isForBoarding).orElse(true)
     );
   }
 

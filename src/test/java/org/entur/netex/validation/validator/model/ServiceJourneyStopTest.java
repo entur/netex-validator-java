@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
 import org.junit.jupiter.api.Test;
+import org.rutebanken.netex.model.TimetabledPassingTime;
 
 class ServiceJourneyStopTest {
 
@@ -34,6 +35,47 @@ class ServiceJourneyStopTest {
     assertEquals(departureDayOffset, result.departureDayOffset());
     assertTrue(result.isForAlighting());
     assertTrue(result.isForBoarding());
+  }
+
+  @Test
+  void testServiceJourneyStopAlightingAndBoarding() {
+    ScheduledStopPointId stopPointId = new ScheduledStopPointId(
+      "TST:ScheduledStopPoint:1"
+    );
+
+    TimetabledPassingTime timetabledPassingTime = new TimetabledPassingTime()
+      .withArrivalTime(LocalTime.of(10, 0))
+      .withDepartureTime(LocalTime.of(11, 0));
+
+    ServiceJourneyStop serviceJourneyStop1 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      null,
+      null
+    );
+
+    assertTrue(serviceJourneyStop1.isForAlighting());
+    assertTrue(serviceJourneyStop1.isForBoarding());
+
+    ServiceJourneyStop serviceJourneyStop2 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      true,
+      true
+    );
+
+    assertTrue(serviceJourneyStop2.isForAlighting());
+    assertTrue(serviceJourneyStop2.isForBoarding());
+
+    ServiceJourneyStop serviceJourneyStop3 = ServiceJourneyStop.of(
+      stopPointId,
+      timetabledPassingTime,
+      false,
+      false
+    );
+
+    assertFalse(serviceJourneyStop3.isForAlighting());
+    assertFalse(serviceJourneyStop3.isForBoarding());
   }
 
   @Test
