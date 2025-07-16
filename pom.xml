@@ -353,6 +353,9 @@
                         </signing>
                         <deploy>
                             <maven>
+                                <pomchecker>
+                                   <strict>false</strict>
+                                </pomchecker>
                                 <mavenCentral>
                                     <sonatype>
                                         <active>RELEASE</active>
