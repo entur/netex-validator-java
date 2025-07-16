@@ -62,7 +62,8 @@ jobs:
         with:
           path: target/*.jar
   publish-release:
-    if: github.repository_owner == 'entur' && github.event_name == 'push'
+    if: github.repository_owner == 'entur' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [maven-package]
     name: Publish release to maven central
     uses: entur/gha-maven-central/.github/workflows/maven-publish.yml@v1
     secrets: inherit
