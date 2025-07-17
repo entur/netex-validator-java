@@ -5,8 +5,6 @@ import javax.annotation.Nullable;
 import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A pair of mode and sub-mode.
