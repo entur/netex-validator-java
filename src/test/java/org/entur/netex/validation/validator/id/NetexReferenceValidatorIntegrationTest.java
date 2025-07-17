@@ -20,12 +20,12 @@ class NetexReferenceValidatorIntegrationTest {
 
   @Test
   void testValidReference() throws IOException {
-    NetexReferenceValidator NetexReferenceValidator = createValidator();
+    NetexReferenceValidator netexReferenceValidator = createValidator();
     ValidationReport aggregatedValidationReport = getReport(
       TEST_DATASET_CODESPACE,
       TEST_REPORT_ID,
       TEST_DATASET_FILE_NAME,
-      NetexReferenceValidator
+      netexReferenceValidator
     );
     Assertions.assertTrue(
       aggregatedValidationReport.getValidationReportEntries().isEmpty()
@@ -34,12 +34,12 @@ class NetexReferenceValidatorIntegrationTest {
 
   @Test
   void testInvalidReference() throws IOException {
-    NetexReferenceValidator NetexReferenceValidator = createValidator();
+    NetexReferenceValidator netexReferenceValidator = createValidator();
     ValidationReport aggregatedValidationReport = getReport(
       TEST_DATASET_CODESPACE,
       TEST_REPORT_ID,
       TEST_DATASET_INVALID_REFERENCE_FILE_NAME,
-      NetexReferenceValidator
+      netexReferenceValidator
     );
     Assertions.assertFalse(
       aggregatedValidationReport.getValidationReportEntries().isEmpty()

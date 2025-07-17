@@ -59,7 +59,7 @@ public class DefaultNetexIdRepository implements NetexIdRepository {
         return value;
       }
     );
-    commonIdsCache.computeIfAbsent(reportId, key -> commonIds);
+    commonIdsCache.putIfAbsent(reportId, commonIds);
   }
 
   @Override
