@@ -1,6 +1,7 @@
 package org.entur.netex.validation.cli;
 
 import static java.io.OutputStream.nullOutputStream;
+import static java.util.Comparator.comparing;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -21,6 +22,10 @@ import org.entur.netex.validation.xml.NetexXMLParser;
  * Command-line interface for NeTEx validation.
  */
 public class NetexValidatorCLI {
+
+  private interface FileSupplier {
+    FileEntry get() throws IOException;
+  }
 
   private static boolean debug;
   private static boolean verbose;
@@ -67,10 +72,6 @@ public class NetexValidatorCLI {
       System.err.printf("Error processing file: %s%n", e.getMessage());
       System.exit(1);
     }
-  }
-
-  private static ValidationReport validate(File file, byte[] content) {
-    return validator.validate("CLI", "validation", file.getName(), content);
   }
 
   private static void help() {
@@ -133,83 +134,102 @@ public class NetexValidatorCLI {
   };
 
   private static void processZipFile(File zipFile) throws IOException {
-    List<FileEntry> xmlFiles = new ArrayList<>();
+    List<String> xmlFileNames = new ArrayList<>();
 
     try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
       ZipEntry entry;
 
       while ((entry = zipStream.getNextEntry()) != null) {
         if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-          String fileName = entry.getName();
-
-          ByteArrayOutputStream baos = new ByteArrayOutputStream();
-          byte[] buffer = new byte[4096];
-          int length;
-          while ((length = zipStream.read(buffer)) > 0) {
-            baos.write(buffer, 0, length);
-          }
-          byte[] content = baos.toByteArray();
-
-          xmlFiles.add(new FileEntry(fileName, content));
+          xmlFileNames.add(entry.getName());
         }
       }
     }
 
-    if (xmlFiles.isEmpty()) {
+    if (xmlFileNames.isEmpty()) {
       System.out.println("⚠️  No XML files found in ZIP archive");
       return;
     }
 
-    xmlFiles.sort(Comparator.comparing(fe -> fe.fileName, SHARED_DATA_FIRST_COMPARATOR));
-    processFileEntries(xmlFiles, "zip-dataset-validation");
+    xmlFileNames.sort(SHARED_DATA_FIRST_COMPARATOR);
+
+    Iterable<FileSupplier> fileSuppliers = () ->
+      xmlFileNames
+        .stream()
+        .map(fileName ->
+          (FileSupplier) () -> {
+            try (
+              ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))
+            ) {
+              ZipEntry entry;
+              while ((entry = zipStream.getNextEntry()) != null) {
+                if (entry.getName().equals(fileName)) {
+                  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                  byte[] buffer = new byte[4096];
+                  int length;
+                  while ((length = zipStream.read(buffer)) > 0) {
+                    baos.write(buffer, 0, length);
+                  }
+                  return new FileEntry(fileName, baos.toByteArray());
+                }
+              }
+              throw new IOException("File not found in ZIP: " + fileName);
+            }
+          }
+        )
+        .iterator();
+
+    processFileEntries(fileSuppliers, xmlFileNames.size(), "zip-dataset-validation");
   }
 
-  private static void processFile(File file) throws IOException {
-    byte[] content = Files.readAllBytes(file.toPath());
-    List<FileEntry> fileEntries = List.of(new FileEntry(file.getName(), content));
-
-    processFileEntries(fileEntries, "single-file-validation");
+  private static void processFile(File file) {
+    Iterable<FileSupplier> fileSuppliers = List.of(() ->
+      new FileEntry(file.getName(), Files.readAllBytes(file.toPath()))
+    );
+    processFileEntries(fileSuppliers, 1, "single-file-validation");
   }
 
   private static void processFiles(List<String> filePaths) {
     List<String> sortedFilePaths = new ArrayList<>(filePaths);
     sortedFilePaths.sort(
-      Comparator.comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
+      comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
     );
 
-    List<FileEntry> fileEntries = new ArrayList<>();
+    List<FileSupplier> fileSuppliers = new ArrayList<>();
     for (String filePath : sortedFilePaths) {
       File file = new File(filePath);
       if (!file.exists()) {
         System.err.printf("File not found: %s%n", filePath);
         continue;
       }
-
-      try {
-        byte[] content = Files.readAllBytes(file.toPath());
-        fileEntries.add(new FileEntry(file.getName(), content));
-      } catch (IOException e) {
-        System.err.printf("Error reading file %s: %s%n", filePath, e.getMessage());
-      }
+      fileSuppliers.add(() ->
+        new FileEntry(file.getName(), Files.readAllBytes(file.toPath()))
+      );
     }
 
-    if (!fileEntries.isEmpty()) {
-      processFileEntries(fileEntries, "multiple-files-validation");
+    if (!fileSuppliers.isEmpty()) {
+      processFileEntries(
+        fileSuppliers,
+        fileSuppliers.size(),
+        "multiple-files-validation"
+      );
     }
   }
 
   private static void processFileEntries(
-    List<FileEntry> fileEntries,
+    Iterable<FileSupplier> fileSuppliers,
+    int totalFiles,
     String validationReportId
   ) {
     List<ValidationReport> allReports = new ArrayList<>();
     String codespace = "CLI";
 
-    for (FileEntry fileEntry : fileEntries) {
-      String fileName = fileEntry.fileName;
-      byte[] content = fileEntry.content;
-
+    for (FileSupplier fileSupplier : fileSuppliers) {
       try {
+        FileEntry fileEntry = fileSupplier.get();
+        String fileName = fileEntry.fileName;
+        byte[] content = fileEntry.content;
+
         ValidationReport report;
         if (debug) {
           report = validator.validate(codespace, validationReportId, fileName, content);
@@ -227,12 +247,14 @@ public class NetexValidatorCLI {
         allReports.add(report);
 
         printValidationResult(fileName, report);
+      } catch (IOException e) {
+        System.err.printf("Error reading file: %s%n", e.getMessage());
       } catch (Exception e) {
-        System.err.printf("Error processing file %s: %s%n", fileName, e.getMessage());
+        System.err.printf("Error processing file: %s%n", e.getMessage());
       }
     }
 
-    if (fileEntries.size() > 1) {
+    if (totalFiles > 1) {
       long totalIssues = allReports
         .stream()
         .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
@@ -240,15 +262,12 @@ public class NetexValidatorCLI {
         .sum();
 
       System.out.println(
-        """
-
-        📊 Dataset Validation Complete:
-        Files processed: %d
-        Total issues across dataset: %d
-        """.formatted(
-            fileEntries.size(),
-            totalIssues
-          )
+        "\n\n📊 Dataset Validation Complete:\n" +
+        "Files processed: " +
+        totalFiles +
+        "\n" +
+        "Total issues across dataset: " +
+        totalIssues
       );
 
       if (!verbose && totalIssues > 0) {
