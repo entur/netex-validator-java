@@ -82,7 +82,7 @@ public class NetexValidatorCLI {
   private void help() {
     System.out.println(
       """
-        Usage: java NetexValidatorCLI [-d] [-v] <file1> [file2] [file3] ...
+        Usage: ./validate-netex [-d] [-v] <file1> [file2] [file3] ...
         Supports:
           - Single NeTEx XML file
           - ZIP archive containing multiple NeTEx files
