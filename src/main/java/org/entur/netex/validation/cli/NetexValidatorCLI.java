@@ -5,7 +5,10 @@ import static java.io.OutputStream.nullOutputStream;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
@@ -181,6 +184,16 @@ public class NetexValidatorCLI {
     return fileName.endsWith(".zip");
   }
 
+  private static final Comparator<FileEntry> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
+    String nameA = a.fileName.toLowerCase();
+    String nameB = b.fileName.toLowerCase();
+
+    // Files starting with _ come first, then alphabetical
+    if (nameA.startsWith("_") && !nameB.startsWith("_")) return -1;
+    if (!nameA.startsWith("_") && nameB.startsWith("_")) return 1;
+    return nameA.compareTo(nameB);
+  };
+
   private static void processZipFile(
     File zipFile,
     NetexValidatorsRunner validator,
@@ -189,22 +202,15 @@ public class NetexValidatorCLI {
   ) throws IOException {
     System.out.println("Processing ZIP file as dataset: " + zipFile.getName());
 
-    List<String> processedFiles = new ArrayList<>();
-    List<ValidationReport> allReports = new ArrayList<>();
-    String validationReportId = "zip-dataset-validation";
-    String codespace = "CLI";
-    boolean hasAnyIssues = false;
+    SortedSet<FileEntry> xmlFiles = new TreeSet<>(SHARED_DATA_FIRST_COMPARATOR);
 
     try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
       ZipEntry entry;
 
-      // Process each file with shared validation context for cross-file references
       while ((entry = zipStream.getNextEntry()) != null) {
         if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
           String fileName = entry.getName();
-          System.out.println("  Processing: " + fileName);
 
-          // Read the file content from the ZIP
           ByteArrayOutputStream baos = new ByteArrayOutputStream();
           byte[] buffer = new byte[4096];
           int length;
@@ -213,39 +219,50 @@ public class NetexValidatorCLI {
           }
           byte[] content = baos.toByteArray();
 
-          // Validate the file with shared validation report ID for cross-references
-          ValidationReport report;
-          if (debug) {
-            report = validator.validate(codespace, validationReportId, fileName, content);
-          } else {
-            PrintStream originalOut = System.out;
-            PrintStream originalErr = System.err;
-            System.setOut(new PrintStream(nullOutputStream()));
-            System.setErr(new PrintStream(nullOutputStream()));
-
-            report = validator.validate(codespace, validationReportId, fileName, content);
-
-            System.setOut(originalOut);
-            System.setErr(originalErr);
-          }
-
-          processedFiles.add(fileName);
-          allReports.add(report);
-
-          // Check if this file has issues
-          if (!report.getNumberOfValidationEntriesPerRule().isEmpty()) {
-            hasAnyIssues = true;
-          }
-
-          // Print individual file results
-          printFileResult(fileName, report, verbose);
+          xmlFiles.add(new FileEntry(fileName, content));
         }
       }
     }
 
-    if (processedFiles.isEmpty()) {
+    if (xmlFiles.isEmpty()) {
       System.out.println("⚠️  No XML files found in ZIP archive");
       return;
+    }
+
+    // Process files in sorted order
+    List<ValidationReport> allReports = new ArrayList<>();
+    String validationReportId = "zip-dataset-validation";
+    String codespace = "CLI";
+    boolean hasAnyIssues = false;
+
+    for (FileEntry fileEntry : xmlFiles) {
+      String fileName = fileEntry.fileName;
+      byte[] content = fileEntry.content;
+
+      System.out.println("  Processing: " + fileName);
+
+      ValidationReport report;
+      if (debug) {
+        report = validator.validate(codespace, validationReportId, fileName, content);
+      } else {
+        PrintStream originalOut = System.out;
+        PrintStream originalErr = System.err;
+        System.setOut(new PrintStream(nullOutputStream()));
+        System.setErr(new PrintStream(nullOutputStream()));
+
+        report = validator.validate(codespace, validationReportId, fileName, content);
+
+        System.setOut(originalOut);
+        System.setErr(originalErr);
+      }
+
+      allReports.add(report);
+
+      if (!report.getNumberOfValidationEntriesPerRule().isEmpty()) {
+        hasAnyIssues = true;
+      }
+
+      printFileResult(fileName, report, verbose);
     }
 
     // Print overall summary
@@ -256,7 +273,7 @@ public class NetexValidatorCLI {
       .sum();
 
     System.out.println("\n📊 Dataset Validation Complete:");
-    System.out.println("Files processed: " + processedFiles.size());
+    System.out.println("Files processed: " + xmlFiles.size());
     System.out.println("Total issues across dataset: " + totalIssues);
     System.out.println("Cross-file references validated as unified dataset");
 
@@ -293,7 +310,6 @@ public class NetexValidatorCLI {
       );
 
       if (verbose) {
-        // Show detailed issues for this file
         List<ValidationReportEntry> entries = new ArrayList<>(
           report.getValidationReportEntries()
         );
@@ -305,7 +321,6 @@ public class NetexValidatorCLI {
           System.out.println(msg);
         }
       } else {
-        // Show summary by rule for this file
         for (var entry : entriesPerRule.entrySet()) {
           String ruleName = entry.getKey();
           Long count = entry.getValue();
@@ -314,6 +329,18 @@ public class NetexValidatorCLI {
           );
         }
       }
+    }
+  }
+
+  // Helper class to store file name and content
+  private static class FileEntry {
+
+    final String fileName;
+    final byte[] content;
+
+    FileEntry(String fileName, byte[] content) {
+      this.fileName = fileName;
+      this.content = content;
     }
   }
 }
