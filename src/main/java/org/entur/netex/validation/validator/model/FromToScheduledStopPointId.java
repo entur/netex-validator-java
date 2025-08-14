@@ -22,9 +22,7 @@ public record FromToScheduledStopPointId(
     return from.toString() + "§" + to.toString();
   }
 
-  public static FromToScheduledStopPointId fromString(
-    String scheduledStopPointIds
-  ) {
+  public static FromToScheduledStopPointId fromString(String scheduledStopPointIds) {
     if (scheduledStopPointIds != null) {
       String[] split = scheduledStopPointIds.split("§");
       if (split.length == 2) {

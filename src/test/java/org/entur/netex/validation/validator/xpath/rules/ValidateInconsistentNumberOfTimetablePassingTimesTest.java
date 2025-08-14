@@ -78,15 +78,11 @@ class ValidateInconsistentNumberOfTimetablePassingTimesTest {
         "<StopPointInJourneyPattern/>"
       )
     );
-    XdmNode timetableFrame = xdmItems
-      .children("TimetableFrame")
-      .iterator()
-      .next();
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder.ofDocument(timetableFrame).build();
-    List<ValidationIssue> validationIssues = validator.validate(
-      xpathValidationContext
-    );
+    XdmNode timetableFrame = xdmItems.children("TimetableFrame").iterator().next();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofDocument(timetableFrame)
+      .build();
+    List<ValidationIssue> validationIssues = validator.validate(xpathValidationContext);
     assertEquals(1, validationIssues.size());
   }
 
@@ -101,15 +97,11 @@ class ValidateInconsistentNumberOfTimetablePassingTimesTest {
         ""
       )
     );
-    XdmNode timetableFrame = xdmItems
-      .children("TimetableFrame")
-      .iterator()
-      .next();
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder.ofDocument(timetableFrame).build();
-    List<ValidationIssue> validationIssues = validator.validate(
-      xpathValidationContext
-    );
+    XdmNode timetableFrame = xdmItems.children("TimetableFrame").iterator().next();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofDocument(timetableFrame)
+      .build();
+    List<ValidationIssue> validationIssues = validator.validate(xpathValidationContext);
     assertTrue(validationIssues.isEmpty());
   }
 }

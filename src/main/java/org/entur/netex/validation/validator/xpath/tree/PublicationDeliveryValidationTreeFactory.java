@@ -10,8 +10,7 @@ import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
  * PublicationDelivery/dataObjects or within a CompositeFrame.
  * This validation tree supports both structures.
  */
-public class PublicationDeliveryValidationTreeFactory
-  implements ValidationTreeFactory {
+public class PublicationDeliveryValidationTreeFactory implements ValidationTreeFactory {
 
   private ValidationTreeBuilder rootValidationTreeBuilder =
     new DefaultRootValidationTreeFactory().builder();
@@ -43,9 +42,7 @@ public class PublicationDeliveryValidationTreeFactory
     );
 
     validationTreeBuilder.withSubTreeBuilder(rootValidationTreeBuilder);
-    validationTreeBuilder.withSubTreeBuilder(
-      compositeFrameValidationTreeBuilder
-    );
+    validationTreeBuilder.withSubTreeBuilder(compositeFrameValidationTreeBuilder);
 
     ValidationTreeBuilder dataObjectsValidationTree = new ValidationTreeBuilder(
       "Data Objects",
@@ -56,9 +53,7 @@ public class PublicationDeliveryValidationTreeFactory
           .selectNodeSet("CompositeFrame", validationContext.getXmlNode())
           .isEmpty()
     );
-    dataObjectsValidationTree.withSubTreeBuilder(
-      singleFramesValidationTreeBuilder
-    );
+    dataObjectsValidationTree.withSubTreeBuilder(singleFramesValidationTreeBuilder);
 
     ValidationTreeBuilder framesInCompositeFrameValidationTree =
       new ValidationTreeBuilder(
@@ -67,9 +62,7 @@ public class PublicationDeliveryValidationTreeFactory
       );
 
     validationTreeBuilder.withSubTreeBuilder(dataObjectsValidationTree);
-    validationTreeBuilder.withSubTreeBuilder(
-      framesInCompositeFrameValidationTree
-    );
+    validationTreeBuilder.withSubTreeBuilder(framesInCompositeFrameValidationTree);
 
     Stream
       .of(
@@ -116,8 +109,7 @@ public class PublicationDeliveryValidationTreeFactory
   public void setCompositeFrameValidationTreeBuilder(
     ValidationTreeBuilder compositeFrameValidationTreeBuilder
   ) {
-    this.compositeFrameValidationTreeBuilder =
-      compositeFrameValidationTreeBuilder;
+    this.compositeFrameValidationTreeBuilder = compositeFrameValidationTreeBuilder;
   }
 
   public ValidationTreeBuilder siteFrameValidationTreeBuilder() {
@@ -137,8 +129,7 @@ public class PublicationDeliveryValidationTreeFactory
   public void setResourceFrameValidationTreeBuilder(
     ValidationTreeBuilder resourceFrameValidationTreeBuilder
   ) {
-    this.resourceFrameValidationTreeBuilder =
-      resourceFrameValidationTreeBuilder;
+    this.resourceFrameValidationTreeBuilder = resourceFrameValidationTreeBuilder;
   }
 
   public ValidationTreeBuilder serviceFrameValidationTreeBuilder() {
@@ -169,8 +160,7 @@ public class PublicationDeliveryValidationTreeFactory
   public void setTimetableFrameValidationTreeBuilder(
     ValidationTreeBuilder timetableFrameValidationTreeBuilder
   ) {
-    this.timetableFrameValidationTreeBuilder =
-      timetableFrameValidationTreeBuilder;
+    this.timetableFrameValidationTreeBuilder = timetableFrameValidationTreeBuilder;
   }
 
   public ValidationTreeBuilder vehicleScheduleFrameValidationTreeBuilder() {
@@ -191,7 +181,6 @@ public class PublicationDeliveryValidationTreeFactory
   public void setMultipleFramesValidationTreeBuilder(
     ValidationTreeBuilder multipleFramesValidationTreeBuilder
   ) {
-    this.multipleFramesValidationTreeBuilder =
-      multipleFramesValidationTreeBuilder;
+    this.multipleFramesValidationTreeBuilder = multipleFramesValidationTreeBuilder;
   }
 }

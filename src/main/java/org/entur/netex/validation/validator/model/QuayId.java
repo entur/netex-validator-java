@@ -22,11 +22,7 @@ public record QuayId(String id) {
   }
 
   public static QuayId ofValidId(Quay quay) {
-    return Optional
-      .of(quay)
-      .map(Quay::getId)
-      .map(QuayId::ofValidId)
-      .orElse(null);
+    return Optional.of(quay).map(Quay::getId).map(QuayId::ofValidId).orElse(null);
   }
 
   public static QuayId ofValidId(String id) {

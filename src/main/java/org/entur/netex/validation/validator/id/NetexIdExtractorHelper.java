@@ -76,19 +76,14 @@ public final class NetexIdExtractorHelper {
     filterClause.append("//n:*[");
     if (ignorableElementNames != null) {
       for (String elementName : ignorableElementNames) {
-        filterClause
-          .append("not(local-name(.)='")
-          .append(elementName)
-          .append("') and ");
+        filterClause.append("not(local-name(.)='").append(elementName).append("') and ");
       }
     }
     filterClause.append("@").append(attributeName).append("]");
 
     XdmValue nodes;
     try {
-      XPathSelector selector = xPathCompiler
-        .compile(filterClause.toString())
-        .load();
+      XPathSelector selector = xPathCompiler.compile(filterClause.toString()).load();
       selector.setContextItem(document);
       nodes = selector.evaluate();
     } catch (SaxonApiException e) {

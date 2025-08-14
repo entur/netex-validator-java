@@ -17,13 +17,10 @@ public class ValidationTreeBuilder {
   private final String context;
   private final String name;
   private final Map<String, XPathValidationRule> rules = new HashMap<>();
-  private final Map<String, XPathValidationRule> rulesForCommonFile =
-    new HashMap<>();
-  private final Map<String, XPathValidationRule> rulesForLineFile =
-    new HashMap<>();
+  private final Map<String, XPathValidationRule> rulesForCommonFile = new HashMap<>();
+  private final Map<String, XPathValidationRule> rulesForLineFile = new HashMap<>();
 
-  private final Map<String, ValidationTreeBuilder> subTreeBuilders =
-    new HashMap<>();
+  private final Map<String, ValidationTreeBuilder> subTreeBuilders = new HashMap<>();
 
   private final Predicate<XPathRuleValidationContext> executionCondition;
 
@@ -60,9 +57,7 @@ public class ValidationTreeBuilder {
     return this;
   }
 
-  public ValidationTreeBuilder withSubTreeBuilder(
-    ValidationTreeBuilder subtreeBuilder
-  ) {
+  public ValidationTreeBuilder withSubTreeBuilder(ValidationTreeBuilder subtreeBuilder) {
     subTreeBuilders.put(subtreeBuilder.name, subtreeBuilder);
     return this;
   }
@@ -83,11 +78,7 @@ public class ValidationTreeBuilder {
   }
 
   public ValidationTree build() {
-    ValidationTree validationTree = new ValidationTree(
-      name,
-      context,
-      executionCondition
-    );
+    ValidationTree validationTree = new ValidationTree(name, context, executionCondition);
 
     if (!rules.isEmpty()) {
       ValidationTree lineAndCommonTree = new ValidationTree(
@@ -104,9 +95,7 @@ public class ValidationTreeBuilder {
         ".",
         XPathRuleValidationContext::isCommonFile
       );
-      commonTree.addValidationRules(
-        rulesForCommonFile.values().stream().toList()
-      );
+      commonTree.addValidationRules(rulesForCommonFile.values().stream().toList());
       validationTree.addSubTree(commonTree);
     }
 

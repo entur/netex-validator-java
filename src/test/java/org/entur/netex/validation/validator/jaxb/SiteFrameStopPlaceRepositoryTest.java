@@ -36,13 +36,9 @@ class SiteFrameStopPlaceRepositoryTest {
   @Test
   void testHasStopPlaceId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
-    netexEntitiesIndex
-      .getStopPlaceIndex()
-      .put(STOP_PLACE_ID, List.of(new StopPlace()));
+    netexEntitiesIndex.getStopPlaceIndex().put(STOP_PLACE_ID, List.of(new StopPlace()));
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -53,9 +49,7 @@ class SiteFrameStopPlaceRepositoryTest {
   @Test
   void testHasNotStopPlaceId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -68,9 +62,7 @@ class SiteFrameStopPlaceRepositoryTest {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
     netexEntitiesIndex.getQuayIndex().put(QUAY_ID, List.of(new Quay()));
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -82,9 +74,7 @@ class SiteFrameStopPlaceRepositoryTest {
   void testHasNotQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -105,9 +95,7 @@ class SiteFrameStopPlaceRepositoryTest {
     quay.setCentroid(centroid);
     netexEntitiesIndex.getQuayIndex().put(QUAY_ID, List.of(quay));
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -121,9 +109,7 @@ class SiteFrameStopPlaceRepositoryTest {
   @Test
   void testGetCoordinatesForNonExistingQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -136,18 +122,12 @@ class SiteFrameStopPlaceRepositoryTest {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
     StopPlace stopPlace = new StopPlace();
     stopPlace.setName(new MultilingualString().withValue(STOP_PLACE_NAME));
-    netexEntitiesIndex
-      .getStopPlaceIndex()
-      .put(STOP_PLACE_ID, List.of(stopPlace));
+    netexEntitiesIndex.getStopPlaceIndex().put(STOP_PLACE_ID, List.of(stopPlace));
     Quay quay = new Quay();
     netexEntitiesIndex.getQuayIndex().put(QUAY_ID, List.of(quay));
-    netexEntitiesIndex
-      .getStopPlaceIdByQuayIdIndex()
-      .put(QUAY_ID, STOP_PLACE_ID);
+    netexEntitiesIndex.getStopPlaceIdByQuayIdIndex().put(QUAY_ID, STOP_PLACE_ID);
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -161,9 +141,7 @@ class SiteFrameStopPlaceRepositoryTest {
   @Test
   void testGetStopPlaceNameForNonExistingQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -175,22 +153,14 @@ class SiteFrameStopPlaceRepositoryTest {
   void testGetTransportModesForQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
     StopPlace stopPlace = new StopPlace()
-      .withTransportMode(
-        SiteFrameStopPlaceRepositoryTest.STOP_PLACE_TRANSPORT_MODE
-      )
+      .withTransportMode(SiteFrameStopPlaceRepositoryTest.STOP_PLACE_TRANSPORT_MODE)
       .withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS);
-    netexEntitiesIndex
-      .getStopPlaceIndex()
-      .put(STOP_PLACE_ID, List.of(stopPlace));
+    netexEntitiesIndex.getStopPlaceIndex().put(STOP_PLACE_ID, List.of(stopPlace));
     Quay quay = new Quay();
     netexEntitiesIndex.getQuayIndex().put(QUAY_ID, List.of(quay));
-    netexEntitiesIndex
-      .getStopPlaceIdByQuayIdIndex()
-      .put(QUAY_ID, STOP_PLACE_ID);
+    netexEntitiesIndex.getStopPlaceIdByQuayIdIndex().put(QUAY_ID, STOP_PLACE_ID);
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );
@@ -208,9 +178,7 @@ class SiteFrameStopPlaceRepositoryTest {
   void testGetTransportModesForNonExistingQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
 
-    JAXBValidationContext validationContext = createValidationContext(
-      netexEntitiesIndex
-    );
+    JAXBValidationContext validationContext = createValidationContext(netexEntitiesIndex);
     SiteFrameStopPlaceRepository repository = new SiteFrameStopPlaceRepository(
       validationContext
     );

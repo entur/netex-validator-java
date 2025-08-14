@@ -20,8 +20,7 @@ class DefaultCommonDataRepositoryTest {
 
   public static final String TEST_REPORT_ID = "TEST_REPORT_ID";
 
-  public static final String TEST_SCHEDULED_STOP_POINT_ID_1 =
-    "TST:ScheduledStopPoint:1";
+  public static final String TEST_SCHEDULED_STOP_POINT_ID_1 = "TST:ScheduledStopPoint:1";
 
   public static final String TEST_SCHEDULED_STOP_POINT_REF_ID =
     "TST:ScheduledStopPointRef:1";
@@ -31,8 +30,7 @@ class DefaultCommonDataRepositoryTest {
 
   public static final String TEST_QUAY_ID_1 = "TST:Quay:1";
 
-  public static final String TEST_SCHEDULED_STOP_POINT_ID_2 =
-    "TST:ScheduledStopPoint:2";
+  public static final String TEST_SCHEDULED_STOP_POINT_ID_2 = "TST:ScheduledStopPoint:2";
 
   public static final String TEST_QUAY_ID_2 = "TST:Quay:2";
 
@@ -92,21 +90,14 @@ class DefaultCommonDataRepositoryTest {
     );
     assertEquals(
       new QuayId(TEST_QUAY_ID_1),
-      repository.quayIdForScheduledStopPoint(
-        scheduledStopPointId,
-        TEST_REPORT_ID
-      )
+      repository.quayIdForScheduledStopPoint(scheduledStopPointId, TEST_REPORT_ID)
     );
 
     repository.cleanUp(TEST_REPORT_ID);
     assertFalse(repository.hasSharedScheduledStopPoints(TEST_REPORT_ID));
     assertThrows(
       NetexValidationException.class,
-      () ->
-        repository.quayIdForScheduledStopPoint(
-          scheduledStopPointId,
-          TEST_REPORT_ID
-        )
+      () -> repository.quayIdForScheduledStopPoint(scheduledStopPointId, TEST_REPORT_ID)
     );
   }
 
@@ -135,17 +126,13 @@ class DefaultCommonDataRepositoryTest {
     ServiceLink serviceLink = new ServiceLink()
       .withId(TEST_SERVICE_LINK_ID)
       .withFromPointRef(
-        new ScheduledStopPointRefStructure()
-          .withRef(TEST_SCHEDULED_STOP_POINT_ID_1)
+        new ScheduledStopPointRefStructure().withRef(TEST_SCHEDULED_STOP_POINT_ID_1)
       )
       .withToPointRef(
-        new ScheduledStopPointRefStructure()
-          .withRef(TEST_SCHEDULED_STOP_POINT_ID_2)
+        new ScheduledStopPointRefStructure().withRef(TEST_SCHEDULED_STOP_POINT_ID_2)
       );
 
-    netexEntitiesIndex
-      .getServiceLinkIndex()
-      .put(TEST_SERVICE_LINK_ID, serviceLink);
+    netexEntitiesIndex.getServiceLinkIndex().put(TEST_SERVICE_LINK_ID, serviceLink);
     repository.collect(TEST_REPORT_ID, netexEntitiesIndex);
 
     assertNotNull(
@@ -160,8 +147,9 @@ class DefaultCommonDataRepositoryTest {
     String stopPointId,
     String quayId
   ) {
-    JAXBElement<? extends QuayRefStructure> quayRef =
-      JAXBUtils.createJaxbElement(new QuayRefStructure().withRef(quayId));
+    JAXBElement<? extends QuayRefStructure> quayRef = JAXBUtils.createJaxbElement(
+      new QuayRefStructure().withRef(quayId)
+    );
 
     JAXBElement<ScheduledStopPointRefStructure> stopPointRef =
       JAXBUtils.createJaxbElement(

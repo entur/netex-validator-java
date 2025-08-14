@@ -14,8 +14,9 @@ class TransportModeAndSubModeTest {
   @Test
   void testMissingTransportModeAndSubModeFromStopPlace() {
     StopPlace stopPlace = new StopPlace();
-    TransportModeAndSubMode transportModeAndSubMode =
-      TransportModeAndSubMode.of(stopPlace);
+    TransportModeAndSubMode transportModeAndSubMode = TransportModeAndSubMode.of(
+      stopPlace
+    );
     assertNull(transportModeAndSubMode);
   }
 
@@ -23,8 +24,9 @@ class TransportModeAndSubModeTest {
   void testMissingTransportSubModeFromStopPlace() {
     StopPlace stopPlace = new StopPlace();
     stopPlace.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
-    TransportModeAndSubMode transportModeAndSubMode =
-      TransportModeAndSubMode.of(stopPlace);
+    TransportModeAndSubMode transportModeAndSubMode = TransportModeAndSubMode.of(
+      stopPlace
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(TransportSubMode.MISSING, transportModeAndSubMode.subMode());
   }
@@ -35,8 +37,9 @@ class TransportModeAndSubModeTest {
     stopPlace
       .withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL)
       .withRailSubmode(RailSubmodeEnumeration.LOCAL);
-    TransportModeAndSubMode transportModeAndSubMode =
-      TransportModeAndSubMode.of(stopPlace);
+    TransportModeAndSubMode transportModeAndSubMode = TransportModeAndSubMode.of(
+      stopPlace
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(
       AllVehicleModesOfTransportEnumeration.RAIL,
@@ -52,11 +55,10 @@ class TransportModeAndSubModeTest {
   void testCreateTransportModeAndSubModeFromStructure() {
     TransportSubmodeStructure submode = new TransportSubmodeStructure()
       .withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS);
-    TransportModeAndSubMode transportModeAndSubMode =
-      TransportModeAndSubMode.of(
-        AllVehicleModesOfTransportEnumeration.BUS,
-        submode
-      );
+    TransportModeAndSubMode transportModeAndSubMode = TransportModeAndSubMode.of(
+      AllVehicleModesOfTransportEnumeration.BUS,
+      submode
+    );
     assertNotNull(transportModeAndSubMode);
   }
 
@@ -71,11 +73,10 @@ class TransportModeAndSubModeTest {
   void testUnknownTransportSubModeForMode() {
     TransportSubmodeStructure submode = new TransportSubmodeStructure()
       .withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS);
-    TransportModeAndSubMode transportModeAndSubMode =
-      TransportModeAndSubMode.of(
-        AllVehicleModesOfTransportEnumeration.RAIL,
-        submode
-      );
+    TransportModeAndSubMode transportModeAndSubMode = TransportModeAndSubMode.of(
+      AllVehicleModesOfTransportEnumeration.RAIL,
+      submode
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(TransportSubMode.MISSING, transportModeAndSubMode.subMode());
   }

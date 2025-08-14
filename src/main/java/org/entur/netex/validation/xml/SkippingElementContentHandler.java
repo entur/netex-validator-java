@@ -18,10 +18,7 @@ public class SkippingElementContentHandler extends DefaultHandler {
 
   private final Set<QName> elementsToSkip;
 
-  public SkippingElementContentHandler(
-    XMLReader xmlReader,
-    Set<QName> elementsToSkip
-  ) {
+  public SkippingElementContentHandler(XMLReader xmlReader, Set<QName> elementsToSkip) {
     this.xmlReader = xmlReader;
     this.elementsToSkip = elementsToSkip;
   }
@@ -50,10 +47,7 @@ public class SkippingElementContentHandler extends DefaultHandler {
     private final XMLReader xmlReader;
     private final ContentHandler contentHandler;
 
-    public IgnoringContentHandler(
-      XMLReader xmlReader,
-      ContentHandler contentHandler
-    ) {
+    public IgnoringContentHandler(XMLReader xmlReader, ContentHandler contentHandler) {
       this.contentHandler = contentHandler;
       this.xmlReader = xmlReader;
     }

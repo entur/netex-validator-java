@@ -10,9 +10,7 @@ import java.util.stream.Stream;
 public record ActiveDates(List<LocalDate> dates) {
   @Override
   public String toString() {
-    return (
-      dates.stream().map(LocalDate::toString).collect(Collectors.joining(","))
-    );
+    return (dates.stream().map(LocalDate::toString).collect(Collectors.joining(",")));
   }
 
   public static ActiveDates fromString(String activeDates) {

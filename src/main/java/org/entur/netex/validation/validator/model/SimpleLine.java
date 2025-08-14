@@ -21,10 +21,7 @@ public record SimpleLine(String lineId, String lineName, String fileName) {
   public static SimpleLine of(Line line, String fileName) {
     return new SimpleLine(
       line.getId(),
-      Optional
-        .ofNullable(line.getName())
-        .map(MultilingualString::getValue)
-        .orElse(null),
+      Optional.ofNullable(line.getName()).map(MultilingualString::getValue).orElse(null),
       fileName
     );
   }
@@ -51,9 +48,7 @@ public record SimpleLine(String lineId, String lineName, String fileName) {
       if (split.length == 3) {
         return new SimpleLine(split[0], split[1], split[2]);
       } else {
-        throw new NetexValidationException(
-          "Invalid lineInfo string: " + lineInfo
-        );
+        throw new NetexValidationException("Invalid lineInfo string: " + lineInfo);
       }
     }
     return null;

@@ -11,9 +11,7 @@ import org.rutebanken.netex.model.StopPointInJourneyPattern;
 public record ScheduledStopPointId(String id) {
   public ScheduledStopPointId {
     if (!isValid(id)) {
-      throw new NetexValidationException(
-        "Invalid scheduled stop point id: " + id
-      );
+      throw new NetexValidationException("Invalid scheduled stop point id: " + id);
     }
   }
 

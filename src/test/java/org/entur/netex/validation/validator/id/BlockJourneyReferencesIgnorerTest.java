@@ -10,8 +10,7 @@ class BlockJourneyReferencesIgnorerTest {
 
   private static final String TEST_NON_JOURNEY_REFERENCE_ID = "XXX:YY:1";
   private static final String TEST_DEAD_RUN_REFERENCE_ID = "XXX:DeadRun:1";
-  private static final String TEST_SERVICE_JOURNEY_REFERENCE_ID =
-    "XXX:ServiceJourney:1";
+  private static final String TEST_SERVICE_JOURNEY_REFERENCE_ID = "XXX:ServiceJourney:1";
   private BlockJourneyReferencesIgnorer blockJourneyReferencesIgnorer;
 
   @BeforeEach

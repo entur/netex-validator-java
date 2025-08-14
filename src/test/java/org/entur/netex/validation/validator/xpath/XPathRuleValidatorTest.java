@@ -112,25 +112,19 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .noneMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_8")
-        )
+        .noneMatch(validationIssue -> validationIssue.rule().code().equals("LINE_8"))
     );
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .noneMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_9")
-        )
+        .noneMatch(validationIssue -> validationIssue.rule().code().equals("LINE_9"))
     );
   }
 
   @Test
   void testInvalidColourCodingLength() throws IOException {
     InputStream testDatasetAsStream = getClass()
-      .getResourceAsStream(
-        '/' + TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME
-      );
+      .getResourceAsStream('/' + TEST_DATASET_COLOUR_INVALID_CODING_LENGTH_FILE_NAME);
     List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
@@ -141,25 +135,19 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_8")
-        )
+        .anyMatch(validationIssue -> validationIssue.rule().code().equals("LINE_8"))
     );
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .noneMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_9")
-        )
+        .noneMatch(validationIssue -> validationIssue.rule().code().equals("LINE_9"))
     );
   }
 
   @Test
   void testInvalidColourCodingValue() throws IOException {
     InputStream testDatasetAsStream = getClass()
-      .getResourceAsStream(
-        '/' + TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME
-      );
+      .getResourceAsStream('/' + TEST_DATASET_COLOUR_INVALID_CODING_VALUE_FILE_NAME);
     List<ValidationIssue> validationIssues = validateXPath(
       "ENT",
       xPathRuleValidator,
@@ -170,16 +158,12 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_9")
-        )
+        .anyMatch(validationIssue -> validationIssue.rule().code().equals("LINE_9"))
     );
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .noneMatch(validationIssue ->
-          validationIssue.rule().code().equals("LINE_8")
-        )
+        .noneMatch(validationIssue -> validationIssue.rule().code().equals("LINE_8"))
     );
   }
 
@@ -241,19 +225,14 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .noneMatch(validationIssue ->
-          validationIssue.rule().severity() == Severity.ERROR
-        )
+        .noneMatch(validationIssue -> validationIssue.rule().severity() == Severity.ERROR)
     );
   }
 
   @Test
-  void testInvalidFlexibleLineMissingDepartureAndArrivalTime()
-    throws IOException {
+  void testInvalidFlexibleLineMissingDepartureAndArrivalTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
-      .getResourceAsStream(
-        '/' + TEST_FLEXIBLE_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES
-      );
+      .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_DEPARTURE_AND_ARRIVAL_TIMES);
     List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
@@ -273,9 +252,7 @@ class XPathRuleValidatorTest {
   @Test
   void testInvalidFlexibleLineMissingDepartureTime() throws IOException {
     InputStream testDatasetAsStream = getClass()
-      .getResourceAsStream(
-        '/' + TEST_FLEXIBLE_LINE_MISSING_EARLIEST_DEPARTURE_TIME
-      );
+      .getResourceAsStream('/' + TEST_FLEXIBLE_LINE_MISSING_EARLIEST_DEPARTURE_TIME);
     List<ValidationIssue> validationIssues = validateXPath(
       "BRA",
       xPathRuleValidator,
@@ -386,9 +363,7 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals("NOTICE_6")
-        )
+        .anyMatch(validationIssue -> validationIssue.rule().code().equals("NOTICE_6"))
     );
   }
 
@@ -406,9 +381,7 @@ class XPathRuleValidatorTest {
     Assertions.assertTrue(
       validationIssues
         .stream()
-        .anyMatch(validationIssue ->
-          validationIssue.rule().code().equals("NOTICE_7")
-        )
+        .anyMatch(validationIssue -> validationIssue.rule().code().equals("NOTICE_7"))
     );
   }
 }

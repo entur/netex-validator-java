@@ -21,8 +21,7 @@ import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 /**
  * Validate the booking properties against the Nordic NeTEx profile.
  */
-public class ValidateMandatoryBookingProperty
-  extends AbstractXPathValidationRule {
+public class ValidateMandatoryBookingProperty extends AbstractXPathValidationRule {
 
   private final ValidationRule rule;
 
@@ -42,9 +41,7 @@ public class ValidateMandatoryBookingProperty
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       List<XdmValue> errorNodes = new ArrayList<>();
       XPathSelector missingFieldSelector = validationContext
@@ -75,9 +72,7 @@ public class ValidateMandatoryBookingProperty
         for (XdmItem item : nodes) {
           if (item instanceof XdmNode node) {
             String id = node.getAttributeValue(QName.fromEQName("id"));
-            String version = node.getAttributeValue(
-              QName.fromEQName("version")
-            );
+            String version = node.getAttributeValue(QName.fromEQName("version"));
 
             XPathSelector sjSelector = validationContext
               .getNetexXMLParser()

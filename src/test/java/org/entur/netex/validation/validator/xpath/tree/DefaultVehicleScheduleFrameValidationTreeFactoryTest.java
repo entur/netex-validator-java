@@ -79,10 +79,9 @@ class DefaultVehicleScheduleFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidVehicleScheduleFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -94,10 +93,9 @@ class DefaultVehicleScheduleFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidScheduleFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code

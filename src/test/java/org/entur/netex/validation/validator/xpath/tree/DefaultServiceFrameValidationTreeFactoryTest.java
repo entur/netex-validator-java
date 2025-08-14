@@ -239,8 +239,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    validationTree =
-      new DefaultServiceFrameValidationTreeFactory().builder().build();
+    validationTree = new DefaultServiceFrameValidationTreeFactory().builder().build();
   }
 
   static Stream<String> ruleCodes() {
@@ -272,10 +271,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidServiceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -287,10 +285,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidServiceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -300,10 +297,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testMissingProjectionOnServiceLink() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_PROJECTION)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_PROJECTION)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_3
@@ -313,10 +309,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testMissingCoordinateListOnServiceLink() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_COORDINATE_LIST)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_COORDINATE_LIST)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_4
@@ -326,10 +321,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testValidCoordinateListOnServiceLink() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_4
@@ -339,12 +333,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testLessThanTwoPointsOnServiceLink() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(
-          NETEX_FRAGMENT_INVALID_SERVICE_LINK_LESS_THAN_TWO_POINTS
-        )
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID_SERVICE_LINK_LESS_THAN_TWO_POINTS)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_5
@@ -354,10 +345,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testServiceLinkWithTwoPoints() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_TWO_POINTS)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_TWO_POINTS)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_5
@@ -367,10 +357,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
 
   @Test
   void testServiceLinkWithPosList() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_SERVICE_LINK_VALID_COORDINATE_LIST)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_5

@@ -80,26 +80,19 @@ class DefaultResourceFrameValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    validationTree =
-      new DefaultResourceFrameValidationTreeFactory().builder().build();
+    validationTree = new DefaultResourceFrameValidationTreeFactory().builder().build();
   }
 
   static Stream<String> ruleCodes() {
-    return Stream.of(
-      CODE_OPERATOR_1,
-      CODE_OPERATOR_2,
-      CODE_OPERATOR_3,
-      CODE_OPERATOR_6
-    );
+    return Stream.of(CODE_OPERATOR_1, CODE_OPERATOR_2, CODE_OPERATOR_3, CODE_OPERATOR_6);
   }
 
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -111,10 +104,9 @@ class DefaultResourceFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code

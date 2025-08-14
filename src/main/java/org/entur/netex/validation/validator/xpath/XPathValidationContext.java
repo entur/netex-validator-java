@@ -48,8 +48,7 @@ public class XPathValidationContext implements ValidationContext {
     this.netexXMLParser = netexXMLParser;
     this.codespace = Objects.requireNonNull(codespace);
     this.fileName = fileName;
-    this.localIds =
-      Collections.unmodifiableSet(Objects.requireNonNull(localIds));
+    this.localIds = Collections.unmodifiableSet(Objects.requireNonNull(localIds));
     this.localIdsMap =
       localIds
         .stream()

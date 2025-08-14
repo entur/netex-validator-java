@@ -13,9 +13,7 @@ public class ValidationConfig {
     return validationRuleConfigs;
   }
 
-  public void setValidationRuleConfigs(
-    List<ValidationRuleConfig> validationRuleConfigs
-  ) {
+  public void setValidationRuleConfigs(List<ValidationRuleConfig> validationRuleConfigs) {
     this.validationRuleConfigs = validationRuleConfigs;
   }
 }

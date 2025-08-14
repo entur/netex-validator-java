@@ -25,17 +25,14 @@ public record TransportModeAndSubMode(
    */
   @Nullable
   public static TransportModeAndSubMode of(StopPlace stopPlace) {
-    AllVehicleModesOfTransportEnumeration transportMode =
-      stopPlace.getTransportMode();
+    AllVehicleModesOfTransportEnumeration transportMode = stopPlace.getTransportMode();
     if (transportMode == null) {
       return null;
     }
     return TransportSubMode
       .of(stopPlace)
       .map(submode -> new TransportModeAndSubMode(transportMode, submode))
-      .orElse(
-        new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING)
-      );
+      .orElse(new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING));
   }
 
   /**
@@ -54,8 +51,6 @@ public record TransportModeAndSubMode(
     return TransportSubMode
       .of(transportMode, submodeStructure)
       .map(submode -> new TransportModeAndSubMode(transportMode, submode))
-      .orElse(
-        new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING)
-      );
+      .orElse(new TransportModeAndSubMode(transportMode, TransportSubMode.MISSING));
   }
 }

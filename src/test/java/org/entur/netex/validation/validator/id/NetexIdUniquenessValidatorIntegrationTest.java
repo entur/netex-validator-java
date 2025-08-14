@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 
 class NetexIdUniquenessValidatorIntegrationTest {
 
-  private static final String TEST_DATASET_FILE_NAME =
-    "rb_flb-aggregated-netex.zip";
+  private static final String TEST_DATASET_FILE_NAME = "rb_flb-aggregated-netex.zip";
   private static final String TEST_DATASET_DUPLICATE_ID_FILE_NAME =
     "rb_flb-aggregated-netex-duplicate-id.zip";
   private static final String TEST_DATASET_CODESPACE = "FLB";

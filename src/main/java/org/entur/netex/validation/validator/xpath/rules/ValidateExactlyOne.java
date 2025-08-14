@@ -36,9 +36,7 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       XPathSelector selector = validationContext
         .getNetexXMLParser()
@@ -58,10 +56,7 @@ public class ValidateExactlyOne extends AbstractXPathValidationRule {
       }
       return List.of();
     } catch (SaxonApiException e) {
-      throw new NetexValidationException(
-        "Error while validating rule " + xpath,
-        e
-      );
+      throw new NetexValidationException("Error while validating rule " + xpath, e);
     }
   }
 

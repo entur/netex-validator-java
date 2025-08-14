@@ -16,14 +16,11 @@ class DefaultValidationEntryFactoryTest {
   public static final String RULE_CODE = "LINE_NAME";
 
   public static final String ORIGINAL_RULE_NAME = "A line must have a name";
-  public static final String ORIGINAL_RULE_MESSAGE =
-    "Line %s does not have a name";
+  public static final String ORIGINAL_RULE_MESSAGE = "Line %s does not have a name";
   public static final Severity ORIGINAL_RULE_SEVERITY = Severity.ERROR;
 
-  public static final String OVERRIDDEN_RULE_NAME =
-    "Une ligne doit avoir un nom";
-  public static final String OVERRIDDEN_RULE_MESSAGE =
-    "La ligne %s n'a pas de nom";
+  public static final String OVERRIDDEN_RULE_NAME = "Une ligne doit avoir un nom";
+  public static final String OVERRIDDEN_RULE_MESSAGE = "La ligne %s n'a pas de nom";
   private static final Severity OVERRIDEN_RULE_SEVERITY = Severity.WARNING;
 
   private ValidationIssue validationIssue;
@@ -39,8 +36,7 @@ class DefaultValidationEntryFactoryTest {
         ORIGINAL_RULE_SEVERITY
       );
     DataLocation dataLocation = new DataLocation(LINE_ID, "netex.xml", 1, 2);
-    validationIssue =
-      new ValidationIssue(validationRule, dataLocation, LINE_ID);
+    validationIssue = new ValidationIssue(validationRule, dataLocation, LINE_ID);
   }
 
   /**
@@ -48,14 +44,13 @@ class DefaultValidationEntryFactoryTest {
    */
   @Test
   void testMissingConfiguration() {
-    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(
-      Set.of()
-    );
+    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(Set.of());
     ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
       validationConfigLoader
     );
-    ValidationReportEntry validationReportEntry =
-      factory.createValidationReportEntry(validationIssue);
+    ValidationReportEntry validationReportEntry = factory.createValidationReportEntry(
+      validationIssue
+    );
     assertNotNull(validationReportEntry);
     assertEquals(ORIGINAL_RULE_NAME, validationReportEntry.getName());
     assertEquals(
@@ -82,8 +77,9 @@ class DefaultValidationEntryFactoryTest {
     ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
       validationConfigLoader
     );
-    ValidationReportEntry validationReportEntry =
-      factory.createValidationReportEntry(validationIssue);
+    ValidationReportEntry validationReportEntry = factory.createValidationReportEntry(
+      validationIssue
+    );
     assertNotNull(validationReportEntry);
     assertEquals(OVERRIDDEN_RULE_NAME, validationReportEntry.getName());
     assertEquals(
@@ -95,14 +91,13 @@ class DefaultValidationEntryFactoryTest {
 
   @Test
   void testTemplateReportEntry() {
-    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(
-      Set.of()
-    );
+    ValidationConfigLoader validationConfigLoader = getValidationConfigLoader(Set.of());
     ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
       validationConfigLoader
     );
-    ValidationReportEntry validationReportEntry =
-      factory.templateValidationReportEntry(validationRule);
+    ValidationReportEntry validationReportEntry = factory.templateValidationReportEntry(
+      validationRule
+    );
     assertNotNull(validationReportEntry);
     assertEquals(ORIGINAL_RULE_NAME, validationReportEntry.getName());
     assertEquals(ORIGINAL_RULE_MESSAGE, validationReportEntry.getMessage());
@@ -127,8 +122,9 @@ class DefaultValidationEntryFactoryTest {
     ValidationReportEntryFactory factory = new DefaultValidationEntryFactory(
       validationConfigLoader
     );
-    ValidationReportEntry validationReportEntry =
-      factory.templateValidationReportEntry(validationRule);
+    ValidationReportEntry validationReportEntry = factory.templateValidationReportEntry(
+      validationRule
+    );
     assertNotNull(validationReportEntry);
     assertEquals(OVERRIDDEN_RULE_NAME, validationReportEntry.getName());
     assertEquals(OVERRIDDEN_RULE_MESSAGE, validationReportEntry.getMessage());
@@ -145,10 +141,7 @@ class DefaultValidationEntryFactoryTest {
       configs
         .stream()
         .collect(
-          Collectors.toUnmodifiableMap(
-            ValidationRuleConfig::getCode,
-            Function.identity()
-          )
+          Collectors.toUnmodifiableMap(ValidationRuleConfig::getCode, Function.identity())
         );
   }
 }

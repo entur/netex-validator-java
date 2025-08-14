@@ -9,8 +9,7 @@ import org.junit.jupiter.api.Test;
 class DefaultValidationConfigLoaderTest {
 
   private static final String RULE_CODE = "RULE_1";
-  private static final String CONFIGURATION_FILE_NAME =
-    "configuration.test.yaml";
+  private static final String CONFIGURATION_FILE_NAME = "configuration.test.yaml";
   private static final String CONFIGURATION_FILE_NAME_OVERLOAD =
     "configuration.test.overloaded.yaml";
 
@@ -19,9 +18,7 @@ class DefaultValidationConfigLoaderTest {
     DefaultValidationConfigLoader loader = new DefaultValidationConfigLoader(
       CONFIGURATION_FILE_NAME
     );
-    ValidationRuleConfig validationRuleConfig = loader.getValidationRuleConfig(
-      RULE_CODE
-    );
+    ValidationRuleConfig validationRuleConfig = loader.getValidationRuleConfig(RULE_CODE);
     assertNotNull(validationRuleConfig);
     assertEquals(Severity.ERROR, validationRuleConfig.getSeverity());
   }
@@ -39,9 +36,7 @@ class DefaultValidationConfigLoaderTest {
     DefaultValidationConfigLoader loader = new DefaultValidationConfigLoader(
       List.of(CONFIGURATION_FILE_NAME, CONFIGURATION_FILE_NAME_OVERLOAD)
     );
-    ValidationRuleConfig validationRuleConfig = loader.getValidationRuleConfig(
-      RULE_CODE
-    );
+    ValidationRuleConfig validationRuleConfig = loader.getValidationRuleConfig(RULE_CODE);
     assertNotNull(validationRuleConfig);
     assertEquals(Severity.WARNING, validationRuleConfig.getSeverity());
   }

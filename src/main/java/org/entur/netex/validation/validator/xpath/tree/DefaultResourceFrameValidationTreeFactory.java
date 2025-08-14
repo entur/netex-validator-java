@@ -7,8 +7,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 /**
  * Construct a validation tree builder for ResourceFrames.
  */
-public class DefaultResourceFrameValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultResourceFrameValidationTreeFactory implements ValidationTreeFactory {
 
   public static final String CODE_OPERATOR_1 = "OPERATOR_1";
   public static final String CODE_OPERATOR_2 = "OPERATOR_2";

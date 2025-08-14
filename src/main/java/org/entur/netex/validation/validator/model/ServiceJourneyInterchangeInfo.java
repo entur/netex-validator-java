@@ -20,12 +20,8 @@ public record ServiceJourneyInterchangeInfo(
     return new ServiceJourneyInterchangeInfo(
       filename,
       serviceJourneyInterchange.getId(),
-      ScheduledStopPointId.ofNullable(
-        serviceJourneyInterchange.getFromPointRef()
-      ),
-      ScheduledStopPointId.ofNullable(
-        serviceJourneyInterchange.getToPointRef()
-      ),
+      ScheduledStopPointId.ofNullable(serviceJourneyInterchange.getFromPointRef()),
+      ScheduledStopPointId.ofNullable(serviceJourneyInterchange.getToPointRef()),
       Optional
         .ofNullable(serviceJourneyInterchange.getFromJourneyRef())
         .map(VersionOfObjectRefStructure::getRef)
@@ -100,8 +96,7 @@ public record ServiceJourneyInterchangeInfo(
         );
       } else {
         throw new NetexValidationException(
-          "Invalid serviceJourneyInterchangeInfo string: " +
-          serviceJourneyInterchangeInfo
+          "Invalid serviceJourneyInterchangeInfo string: " + serviceJourneyInterchangeInfo
         );
       }
     }

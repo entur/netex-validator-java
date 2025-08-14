@@ -23,42 +23,33 @@ class DefaultSiteFrameValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    validationTree =
-      new DefaultSiteFrameValidationTreeFactory().builder().build();
+    validationTree = new DefaultSiteFrameValidationTreeFactory().builder().build();
   }
 
   @Test
   void testSiteFrameInLineFile() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SITE_FRAME_IN_LINE_FILE
     );
     assertEquals(1, validationIssues.size());
-    assertEquals(
-      CODE_SITE_FRAME_IN_LINE_FILE,
-      validationIssues.get(0).rule().code()
-    );
+    assertEquals(CODE_SITE_FRAME_IN_LINE_FILE, validationIssues.get(0).rule().code());
   }
 
   @Test
   void testSiteFrameInCommonFile() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .withFilename("_common.xml")
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .withFilename("_common.xml")
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SITE_FRAME_IN_COMMON_FILE
     );
     assertEquals(1, validationIssues.size());
-    assertEquals(
-      CODE_SITE_FRAME_IN_COMMON_FILE,
-      validationIssues.get(0).rule().code()
-    );
+    assertEquals(CODE_SITE_FRAME_IN_COMMON_FILE, validationIssues.get(0).rule().code());
   }
 }

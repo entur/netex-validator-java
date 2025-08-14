@@ -48,8 +48,7 @@ public class DemoJAXBValidator {
     String codespace = "ENT";
     String reportId = "XXX";
     byte[] content =
-      DemoJAXBValidator.class.getResourceAsStream(DEMO_FILE_NAME)
-        .readAllBytes();
+      DemoJAXBValidator.class.getResourceAsStream(DEMO_FILE_NAME).readAllBytes();
     ValidationReport validationReport = netexValidatorsRunner.validate(
       codespace,
       reportId,
@@ -66,14 +65,10 @@ public class DemoJAXBValidator {
   private static class CustomJaxbValidator implements JAXBValidator {
 
     @Override
-    public List<ValidationIssue> validate(
-      JAXBValidationContext validationContext
-    ) {
+    public List<ValidationIssue> validate(JAXBValidationContext validationContext) {
       List<ValidationIssue> issues = new ArrayList<>();
       for (ServiceJourney serviceJourney : validationContext.serviceJourneys()) {
-        if (
-          serviceJourney.getPassingTimes().getTimetabledPassingTime().size() < 2
-        ) {
+        if (serviceJourney.getPassingTimes().getTimetabledPassingTime().size() < 2) {
           issues.add(
             new ValidationIssue(
               RULE,

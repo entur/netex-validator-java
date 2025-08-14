@@ -12,8 +12,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
  * and the correct use of validity conditions.
  * This tree does not validate the content of the individual frames.
  */
-public class DefaultSingleFramesValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultSingleFramesValidationTreeFactory implements ValidationTreeFactory {
 
   public static final String CODE_VALIDITY_CONDITIONS_IN_COMMON_FILE_1 =
     "VALIDITY_CONDITIONS_IN_COMMON_FILE_1";

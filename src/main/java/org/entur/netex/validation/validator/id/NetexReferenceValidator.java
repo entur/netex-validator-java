@@ -42,9 +42,7 @@ public class NetexReferenceValidator implements XPathValidator {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
@@ -73,8 +71,7 @@ public class NetexReferenceValidator implements XPathValidator {
     if (!possibleExternalReferences.isEmpty()) {
       // Remove references that are found in the common files, comparing only by id, not by id and version
       Set<String> commonIds = netexIdRepository.getSharedNetexIds(reportId);
-      possibleExternalReferences.removeIf(ref -> commonIds.contains(ref.getId())
-      );
+      possibleExternalReferences.removeIf(ref -> commonIds.contains(ref.getId()));
       if (!possibleExternalReferences.isEmpty()) {
         // Remove references that are valid according to the external id validators
         externalReferenceValidators.forEach(validator ->

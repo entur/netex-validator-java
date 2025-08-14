@@ -23,18 +23,13 @@ public class SiteFrameStopPlaceRepository implements StopPlaceRepository {
   @Override
   public boolean hasStopPlaceId(StopPlaceId stopPlaceId) {
     return (
-      netexEntitiesIndex
-        .getStopPlaceIndex()
-        .getLatestVersion(stopPlaceId.id()) !=
-      null
+      netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId.id()) != null
     );
   }
 
   @Override
   public boolean hasQuayId(QuayId quayId) {
-    return (
-      netexEntitiesIndex.getQuayIndex().getLatestVersion(quayId.id()) != null
-    );
+    return (netexEntitiesIndex.getQuayIndex().getLatestVersion(quayId.id()) != null);
   }
 
   @Nullable

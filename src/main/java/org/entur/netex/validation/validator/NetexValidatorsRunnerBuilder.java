@@ -17,8 +17,7 @@ public class NetexValidatorsRunnerBuilder {
   private NetexSchemaValidator netexSchemaValidator = null;
   private CommonDataRepositoryLoader commonDataRepository = null;
   private NetexDataRepository netexDataRepository = null;
-  private Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository =
-    null;
+  private Function<JAXBValidationContext, StopPlaceRepository> stopPlaceRepository = null;
   private List<XPathValidator> xPathValidators = List.of();
   private List<JAXBValidator> jaxbValidators = List.of();
   private List<DatasetValidator> datasetValidators = List.of();
@@ -68,9 +67,7 @@ public class NetexValidatorsRunnerBuilder {
     return validationReportEntryFactory;
   }
 
-  public NetexValidatorsRunnerBuilder withNetexXMLParser(
-    NetexXMLParser netexXMLParser
-  ) {
+  public NetexValidatorsRunnerBuilder withNetexXMLParser(NetexXMLParser netexXMLParser) {
     this.netexXMLParser = netexXMLParser;
     return this;
   }

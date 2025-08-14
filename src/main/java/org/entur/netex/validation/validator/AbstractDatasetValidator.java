@@ -19,8 +19,6 @@ public abstract class AbstractDatasetValidator implements DatasetValidator {
   protected ValidationReportEntry createValidationReportEntry(
     ValidationIssue validationIssue
   ) {
-    return validationReportEntryFactory.createValidationReportEntry(
-      validationIssue
-    );
+    return validationReportEntryFactory.createValidationReportEntry(validationIssue);
   }
 }

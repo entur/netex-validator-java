@@ -28,8 +28,7 @@ public class NetexXMLParser {
 
   public static final String NETEX_NAMESPACE = "http://www.netex.org.uk/netex";
   public static final String SIRI_NAMESPACE = "http://www.siri.org.uk/siri";
-  public static final String OPENGIS_NAMESPACE =
-    "http://www.opengis.net/gml/3.2";
+  public static final String OPENGIS_NAMESPACE = "http://www.opengis.net/gml/3.2";
 
   private final XPathCompiler xpathCompiler;
   private final Processor processor;
@@ -58,10 +57,7 @@ public class NetexXMLParser {
   public static XMLInputFactory getSecureXmlInputFactory() {
     XMLInputFactory factory = XMLInputFactory.newInstance();
     factory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-    factory.setProperty(
-      XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES,
-      Boolean.FALSE
-    );
+    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
     return factory;
   }
 
@@ -111,10 +107,7 @@ public class NetexXMLParser {
         )
       );
     } catch (SaxonApiException | XMLStreamException e) {
-      throw new NetexValidationException(
-        "Exception while parsing the NeTex document",
-        e
-      );
+      throw new NetexValidationException("Exception while parsing the NeTex document", e);
     }
   }
 

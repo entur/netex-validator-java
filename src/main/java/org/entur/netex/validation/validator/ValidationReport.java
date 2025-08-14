@@ -63,9 +63,7 @@ public class ValidationReport {
       );
   }
 
-  public void addValidationReportEntry(
-    ValidationReportEntry validationReportEntry
-  ) {
+  public void addValidationReportEntry(ValidationReportEntry validationReportEntry) {
     this.validationReportEntries.add(validationReportEntry);
     addValidationReportEntryToMap(validationReportEntry);
   }

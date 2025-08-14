@@ -37,9 +37,7 @@ public class ValidateAtLeastOne implements XPathValidationRule {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       XPathSelector selector = validationContext
         .getNetexXMLParser()
@@ -58,10 +56,7 @@ public class ValidateAtLeastOne implements XPathValidationRule {
       }
       return Collections.emptyList();
     } catch (SaxonApiException e) {
-      throw new NetexValidationException(
-        "Error while validating rule " + xpath,
-        e
-      );
+      throw new NetexValidationException("Error while validating rule " + xpath, e);
     }
   }
 

@@ -9,8 +9,7 @@ import org.entur.netex.validation.validator.DataLocation;
 /**
  * Base class for XPath validation rules.
  */
-public abstract class AbstractXPathValidationRule
-  implements XPathValidationRule {
+public abstract class AbstractXPathValidationRule implements XPathValidationRule {
 
   /**
    * Return a string representation of the location of the node in the XML document.
@@ -32,10 +31,7 @@ public abstract class AbstractXPathValidationRule
   }
 
   protected static XdmNode getChild(XdmNode parent, QName childName) {
-    XdmSequenceIterator<XdmNode> iter = parent.axisIterator(
-      Axis.CHILD,
-      childName
-    );
+    XdmSequenceIterator<XdmNode> iter = parent.axisIterator(Axis.CHILD, childName);
     if (iter.hasNext()) {
       return iter.next();
     } else {

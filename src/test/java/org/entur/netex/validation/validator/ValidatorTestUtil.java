@@ -94,9 +94,7 @@ public class ValidatorTestUtil {
     assert testDatasetAsStream != null;
     List<ValidationIssue> validationIssues = new ArrayList<>();
 
-    try (
-      ZipInputStream zipInputStream = new ZipInputStream(testDatasetAsStream)
-    ) {
+    try (ZipInputStream zipInputStream = new ZipInputStream(testDatasetAsStream)) {
       ZipEntry zipEntry = zipInputStream.getNextEntry();
       while (zipEntry != null) {
         byte[] content = zipInputStream.readAllBytes();
@@ -108,9 +106,7 @@ public class ValidatorTestUtil {
             codespace,
             zipEntry.getName()
           );
-        validationIssues.addAll(
-          xPathRuleValidator.validate(xPathRuleValidationContext)
-        );
+        validationIssues.addAll(xPathRuleValidator.validate(xPathRuleValidationContext));
         zipEntry = zipInputStream.getNextEntry();
       }
     }

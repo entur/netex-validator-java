@@ -30,9 +30,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
   );
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       List<XdmValue> errorNodes = new ArrayList<>();
       XPathSelector missingFieldSelector = validationContext
@@ -59,9 +57,7 @@ public class ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty
         for (XdmItem item : nodes) {
           if (item instanceof XdmNode node) {
             String id = node.getAttributeValue(QName.fromEQName("id"));
-            String version = node.getAttributeValue(
-              QName.fromEQName("version")
-            );
+            String version = node.getAttributeValue(QName.fromEQName("version"));
 
             XPathSelector sjSelector = validationContext
               .getNetexXMLParser()

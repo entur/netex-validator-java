@@ -65,9 +65,7 @@ public class NetexSchemaValidator
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    NetexSchemaValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(NetexSchemaValidationContext validationContext) {
     LOGGER.debug("Validating file {}", validationContext.getFileName());
     List<ValidationIssue> validationIssues = new ArrayList<>();
     try {
@@ -91,8 +89,7 @@ public class NetexSchemaValidator
           private int errorCount;
 
           @Override
-          public void warning(SAXParseException exception)
-            throws SAXParseException {
+          public void warning(SAXParseException exception) throws SAXParseException {
             addValidationIssue(
               validationContext.getFileName(),
               exception,
@@ -102,8 +99,7 @@ public class NetexSchemaValidator
           }
 
           @Override
-          public void error(SAXParseException exception)
-            throws SAXParseException {
+          public void error(SAXParseException exception) throws SAXParseException {
             addValidationIssue(
               validationContext.getFileName(),
               exception,
@@ -113,8 +109,7 @@ public class NetexSchemaValidator
           }
 
           @Override
-          public void fatalError(SAXParseException exception)
-            throws SAXParseException {
+          public void fatalError(SAXParseException exception) throws SAXParseException {
             error(exception);
           }
 
@@ -125,10 +120,7 @@ public class NetexSchemaValidator
           ) throws SAXParseException {
             if (errorCount < maxValidationReportEntries) {
               String message = saxParseException.getMessage();
-              DataLocation dataLocation = getErrorLocation(
-                fileName,
-                saxParseException
-              );
+              DataLocation dataLocation = getErrorLocation(fileName, saxParseException);
               validationIssues.add(
                 new ValidationIssue(
                   severity == Severity.CRITICAL || severity == Severity.ERROR
@@ -151,9 +143,7 @@ public class NetexSchemaValidator
       );
 
       validator.validate(
-        new StreamSource(
-          new ByteArrayInputStream(validationContext.getFileContent())
-        )
+        new StreamSource(new ByteArrayInputStream(validationContext.getFileContent()))
       );
     } catch (IOException e) {
       throw new NetexValidationException(e);

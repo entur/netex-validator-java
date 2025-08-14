@@ -16,9 +16,7 @@ import org.slf4j.LoggerFactory;
  */
 public class XPathRuleValidator implements XPathValidator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-    XPathRuleValidator.class
-  );
+  private static final Logger LOGGER = LoggerFactory.getLogger(XPathRuleValidator.class);
 
   private final ValidationTree topLevelValidationTree;
 
@@ -27,9 +25,7 @@ public class XPathRuleValidator implements XPathValidator {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
@@ -49,19 +45,16 @@ public class XPathRuleValidator implements XPathValidator {
     XdmNode document,
     NetexXMLParser netexXMLParser
   ) {
-    XPathRuleValidationContext validationContext =
-      new XPathRuleValidationContext(
-        document,
-        netexXMLParser,
-        codespace,
-        fileName
-      );
+    XPathRuleValidationContext validationContext = new XPathRuleValidationContext(
+      document,
+      netexXMLParser,
+      codespace,
+      fileName
+    );
     return this.validate(validationContext);
   }
 
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     return topLevelValidationTree.validate(validationContext);
   }
 

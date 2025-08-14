@@ -5,8 +5,7 @@ import org.entur.netex.validation.validator.Severity;
 /**
  * Validate that the number of passing times in a ServiceJourney matches the number of StopPoints in the JourneyPattern.
  */
-public class ValidateInconsistentNumberOfTimetablePassingTimes
-  extends ValidateNotExist {
+public class ValidateInconsistentNumberOfTimetablePassingTimes extends ValidateNotExist {
 
   static final String CODE_SERVICE_JOURNEY_15 = "SERVICE_JOURNEY_15";
 

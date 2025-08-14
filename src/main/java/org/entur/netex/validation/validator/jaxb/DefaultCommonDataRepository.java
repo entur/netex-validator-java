@@ -89,8 +89,7 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
     );
     if (idsForReport == null) {
       throw new NetexValidationException(
-        "Quay ids cache not found for validation report with id: " +
-        validationReportId
+        "Quay ids cache not found for validation report with id: " + validationReportId
       );
     }
     return QuayId.ofValidId(idsForReport.get(scheduledStopPointId.id()));
@@ -101,24 +100,20 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
     ServiceLinkId serviceLinkId,
     String validationReportId
   ) {
-    Map<String, String> idsForReport =
-      serviceLinksAndFromToScheduledStopPointIdCache.get(validationReportId);
+    Map<String, String> idsForReport = serviceLinksAndFromToScheduledStopPointIdCache.get(
+      validationReportId
+    );
     if (idsForReport == null) {
       throw new NetexValidationException(
         "Service links cache not found for validation report with id: " +
         validationReportId
       );
     }
-    return FromToScheduledStopPointId.fromString(
-      idsForReport.get(serviceLinkId.id())
-    );
+    return FromToScheduledStopPointId.fromString(idsForReport.get(serviceLinkId.id()));
   }
 
   @Override
-  public void collect(
-    String validationReportId,
-    NetexEntitiesIndex netexEntitiesIndex
-  ) {
+  public void collect(String validationReportId, NetexEntitiesIndex netexEntitiesIndex) {
     // Merging with the existing map, for handing the case where there are
     // multiple common files in the dataset.
     scheduledStopPointAndQuayIdCache.merge(
@@ -177,10 +172,7 @@ public class DefaultCommonDataRepository implements CommonDataRepositoryLoader {
       .collect(
         Collectors.toMap(
           passengerStopAssignment ->
-            passengerStopAssignment
-              .getScheduledStopPointRef()
-              .getValue()
-              .getRef(),
+            passengerStopAssignment.getScheduledStopPointRef().getValue().getRef(),
           passengerStopAssignment ->
             passengerStopAssignment.getQuayRef().getValue().getRef(),
           (v1, v2) -> v2

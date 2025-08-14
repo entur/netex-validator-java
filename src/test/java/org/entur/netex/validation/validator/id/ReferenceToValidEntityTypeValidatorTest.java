@@ -12,33 +12,21 @@ import org.junit.jupiter.api.Test;
 class ReferenceToValidEntityTypeValidatorTest {
 
   private static final String TEST_CODESPACE = "TST";
-  private static final String TEST_VALIDATION_REPORT_ID =
-    "TEST_VALIDATION_REPORT_ID";
+  private static final String TEST_VALIDATION_REPORT_ID = "TEST_VALIDATION_REPORT_ID";
   private static final String TEST_REFERENCED_ID = "XXX:YY:1";
-  private static final String TEST_INVALID_REFERENCED_ID =
-    "This is an invalid NeTEx id";
+  private static final String TEST_INVALID_REFERENCED_ID = "This is an invalid NeTEx id";
   private ReferenceToValidEntityTypeValidator referenceToValidEntityTypeValidator;
   private ValidationReport validationReport;
 
   @BeforeEach
   void setUpTest() {
-    referenceToValidEntityTypeValidator =
-      new ReferenceToValidEntityTypeValidator();
-    validationReport =
-      new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
+    referenceToValidEntityTypeValidator = new ReferenceToValidEntityTypeValidator();
+    validationReport = new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
 
   @Test
   void testInvalidReferenceType() {
-    IdVersion idVersion = new IdVersion(
-      TEST_REFERENCED_ID,
-      null,
-      "YY",
-      null,
-      null,
-      0,
-      0
-    );
+    IdVersion idVersion = new IdVersion(TEST_REFERENCED_ID, null, "YY", null, null, 0, 0);
     List<IdVersion> localRefs = List.of(idVersion);
     XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
@@ -49,8 +37,9 @@ class ReferenceToValidEntityTypeValidatorTest {
       localRefs,
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = referenceToValidEntityTypeValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       ReferenceToValidEntityTypeValidator.RULE_INVALID_REFERENCE,
@@ -79,8 +68,9 @@ class ReferenceToValidEntityTypeValidatorTest {
       localRefs,
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = referenceToValidEntityTypeValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       ReferenceToValidEntityTypeValidator.RULE_INVALID_ID_STRUCTURE,
@@ -109,8 +99,9 @@ class ReferenceToValidEntityTypeValidatorTest {
       localRefs,
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      referenceToValidEntityTypeValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = referenceToValidEntityTypeValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

@@ -29,9 +29,7 @@ public class VersionOnRefToLocalNetexIdValidator implements XPathValidator {
   );
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     List<ValidationIssue> validationIssues = new ArrayList<>();
     Set<IdVersion> localIds = xPathValidationContext.getLocalIds();
     List<IdVersion> localRefs = xPathValidationContext.getLocalRefs();

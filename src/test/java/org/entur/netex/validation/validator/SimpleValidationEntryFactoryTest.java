@@ -21,10 +21,9 @@ class SimpleValidationEntryFactoryTest {
       RULE_SEVERITY
     );
     DataLocation datalocation = DataLocation.EMPTY_LOCATION;
-    ValidationReportEntry validationReportEntry =
-      factory.createValidationReportEntry(
-        new ValidationIssue(validationRule, datalocation)
-      );
+    ValidationReportEntry validationReportEntry = factory.createValidationReportEntry(
+      new ValidationIssue(validationRule, datalocation)
+    );
     assertNotNull(validationReportEntry);
     assertEquals(RULE_NAME, validationReportEntry.getName());
     assertEquals(RULE_MESSAGE, validationReportEntry.getMessage());

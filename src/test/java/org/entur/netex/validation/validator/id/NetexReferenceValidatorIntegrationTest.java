@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 
 class NetexReferenceValidatorIntegrationTest {
 
-  private static final String TEST_DATASET_FILE_NAME =
-    "rb_flb-aggregated-netex.zip";
+  private static final String TEST_DATASET_FILE_NAME = "rb_flb-aggregated-netex.zip";
   private static final String TEST_DATASET_INVALID_REFERENCE_FILE_NAME =
     "rb_flb-aggregated-netex-invalid-reference.zip";
   private static final String TEST_DATASET_CODESPACE = "FLB";
@@ -48,14 +47,11 @@ class NetexReferenceValidatorIntegrationTest {
 
   private NetexReferenceValidator createValidator() {
     NetexIdRepository netexIdRepository = new DefaultNetexIdRepository();
-    ExternalReferenceValidator acceptAllStopPlacesAndQuays =
-      externalIdsToValidate ->
-        externalIdsToValidate
-          .stream()
-          .filter(e ->
-            e.getId().contains(":Quay:") || e.getId().contains(":StopPlace:")
-          )
-          .collect(Collectors.toSet());
+    ExternalReferenceValidator acceptAllStopPlacesAndQuays = externalIdsToValidate ->
+      externalIdsToValidate
+        .stream()
+        .filter(e -> e.getId().contains(":Quay:") || e.getId().contains(":StopPlace:"))
+        .collect(Collectors.toSet());
     return new NetexReferenceValidator(
       netexIdRepository,
       List.of(acceptAllStopPlacesAndQuays)

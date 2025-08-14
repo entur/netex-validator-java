@@ -44,9 +44,7 @@ public class ReferenceToValidEntityTypeValidator implements XPathValidator {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
@@ -88,16 +86,10 @@ public class ReferenceToValidEntityTypeValidator implements XPathValidator {
     return validationIssues;
   }
 
-  private boolean canSubstitute(
-    String referencingElement,
-    String referencedElement
-  ) {
-    Set<String> possibleSubstitutions = allowedSubstitutions.get(
-      referencingElement
-    );
+  private boolean canSubstitute(String referencingElement, String referencedElement) {
+    Set<String> possibleSubstitutions = allowedSubstitutions.get(referencingElement);
     return (
-      possibleSubstitutions != null &&
-      possibleSubstitutions.contains(referencedElement)
+      possibleSubstitutions != null && possibleSubstitutions.contains(referencedElement)
     );
   }
 
@@ -145,17 +137,11 @@ public class ReferenceToValidEntityTypeValidator implements XPathValidator {
     );
     vehicleScheduleJourneyRefSubstitutions.add("VehicleJourney");
     vehicleScheduleJourneyRefSubstitutions.add("DeadRun");
-    substitutions.put(
-      "VehicleJourneyRef",
-      vehicleScheduleJourneyRefSubstitutions
-    );
+    substitutions.put("VehicleJourneyRef", vehicleScheduleJourneyRefSubstitutions);
 
     Set<String> serviceJourneyPatternRefSubstitutions = new HashSet<>();
     serviceJourneyPatternRefSubstitutions.add("ServiceJourneyPattern");
-    substitutions.put(
-      "JourneyPatternRef",
-      serviceJourneyPatternRefSubstitutions
-    );
+    substitutions.put("JourneyPatternRef", serviceJourneyPatternRefSubstitutions);
 
     Set<String> lineRefSubstitutions = new HashSet<>();
     lineRefSubstitutions.add("FlexibleLine");

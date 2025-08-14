@@ -18,8 +18,7 @@ class NetexValidatorsRunnerTest {
 
   private static final String TEST_CODESPACE = "ENT";
   private static final String TEST_FILENAME = "netex.xml";
-  private static final String TEST_VALIDATION_REPORT_ID =
-    "validation report id";
+  private static final String TEST_VALIDATION_REPORT_ID = "validation report id";
 
   private static final String NETEX_FRAGMENT =
     """
@@ -155,8 +154,7 @@ class NetexValidatorsRunnerTest {
       .withNetexXMLParser(new NetexXMLParser())
       .withXPathValidators(List.of(new FailingXPathValidator()))
       .build();
-    TestValidationProgressCallBack callback =
-      new TestValidationProgressCallBack();
+    TestValidationProgressCallBack callback = new TestValidationProgressCallBack();
     runner.validate(
       TEST_CODESPACE,
       TEST_VALIDATION_REPORT_ID,
@@ -168,10 +166,7 @@ class NetexValidatorsRunnerTest {
     );
 
     assertNotNull(callback.event);
-    assertEquals(
-      TEST_VALIDATION_REPORT_ID,
-      callback.event.validationReportId()
-    );
+    assertEquals(TEST_VALIDATION_REPORT_ID, callback.event.validationReportId());
     assertTrue(callback.event.hasError());
   }
 
@@ -195,15 +190,11 @@ class NetexValidatorsRunnerTest {
     assertEquals(1, runner.getRuleDescriptionByCode().size());
     assertEquals(
       VersionOnLocalNetexIdValidator.RULE.name(),
-      runner
-        .getRuleDescriptionByCode()
-        .get(VersionOnLocalNetexIdValidator.RULE.code())
+      runner.getRuleDescriptionByCode().get(VersionOnLocalNetexIdValidator.RULE.code())
     );
   }
 
-  private static ValidationReport validationReport(
-    NetexValidatorsRunner runner
-  ) {
+  private static ValidationReport validationReport(NetexValidatorsRunner runner) {
     return runner.validate(
       TEST_CODESPACE,
       TEST_VALIDATION_REPORT_ID,
@@ -232,9 +223,7 @@ class NetexValidatorsRunnerTest {
   private static class FailingXPathValidator implements XPathValidator {
 
     @Override
-    public List<ValidationIssue> validate(
-      XPathValidationContext validationContext
-    ) {
+    public List<ValidationIssue> validate(XPathValidationContext validationContext) {
       return List.of(
         new ValidationIssue(
           new ValidationRule("code", "name", Severity.ERROR),

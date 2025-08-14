@@ -51,16 +51,12 @@ public class DefaultValidationConfigLoader implements ValidationConfigLoader {
       return new HashMap<>();
     }
 
-    Yaml yaml = new Yaml(
-      new Constructor(ValidationConfig.class, new LoaderOptions())
-    );
+    Yaml yaml = new Yaml(new Constructor(ValidationConfig.class, new LoaderOptions()));
     ValidationConfig validationConfig = yaml.load(inputStream);
     return validationConfig
       .getValidationRuleConfigs()
       .stream()
-      .collect(
-        Collectors.toMap(ValidationRuleConfig::getCode, Function.identity())
-      );
+      .collect(Collectors.toMap(ValidationRuleConfig::getCode, Function.identity()));
   }
 
   @Override

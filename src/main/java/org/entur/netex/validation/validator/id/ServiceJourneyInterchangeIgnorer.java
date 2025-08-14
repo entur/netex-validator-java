@@ -8,19 +8,14 @@ import java.util.stream.Collectors;
  * Mark references to ServiceJourney or ScheduledStopPoint from a ServiceJourneyInterchange as valid by default.
  * This can be used to prevent false positive when ServiceJourneyInterchanges refer to elements out of the current PublicationDelivery.
  */
-public class ServiceJourneyInterchangeIgnorer
-  implements ExternalReferenceValidator {
+public class ServiceJourneyInterchangeIgnorer implements ExternalReferenceValidator {
 
   @Override
-  public Set<IdVersion> validateReferenceIds(
-    Set<IdVersion> externalIdsToValidate
-  ) {
+  public Set<IdVersion> validateReferenceIds(Set<IdVersion> externalIdsToValidate) {
     Objects.requireNonNull(externalIdsToValidate);
     return externalIdsToValidate
       .stream()
-      .filter(
-        ServiceJourneyInterchangeIgnorer::isIgnorableReferenceFromInterchange
-      )
+      .filter(ServiceJourneyInterchangeIgnorer::isIgnorableReferenceFromInterchange)
       .collect(Collectors.toUnmodifiableSet());
   }
 

@@ -8,14 +8,11 @@ import org.entur.netex.validation.configuration.ValidationRuleConfig;
  * The name, message and severity are retrieved from the validation configuration file and override the default name,
  * message and severity of the validation rule.
  */
-public class DefaultValidationEntryFactory
-  implements ValidationReportEntryFactory {
+public class DefaultValidationEntryFactory implements ValidationReportEntryFactory {
 
   private final ValidationConfigLoader validationConfigLoader;
 
-  public DefaultValidationEntryFactory(
-    ValidationConfigLoader validationConfigLoader
-  ) {
+  public DefaultValidationEntryFactory(ValidationConfigLoader validationConfigLoader) {
     this.validationConfigLoader = validationConfigLoader;
   }
 

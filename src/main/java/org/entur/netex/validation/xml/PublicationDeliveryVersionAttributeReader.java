@@ -39,12 +39,8 @@ public final class PublicationDeliveryVersionAttributeReader {
         if (event.isStartElement()) {
           StartElement startElement = event.asStartElement();
 
-          if (
-            "PublicationDelivery".equals(startElement.getName().getLocalPart())
-          ) {
-            Iterator<Attribute> attributes = event
-              .asStartElement()
-              .getAttributes();
+          if ("PublicationDelivery".equals(startElement.getName().getLocalPart())) {
+            Iterator<Attribute> attributes = event.asStartElement().getAttributes();
             while (attributes.hasNext()) {
               Attribute attribute = attributes.next();
               if ("version".equals(attribute.getName().toString())) {

@@ -54,19 +54,15 @@ class DefaultRootValidationTreeFactoryTest {
     ValidationTree validationTree = new DefaultRootValidationTreeFactory()
       .builder()
       .build();
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_VERSION_NON_NUMERIC
     );
     assertEquals(1, validationIssues.size());
-    assertEquals(
-      CODE_VERSION_NON_NUMERIC,
-      validationIssues.get(0).rule().code()
-    );
+    assertEquals(CODE_VERSION_NON_NUMERIC, validationIssues.get(0).rule().code());
   }
 
   @Test
@@ -74,10 +70,9 @@ class DefaultRootValidationTreeFactoryTest {
     ValidationTree validationTree = new DefaultRootValidationTreeFactory()
       .builder()
       .build();
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_VERSION_NON_NUMERIC

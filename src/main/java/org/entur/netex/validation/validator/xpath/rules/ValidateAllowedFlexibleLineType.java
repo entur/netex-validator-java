@@ -23,14 +23,11 @@ public class ValidateAllowedFlexibleLineType extends ValidateNotExist {
     ) +
     "'";
 
-  public static final String MESSAGE =
-    "Illegal FlexibleLineType on FlexibleLine";
+  public static final String MESSAGE = "Illegal FlexibleLineType on FlexibleLine";
 
   public ValidateAllowedFlexibleLineType() {
     super(
-      "lines/FlexibleLine/FlexibleLineType[not(. = (" +
-      VALID_FLEXIBLE_LINE_TYPES +
-      "))]",
+      "lines/FlexibleLine/FlexibleLineType[not(. = (" + VALID_FLEXIBLE_LINE_TYPES + "))]",
       "FLEXIBLE_LINE_8",
       "FlexibleLine illegal FlexibleLineType",
       MESSAGE,

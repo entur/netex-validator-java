@@ -21,9 +21,7 @@ class TransportSubModeTest {
   @Test
   void testMissingTransportModeAndSubModeOnStopPlace() {
     StopPlace stopPlace = new StopPlace();
-    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      stopPlace
-    );
+    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(stopPlace);
     assertFalse(transportSubMode.isPresent());
   }
 
@@ -31,9 +29,7 @@ class TransportSubModeTest {
   void testMissingTransportSubModeOnStopPlace() {
     StopPlace stopPlace = new StopPlace();
     stopPlace.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
-    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      stopPlace
-    );
+    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(stopPlace);
     assertFalse(transportSubMode.isPresent());
   }
 
@@ -43,22 +39,14 @@ class TransportSubModeTest {
     stopPlace
       .withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL)
       .withRailSubmode(RailSubmodeEnumeration.LOCAL);
-    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      stopPlace
-    );
+    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(stopPlace);
     assertTrue(transportSubMode.isPresent());
-    assertEquals(
-      RailSubmodeEnumeration.LOCAL.value(),
-      transportSubMode.get().name()
-    );
+    assertEquals(RailSubmodeEnumeration.LOCAL.value(), transportSubMode.get().name());
   }
 
   @Test
   void testMissingTransportModeAndSubModeFromStructure() {
-    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      null,
-      null
-    );
+    Optional<TransportSubMode> transportSubMode = TransportSubMode.of(null, null);
     assertFalse(transportSubMode.isPresent());
   }
 
@@ -85,13 +73,9 @@ class TransportSubModeTest {
   void testTransportModeAndSubModeFromStructure() {
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
       AllVehicleModesOfTransportEnumeration.RAIL,
-      new TransportSubmodeStructure()
-        .withRailSubmode(RailSubmodeEnumeration.LOCAL)
+      new TransportSubmodeStructure().withRailSubmode(RailSubmodeEnumeration.LOCAL)
     );
     assertTrue(transportSubMode.isPresent());
-    assertEquals(
-      RailSubmodeEnumeration.LOCAL.value(),
-      transportSubMode.get().name()
-    );
+    assertEquals(RailSubmodeEnumeration.LOCAL.value(), transportSubMode.get().name());
   }
 }

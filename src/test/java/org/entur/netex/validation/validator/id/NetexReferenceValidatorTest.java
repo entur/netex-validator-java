@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 class NetexReferenceValidatorTest {
 
   private static final String TEST_CODESPACE = "TST";
-  private static final String TEST_VALIDATION_REPORT_ID =
-    "TEST_VALIDATION_REPORT_ID";
+  private static final String TEST_VALIDATION_REPORT_ID = "TEST_VALIDATION_REPORT_ID";
   private static final String TEST_LOCAL_ID = "XXX:YY:1";
   private static final String TEST_MISSING_EXTERNAL_ID = "XXX:YY:2";
   private NetexIdRepository netexIdRepository;
@@ -41,10 +40,7 @@ class NetexReferenceValidatorTest {
         }
 
         @Override
-        public void addSharedNetexIds(
-          String reportId,
-          Set<IdVersion> commonIds
-        ) {}
+        public void addSharedNetexIds(String reportId, Set<IdVersion> commonIds) {}
 
         @Override
         public void cleanUp(String reportId) {}
@@ -53,15 +49,7 @@ class NetexReferenceValidatorTest {
 
   @Test
   void testUnresolvedExternalReferencesToLocalIds() {
-    IdVersion localIdVersion = new IdVersion(
-      TEST_LOCAL_ID,
-      null,
-      "YY",
-      null,
-      null,
-      0,
-      0
-    );
+    IdVersion localIdVersion = new IdVersion(TEST_LOCAL_ID, null, "YY", null, null, 0, 0);
     Set<IdVersion> localIds = Set.of(localIdVersion);
     IdVersion localRef = new IdVersion(
       TEST_MISSING_EXTERNAL_ID,
@@ -82,8 +70,10 @@ class NetexReferenceValidatorTest {
       localRefs,
       TEST_VALIDATION_REPORT_ID
     );
-    NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(netexIdRepository, List.of());
+    NetexReferenceValidator netexReferenceValidator = new NetexReferenceValidator(
+      netexIdRepository,
+      List.of()
+    );
     List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
       xPathValidationContext
     );
@@ -96,15 +86,7 @@ class NetexReferenceValidatorTest {
 
   @Test
   void testNoUnresolvedExternalReferencesToLocalIds() {
-    IdVersion localIdVersion = new IdVersion(
-      TEST_LOCAL_ID,
-      null,
-      "YY",
-      null,
-      null,
-      0,
-      0
-    );
+    IdVersion localIdVersion = new IdVersion(TEST_LOCAL_ID, null, "YY", null, null, 0, 0);
     Set<IdVersion> localIds = Set.of(localIdVersion);
     List<IdVersion> localRefs = new ArrayList<>(localIds);
     XPathValidationContext xPathValidationContext = new XPathValidationContext(
@@ -116,8 +98,10 @@ class NetexReferenceValidatorTest {
       localRefs,
       TEST_VALIDATION_REPORT_ID
     );
-    NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(netexIdRepository, List.of());
+    NetexReferenceValidator netexReferenceValidator = new NetexReferenceValidator(
+      netexIdRepository,
+      List.of()
+    );
     List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
       xPathValidationContext
     );
@@ -147,13 +131,12 @@ class NetexReferenceValidatorTest {
       TEST_VALIDATION_REPORT_ID
     );
 
-    ExternalReferenceValidator externalReferenceValidator =
-      externalIdsToValidate -> Set.of();
-    NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(
-        netexIdRepository,
-        List.of(externalReferenceValidator)
-      );
+    ExternalReferenceValidator externalReferenceValidator = externalIdsToValidate ->
+      Set.of();
+    NetexReferenceValidator netexReferenceValidator = new NetexReferenceValidator(
+      netexIdRepository,
+      List.of(externalReferenceValidator)
+    );
     List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
       xPathValidationContext
     );
@@ -187,13 +170,12 @@ class NetexReferenceValidatorTest {
       TEST_VALIDATION_REPORT_ID
     );
 
-    ExternalReferenceValidator externalReferenceValidator =
-      externalIdsToValidate -> Set.of(localRefVersion);
-    NetexReferenceValidator netexReferenceValidator =
-      new NetexReferenceValidator(
-        netexIdRepository,
-        List.of(externalReferenceValidator)
-      );
+    ExternalReferenceValidator externalReferenceValidator = externalIdsToValidate ->
+      Set.of(localRefVersion);
+    NetexReferenceValidator netexReferenceValidator = new NetexReferenceValidator(
+      netexIdRepository,
+      List.of(externalReferenceValidator)
+    );
     List<ValidationIssue> validationIssues = netexReferenceValidator.validate(
       xPathValidationContext
     );

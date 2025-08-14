@@ -20,10 +20,7 @@ public class ValidateAllowedBookingAccessProperty extends ValidateNotExist {
 
   public ValidateAllowedBookingAccessProperty(String context) {
     super(
-      context +
-      "/BookingAccess[not(. = (" +
-      VALID_BOOKING_ACCESS_PROPERTIES +
-      "))]",
+      context + "/BookingAccess[not(. = (" + VALID_BOOKING_ACCESS_PROPERTIES + "))]",
       "BOOKING_1",
       "Booking illegal BookingAccess",
       "Illegal value for BookingAccess",

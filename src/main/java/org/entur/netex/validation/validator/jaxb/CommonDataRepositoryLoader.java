@@ -10,10 +10,7 @@ public interface CommonDataRepositoryLoader extends CommonDataRepository {
   /**
    * Collect common data for the given validation report.
    */
-  void collect(
-    String validationReportId,
-    NetexEntitiesIndex netexEntitiesIndex
-  );
+  void collect(String validationReportId, NetexEntitiesIndex netexEntitiesIndex);
 
   /**
    * Clean up the common data repository for the given validation report.

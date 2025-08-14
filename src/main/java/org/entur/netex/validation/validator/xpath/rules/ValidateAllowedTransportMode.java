@@ -37,14 +37,7 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
     String message,
     Severity severity
   ) {
-    this(
-      contexPath,
-      code,
-      name,
-      message,
-      severity,
-      DEFAULT_VALID_TRANSPORT_MODES
-    );
+    this(contexPath, code, name, message, severity, DEFAULT_VALID_TRANSPORT_MODES);
   }
 
   /**

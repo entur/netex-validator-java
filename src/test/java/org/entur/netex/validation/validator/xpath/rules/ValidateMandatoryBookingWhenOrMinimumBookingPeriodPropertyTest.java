@@ -74,10 +74,9 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
       .replace("${BOOK_WHEN}", "")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithMissingBookWhen)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithMissingBookWhen)
+      .build();
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
@@ -98,10 +97,9 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
       .replace("${BOOK_WHEN}", "<BookWhen>advanceAndDayOfTravel</BookWhen>")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithBookWhen)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithBookWhen)
+      .build();
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
@@ -121,10 +119,9 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         "<BookingArrangements><BookWhen>advanceAndDayOfTravel</BookWhen></BookingArrangements>"
       )
       .replace("${FLEXIBLE_PROPERTIES}", "");
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(journeyPatternWithBookingArrangement)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(journeyPatternWithBookingArrangement)
+      .build();
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(
@@ -144,10 +141,9 @@ class ValidateMandatoryBookingWhenOrMinimumBookingPeriodPropertyTest {
         "${FLEXIBLE_PROPERTIES}",
         "<FlexibleServiceProperties><BookWhen>advanceAndDayOfTravel</BookWhen></FlexibleServiceProperties>"
       );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(serviceJourneyWithFlexibleProperties)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(serviceJourneyWithFlexibleProperties)
+      .build();
 
     List<ValidationIssue> validationIssues =
       validateMandatoryBookingWhenOrMinimumBookingPeriodProperty.validate(

@@ -51,8 +51,7 @@ public class IdVersion {
     }
     IdVersion idVersion = (IdVersion) o;
     return (
-      Objects.equals(id, idVersion.id) &&
-      Objects.equals(version, idVersion.version)
+      Objects.equals(id, idVersion.id) && Objects.equals(version, idVersion.version)
     );
   }
 

@@ -34,8 +34,7 @@ public class NetexValidatorsRunner {
   private static final Logger LOGGER = LoggerFactory.getLogger(
     NetexValidatorsRunner.class
   );
-  private static final int VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS =
-    10000;
+  private static final int VALIDATION_PROGRESS_NOTIFICATION_PERIOD_MILLIS = 10000;
   private static final int MAX_WAITING_LOOPS = 180;
 
   private final NetexSchemaValidator netexSchemaValidator;
@@ -54,9 +53,7 @@ public class NetexValidatorsRunner {
 
     this.xPathValidators = builder.getXPathValidators();
     if (!xPathValidators.isEmpty() && netexXMLParser == null) {
-      throw new IllegalArgumentException(
-        "XPath validators require a NeTEx XML parser"
-      );
+      throw new IllegalArgumentException("XPath validators require a NeTEx XML parser");
     }
 
     this.jaxbValidators = builder.getJaxbValidators();
@@ -148,13 +145,12 @@ public class NetexValidatorsRunner {
       return validationReport;
     }
 
-    XPathValidationContext xPathValidationContext =
-      prepareXPathValidationContext(
-        validationReportId,
-        codespace,
-        filename,
-        fileContent
-      );
+    XPathValidationContext xPathValidationContext = prepareXPathValidationContext(
+      validationReportId,
+      codespace,
+      filename,
+      fileContent
+    );
 
     validationReport.addAllValidationReportEntries(
       runXPathValidators(
@@ -189,10 +185,7 @@ public class NetexValidatorsRunner {
         jaxbValidationContext.getNetexEntitiesIndex()
       );
     }
-    LOGGER.info(
-      "Collecting data for file {}",
-      jaxbValidationContext.getFileName()
-    );
+    LOGGER.info("Collecting data for file {}", jaxbValidationContext.getFileName());
     netexDataCollectors.forEach(netexDataCollector ->
       netexDataCollector.collect(jaxbValidationContext)
     );
@@ -442,9 +435,7 @@ public class NetexValidatorsRunner {
     });
   }
 
-  private <
-    C extends ValidationContext
-  > List<ValidationReportEntry> runValidator(
+  private <C extends ValidationContext> List<ValidationReportEntry> runValidator(
     String codespace,
     String validationReportId,
     String filename,
@@ -459,11 +450,7 @@ public class NetexValidatorsRunner {
     stopWatch.start();
 
     AtomicBoolean validatorComplete = new AtomicBoolean(false);
-    notifyProgressAsync(
-      progressCallback,
-      netexValidatorName,
-      validatorComplete
-    );
+    notifyProgressAsync(progressCallback, netexValidatorName, validatorComplete);
 
     try {
       List<ValidationReportEntry> validationReportEntries = validator
@@ -516,9 +503,7 @@ public class NetexValidatorsRunner {
               .templateValidationReportEntry(validationRule)
               .getName(),
           (a, b) -> {
-            throw new IllegalStateException(
-              "Duplicate validation rule: " + a + ", " + b
-            );
+            throw new IllegalStateException("Duplicate validation rule: " + a + ", " + b);
           },
           TreeMap::new
         )

@@ -28,9 +28,7 @@ class InterchangeRuleReferencesIgnorerTest {
     );
     Set<IdVersion> externalIdsToValidate = Set.of(idVersion);
     Set<IdVersion> filteredIdVersions =
-      interchangeRuleReferencesIgnorer.validateReferenceIds(
-        externalIdsToValidate
-      );
+      interchangeRuleReferencesIgnorer.validateReferenceIds(externalIdsToValidate);
     Assertions.assertNotNull(filteredIdVersions);
     Assertions.assertEquals(externalIdsToValidate, filteredIdVersions);
   }
@@ -48,9 +46,7 @@ class InterchangeRuleReferencesIgnorerTest {
     );
     Set<IdVersion> externalIdsToValidate = Set.of(idVersion);
     Set<IdVersion> filteredIdVersions =
-      interchangeRuleReferencesIgnorer.validateReferenceIds(
-        externalIdsToValidate
-      );
+      interchangeRuleReferencesIgnorer.validateReferenceIds(externalIdsToValidate);
     Assertions.assertNotNull(filteredIdVersions);
     Assertions.assertTrue(filteredIdVersions.isEmpty());
   }

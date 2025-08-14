@@ -94,9 +94,7 @@ public class JAXBValidationContext implements ValidationContext {
    * it will be looked up from the netex entities index.
    */
   @Nullable
-  public QuayId quayIdForScheduledStopPoint(
-    ScheduledStopPointId scheduledStopPointId
-  ) {
+  public QuayId quayIdForScheduledStopPoint(ScheduledStopPointId scheduledStopPointId) {
     if (scheduledStopPointId == null) {
       return null;
     }
@@ -106,9 +104,7 @@ public class JAXBValidationContext implements ValidationContext {
         validationReportId
       )
       : QuayId.ofValidId(
-        netexEntitiesIndex
-          .getQuayIdByStopPointRefIndex()
-          .get(scheduledStopPointId.id())
+        netexEntitiesIndex.getQuayIdByStopPointRefIndex().get(scheduledStopPointId.id())
       );
   }
 
@@ -124,9 +120,7 @@ public class JAXBValidationContext implements ValidationContext {
    * Return the transport mode for a given Quay.
    */
   @Nullable
-  public TransportModeAndSubMode transportModeAndSubModeForQuayId(
-    QuayId quayId
-  ) {
+  public TransportModeAndSubMode transportModeAndSubModeForQuayId(QuayId quayId) {
     return stopPlaceRepository.getTransportModesForQuayId(quayId);
   }
 
@@ -138,9 +132,7 @@ public class JAXBValidationContext implements ValidationContext {
     ScheduledStopPointId scheduledStopPointId
   ) {
     QuayId quayId = quayIdForScheduledStopPoint(scheduledStopPointId);
-    return quayId == null
-      ? null
-      : stopPlaceRepository.getCoordinatesForQuayId(quayId);
+    return quayId == null ? null : stopPlaceRepository.getCoordinatesForQuayId(quayId);
   }
 
   /**
@@ -156,9 +148,7 @@ public class JAXBValidationContext implements ValidationContext {
    * Return all lines in the current file.
    */
   public Collection<Line> lines() {
-    return Collections.unmodifiableCollection(
-      netexEntitiesIndex.getLineIndex().getAll()
-    );
+    return Collections.unmodifiableCollection(netexEntitiesIndex.getLineIndex().getAll());
   }
 
   /**
@@ -254,9 +244,7 @@ public class JAXBValidationContext implements ValidationContext {
    * Return the original DatedServiceJourney of a given DatedServiceJourney.
    */
   @Nullable
-  public DatedServiceJourney originalDatedServiceJourney(
-    DatedServiceJourney dsj
-  ) {
+  public DatedServiceJourney originalDatedServiceJourney(DatedServiceJourney dsj) {
     return netexEntitiesIndex
       .getDatedServiceJourneyIndex()
       .get(DatedServiceJourneyUtils.originalDatedServiceJourneyRef(dsj));
@@ -324,9 +312,7 @@ public class JAXBValidationContext implements ValidationContext {
   }
 
   public Collection<CompositeFrame> compositeFrames() {
-    return Collections.unmodifiableCollection(
-      netexEntitiesIndex.getCompositeFrames()
-    );
+    return Collections.unmodifiableCollection(netexEntitiesIndex.getCompositeFrames());
   }
 
   public boolean hasServiceCalendarFrames() {
@@ -345,14 +331,11 @@ public class JAXBValidationContext implements ValidationContext {
    * it will be looked up from the line or flexible line.
    */
   @Nullable
-  public TransportModeAndSubMode transportModeAndSubMode(
-    ServiceJourney serviceJourney
-  ) {
+  public TransportModeAndSubMode transportModeAndSubMode(ServiceJourney serviceJourney) {
     AllVehicleModesOfTransportEnumeration transportMode =
       serviceJourney.getTransportMode();
 
-    TransportSubmodeStructure subModeStructure =
-      serviceJourney.getTransportSubmode();
+    TransportSubmodeStructure subModeStructure = serviceJourney.getTransportSubmode();
 
     if (transportMode == null) {
       JourneyPattern journeyPattern = journeyPattern(serviceJourney);
@@ -366,9 +349,7 @@ public class JAXBValidationContext implements ValidationContext {
    * it will be looked up from the line or flexible line with FIXED Type
    */
   @Nullable
-  public TransportModeAndSubMode transportModeAndSubMode(
-    JourneyPattern journeyPattern
-  ) {
+  public TransportModeAndSubMode transportModeAndSubMode(JourneyPattern journeyPattern) {
     Route route = netexEntitiesIndex
       .getRouteIndex()
       .get(journeyPattern.getRouteRef().getRef());

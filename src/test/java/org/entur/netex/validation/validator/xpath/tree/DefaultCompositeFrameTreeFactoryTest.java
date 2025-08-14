@@ -89,10 +89,9 @@ class DefaultCompositeFrameTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -104,10 +103,9 @@ class DefaultCompositeFrameTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidResourceFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code

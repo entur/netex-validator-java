@@ -69,12 +69,11 @@ class NetexSchemaValidatorTest {
     NetexSchemaValidator validator = new NetexSchemaValidator(
       MAX_VALIDATION_REPORT_ENTRIES
     );
-    NetexSchemaValidationContext validationContext =
-      new NetexSchemaValidationContext(
-        TEST_FILENAME,
-        TEST_CODESPACE,
-        netexFragment.getBytes(StandardCharsets.UTF_8)
-      );
+    NetexSchemaValidationContext validationContext = new NetexSchemaValidationContext(
+      TEST_FILENAME,
+      TEST_CODESPACE,
+      netexFragment.getBytes(StandardCharsets.UTF_8)
+    );
     return validator.validate(validationContext);
   }
 }

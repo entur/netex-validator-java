@@ -19,9 +19,7 @@ public class TestValidationContextBuilder {
     return new TestValidationContextBuilder(document);
   }
 
-  public static TestValidationContextBuilder ofNetexFragment(
-    String netexFragment
-  ) {
+  public static TestValidationContextBuilder ofNetexFragment(String netexFragment) {
     return ofDocument(XPathTestSupport.parseDocument(netexFragment));
   }
 

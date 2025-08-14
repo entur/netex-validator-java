@@ -20,10 +20,7 @@ public class DefaultServiceCalendarFrameValidationTreeFactory
 
   @Override
   public ValidationTreeBuilder builder() {
-    return new ValidationTreeBuilder(
-      "Service Calendar Frame",
-      "ServiceCalendarFrame"
-    )
+    return new ValidationTreeBuilder("Service Calendar Frame", "ServiceCalendarFrame")
       .withRule(
         new ValidateNotExist(
           "//DayType[not(//DayTypeAssignment/DayTypeRef/@ref = @id)]",

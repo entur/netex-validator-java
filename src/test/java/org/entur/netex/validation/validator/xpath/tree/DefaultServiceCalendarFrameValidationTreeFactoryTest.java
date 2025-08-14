@@ -108,10 +108,9 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidServiceCalendarFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -123,10 +122,9 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidServiceCalendarFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -136,10 +134,9 @@ class DefaultServiceCalendarFrameValidationTreeFactoryTest {
 
   @Test
   void testNegativeOperatingPeriod() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_NEGATIVE_OPERATING_PERIOD)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_OPERATING_PERIOD_1

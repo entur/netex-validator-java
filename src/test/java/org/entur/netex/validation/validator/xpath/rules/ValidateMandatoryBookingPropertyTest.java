@@ -76,12 +76,12 @@ class ValidateMandatoryBookingPropertyTest {
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
-        .build();
-    List<ValidationIssue> validationIssues =
-      validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
+      .build();
+    List<ValidationIssue> validationIssues = validateMandatoryBookingProperty.validate(
+      xpathRuleValidationContext
+    );
     Assertions.assertNotNull(validationIssues);
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
@@ -95,20 +95,17 @@ class ValidateMandatoryBookingPropertyTest {
     ValidateMandatoryBookingProperty validateMandatoryBookingProperty =
       new ValidateMandatoryBookingProperty("BookingMethods");
     String flexibleLineWithInvalidBookingAccess = NETEX_FRAGMENT
-      .replace(
-        "${BOOKING_METHOD}",
-        "<BookingMethods>callOffice online</BookingMethods>"
-      )
+      .replace("${BOOKING_METHOD}", "<BookingMethods>callOffice online</BookingMethods>")
       .replace("${BOOKING_ARRANGEMENT}", "")
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
+      .build();
 
-    List<ValidationIssue> validationIssues =
-      validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateMandatoryBookingProperty.validate(
+      xpathRuleValidationContext
+    );
     Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }
@@ -125,13 +122,13 @@ class ValidateMandatoryBookingPropertyTest {
       )
       .replace("${FLEXIBLE_PROPERTIES}", "");
 
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(journeyPatternWithBookingArrangement)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(journeyPatternWithBookingArrangement)
+      .build();
 
-    List<ValidationIssue> validationIssues =
-      validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateMandatoryBookingProperty.validate(
+      xpathRuleValidationContext
+    );
     Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }
@@ -147,13 +144,13 @@ class ValidateMandatoryBookingPropertyTest {
         "${FLEXIBLE_PROPERTIES}",
         "<FlexibleServiceProperties><BookingMethods>callOffice online</BookingMethods></FlexibleServiceProperties>"
       );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(serviceJourneyWithFlexibleProperties)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(serviceJourneyWithFlexibleProperties)
+      .build();
 
-    List<ValidationIssue> validationIssues =
-      validateMandatoryBookingProperty.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateMandatoryBookingProperty.validate(
+      xpathRuleValidationContext
+    );
     Assertions.assertNotNull(validationIssues);
     Assertions.assertTrue(validationIssues.isEmpty());
   }

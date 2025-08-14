@@ -11,8 +11,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
  * (example: matching a ServiceJourney in a TimetableFrame with a JourneyPattern in a ServiceFrame)
  * or generic rules that can be applied on different frames (example: notices and notice assignments).
  */
-public class DefaultMultipleFramesValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultMultipleFramesValidationTreeFactory implements ValidationTreeFactory {
 
   public static final String CODE_NOTICE_1 = "NOTICE_1";
   public static final String CODE_NOTICE_2 = "NOTICE_2";
@@ -91,11 +90,7 @@ public class DefaultMultipleFramesValidationTreeFactory
       .withRuleForLineFile(
         new ValidateMandatoryBookingWhenOrMinimumBookingPeriodProperty()
       )
-      .withRuleForLineFile(
-        new ValidateMandatoryBookingProperty("BookingMethods")
-      )
-      .withRuleForLineFile(
-        new ValidateMandatoryBookingProperty("BookingContact")
-      );
+      .withRuleForLineFile(new ValidateMandatoryBookingProperty("BookingMethods"))
+      .withRuleForLineFile(new ValidateMandatoryBookingProperty("BookingContact"));
   }
 }

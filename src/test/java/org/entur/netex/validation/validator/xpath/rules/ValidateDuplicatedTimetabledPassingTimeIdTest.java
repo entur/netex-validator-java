@@ -71,11 +71,7 @@ class ValidateDuplicatedTimetabledPassingTimeIdTest {
         true,
         "Non-duplicated IDs should be accepted"
       ),
-      Arguments.of(
-        List.of("", "", "", ""),
-        true,
-        "Missing IDs should be accepted"
-      ),
+      Arguments.of(List.of("", "", "", ""), true, "Missing IDs should be accepted"),
       Arguments.of(
         List.of(
           "id=\"FLI:TimetabledPassingTime:ID1\"",
@@ -107,19 +103,12 @@ class ValidateDuplicatedTimetabledPassingTimeIdTest {
       .replace("${ID_3}", ids.get(2))
       .replace("${ID_4}", ids.get(3));
 
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(vehicleJourneysFragment)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(vehicleJourneysFragment)
+      .build();
     List<ValidationIssue> validationIssues =
-      validateDuplicatedTimetabledPassingTimeId.validate(
-        xpathRuleValidationContext
-      );
+      validateDuplicatedTimetabledPassingTimeId.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
-    Assertions.assertEquals(
-      accepted,
-      validationIssues.isEmpty(),
-      expectedMessage
-    );
+    Assertions.assertEquals(accepted, validationIssues.isEmpty(), expectedMessage);
   }
 }

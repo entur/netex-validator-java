@@ -9,9 +9,7 @@ public interface ValidationReportEntryFactory {
    * Create a validation report entry for a validation issue.
    * Concrete implementations may override the default configuration provided by the validation rule.
    */
-  ValidationReportEntry createValidationReportEntry(
-    ValidationIssue validationIssue
-  );
+  ValidationReportEntry createValidationReportEntry(ValidationIssue validationIssue);
 
   /**
    * Create a template validation report entry for a validation rule, for documentation purpose.

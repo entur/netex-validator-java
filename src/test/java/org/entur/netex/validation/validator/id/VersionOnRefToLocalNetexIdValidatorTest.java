@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 class VersionOnRefToLocalNetexIdValidatorTest {
 
   private static final String TEST_CODESPACE = "TST";
-  private static final String TEST_VALIDATION_REPORT_ID =
-    "TEST_VALIDATION_REPORT_ID";
+  private static final String TEST_VALIDATION_REPORT_ID = "TEST_VALIDATION_REPORT_ID";
   private static final String TEST_REFERENCED_ID = "XXX:YY:1";
 
   private VersionOnRefToLocalNetexIdValidator versionOnRefToLocalNetexIdValidator;
@@ -21,10 +20,8 @@ class VersionOnRefToLocalNetexIdValidatorTest {
 
   @BeforeEach
   void setUpTest() {
-    versionOnRefToLocalNetexIdValidator =
-      new VersionOnRefToLocalNetexIdValidator();
-    validationReport =
-      new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
+    versionOnRefToLocalNetexIdValidator = new VersionOnRefToLocalNetexIdValidator();
+    validationReport = new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
 
   @Test
@@ -58,8 +55,9 @@ class VersionOnRefToLocalNetexIdValidatorTest {
       localRefs,
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      versionOnRefToLocalNetexIdValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = versionOnRefToLocalNetexIdValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       VersionOnRefToLocalNetexIdValidator.RULE,
@@ -98,8 +96,9 @@ class VersionOnRefToLocalNetexIdValidatorTest {
       localRefs,
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      versionOnRefToLocalNetexIdValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = versionOnRefToLocalNetexIdValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

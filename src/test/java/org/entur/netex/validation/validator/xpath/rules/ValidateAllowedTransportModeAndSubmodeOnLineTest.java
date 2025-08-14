@@ -30,49 +30,49 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
   @Test
   void testValidTransportModeOnLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "Line",
-        "<TransportMode>bus</TransportMode>",
-        "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "Line",
+      "<TransportMode>bus</TransportMode>",
+      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
       new ValidateAllowedTransportModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportMode.validate(
+      xpathRuleValidationContext
+    );
     assertTrue(validationIssues.isEmpty());
   }
 
   @Test
   void testValidTransportModeOnFlexibleLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "FlexibleLine",
-        "<TransportMode>bus</TransportMode>",
-        "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "FlexibleLine",
+      "<TransportMode>bus</TransportMode>",
+      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
       new ValidateAllowedTransportModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportMode.validate(
+      xpathRuleValidationContext
+    );
     assertTrue(validationIssues.isEmpty());
   }
 
   @Test
   void testInvalidTransportModeOnLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "Line",
-        "<TransportMode>xxx</TransportMode>",
-        "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "Line",
+      "<TransportMode>xxx</TransportMode>",
+      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
       new ValidateAllowedTransportModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportMode.validate(
+      xpathRuleValidationContext
+    );
     assertEquals(1, validationIssues.size());
     ValidationIssue validationIssue = validationIssues.get(0);
     assertEquals(validateAllowedTransportMode.rule(), validationIssue.rule());
@@ -80,17 +80,17 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
   @Test
   void testInvalidTransportModeOnFlexibleLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "FlexibleLine",
-        "<TransportMode>xxx</TransportMode>",
-        "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "FlexibleLine",
+      "<TransportMode>xxx</TransportMode>",
+      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportMode validateAllowedTransportMode =
       new ValidateAllowedTransportModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportMode.validate(
+      xpathRuleValidationContext
+    );
     assertEquals(1, validationIssues.size());
     ValidationIssue validationIssue = validationIssues.get(0);
     assertEquals(validateAllowedTransportMode.rule(), validationIssue.rule());
@@ -98,39 +98,36 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
   @Test
   void testValidTransportSubModeOnLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "Line",
-        "<TransportMode>bus</TransportMode>",
-        "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "Line",
+      "<TransportMode>bus</TransportMode>",
+      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportSubMode validateAllowedTransportSubMode =
       new ValidateAllowedTransportSubModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportSubMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportSubMode.validate(
+      xpathRuleValidationContext
+    );
     assertTrue(validationIssues.isEmpty());
   }
 
   @Test
   void testInvalidTransportSubModeOnLine() {
-    XPathRuleValidationContext xpathRuleValidationContext =
-      createXPathValidationContext(
-        "Line",
-        "<TransportMode>bus</TransportMode>",
-        "<TransportSubmode><BusSubmode>xxx</BusSubmode></TransportSubmode>"
-      );
+    XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
+      "Line",
+      "<TransportMode>bus</TransportMode>",
+      "<TransportSubmode><BusSubmode>xxx</BusSubmode></TransportSubmode>"
+    );
 
     ValidateAllowedTransportSubMode validateAllowedTransportSubMode =
       new ValidateAllowedTransportSubModeOnLine();
-    List<ValidationIssue> validationIssues =
-      validateAllowedTransportSubMode.validate(xpathRuleValidationContext);
+    List<ValidationIssue> validationIssues = validateAllowedTransportSubMode.validate(
+      xpathRuleValidationContext
+    );
     assertEquals(1, validationIssues.size());
     ValidationIssue validationIssue = validationIssues.get(0);
-    assertEquals(
-      validateAllowedTransportSubMode.rule(),
-      validationIssue.rule()
-    );
+    assertEquals(validateAllowedTransportSubMode.rule(), validationIssue.rule());
   }
 
   private XPathRuleValidationContext createXPathValidationContext(

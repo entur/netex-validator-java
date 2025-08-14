@@ -17,8 +17,7 @@ class DefaultMultipleFramesValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    validationTree =
-      new DefaultMultipleFramesValidationTreeFactory().builder().build();
+    validationTree = new DefaultMultipleFramesValidationTreeFactory().builder().build();
   }
 
   private static final String NETEX_FRAGMENT =
@@ -41,8 +40,9 @@ class DefaultMultipleFramesValidationTreeFactoryTest {
 
   @Test
   void test() {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder.ofNetexFragment(NETEX_FRAGMENT).build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_NOTICE_7

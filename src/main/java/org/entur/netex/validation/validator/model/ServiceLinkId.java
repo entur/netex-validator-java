@@ -12,9 +12,7 @@ import org.rutebanken.netex.model.VersionOfObjectRefStructure;
 public record ServiceLinkId(String id) {
   public ServiceLinkId {
     if (!isValid(id)) {
-      throw new NetexValidationException(
-        "Invalid scheduled stop point id: " + id
-      );
+      throw new NetexValidationException("Invalid scheduled stop point id: " + id);
     }
   }
 

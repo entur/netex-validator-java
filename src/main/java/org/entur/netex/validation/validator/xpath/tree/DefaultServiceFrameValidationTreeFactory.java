@@ -16,8 +16,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 /**
  * Construct a validation tree builder for ServiceFrames.
  */
-public class DefaultServiceFrameValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeFactory {
 
   static final String CODE_LINE_1 = "LINE_1";
   public static final String CODE_LINE_2 = "LINE_2";
@@ -52,10 +51,8 @@ public class DefaultServiceFrameValidationTreeFactory
     "PASSENGER_STOP_ASSIGNMENT_2";
   public static final String CODE_PASSENGER_STOP_ASSIGNMENT_3 =
     "PASSENGER_STOP_ASSIGNMENT_3";
-  public static final String CODE_DESTINATION_DISPLAY_1 =
-    "DESTINATION_DISPLAY_1";
-  public static final String CODE_DESTINATION_DISPLAY_2 =
-    "DESTINATION_DISPLAY_2";
+  public static final String CODE_DESTINATION_DISPLAY_1 = "DESTINATION_DISPLAY_1";
+  public static final String CODE_DESTINATION_DISPLAY_2 = "DESTINATION_DISPLAY_2";
   public static final String CODE_SERVICE_LINK_1 = "SERVICE_LINK_1";
   public static final String CODE_SERVICE_LINK_2 = "SERVICE_LINK_2";
   public static final String CODE_SERVICE_LINK_3 = "SERVICE_LINK_3";
@@ -332,18 +329,10 @@ public class DefaultServiceFrameValidationTreeFactory
         )
       )
       .withRuleForLineFile(new ValidateAllowedFlexibleLineType())
-      .withRuleForLineFile(
-        new ValidateAllowedBookingWhenProperty("lines/FlexibleLine")
-      )
-      .withRuleForLineFile(
-        new ValidateAllowedBuyWhenProperty("lines/FlexibleLine")
-      )
-      .withRuleForLineFile(
-        new ValidateAllowedBookingMethodProperty("lines/FlexibleLine")
-      )
-      .withRuleForLineFile(
-        new ValidateAllowedBookingAccessProperty("lines/FlexibleLine")
-      )
+      .withRuleForLineFile(new ValidateAllowedBookingWhenProperty("lines/FlexibleLine"))
+      .withRuleForLineFile(new ValidateAllowedBuyWhenProperty("lines/FlexibleLine"))
+      .withRuleForLineFile(new ValidateAllowedBookingMethodProperty("lines/FlexibleLine"))
+      .withRuleForLineFile(new ValidateAllowedBookingAccessProperty("lines/FlexibleLine"))
       .withRuleForLineFile(
         (
           new ValidateAtLeastOne(

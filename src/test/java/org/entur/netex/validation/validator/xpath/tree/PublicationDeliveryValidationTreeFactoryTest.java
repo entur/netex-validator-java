@@ -51,8 +51,9 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
   @Test
   void testMatchFrameInCompositeFrame() {
-    ValidationTree validationTree =
-      new PublicationDeliveryValidationTreeFactory().builder().build();
+    ValidationTree validationTree = new PublicationDeliveryValidationTreeFactory()
+      .builder()
+      .build();
     assertNotNull(validationTree);
 
     XPathRuleValidationContext validationContext = getValidationContext(
@@ -66,9 +67,7 @@ class PublicationDeliveryValidationTreeFactoryTest {
     assertFalse(validationIssues.isEmpty());
   }
 
-  private static XPathRuleValidationContext getValidationContext(
-    String netexFragment
-  ) {
+  private static XPathRuleValidationContext getValidationContext(String netexFragment) {
     XdmNode document = NETEX_XML_PARSER.parseStringToXdmNode(netexFragment);
     return new XPathRuleValidationContext(
       document,
@@ -80,8 +79,9 @@ class PublicationDeliveryValidationTreeFactoryTest {
 
   @Test
   void testMatchSingleFrame() {
-    ValidationTree validationTree =
-      new PublicationDeliveryValidationTreeFactory().builder().build();
+    ValidationTree validationTree = new PublicationDeliveryValidationTreeFactory()
+      .builder()
+      .build();
     assertNotNull(validationTree);
 
     XPathRuleValidationContext validationContext = getValidationContext(

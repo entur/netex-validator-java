@@ -3,8 +3,7 @@ package org.entur.netex.validation.validator;
 /**
  * Simple ValidationEntryFactory that builds report entry based on the default rule configuration.
  */
-public class SimpleValidationEntryFactory
-  implements ValidationReportEntryFactory {
+public class SimpleValidationEntryFactory implements ValidationReportEntryFactory {
 
   @Override
   public ValidationReportEntry createValidationReportEntry(

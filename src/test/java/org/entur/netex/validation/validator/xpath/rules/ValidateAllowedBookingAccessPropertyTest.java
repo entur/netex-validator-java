@@ -50,10 +50,9 @@ class ValidateAllowedBookingAccessPropertyTest {
       BookingAccessEnumeration.OTHER.value()
     );
 
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithInvalidBookingAccess)
+      .build();
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);
     Assertions.assertNotNull(validationIssues);
@@ -68,10 +67,9 @@ class ValidateAllowedBookingAccessPropertyTest {
       "${BOOKING_ACCESS}",
       BookingAccessEnumeration.PUBLIC.value()
     );
-    XPathRuleValidationContext xpathRuleValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(flexibleLineWithValidBookingAccess)
-        .build();
+    XPathRuleValidationContext xpathRuleValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(flexibleLineWithValidBookingAccess)
+      .build();
 
     List<ValidationIssue> validationIssues =
       validateAllowedBookingAccessProperty.validate(xpathRuleValidationContext);

@@ -23,21 +23,19 @@ import org.slf4j.LoggerFactory;
  */
 public class NetexIdUniquenessValidator implements XPathValidator {
 
-  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_FILES =
-    new ValidationRule(
-      "NETEX_ID_1",
-      "NeTEx ID duplicated across files",
-      "Duplicate element identifiers across files",
-      Severity.ERROR
-    );
+  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_FILES = new ValidationRule(
+    "NETEX_ID_1",
+    "NeTEx ID duplicated across files",
+    "Duplicate element identifiers across files",
+    Severity.ERROR
+  );
 
-  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_COMMON_FILES =
-    new ValidationRule(
-      "NETEX_ID_10",
-      "Duplicate NeTEx ID across common files",
-      "Duplicate element identifiers across common files",
-      Severity.WARNING
-    );
+  static final ValidationRule RULE_DUPLICATE_ID_ACROSS_COMMON_FILES = new ValidationRule(
+    "NETEX_ID_10",
+    "Duplicate NeTEx ID across common files",
+    "Duplicate element identifiers across common files",
+    Severity.WARNING
+  );
 
   /**
    * Set of NeTEx elements for which id-uniqueness across lines is not verified.
@@ -84,9 +82,7 @@ public class NetexIdUniquenessValidator implements XPathValidator {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),
@@ -118,9 +114,7 @@ public class NetexIdUniquenessValidator implements XPathValidator {
       netexIds =
         netexFileLocalIds
           .stream()
-          .filter(idVersion ->
-            !ignorableElements.contains(idVersion.getElementName())
-          )
+          .filter(idVersion -> !ignorableElements.contains(idVersion.getElementName()))
           .collect(
             Collectors.toMap(
               IdVersion::getId,
@@ -139,10 +133,7 @@ public class NetexIdUniquenessValidator implements XPathValidator {
         for (String id : duplicateIds) {
           DataLocation dataLocation = netexIds.get(id).dataLocation();
           validationIssues.add(
-            new ValidationIssue(
-              RULE_DUPLICATE_ID_ACROSS_COMMON_FILES,
-              dataLocation
-            )
+            new ValidationIssue(RULE_DUPLICATE_ID_ACROSS_COMMON_FILES, dataLocation)
           );
         }
       } else {
@@ -159,10 +150,7 @@ public class NetexIdUniquenessValidator implements XPathValidator {
 
   @Override
   public Set<ValidationRule> getRules() {
-    return Set.of(
-      RULE_DUPLICATE_ID_ACROSS_FILES,
-      RULE_DUPLICATE_ID_ACROSS_COMMON_FILES
-    );
+    return Set.of(RULE_DUPLICATE_ID_ACROSS_FILES, RULE_DUPLICATE_ID_ACROSS_COMMON_FILES);
   }
 
   public static Set<String> getDefaultIgnorableElements() {

@@ -25,22 +25,12 @@ public record OperatingDayId(String id) implements ActiveDatesId {
       .orElse(null);
   }
 
-  public static OperatingDayId ofFromOperatingDayRef(
-    OperatingPeriod operatingPeriod
-  ) {
-    return of(
-      operatingPeriod,
-      OperatingPeriod_VersionStructure::getFromOperatingDayRef
-    );
+  public static OperatingDayId ofFromOperatingDayRef(OperatingPeriod operatingPeriod) {
+    return of(operatingPeriod, OperatingPeriod_VersionStructure::getFromOperatingDayRef);
   }
 
-  public static OperatingDayId ofToOperatingDayRef(
-    OperatingPeriod operatingPeriod
-  ) {
-    return of(
-      operatingPeriod,
-      OperatingPeriod_VersionStructure::getToOperatingDayRef
-    );
+  public static OperatingDayId ofToOperatingDayRef(OperatingPeriod operatingPeriod) {
+    return of(operatingPeriod, OperatingPeriod_VersionStructure::getToOperatingDayRef);
   }
 
   public static OperatingDayId of(

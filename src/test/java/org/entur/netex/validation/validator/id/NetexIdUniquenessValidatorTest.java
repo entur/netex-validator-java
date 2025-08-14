@@ -12,8 +12,7 @@ import org.junit.jupiter.api.Test;
 class NetexIdUniquenessValidatorTest {
 
   private static final String TEST_CODESPACE = "TST";
-  private static final String TEST_VALIDATION_REPORT_ID =
-    "TEST_VALIDATION_REPORT_ID";
+  private static final String TEST_VALIDATION_REPORT_ID = "TEST_VALIDATION_REPORT_ID";
   private static final String TEST_DUPLICATED_ID = "XXX:YY:1";
 
   private static final String TEST_NOT_DUPLICATED_ID = "XXX:YY:2";
@@ -42,31 +41,18 @@ class NetexIdUniquenessValidatorTest {
       }
 
       @Override
-      public void addSharedNetexIds(
-        String reportId,
-        Set<IdVersion> commonIds
-      ) {}
+      public void addSharedNetexIds(String reportId, Set<IdVersion> commonIds) {}
 
       @Override
       public void cleanUp(String reportId) {}
     };
-    netexIdUniquenessValidator =
-      new NetexIdUniquenessValidator(netexIdRepository);
-    validationReport =
-      new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
+    netexIdUniquenessValidator = new NetexIdUniquenessValidator(netexIdRepository);
+    validationReport = new ValidationReport(TEST_CODESPACE, TEST_VALIDATION_REPORT_ID);
   }
 
   @Test
   void testDuplicatedIdInLineFile() {
-    IdVersion idVersion = new IdVersion(
-      TEST_DUPLICATED_ID,
-      null,
-      "YY",
-      null,
-      null,
-      0,
-      0
-    );
+    IdVersion idVersion = new IdVersion(TEST_DUPLICATED_ID, null, "YY", null, null, 0, 0);
     Set<IdVersion> localIds = Set.of(idVersion);
     XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
@@ -77,8 +63,9 @@ class NetexIdUniquenessValidatorTest {
       List.of(),
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      netexIdUniquenessValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = netexIdUniquenessValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       NetexIdUniquenessValidator.RULE_DUPLICATE_ID_ACROSS_FILES,
@@ -88,15 +75,7 @@ class NetexIdUniquenessValidatorTest {
 
   @Test
   void testDuplicatedIdInCommonFile() {
-    IdVersion idVersion = new IdVersion(
-      TEST_DUPLICATED_ID,
-      null,
-      "YY",
-      null,
-      null,
-      0,
-      0
-    );
+    IdVersion idVersion = new IdVersion(TEST_DUPLICATED_ID, null, "YY", null, null, 0, 0);
     Set<IdVersion> localIds = Set.of(idVersion);
     XPathValidationContext xPathValidationContext = new XPathValidationContext(
       null,
@@ -107,8 +86,9 @@ class NetexIdUniquenessValidatorTest {
       List.of(),
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      netexIdUniquenessValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = netexIdUniquenessValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertFalse(validationIssues.isEmpty());
     Assertions.assertEquals(
       NetexIdUniquenessValidator.RULE_DUPLICATE_ID_ACROSS_COMMON_FILES,
@@ -137,8 +117,9 @@ class NetexIdUniquenessValidatorTest {
       List.of(),
       validationReport.getValidationReportId()
     );
-    List<ValidationIssue> validationIssues =
-      netexIdUniquenessValidator.validate(xPathValidationContext);
+    List<ValidationIssue> validationIssues = netexIdUniquenessValidator.validate(
+      xPathValidationContext
+    );
     Assertions.assertTrue(validationIssues.isEmpty());
   }
 }

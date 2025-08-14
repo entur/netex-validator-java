@@ -101,8 +101,7 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
 
   @BeforeEach
   void setUp() {
-    validationTree =
-      new DefaultTimetableFrameValidationTreeFactory().builder().build();
+    validationTree = new DefaultTimetableFrameValidationTreeFactory().builder().build();
   }
 
   static Stream<String> ruleCodes() {
@@ -124,10 +123,9 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testInvalidTimetableFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_INVALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code
@@ -139,10 +137,9 @@ class DefaultTimetableFrameValidationTreeFactoryTest {
   @ParameterizedTest
   @MethodSource("ruleCodes")
   void testValidTimetableFrame(String code) {
-    XPathRuleValidationContext xpathValidationContext =
-      TestValidationContextBuilder
-        .ofNetexFragment(NETEX_FRAGMENT_VALID)
-        .build();
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       code

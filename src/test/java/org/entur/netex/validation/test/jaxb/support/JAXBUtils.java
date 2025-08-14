@@ -19,9 +19,10 @@ public class JAXBUtils {
    * @see #createRef(String, Class)
    * @see #createJaxbElement(Object)
    */
-  public static <
-    T extends VersionOfObjectRefStructure
-  > JAXBElement<T> createWrappedRef(String id, Class<T> clazz) {
+  public static <T extends VersionOfObjectRefStructure> JAXBElement<T> createWrappedRef(
+    String id,
+    Class<T> clazz
+  ) {
     return createJaxbElement(createRef(id, clazz));
   }
 
@@ -54,10 +55,6 @@ public class JAXBUtils {
    */
   @SuppressWarnings("unchecked")
   public static <T> JAXBElement<T> createJaxbElement(@Nonnull T value) {
-    return new JAXBElement<>(
-      new QName("x"),
-      (Class<T>) value.getClass(),
-      value
-    );
+    return new JAXBElement<>(new QName("x"), (Class<T>) value.getClass(), value);
   }
 }

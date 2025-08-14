@@ -30,9 +30,7 @@ public class VersionOnLocalNetexIdValidator implements XPathValidator {
   );
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathValidationContext xPathValidationContext
-  ) {
+  public List<ValidationIssue> validate(XPathValidationContext xPathValidationContext) {
     LOGGER.debug(
       "Validating file {} in report {}",
       xPathValidationContext.getFileName(),

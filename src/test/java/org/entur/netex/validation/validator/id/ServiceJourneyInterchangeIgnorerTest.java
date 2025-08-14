@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class ServiceJourneyInterchangeIgnorerTest {
 
-  private static final String TEST_SERVICE_JOURNEY_REFERENCE_ID =
-    "XXX:ServiceJourney:1";
+  private static final String TEST_SERVICE_JOURNEY_REFERENCE_ID = "XXX:ServiceJourney:1";
   private static final String TEST_SCHEDULED_STOP_POINT_REFERENCE_ID =
     "XXX:ScheduledStopPoint:1";
   private ServiceJourneyInterchangeIgnorer serviceJourneyInterchangeIgnorer;
@@ -31,9 +30,7 @@ class ServiceJourneyInterchangeIgnorerTest {
     );
     Set<IdVersion> externalIdsToValidate = Set.of(idVersion);
     Set<IdVersion> filteredIdVersions =
-      serviceJourneyInterchangeIgnorer.validateReferenceIds(
-        externalIdsToValidate
-      );
+      serviceJourneyInterchangeIgnorer.validateReferenceIds(externalIdsToValidate);
     Assertions.assertNotNull(filteredIdVersions);
     Assertions.assertTrue(filteredIdVersions.isEmpty());
   }
@@ -51,9 +48,7 @@ class ServiceJourneyInterchangeIgnorerTest {
     );
     Set<IdVersion> externalIdsToValidate = Set.of(idVersion);
     Set<IdVersion> filteredIdVersions =
-      serviceJourneyInterchangeIgnorer.validateReferenceIds(
-        externalIdsToValidate
-      );
+      serviceJourneyInterchangeIgnorer.validateReferenceIds(externalIdsToValidate);
     Assertions.assertNotNull(filteredIdVersions);
     Assertions.assertEquals(externalIdsToValidate, filteredIdVersions);
   }
@@ -71,9 +66,7 @@ class ServiceJourneyInterchangeIgnorerTest {
     );
     Set<IdVersion> externalIdsToValidate = Set.of(idVersion);
     Set<IdVersion> filteredIdVersions =
-      serviceJourneyInterchangeIgnorer.validateReferenceIds(
-        externalIdsToValidate
-      );
+      serviceJourneyInterchangeIgnorer.validateReferenceIds(externalIdsToValidate);
     Assertions.assertNotNull(filteredIdVersions);
     Assertions.assertEquals(externalIdsToValidate, filteredIdVersions);
   }

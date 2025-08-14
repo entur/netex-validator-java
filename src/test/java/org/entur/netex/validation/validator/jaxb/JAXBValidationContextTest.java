@@ -44,15 +44,12 @@ class JAXBValidationContextTest {
       .withId("TST:Line:1")
       .withTransportMode(AllVehicleModesOfTransportEnumeration.BUS)
       .withTransportSubmode(
-        new TransportSubmodeStructure()
-          .withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS)
+        new TransportSubmodeStructure().withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS)
       );
 
     Route route = new Route()
       .withId("TST:Route:1")
-      .withLineRef(
-        createJaxbElement(new LineRefStructure().withRef(line.getId()))
-      );
+      .withLineRef(createJaxbElement(new LineRefStructure().withRef(line.getId())));
 
     journeyPattern =
       new JourneyPattern()
@@ -139,8 +136,9 @@ class JAXBValidationContextTest {
       Map.of()
     );
 
-    TransportModeAndSubMode transportModeAndSubMode =
-      context.transportModeAndSubMode(journeyPattern);
+    TransportModeAndSubMode transportModeAndSubMode = context.transportModeAndSubMode(
+      journeyPattern
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(
       AllVehicleModesOfTransportEnumeration.BUS,
@@ -164,8 +162,9 @@ class JAXBValidationContextTest {
       Map.of()
     );
 
-    TransportModeAndSubMode transportModeAndSubMode =
-      context.transportModeAndSubMode(serviceJourney);
+    TransportModeAndSubMode transportModeAndSubMode = context.transportModeAndSubMode(
+      serviceJourney
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(
       AllVehicleModesOfTransportEnumeration.BUS,
@@ -179,12 +178,9 @@ class JAXBValidationContextTest {
 
   @Test
   void transportModeAndSubModeDefinedOnServiceJourneyFromServiceJourney() {
-    serviceJourney.withTransportMode(
-      AllVehicleModesOfTransportEnumeration.RAIL
-    );
+    serviceJourney.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
     serviceJourney.withTransportSubmode(
-      new TransportSubmodeStructure()
-        .withRailSubmode(RailSubmodeEnumeration.LOCAL)
+      new TransportSubmodeStructure().withRailSubmode(RailSubmodeEnumeration.LOCAL)
     );
 
     JAXBValidationContext context = new JAXBValidationContext(
@@ -197,8 +193,9 @@ class JAXBValidationContextTest {
       Map.of()
     );
 
-    TransportModeAndSubMode transportModeAndSubMode =
-      context.transportModeAndSubMode(serviceJourney);
+    TransportModeAndSubMode transportModeAndSubMode = context.transportModeAndSubMode(
+      serviceJourney
+    );
     assertNotNull(transportModeAndSubMode);
     assertEquals(
       AllVehicleModesOfTransportEnumeration.RAIL,
@@ -245,10 +242,7 @@ class JAXBValidationContextTest {
 
     Assertions.assertEquals(flexibleStopPointRef, result);
     verify(commonDataRepositorySpy, times(1))
-      .getFlexibleStopPlaceRefByStopPointRef(
-        validationReportId,
-        scheduledStopPointRef
-      );
+      .getFlexibleStopPlaceRefByStopPointRef(validationReportId, scheduledStopPointRef);
   }
 
   @Test

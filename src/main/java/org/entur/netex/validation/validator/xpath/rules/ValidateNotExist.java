@@ -39,9 +39,7 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
   }
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       XPathSelector selector = validationContext
         .getNetexXMLParser()
@@ -60,8 +58,7 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
         String formattedItem = formatMatchedItem(xdmNode);
         ValidationIssue validationIssue;
         if (formattedItem != null) {
-          validationIssue =
-            new ValidationIssue(rule, dataLocation, formattedItem);
+          validationIssue = new ValidationIssue(rule, dataLocation, formattedItem);
         } else {
           validationIssue = new ValidationIssue(rule, dataLocation);
         }
@@ -70,10 +67,7 @@ public class ValidateNotExist extends AbstractXPathValidationRule {
       }
       return validationIssues;
     } catch (SaxonApiException e) {
-      throw new NetexValidationException(
-        "Error while validating rule " + xpath,
-        e
-      );
+      throw new NetexValidationException("Error while validating rule " + xpath, e);
     }
   }
 

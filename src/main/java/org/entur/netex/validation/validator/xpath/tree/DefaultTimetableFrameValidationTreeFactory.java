@@ -17,8 +17,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 /**
  * Construct a validation tree builder for TimetableFrames.
  */
-public class DefaultTimetableFrameValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultTimetableFrameValidationTreeFactory implements ValidationTreeFactory {
 
   public static final String CODE_SERVICE_JOURNEY_1 = "SERVICE_JOURNEY_1";
   public static final String CODE_SERVICE_JOURNEY_2 = "SERVICE_JOURNEY_2";
@@ -35,16 +34,11 @@ public class DefaultTimetableFrameValidationTreeFactory
   public static final String CODE_SERVICE_JOURNEY_13 = "SERVICE_JOURNEY_13";
   public static final String CODE_SERVICE_JOURNEY_14 = "SERVICE_JOURNEY_14";
   public static final String CODE_SERVICE_JOURNEY_16 = "SERVICE_JOURNEY_16";
-  public static final String CODE_DATED_SERVICE_JOURNEY_1 =
-    "DATED_SERVICE_JOURNEY_1";
-  public static final String CODE_DATED_SERVICE_JOURNEY_2 =
-    "DATED_SERVICE_JOURNEY_2";
-  public static final String CODE_DATED_SERVICE_JOURNEY_3 =
-    "DATED_SERVICE_JOURNEY_3";
-  public static final String CODE_DATED_SERVICE_JOURNEY_4 =
-    "DATED_SERVICE_JOURNEY_4";
-  public static final String CODE_DATED_SERVICE_JOURNEY_5 =
-    "DATED_SERVICE_JOURNEY_5";
+  public static final String CODE_DATED_SERVICE_JOURNEY_1 = "DATED_SERVICE_JOURNEY_1";
+  public static final String CODE_DATED_SERVICE_JOURNEY_2 = "DATED_SERVICE_JOURNEY_2";
+  public static final String CODE_DATED_SERVICE_JOURNEY_3 = "DATED_SERVICE_JOURNEY_3";
+  public static final String CODE_DATED_SERVICE_JOURNEY_4 = "DATED_SERVICE_JOURNEY_4";
+  public static final String CODE_DATED_SERVICE_JOURNEY_5 = "DATED_SERVICE_JOURNEY_5";
   public static final String CODE_DEAD_RUN_1 = "DEAD_RUN_1";
   public static final String CODE_DEAD_RUN_2 = "DEAD_RUN_2";
   public static final String CODE_DEAD_RUN_3 = "DEAD_RUN_3";
@@ -78,9 +72,7 @@ public class DefaultTimetableFrameValidationTreeFactory
         )
       )
       .withRuleForLineFile(new ValidateAllowedTransportModeOnServiceJourney())
-      .withRuleForLineFile(
-        new ValidateAllowedTransportSubModeOnServiceJourney()
-      )
+      .withRuleForLineFile(new ValidateAllowedTransportSubModeOnServiceJourney())
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney[not(passingTimes)]",
@@ -190,9 +182,7 @@ public class DefaultTimetableFrameValidationTreeFactory
           Severity.ERROR
         )
       )
-      .withRuleForLineFile(
-        new ValidateInconsistentNumberOfTimetablePassingTimes()
-      )
+      .withRuleForLineFile(new ValidateInconsistentNumberOfTimetablePassingTimes())
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/ServiceJourney[@id = preceding-sibling::ServiceJourney/@id]",

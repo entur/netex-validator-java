@@ -46,9 +46,7 @@ class ValidationTreeTest {
 
   @Test
   void testValidate() {
-    List<ValidationIssue> validationIssues = tree.validate(
-      xpathValidationContext
-    );
+    List<ValidationIssue> validationIssues = tree.validate(xpathValidationContext);
 
     assertFalse(validationIssues.isEmpty());
   }
@@ -84,9 +82,7 @@ class ValidationTreeTest {
     );
     subTree.addValidationRule(RULE_NO_LINE);
     root.addSubTree(subTree);
-    List<ValidationIssue> validationIssues = root.validate(
-      xpathValidationContext
-    );
+    List<ValidationIssue> validationIssues = root.validate(xpathValidationContext);
     assertFalse(validationIssues.isEmpty());
   }
 
@@ -101,9 +97,7 @@ class ValidationTreeTest {
     );
     subTree.addValidationRule(RULE_NO_LINE);
     root.addSubTree(subTree);
-    List<ValidationIssue> validationIssues = root.validate(
-      xpathValidationContext
-    );
+    List<ValidationIssue> validationIssues = root.validate(xpathValidationContext);
     assertTrue(validationIssues.isEmpty());
   }
 

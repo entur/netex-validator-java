@@ -21,10 +21,7 @@ public class ValidateAllowedBuyWhenProperty extends ValidateNotExist {
 
   public ValidateAllowedBuyWhenProperty(String context) {
     super(
-      context +
-      "/BuyWhen[tokenize(.,' ')[not(. = (" +
-      VALID_BUY_WHEN_PROPERTIES +
-      "))]]",
+      context + "/BuyWhen[tokenize(.,' ')[not(. = (" + VALID_BUY_WHEN_PROPERTIES + "))]]",
       "BUY_WHEN_1",
       "BuyWhen illegal value",
       "Illegal value for BuyWhen",

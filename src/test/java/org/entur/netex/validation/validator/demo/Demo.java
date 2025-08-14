@@ -39,8 +39,7 @@ public class Demo {
     // run the validation for a given codespace, report id, NeTEx filename and file binary content
     String codespace = "ENT";
     String reportId = "XXX";
-    byte[] content =
-      Demo.class.getResourceAsStream(DEMO_FILE_NAME).readAllBytes();
+    byte[] content = Demo.class.getResourceAsStream(DEMO_FILE_NAME).readAllBytes();
     ValidationReport validationReport = netexValidatorsRunner.validate(
       codespace,
       reportId,
@@ -66,9 +65,7 @@ public class Demo {
     );
 
     @Override
-    public List<ValidationIssue> validate(
-      XPathValidationContext validationContext
-    ) {
+    public List<ValidationIssue> validate(XPathValidationContext validationContext) {
       XPathSelector selector;
       try {
         selector =

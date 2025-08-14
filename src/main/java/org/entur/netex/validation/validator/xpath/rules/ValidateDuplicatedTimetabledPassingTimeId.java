@@ -29,16 +29,12 @@ public class ValidateDuplicatedTimetabledPassingTimeId
   );
 
   @Override
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     try {
       XPathSelector selector = validationContext
         .getNetexXMLParser()
         .getXPathCompiler()
-        .compile(
-          "vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[@id]"
-        )
+        .compile("vehicleJourneys/ServiceJourney/passingTimes/TimetabledPassingTime[@id]")
         .load();
       selector.setContextItem(validationContext.getXmlNode());
       XdmValue nodes = selector.evaluate();

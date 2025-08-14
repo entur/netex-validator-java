@@ -24,13 +24,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ValidationTree {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(
-    ValidationTree.class
-  );
-  private static final ValidationTree EMPTY = new ValidationTree(
-    "(empty)",
-    "."
-  );
+  private static final Logger LOGGER = LoggerFactory.getLogger(ValidationTree.class);
+  private static final ValidationTree EMPTY = new ValidationTree("(empty)", ".");
 
   private final String name;
   private final String context;
@@ -73,9 +68,7 @@ public class ValidationTree {
   /**
    * Apply all validation rules in the tree and return validation issues.
    */
-  public List<ValidationIssue> validate(
-    XPathRuleValidationContext validationContext
-  ) {
+  public List<ValidationIssue> validate(XPathRuleValidationContext validationContext) {
     return validate(validationContext, validationRule -> true);
   }
 
@@ -124,18 +117,14 @@ public class ValidationTree {
     for (ValidationTree validationSubTree : subTrees) {
       XdmValue subContextNodes = validationContext
         .getNetexXMLParser()
-        .selectNodeSet(
-          validationSubTree.getContext(),
-          validationContext.getXmlNode()
-        );
+        .selectNodeSet(validationSubTree.getContext(), validationContext.getXmlNode());
       for (XdmItem xdmItem : subContextNodes) {
-        XPathRuleValidationContext validationSubContext =
-          new XPathRuleValidationContext(
-            (XdmNode) xdmItem,
-            validationContext.getNetexXMLParser(),
-            validationContext.getCodespace(),
-            validationContext.getFileName()
-          );
+        XPathRuleValidationContext validationSubContext = new XPathRuleValidationContext(
+          (XdmNode) xdmItem,
+          validationContext.getNetexXMLParser(),
+          validationContext.getCodespace(),
+          validationContext.getFileName()
+        );
         if (validationSubTree.executionCondition.test(validationSubContext)) {
           LOGGER.debug(
             "Running validation subtree '{}'/'{}'",
@@ -189,10 +178,7 @@ public class ValidationTree {
     Set<String> rules = new HashSet<>();
     for (XPathValidationRule xPathValidationRule : xPathValidationRules) {
       rules.add(
-        "[" +
-        xPathValidationRule.rule().code() +
-        "] " +
-        xPathValidationRule.rule().name()
+        "[" + xPathValidationRule.rule().code() + "] " + xPathValidationRule.rule().name()
       );
     }
     for (ValidationTree validationTree : subTrees) {
@@ -214,9 +200,7 @@ public class ValidationTree {
       .stream()
       .filter(validationRule -> validationRule.rule().code().equals(code))
       .findFirst()
-      .orElseThrow(() ->
-        new IllegalArgumentException("No rule with code " + code)
-      );
+      .orElseThrow(() -> new IllegalArgumentException("No rule with code " + code));
   }
 
   public String printRulesList() {
@@ -224,9 +208,7 @@ public class ValidationTree {
     return getRules()
       .stream()
       .sorted(
-        Comparator.comparing(xPathValidationRule ->
-          xPathValidationRule.rule().code()
-        )
+        Comparator.comparing(xPathValidationRule -> xPathValidationRule.rule().code())
       )
       .map(validationRule ->
         " | " +
@@ -236,9 +218,7 @@ public class ValidationTree {
         " |\n"
       )
       .distinct()
-      .map(validationRuleString ->
-        " | " + integer.addAndGet(1) + validationRuleString
-      )
+      .map(validationRuleString -> " | " + integer.addAndGet(1) + validationRuleString)
       .collect(Collectors.joining());
   }
 

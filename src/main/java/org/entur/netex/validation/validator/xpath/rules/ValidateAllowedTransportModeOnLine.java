@@ -2,8 +2,7 @@ package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
 
-public class ValidateAllowedTransportModeOnLine
-  extends ValidateAllowedTransportMode {
+public class ValidateAllowedTransportModeOnLine extends ValidateAllowedTransportMode {
 
   public ValidateAllowedTransportModeOnLine() {
     super(

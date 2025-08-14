@@ -55,13 +55,9 @@ public final class NetexSchemaRepository {
    * @param content the NeTEx document
    * @return the NeTEx version.
    */
-  public static NeTExValidator.NetexVersion detectNetexSchemaVersion(
-    byte[] content
-  ) {
+  public static NeTExValidator.NetexVersion detectNetexSchemaVersion(byte[] content) {
     String profileVersion =
-      PublicationDeliveryVersionAttributeReader.findPublicationDeliveryVersion(
-        content
-      );
+      PublicationDeliveryVersionAttributeReader.findPublicationDeliveryVersion(content);
     String netexSchemaVersion = getSchemaVersion(profileVersion);
 
     if (netexSchemaVersion != null) {

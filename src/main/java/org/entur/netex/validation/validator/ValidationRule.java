@@ -17,12 +17,7 @@ public class ValidationRule {
     this(code, name, name, severity);
   }
 
-  public ValidationRule(
-    String code,
-    String name,
-    String message,
-    Severity severity
-  ) {
+  public ValidationRule(String code, String name, String message, Severity severity) {
     this.code = Objects.requireNonNull(code);
     this.name = Objects.requireNonNull(name);
     this.message = Objects.requireNonNull(message);

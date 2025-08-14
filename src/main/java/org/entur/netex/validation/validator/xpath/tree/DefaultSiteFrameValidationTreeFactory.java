@@ -4,13 +4,10 @@ import org.entur.netex.validation.validator.Severity;
 import org.entur.netex.validation.validator.xpath.ValidationTreeFactory;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
 
-public class DefaultSiteFrameValidationTreeFactory
-  implements ValidationTreeFactory {
+public class DefaultSiteFrameValidationTreeFactory implements ValidationTreeFactory {
 
-  public static final String CODE_SITE_FRAME_IN_LINE_FILE =
-    "SITE_FRAME_IN_LINE_FILE";
-  public static final String CODE_SITE_FRAME_IN_COMMON_FILE =
-    "SITE_FRAME_IN_COMMON_FILE";
+  public static final String CODE_SITE_FRAME_IN_LINE_FILE = "SITE_FRAME_IN_LINE_FILE";
+  public static final String CODE_SITE_FRAME_IN_COMMON_FILE = "SITE_FRAME_IN_COMMON_FILE";
 
   @Override
   public ValidationTreeBuilder builder() {

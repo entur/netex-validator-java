@@ -17,10 +17,7 @@ public class DefaultVehicleScheduleFrameValidationTreeFactory
 
   @Override
   public ValidationTreeBuilder builder() {
-    return new ValidationTreeBuilder(
-      "Vehicle Schedule Frame",
-      "VehicleScheduleFrame"
-    )
+    return new ValidationTreeBuilder("Vehicle Schedule Frame", "VehicleScheduleFrame")
       .withRule(
         new ValidateAtLeastOne(
           "blocks/Block | blocks/TrainBlock",
