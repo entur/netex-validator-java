@@ -96,7 +96,7 @@ public class NetexValidatorCLI {
     System.exit(1);
   }
 
-  private NetexValidatorsRunner createValidator() {
+  NetexValidatorsRunner createValidator() {
     DefaultValidationConfigLoader configLoader = new DefaultValidationConfigLoader();
     DefaultValidationEntryFactory entryFactory = new DefaultValidationEntryFactory(
       configLoader
