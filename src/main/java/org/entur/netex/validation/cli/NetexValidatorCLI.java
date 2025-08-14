@@ -19,7 +19,6 @@ import org.entur.netex.validation.xml.NetexXMLParser;
 
 /**
  * Command-line interface for NeTEx validation.
- * Usage: java -jar netex-validator-java.jar [-d] [-h] <netex-file>
  */
 public class NetexValidatorCLI {
 
@@ -30,7 +29,6 @@ public class NetexValidatorCLI {
   public static void main(String[] args) {
     List<String> filePaths = new ArrayList<>();
 
-    // Parse arguments
     for (String arg : args) {
       if ("-d".equals(arg)) {
         debug = true;
@@ -53,7 +51,7 @@ public class NetexValidatorCLI {
       if (filePaths.size() == 1) {
         File file = new File(filePaths.get(0));
         if (!file.exists()) {
-          System.err.println("File not found: " + filePaths.get(0));
+          System.err.printf("File not found: %s%n", filePaths.get(0));
           help();
         }
 
@@ -66,7 +64,7 @@ public class NetexValidatorCLI {
         processFiles(filePaths);
       }
     } catch (Exception e) {
-      System.err.println("Error processing file: " + e.getMessage());
+      System.err.printf("Error processing file: %s%n", e.getMessage());
       System.exit(1);
     }
   }
@@ -77,16 +75,18 @@ public class NetexValidatorCLI {
 
   private static void help() {
     System.out.println(
-      "Usage: java NetexValidatorCLI [-d] [-v] <file1> [file2] [file3] ..."
+      """
+        Usage: java NetexValidatorCLI [-d] [-v] <file1> [file2] [file3] ...
+        Supports:
+          - Single NeTEx XML file
+          - ZIP archive containing multiple NeTEx files
+          - Multiple NeTEx XML files (space separated)
+        Options:
+          -d    Enable debug output
+          -v    Show detailed validation issues instead of summary
+          -h    Show this help message
+        """
     );
-    System.out.println("Supports:");
-    System.out.println("  - Single NeTEx XML file");
-    System.out.println("  - ZIP archive containing multiple NeTEx files");
-    System.out.println("  - Multiple NeTEx XML files (space separated)");
-    System.out.println("Options:");
-    System.out.println("  -d    Enable debug output");
-    System.out.println("  -v    Show detailed validation issues instead of summary");
-    System.out.println("  -h    Show this help message");
     System.exit(1);
   }
 
@@ -181,7 +181,7 @@ public class NetexValidatorCLI {
     for (String filePath : sortedFilePaths) {
       File file = new File(filePath);
       if (!file.exists()) {
-        System.err.println("File not found: " + filePath);
+        System.err.printf("File not found: %s%n", filePath);
         continue;
       }
 
@@ -189,7 +189,7 @@ public class NetexValidatorCLI {
         byte[] content = Files.readAllBytes(file.toPath());
         fileEntries.add(new FileEntry(file.getName(), content));
       } catch (IOException e) {
-        System.err.println("Error reading file " + filePath + ": " + e.getMessage());
+        System.err.printf("Error reading file %s: %s%n", filePath, e.getMessage());
       }
     }
 
@@ -204,7 +204,6 @@ public class NetexValidatorCLI {
   ) {
     List<ValidationReport> allReports = new ArrayList<>();
     String codespace = "CLI";
-    boolean hasAnyIssues = false;
 
     for (FileEntry fileEntry : fileEntries) {
       String fileName = fileEntry.fileName;
@@ -225,17 +224,11 @@ public class NetexValidatorCLI {
           System.setOut(originalOut);
           System.setErr(originalErr);
         }
-
         allReports.add(report);
-
-        if (!report.getNumberOfValidationEntriesPerRule().isEmpty()) {
-          hasAnyIssues = true;
-        }
 
         printValidationResult(fileName, report);
       } catch (Exception e) {
-        System.err.println("Error processing file " + fileName + ": " + e.getMessage());
-        hasAnyIssues = true;
+        System.err.printf("Error processing file %s: %s%n", fileName, e.getMessage());
       }
     }
 
@@ -246,9 +239,17 @@ public class NetexValidatorCLI {
         .mapToLong(Long::longValue)
         .sum();
 
-      System.out.println("\n📊 Dataset Validation Complete:");
-      System.out.println("Files processed: " + fileEntries.size());
-      System.out.println("Total issues across dataset: " + totalIssues);
+      System.out.println(
+        """
+
+        📊 Dataset Validation Complete:
+        Files processed: %d
+        Total issues across dataset: %d
+        """.formatted(
+            fileEntries.size(),
+            totalIssues
+          )
+      );
 
       if (!verbose && totalIssues > 0) {
         System.out.println("Use -v for detailed information");
@@ -260,41 +261,37 @@ public class NetexValidatorCLI {
     var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
 
     if (entriesPerRule.isEmpty()) {
-      System.out.println("  ✅ " + fileName);
+      System.out.printf("  ✅ %s%n", fileName);
     } else {
       long totalIssues = entriesPerRule
         .values()
         .stream()
         .mapToLong(Long::longValue)
         .sum();
-      System.out.println(
-        "  ❌ " +
-        fileName +
-        " (" +
-        totalIssues +
-        " issue" +
-        (totalIssues == 1 ? "" : "s") +
-        ")"
-      );
+
+      System.out.printf("  ❌ %s (%d issue(s))%n", fileName, totalIssues);
 
       if (verbose) {
         List<ValidationReportEntry> entries = new ArrayList<>(
           report.getValidationReportEntries()
         );
         for (ValidationReportEntry entry : entries) {
-          var msg = "      " + entry.getSeverity() + ": " + entry.getMessage();
           if (entry.getLineNumber() != null) {
-            msg += " (line " + entry.getLineNumber() + ")";
+            System.out.printf(
+              "      %s: %s (line %d)%n",
+              entry.getSeverity(),
+              entry.getMessage(),
+              entry.getLineNumber()
+            );
+          } else {
+            System.out.printf("      %s: %s%n", entry.getSeverity(), entry.getMessage());
           }
-          System.out.println(msg);
         }
       } else {
         for (var entry : entriesPerRule.entrySet()) {
           String ruleName = entry.getKey();
           Long count = entry.getValue();
-          System.out.println(
-            "      " + ruleName + ": " + count + " issue" + (count == 1 ? "" : "s")
-          );
+          System.out.printf("      %s: %d issue(s)%n", ruleName, count);
         }
       }
     }
