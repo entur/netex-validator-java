@@ -129,7 +129,9 @@ public class NetexValidatorCLI {
           "  " + ruleName + ": " + count + " issue" + (count == 1 ? "" : "s")
         );
       }
-      System.out.println("⛔️ Found " + totalIssues + " validation issue(s). Use -v for details.");
+      System.out.println(
+        "⛔️ Found " + totalIssues + " validation issue(s). Use -v for details."
+      );
     }
 
     System.exit(1);
