@@ -33,7 +33,7 @@ public class NetexValidatorCLI {
   public static void main(String[] args) {
     boolean debug = false;
     boolean verbose = false;
-    String filePath = null;
+    List<String> filePaths = new ArrayList<>();
 
     // Parse arguments
     for (String arg : args) {
@@ -43,47 +43,33 @@ public class NetexValidatorCLI {
         verbose = true;
       } else if ("-h".equals(arg)) {
         help();
-      } else if (filePath == null && !arg.startsWith("-")) {
-        filePath = arg;
+      } else if (!arg.startsWith("-")) {
+        filePaths.add(arg);
       }
     }
 
-    if (filePath == null) {
-      help();
-    }
-
-    File file = new File(filePath);
-
-    if (!file.exists()) {
-      System.err.println("File not found: " + filePath);
+    if (filePaths.isEmpty()) {
       help();
     }
 
     try {
       NetexValidatorsRunner validator = createValidator();
 
-      if (isZipFile(file)) {
-        processZipFile(file, validator, debug, verbose);
-      } else {
-        byte[] content = Files.readAllBytes(file.toPath());
-        ValidationReport report;
-
-        if (debug) {
-          report = validate(validator, file, content);
-          printReport(report, verbose);
-        } else {
-          PrintStream originalOut = System.out;
-          PrintStream originalErr = System.err;
-          System.setOut(new PrintStream(nullOutputStream()));
-          System.setErr(new PrintStream(nullOutputStream()));
-
-          report = validate(validator, file, content);
-
-          System.setOut(originalOut);
-          System.setErr(originalErr);
-
-          printReport(report, verbose);
+      if (filePaths.size() == 1) {
+        // Single file processing (could be XML or ZIP)
+        File file = new File(filePaths.get(0));
+        if (!file.exists()) {
+          System.err.println("File not found: " + filePaths.get(0));
+          help();
         }
+
+        if (isZipFile(file)) {
+          processZipFile(file, validator, debug, verbose);
+        } else {
+          processSingleFile(file, validator, debug, verbose);
+        }
+      } else {
+        processMultipleFiles(filePaths, validator, debug, verbose);
       }
     } catch (Exception e) {
       System.err.println("Error processing file: " + e.getMessage());
@@ -100,10 +86,13 @@ public class NetexValidatorCLI {
   }
 
   private static void help() {
-    System.out.println("Usage: java NetexValidatorCLI [-d] [-v] <netex-file-or-zip>");
     System.out.println(
-      "Supports single NeTEx XML files or ZIP archives containing multiple NeTEx files"
+      "Usage: java NetexValidatorCLI [-d] [-v] <file1> [file2] [file3] ..."
     );
+    System.out.println("Supports:");
+    System.out.println("  - Single NeTEx XML file");
+    System.out.println("  - ZIP archive containing multiple NeTEx files");
+    System.out.println("  - Multiple NeTEx XML files (space separated)");
     System.out.println("Options:");
     System.out.println("  -d    Enable debug output");
     System.out.println("  -v    Show detailed validation issues instead of summary");
@@ -184,11 +173,10 @@ public class NetexValidatorCLI {
     return fileName.endsWith(".zip");
   }
 
-  private static final Comparator<FileEntry> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
-    String nameA = a.fileName.toLowerCase();
-    String nameB = b.fileName.toLowerCase();
+  private static final Comparator<String> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
+    String nameA = a.toLowerCase();
+    String nameB = b.toLowerCase();
 
-    // Files starting with _ come first, then alphabetical
     if (nameA.startsWith("_") && !nameB.startsWith("_")) return -1;
     if (!nameA.startsWith("_") && nameB.startsWith("_")) return 1;
     return nameA.compareTo(nameB);
@@ -202,7 +190,9 @@ public class NetexValidatorCLI {
   ) throws IOException {
     System.out.println("Processing ZIP file as dataset: " + zipFile.getName());
 
-    SortedSet<FileEntry> xmlFiles = new TreeSet<>(SHARED_DATA_FIRST_COMPARATOR);
+    SortedSet<FileEntry> xmlFiles = new TreeSet<>(
+      Comparator.comparing((FileEntry fe) -> fe.fileName, SHARED_DATA_FIRST_COMPARATOR)
+    );
 
     try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
       ZipEntry entry;
@@ -265,7 +255,6 @@ public class NetexValidatorCLI {
       printFileResult(fileName, report, verbose);
     }
 
-    // Print overall summary
     long totalIssues = allReports
       .stream()
       .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
@@ -274,6 +263,120 @@ public class NetexValidatorCLI {
 
     System.out.println("\n📊 Dataset Validation Complete:");
     System.out.println("Files processed: " + xmlFiles.size());
+    System.out.println("Total issues across dataset: " + totalIssues);
+    System.out.println("Cross-file references validated as unified dataset");
+
+    if (!verbose && totalIssues > 0) {
+      System.out.println("Use -v for detailed information");
+    }
+
+    if (hasAnyIssues) {
+      System.exit(1);
+    } else {
+      System.out.println("🎉 All files in dataset validated successfully!");
+    }
+  }
+
+  private static void processSingleFile(
+    File file,
+    NetexValidatorsRunner validator,
+    boolean debug,
+    boolean verbose
+  ) throws IOException {
+    System.out.println("Processing single file: " + file.getName());
+
+    byte[] content = Files.readAllBytes(file.toPath());
+    ValidationReport report;
+
+    if (debug) {
+      report = validate(validator, file, content);
+      printReport(report, verbose);
+    } else {
+      PrintStream originalOut = System.out;
+      PrintStream originalErr = System.err;
+      System.setOut(new PrintStream(nullOutputStream()));
+      System.setErr(new PrintStream(nullOutputStream()));
+
+      report = validate(validator, file, content);
+
+      System.setOut(originalOut);
+      System.setErr(originalErr);
+
+      printReport(report, verbose);
+    }
+  }
+
+  private static void processMultipleFiles(
+    List<String> filePaths,
+    NetexValidatorsRunner validator,
+    boolean debug,
+    boolean verbose
+  ) {
+    System.out.println(
+      "Processing multiple files as dataset: " + filePaths.size() + " files"
+    );
+
+    // Sort files to process shared data files first
+    List<String> sortedFilePaths = new ArrayList<>(filePaths);
+    sortedFilePaths.sort(
+      Comparator.comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
+    );
+
+    List<ValidationReport> allReports = new ArrayList<>();
+    String validationReportId = "multiple-files-validation";
+    String codespace = "CLI";
+    boolean hasAnyIssues = false;
+
+    for (String filePath : sortedFilePaths) {
+      File file = new File(filePath);
+      if (!file.exists()) {
+        System.err.println("File not found: " + filePath);
+        continue;
+      }
+
+      System.out.println("  Processing: " + file.getName());
+
+      try {
+        byte[] content = Files.readAllBytes(file.toPath());
+        ValidationReport report;
+
+        if (debug) {
+          report =
+            validator.validate(codespace, validationReportId, file.getName(), content);
+        } else {
+          PrintStream originalOut = System.out;
+          PrintStream originalErr = System.err;
+          System.setOut(new PrintStream(nullOutputStream()));
+          System.setErr(new PrintStream(nullOutputStream()));
+
+          report =
+            validator.validate(codespace, validationReportId, file.getName(), content);
+
+          System.setOut(originalOut);
+          System.setErr(originalErr);
+        }
+
+        allReports.add(report);
+
+        if (!report.getNumberOfValidationEntriesPerRule().isEmpty()) {
+          hasAnyIssues = true;
+        }
+
+        printFileResult(file.getName(), report, verbose);
+      } catch (IOException e) {
+        System.err.println("Error reading file " + filePath + ": " + e.getMessage());
+        hasAnyIssues = true;
+      }
+    }
+
+    long totalIssues = allReports
+      .stream()
+      .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
+      .mapToLong(Long::longValue)
+      .sum();
+
+    System.out.println("\n📊 Dataset Validation Complete:");
+    System.out.println("Files processed: " + allReports.size() + "/" + filePaths.size());
     System.out.println("Total issues across dataset: " + totalIssues);
     System.out.println("Cross-file references validated as unified dataset");
 
