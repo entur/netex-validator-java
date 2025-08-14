@@ -27,11 +27,16 @@ public class NetexValidatorCLI {
     FileEntry get() throws IOException;
   }
 
-  private static boolean debug;
-  private static boolean verbose;
-  private static NetexValidatorsRunner validator;
+  private boolean debug;
+  private boolean verbose;
+  private NetexValidatorsRunner validator;
 
   public static void main(String[] args) {
+    NetexValidatorCLI cli = new NetexValidatorCLI();
+    cli.run(args);
+  }
+
+  public void run(String[] args) {
     List<String> filePaths = new ArrayList<>();
 
     for (String arg : args) {
@@ -74,7 +79,7 @@ public class NetexValidatorCLI {
     }
   }
 
-  private static void help() {
+  private void help() {
     System.out.println(
       """
         Usage: java NetexValidatorCLI [-d] [-v] <file1> [file2] [file3] ...
@@ -91,7 +96,7 @@ public class NetexValidatorCLI {
     System.exit(1);
   }
 
-  private static NetexValidatorsRunner createValidator() {
+  private NetexValidatorsRunner createValidator() {
     DefaultValidationConfigLoader configLoader = new DefaultValidationConfigLoader();
     DefaultValidationEntryFactory entryFactory = new DefaultValidationEntryFactory(
       configLoader
@@ -119,12 +124,12 @@ public class NetexValidatorCLI {
       .build();
   }
 
-  private static boolean isZipFile(File file) {
+  private boolean isZipFile(File file) {
     String fileName = file.getName().toLowerCase();
     return fileName.endsWith(".zip");
   }
 
-  private static final Comparator<String> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
+  private final Comparator<String> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
     String nameA = a.toLowerCase();
     String nameB = b.toLowerCase();
 
@@ -133,8 +138,25 @@ public class NetexValidatorCLI {
     return nameA.compareTo(nameB);
   };
 
-  private static void processZipFile(File zipFile) throws IOException {
-    List<String> xmlFileNames = sortedXmlFilesFrom(zipFile);
+  private void processZipFile(File zipFile) throws IOException {
+    List<String> xmlFileNames = new ArrayList<>();
+
+    try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
+      ZipEntry entry;
+
+      while ((entry = zipStream.getNextEntry()) != null) {
+        if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+          xmlFileNames.add(entry.getName());
+        }
+      }
+    }
+
+    if (xmlFileNames.isEmpty()) {
+      System.out.println("⚠️  No XML files found in ZIP archive");
+      return;
+    }
+
+    xmlFileNames.sort(SHARED_DATA_FIRST_COMPARATOR);
 
     Stream<FileSupplier> fileSuppliers = xmlFileNames
       .stream()
@@ -163,30 +185,14 @@ public class NetexValidatorCLI {
     processFileEntries(fileSuppliers, xmlFileNames.size(), "zip-dataset-validation");
   }
 
-  private static List<String> sortedXmlFilesFrom(File zipFile) throws IOException {
-    List<String> xmlFileNames = new ArrayList<>();
-
-    try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
-      ZipEntry entry;
-
-      while ((entry = zipStream.getNextEntry()) != null) {
-        if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-          xmlFileNames.add(entry.getName());
-        }
-      }
-    }
-    xmlFileNames.sort(SHARED_DATA_FIRST_COMPARATOR);
-    return xmlFileNames;
-  }
-
-  private static void processFile(File file) {
+  private void processFile(File file) {
     Stream<FileSupplier> fileSuppliers = Stream.of(() ->
       new FileEntry(file.getName(), Files.readAllBytes(file.toPath()))
     );
     processFileEntries(fileSuppliers, 1, "single-file-validation");
   }
 
-  private static void processFiles(List<String> filePaths) {
+  private void processFiles(List<String> filePaths) {
     List<String> sortedFilePaths = new ArrayList<>(filePaths);
     sortedFilePaths.sort(
       Comparator.comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
@@ -221,7 +227,7 @@ public class NetexValidatorCLI {
     }
   }
 
-  private static void processFileEntries(
+  private void processFileEntries(
     Stream<FileSupplier> fileSuppliers,
     int totalFiles,
     String validationReportId
@@ -271,12 +277,14 @@ public class NetexValidatorCLI {
         .mapToLong(Long::longValue)
         .sum();
 
-      System.out.println(
-        "\n\n📊 Dataset Validation Complete:\n" +
-        "Files processed: " +
-        totalFiles +
-        "\n" +
-        "Total issues across dataset: " +
+      System.out.printf(
+        """
+
+        📊 Dataset Validation Complete:
+        Files processed: %d
+        Total issues across dataset: %d
+        """,
+        totalFiles,
         totalIssues
       );
 
@@ -286,7 +294,7 @@ public class NetexValidatorCLI {
     }
   }
 
-  private static void printValidationResult(String fileName, ValidationReport report) {
+  private void printValidationResult(String fileName, ValidationReport report) {
     var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
 
     if (entriesPerRule.isEmpty()) {
