@@ -27,12 +27,16 @@ public class NetexValidatorCLI {
 
   public static void main(String[] args) {
     boolean debug = false;
+    boolean verbose = false;
     String filePath = null;
 
+    // Parse arguments
     for (String arg : args) {
-      if ("--debug".equals(arg) || "-d".equals(arg)) {
+      if ("-d".equals(arg)) {
         debug = true;
-      } else if ("--help".equals(arg) || "-h".equals(arg)) {
+      } else if ("-v".equals(arg)) {
+        verbose = true;
+      } else if ("-h".equals(arg)) {
         help();
       } else if (filePath == null && !arg.startsWith("-")) {
         filePath = arg;
@@ -56,7 +60,7 @@ public class NetexValidatorCLI {
 
       if (debug) {
         ValidationReport report = validate(validator, file, content);
-        printReport(report);
+        printReport(report, verbose);
       } else {
         PrintStream originalOut = System.out;
         PrintStream originalErr = System.err;
@@ -68,7 +72,7 @@ public class NetexValidatorCLI {
         System.setOut(originalOut);
         System.setErr(originalErr);
 
-        printReport(report);
+        printReport(report, verbose);
       }
     } catch (Exception e) {
       System.err.println("Error reading file: " + e.getMessage());
@@ -85,18 +89,27 @@ public class NetexValidatorCLI {
   }
 
   private static void help() {
-    System.out.println("Usage: java NetexValidatorCLI [--debug|-d] <netex-file> ");
+    System.out.println("Usage: java NetexValidatorCLI [-d] [-v] <netex-file>");
+    System.out.println("Options:");
+    System.out.println("  -d    Enable debug output");
+    System.out.println("  -v    Show detailed validation issues instead of summary");
+    System.out.println("  -h    Show this help message");
     System.exit(1);
   }
 
-  private static void printReport(ValidationReport report) {
-    List<ValidationReportEntry> entries = new ArrayList<>(
-      report.getValidationReportEntries()
-    );
+  private static void printReport(ValidationReport report, boolean verbose) {
+    var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
 
-    if (entries.isEmpty()) {
+    if (entriesPerRule.isEmpty()) {
       System.out.println("✅ No validation issues found");
-    } else {
+      return;
+    }
+
+    if (verbose) {
+      List<ValidationReportEntry> entries = new ArrayList<>(
+        report.getValidationReportEntries()
+      );
+
       for (ValidationReportEntry entry : entries) {
         var msg = entry.getSeverity() + ": " + entry.getMessage();
         if (entry.getLineNumber() != null) {
@@ -104,9 +117,22 @@ public class NetexValidatorCLI {
         }
         System.out.println(msg);
       }
-      System.out.println("⛔️ Found " + entries.size() + " validation issues");
-      System.exit(1);
+      System.out.println("⛔️ Found " + entries.size() + " validation issue(s)");
+    } else {
+      long totalIssues = 0;
+
+      for (var entry : entriesPerRule.entrySet()) {
+        String ruleName = entry.getKey();
+        Long count = entry.getValue();
+        totalIssues += count;
+        System.out.println(
+          "  " + ruleName + ": " + count + " issue" + (count == 1 ? "" : "s")
+        );
+      }
+      System.out.println("⛔️ Found " + totalIssues + " validation issue(s). Use -v for details.");
     }
+
+    System.exit(1);
   }
 
   private static NetexValidatorsRunner createValidator() {
