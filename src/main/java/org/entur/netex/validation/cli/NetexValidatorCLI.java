@@ -7,18 +7,11 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
 import org.entur.netex.validation.validator.*;
-import org.entur.netex.validation.validator.id.DefaultNetexIdRepository;
-import org.entur.netex.validation.validator.id.NetexIdUniquenessValidator;
-import org.entur.netex.validation.validator.id.NetexReferenceValidator;
-import org.entur.netex.validation.validator.id.ReferenceToValidEntityTypeValidator;
-import org.entur.netex.validation.validator.id.VersionOnLocalNetexIdValidator;
-import org.entur.netex.validation.validator.id.VersionOnRefToLocalNetexIdValidator;
+import org.entur.netex.validation.validator.id.*;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidator;
 import org.entur.netex.validation.validator.xpath.tree.PublicationDeliveryValidationTreeFactory;
@@ -30,9 +23,11 @@ import org.entur.netex.validation.xml.NetexXMLParser;
  */
 public class NetexValidatorCLI {
 
+  private static boolean debug;
+  private static boolean verbose;
+  private static NetexValidatorsRunner validator;
+
   public static void main(String[] args) {
-    boolean debug = false;
-    boolean verbose = false;
     List<String> filePaths = new ArrayList<>();
 
     // Parse arguments
@@ -53,7 +48,7 @@ public class NetexValidatorCLI {
     }
 
     try {
-      NetexValidatorsRunner validator = createValidator();
+      validator = createValidator();
 
       if (filePaths.size() == 1) {
         // Single file processing (could be XML or ZIP)
@@ -64,12 +59,12 @@ public class NetexValidatorCLI {
         }
 
         if (isZipFile(file)) {
-          processZipFile(file, validator, debug, verbose);
+          processZipFile(file);
         } else {
-          processSingleFile(file, validator, debug, verbose);
+          processFile(file);
         }
       } else {
-        processMultipleFiles(filePaths, validator, debug, verbose);
+        processFiles(filePaths);
       }
     } catch (Exception e) {
       System.err.println("Error processing file: " + e.getMessage());
@@ -77,11 +72,7 @@ public class NetexValidatorCLI {
     }
   }
 
-  private static ValidationReport validate(
-    NetexValidatorsRunner validator,
-    File file,
-    byte[] content
-  ) {
+  private static ValidationReport validate(File file, byte[] content) {
     return validator.validate("CLI", "validation", file.getName(), content);
   }
 
@@ -100,7 +91,7 @@ public class NetexValidatorCLI {
     System.exit(1);
   }
 
-  private static void printReport(ValidationReport report, boolean verbose) {
+  private static void printReport(ValidationReport report) {
     var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
 
     if (entriesPerRule.isEmpty()) {
@@ -182,17 +173,10 @@ public class NetexValidatorCLI {
     return nameA.compareTo(nameB);
   };
 
-  private static void processZipFile(
-    File zipFile,
-    NetexValidatorsRunner validator,
-    boolean debug,
-    boolean verbose
-  ) throws IOException {
+  private static void processZipFile(File zipFile) throws IOException {
     System.out.println("Processing ZIP file as dataset: " + zipFile.getName());
 
-    SortedSet<FileEntry> xmlFiles = new TreeSet<>(
-      Comparator.comparing((FileEntry fe) -> fe.fileName, SHARED_DATA_FIRST_COMPARATOR)
-    );
+    List<FileEntry> xmlFiles = new ArrayList<>();
 
     try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
       ZipEntry entry;
@@ -219,114 +203,30 @@ public class NetexValidatorCLI {
       return;
     }
 
-    // Process files in sorted order
-    List<ValidationReport> allReports = new ArrayList<>();
-    String validationReportId = "zip-dataset-validation";
-    String codespace = "CLI";
-    boolean hasAnyIssues = false;
-
-    for (FileEntry fileEntry : xmlFiles) {
-      String fileName = fileEntry.fileName;
-      byte[] content = fileEntry.content;
-
-      System.out.println("  Processing: " + fileName);
-
-      ValidationReport report;
-      if (debug) {
-        report = validator.validate(codespace, validationReportId, fileName, content);
-      } else {
-        PrintStream originalOut = System.out;
-        PrintStream originalErr = System.err;
-        System.setOut(new PrintStream(nullOutputStream()));
-        System.setErr(new PrintStream(nullOutputStream()));
-
-        report = validator.validate(codespace, validationReportId, fileName, content);
-
-        System.setOut(originalOut);
-        System.setErr(originalErr);
-      }
-
-      allReports.add(report);
-
-      if (!report.getNumberOfValidationEntriesPerRule().isEmpty()) {
-        hasAnyIssues = true;
-      }
-
-      printFileResult(fileName, report, verbose);
-    }
-
-    long totalIssues = allReports
-      .stream()
-      .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
-      .mapToLong(Long::longValue)
-      .sum();
-
-    System.out.println("\n📊 Dataset Validation Complete:");
-    System.out.println("Files processed: " + xmlFiles.size());
-    System.out.println("Total issues across dataset: " + totalIssues);
-    System.out.println("Cross-file references validated as unified dataset");
-
-    if (!verbose && totalIssues > 0) {
-      System.out.println("Use -v for detailed information");
-    }
-
-    if (hasAnyIssues) {
-      System.exit(1);
-    } else {
-      System.out.println("🎉 All files in dataset validated successfully!");
-    }
+    xmlFiles.sort(Comparator.comparing(fe -> fe.fileName, SHARED_DATA_FIRST_COMPARATOR));
+    processFileEntries(xmlFiles, "zip-dataset-validation");
   }
 
-  private static void processSingleFile(
-    File file,
-    NetexValidatorsRunner validator,
-    boolean debug,
-    boolean verbose
-  ) throws IOException {
+  private static void processFile(File file) throws IOException {
     System.out.println("Processing single file: " + file.getName());
 
     byte[] content = Files.readAllBytes(file.toPath());
-    ValidationReport report;
+    List<FileEntry> fileEntries = List.of(new FileEntry(file.getName(), content));
 
-    if (debug) {
-      report = validate(validator, file, content);
-      printReport(report, verbose);
-    } else {
-      PrintStream originalOut = System.out;
-      PrintStream originalErr = System.err;
-      System.setOut(new PrintStream(nullOutputStream()));
-      System.setErr(new PrintStream(nullOutputStream()));
-
-      report = validate(validator, file, content);
-
-      System.setOut(originalOut);
-      System.setErr(originalErr);
-
-      printReport(report, verbose);
-    }
+    processFileEntries(fileEntries, "single-file-validation");
   }
 
-  private static void processMultipleFiles(
-    List<String> filePaths,
-    NetexValidatorsRunner validator,
-    boolean debug,
-    boolean verbose
-  ) {
+  private static void processFiles(List<String> filePaths) {
     System.out.println(
       "Processing multiple files as dataset: " + filePaths.size() + " files"
     );
 
-    // Sort files to process shared data files first
     List<String> sortedFilePaths = new ArrayList<>(filePaths);
     sortedFilePaths.sort(
       Comparator.comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
     );
 
-    List<ValidationReport> allReports = new ArrayList<>();
-    String validationReportId = "multiple-files-validation";
-    String codespace = "CLI";
-    boolean hasAnyIssues = false;
-
+    List<FileEntry> fileEntries = new ArrayList<>();
     for (String filePath : sortedFilePaths) {
       File file = new File(filePath);
       if (!file.exists()) {
@@ -334,23 +234,44 @@ public class NetexValidatorCLI {
         continue;
       }
 
-      System.out.println("  Processing: " + file.getName());
-
       try {
         byte[] content = Files.readAllBytes(file.toPath());
-        ValidationReport report;
+        fileEntries.add(new FileEntry(file.getName(), content));
+      } catch (IOException e) {
+        System.err.println("Error reading file " + filePath + ": " + e.getMessage());
+      }
+    }
 
+    if (!fileEntries.isEmpty()) {
+      processFileEntries(fileEntries, "multiple-files-validation");
+    }
+  }
+
+  private static void processFileEntries(
+    List<FileEntry> fileEntries,
+    String validationReportId
+  ) {
+    List<ValidationReport> allReports = new ArrayList<>();
+    String codespace = "CLI";
+    boolean hasAnyIssues = false;
+
+    for (FileEntry fileEntry : fileEntries) {
+      String fileName = fileEntry.fileName;
+      byte[] content = fileEntry.content;
+
+      System.out.println("  Processing: " + fileName);
+
+      try {
+        ValidationReport report;
         if (debug) {
-          report =
-            validator.validate(codespace, validationReportId, file.getName(), content);
+          report = validator.validate(codespace, validationReportId, fileName, content);
         } else {
           PrintStream originalOut = System.out;
           PrintStream originalErr = System.err;
           System.setOut(new PrintStream(nullOutputStream()));
           System.setErr(new PrintStream(nullOutputStream()));
 
-          report =
-            validator.validate(codespace, validationReportId, file.getName(), content);
+          report = validator.validate(codespace, validationReportId, fileName, content);
 
           System.setOut(originalOut);
           System.setErr(originalErr);
@@ -362,40 +283,53 @@ public class NetexValidatorCLI {
           hasAnyIssues = true;
         }
 
-        printFileResult(file.getName(), report, verbose);
-      } catch (IOException e) {
-        System.err.println("Error reading file " + filePath + ": " + e.getMessage());
+        printFileResult(fileName, report);
+      } catch (Exception e) {
+        System.err.println("Error processing file " + fileName + ": " + e.getMessage());
         hasAnyIssues = true;
       }
     }
 
-    long totalIssues = allReports
-      .stream()
-      .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
-      .mapToLong(Long::longValue)
-      .sum();
+    if (fileEntries.size() == 1) {
+      if (!allReports.isEmpty()) {
+        ValidationReport report = allReports.get(0);
+        if (report.getNumberOfValidationEntriesPerRule().isEmpty()) {
+          System.out.println("✅ No validation issues found");
+          return;
+        } else {
+          printReport(report);
+        }
+      }
+    } else {
+      long totalIssues = allReports
+        .stream()
+        .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
+        .mapToLong(Long::longValue)
+        .sum();
 
-    System.out.println("\n📊 Dataset Validation Complete:");
-    System.out.println("Files processed: " + allReports.size() + "/" + filePaths.size());
-    System.out.println("Total issues across dataset: " + totalIssues);
-    System.out.println("Cross-file references validated as unified dataset");
+      System.out.println("\n📊 Dataset Validation Complete:");
+      System.out.println("Files processed: " + fileEntries.size());
+      System.out.println("Total issues across dataset: " + totalIssues);
+      System.out.println("Cross-file references validated as unified dataset");
 
-    if (!verbose && totalIssues > 0) {
-      System.out.println("Use -v for detailed information");
+      if (!verbose && totalIssues > 0) {
+        System.out.println("Use -v for detailed information");
+      }
+
+      if (hasAnyIssues) {
+        System.exit(1);
+      } else {
+        System.out.println("🎉 All files in dataset validated successfully!");
+        return;
+      }
     }
 
     if (hasAnyIssues) {
       System.exit(1);
-    } else {
-      System.out.println("🎉 All files in dataset validated successfully!");
     }
   }
 
-  private static void printFileResult(
-    String fileName,
-    ValidationReport report,
-    boolean verbose
-  ) {
+  private static void printFileResult(String fileName, ValidationReport report) {
     var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
 
     if (entriesPerRule.isEmpty()) {
@@ -435,15 +369,5 @@ public class NetexValidatorCLI {
     }
   }
 
-  // Helper class to store file name and content
-  private static class FileEntry {
-
-    final String fileName;
-    final byte[] content;
-
-    FileEntry(String fileName, byte[] content) {
-      this.fileName = fileName;
-      this.content = content;
-    }
-  }
+  private record FileEntry(String fileName, byte[] content) {}
 }
