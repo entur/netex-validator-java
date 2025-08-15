@@ -74,10 +74,10 @@ public class NetexValidatorCLI {
     System.out.println(
       """
         Usage: ./validate-netex.sh [-d] [-v] <file1> [file2] [file3] ...
-        Supports:
-          - Single NeTEx XML file
-          - ZIP archive containing multiple NeTEx files
-          - Multiple NeTEx XML files (space separated)
+
+        Supports single NeTEx XML files and ZIP archives containing multiple NeTEx files.
+        All files are validated sequentially in the same session.
+
         Options:
           -d    Enable debug output
           -v    Show detailed validation issues instead of summary
@@ -116,8 +116,7 @@ public class NetexValidatorCLI {
   }
 
   private boolean isZipFile(File file) {
-    String fileName = file.getName().toLowerCase();
-    return fileName.endsWith(".zip");
+    return file.getName().toLowerCase().endsWith(".zip");
   }
 
   private List<FileSupplier> processZipFile(File zipFile) throws IOException {
