@@ -81,8 +81,7 @@ All files are validated sequentially in the same session.
 Options:
   -d    Enable debug output
   -v    Show detailed validation issues instead of summary
-  -h    Show this help message
-        """
+  -h    Show this help message"""
     );
     System.exit(1);
   }
