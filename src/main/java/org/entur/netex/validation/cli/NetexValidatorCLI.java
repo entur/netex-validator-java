@@ -205,11 +205,7 @@ public class NetexValidatorCLI {
     if (issuesPerRule.isEmpty()) {
       System.out.printf("  ✅ %s%n", fileName);
     } else {
-      long totalIssues = issuesPerRule
-        .values()
-        .stream()
-        .mapToLong(Long::longValue)
-        .sum();
+      long totalIssues = issuesPerRule.values().stream().mapToLong(Long::longValue).sum();
 
       System.out.printf("  ❌ %s (%d issue(s))%n", fileName, totalIssues);
 
