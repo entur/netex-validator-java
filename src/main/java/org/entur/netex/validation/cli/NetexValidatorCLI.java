@@ -75,7 +75,7 @@ public class NetexValidatorCLI {
       """
 Usage: ./validate-netex.sh [-d] [-v] <file1> [file2] [file3] ...
 
-Supports single NeTEx XML files and ZIP archives containing multiple NeTEx files.
+Supports NeTEx files and ZIP archives containing multiple NeTEx files.
 All files are validated sequentially in the same session.
 
 Options:
