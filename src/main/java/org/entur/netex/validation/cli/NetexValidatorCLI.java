@@ -2,14 +2,12 @@ package org.entur.netex.validation.cli;
 
 import static java.io.OutputStream.nullOutputStream;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 import org.entur.netex.validation.configuration.DefaultValidationConfigLoader;
 import org.entur.netex.validation.validator.*;
 import org.entur.netex.validation.validator.id.*;
@@ -22,10 +20,6 @@ import org.entur.netex.validation.xml.NetexXMLParser;
  * Command-line interface for NeTEx validation.
  */
 public class NetexValidatorCLI {
-
-  private interface FileSupplier {
-    FileEntry get() throws IOException;
-  }
 
   private boolean debug;
   private boolean verbose;
@@ -57,22 +51,19 @@ public class NetexValidatorCLI {
 
     try {
       validator = createValidator();
-
-      if (filePaths.size() == 1) {
-        File file = new File(filePaths.get(0));
+      List<FileSupplier> fileSuppliers = new ArrayList<>();
+      for (String filePath : filePaths) {
+        File file = new File(filePath);
         if (!file.exists()) {
-          System.err.printf("File not found: %s%n", filePaths.get(0));
-          help();
-        }
-
-        if (isZipFile(file)) {
-          processZipFile(file);
+          System.err.printf("File not found: %s%n", filePath);
+          System.exit(1);
+        } else if (isZipFile(file)) {
+          fileSuppliers.addAll(processZipFile(file));
         } else {
-          processFile(file);
+          fileSuppliers.add(processFile(file));
         }
-      } else {
-        processFiles(filePaths);
       }
+      processFileEntries(fileSuppliers);
     } catch (Exception e) {
       System.err.printf("Error processing file: %s%n", e.getMessage());
       System.exit(1);
@@ -129,122 +120,36 @@ public class NetexValidatorCLI {
     return fileName.endsWith(".zip");
   }
 
-  private final Comparator<String> SHARED_DATA_FIRST_COMPARATOR = (a, b) -> {
-    String nameA = a.toLowerCase();
-    String nameB = b.toLowerCase();
+  private List<FileSupplier> processZipFile(File zipFile) throws IOException {
+    ZipFileSupplier zipSupplier = new ZipFileSupplier(zipFile);
 
-    if (nameA.startsWith("_") && !nameB.startsWith("_")) return -1;
-    if (!nameA.startsWith("_") && nameB.startsWith("_")) return 1;
-    return nameA.compareTo(nameB);
-  };
-
-  private void processZipFile(File zipFile) throws IOException {
-    List<String> xmlFileNames = new ArrayList<>();
-
-    try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
-      ZipEntry entry;
-
-      while ((entry = zipStream.getNextEntry()) != null) {
-        if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-          xmlFileNames.add(entry.getName());
-        }
-      }
-    }
-
-    if (xmlFileNames.isEmpty()) {
+    if (zipSupplier.isEmpty()) {
       System.out.println("⚠️  No XML files found in ZIP archive");
-      return;
+      return new ArrayList<>();
     }
 
-    xmlFileNames.sort(SHARED_DATA_FIRST_COMPARATOR);
-
-    Stream<FileSupplier> fileSuppliers = xmlFileNames
-      .stream()
-      .map(fileName ->
-        () -> {
-          try (
-            ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))
-          ) {
-            ZipEntry entry;
-            while ((entry = zipStream.getNextEntry()) != null) {
-              if (entry.getName().equals(fileName)) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int length;
-                while ((length = zipStream.read(buffer)) > 0) {
-                  baos.write(buffer, 0, length);
-                }
-                return new FileEntry(fileName, baos.toByteArray());
-              }
-            }
-            throw new IOException("File not found in ZIP: " + fileName);
-          }
-        }
-      );
-
-    processFileEntries(fileSuppliers, xmlFileNames.size(), "zip-dataset-validation");
+    return zipSupplier.createFileSuppliers().toList();
   }
 
-  private void processFile(File file) {
-    Stream<FileSupplier> fileSuppliers = Stream.of(() ->
-      new FileEntry(file.getName(), Files.readAllBytes(file.toPath()))
-    );
-    processFileEntries(fileSuppliers, 1, "single-file-validation");
+  private FileSupplier processFile(File file) {
+    return () -> new FileEntry(file.getName(), Files.readAllBytes(file.toPath()));
   }
 
-  private void processFiles(List<String> filePaths) {
-    List<String> sortedFilePaths = new ArrayList<>(filePaths);
-    sortedFilePaths.sort(
-      Comparator.comparing(path -> new File(path).getName(), SHARED_DATA_FIRST_COMPARATOR)
-    );
-
-    Stream<FileSupplier> fileSuppliers = sortedFilePaths
-      .stream()
-      .filter(filePath -> {
-        File file = new File(filePath);
-        if (!file.exists()) {
-          System.err.printf("File not found: %s%n", filePath);
-          return false;
-        }
-        return true;
-      })
-      .map(filePath -> {
-        File file = new File(filePath);
-        return () -> new FileEntry(file.getName(), Files.readAllBytes(file.toPath()));
-      });
-
-    long validFileCount = sortedFilePaths
-      .stream()
-      .filter(filePath -> new File(filePath).exists())
-      .count();
-
-    if (validFileCount > 0) {
-      processFileEntries(
-        fileSuppliers,
-        (int) validFileCount,
-        "multiple-files-validation"
-      );
-    }
-  }
-
-  private void processFileEntries(
-    Stream<FileSupplier> fileSuppliers,
-    int totalFiles,
-    String validationReportId
-  ) {
-    if (totalFiles <= 0) {
+  private void processFileEntries(List<FileSupplier> fileSuppliers) {
+    if (fileSuppliers.isEmpty()) {
       System.err.println("No valid files to process.");
       return;
     }
 
     List<ValidationReport> allReports = new ArrayList<>();
     String codespace = "CLI";
+    String validationReportId = "cli-validation";
 
     fileSuppliers.forEach(fileSupplier -> {
       try {
         FileEntry fileEntry = fileSupplier.get();
-        String fileName = fileEntry.fileName;
-        byte[] content = fileEntry.content;
+        String fileName = fileEntry.fileName();
+        byte[] content = fileEntry.content();
 
         ValidationReport report;
         if (debug) {
@@ -270,7 +175,7 @@ public class NetexValidatorCLI {
       }
     });
 
-    if (totalFiles > 1) {
+    if (fileSuppliers.size() > 1) {
       long totalIssues = allReports
         .stream()
         .flatMap(report -> report.getNumberOfValidationEntriesPerRule().values().stream())
@@ -280,11 +185,11 @@ public class NetexValidatorCLI {
       System.out.printf(
         """
 
-        📊 Dataset Validation Complete:
-        Files processed: %d
-        Total issues across dataset: %d
-        """,
-        totalFiles,
+          📊 Dataset Validation Complete:
+          Files processed: %d
+          Total issues across dataset: %d
+          """,
+        fileSuppliers.size(),
         totalIssues
       );
 
@@ -295,12 +200,12 @@ public class NetexValidatorCLI {
   }
 
   private void printValidationResult(String fileName, ValidationReport report) {
-    var entriesPerRule = report.getNumberOfValidationEntriesPerRule();
+    var issuesPerRule = report.getNumberOfValidationEntriesPerRule();
 
-    if (entriesPerRule.isEmpty()) {
+    if (issuesPerRule.isEmpty()) {
       System.out.printf("  ✅ %s%n", fileName);
     } else {
-      long totalIssues = entriesPerRule
+      long totalIssues = issuesPerRule
         .values()
         .stream()
         .mapToLong(Long::longValue)
@@ -325,7 +230,7 @@ public class NetexValidatorCLI {
           }
         }
       } else {
-        for (var entry : entriesPerRule.entrySet()) {
+        for (var entry : issuesPerRule.entrySet()) {
           String ruleName = entry.getKey();
           Long count = entry.getValue();
           System.out.printf("      %s: %d issue(s)%n", ruleName, count);
@@ -333,6 +238,4 @@ public class NetexValidatorCLI {
       }
     }
   }
-
-  private record FileEntry(String fileName, byte[] content) {}
 }
