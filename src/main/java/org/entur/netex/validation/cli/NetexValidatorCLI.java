@@ -23,7 +23,6 @@ public class NetexValidatorCLI {
 
   private boolean debug;
   private boolean verbose;
-  private NetexValidatorsRunner validator;
 
   public static void main(String[] args) {
     NetexValidatorCLI cli = new NetexValidatorCLI();
@@ -50,7 +49,6 @@ public class NetexValidatorCLI {
     }
 
     try {
-      validator = createValidator();
       List<FileSupplier> fileSuppliers = new ArrayList<>();
       for (String filePath : filePaths) {
         File file = new File(filePath);
@@ -138,7 +136,7 @@ Options:
       System.err.println("No valid files to process.");
       return;
     }
-
+    NetexValidatorsRunner validator = createValidator();
     List<ValidationReport> allReports = new ArrayList<>();
     String codespace = "CLI";
     String validationReportId = "cli-validation";
