@@ -15,6 +15,7 @@ public class ZipFileSupplier {
 
   private final File zipFile;
   private final Comparator<String> sharedDataFirstComparator;
+  private List<String> sortedXmlFileNames;
 
   public ZipFileSupplier(File zipFile) {
     this.zipFile = zipFile;
@@ -49,17 +50,19 @@ public class ZipFileSupplier {
   }
 
   public List<String> sortedXmlFileNames() throws IOException {
-    List<String> xmlFileNames = new ArrayList<>();
-
+    if (sortedXmlFileNames != null) {
+      return sortedXmlFileNames;
+    }
+    sortedXmlFileNames = new ArrayList<>();
     iterateZipFile((entry, stream) -> {
       if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-        xmlFileNames.add(entry.getName());
+        sortedXmlFileNames.add(entry.getName());
       }
       return null;
     });
 
-    xmlFileNames.sort(sharedDataFirstComparator);
-    return xmlFileNames;
+    sortedXmlFileNames.sort(sharedDataFirstComparator);
+    return sortedXmlFileNames;
   }
 
   public Stream<FileSupplier> createFileSuppliers() throws IOException {
