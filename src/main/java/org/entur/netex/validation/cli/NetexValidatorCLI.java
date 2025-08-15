@@ -73,15 +73,15 @@ public class NetexValidatorCLI {
   private void help() {
     System.out.println(
       """
-        Usage: ./validate-netex.sh [-d] [-v] <file1> [file2] [file3] ...
+Usage: ./validate-netex.sh [-d] [-v] <file1> [file2] [file3] ...
 
-        Supports single NeTEx XML files and ZIP archives containing multiple NeTEx files.
-        All files are validated sequentially in the same session.
+Supports single NeTEx XML files and ZIP archives containing multiple NeTEx files.
+All files are validated sequentially in the same session.
 
-        Options:
-          -d    Enable debug output
-          -v    Show detailed validation issues instead of summary
-          -h    Show this help message
+Options:
+  -d    Enable debug output
+  -v    Show detailed validation issues instead of summary
+  -h    Show this help message
         """
     );
     System.exit(1);
