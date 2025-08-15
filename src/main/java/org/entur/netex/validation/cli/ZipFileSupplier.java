@@ -1,6 +1,9 @@
 package org.entur.netex.validation.cli;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -25,17 +28,35 @@ public class ZipFileSupplier {
       };
   }
 
-  public List<String> sortedXmlFileNames() throws IOException {
-    List<String> xmlFileNames = new ArrayList<>();
-
+  private <T> T iterateZipFile(ZipEntryProcessor<T> processor) throws IOException {
     try (ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))) {
       ZipEntry entry;
       while ((entry = zipStream.getNextEntry()) != null) {
-        if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
-          xmlFileNames.add(entry.getName());
+        if (entry.getName().contains("..")) {
+          throw new IOException("Unsafe ZIP entry: " + entry.getName());
+        }
+        T result = processor.process(entry, zipStream);
+        if (result != null) {
+          return result;
         }
       }
+      return null;
     }
+  }
+
+  private interface ZipEntryProcessor<T> {
+    T process(ZipEntry entry, ZipInputStream stream) throws IOException;
+  }
+
+  public List<String> sortedXmlFileNames() throws IOException {
+    List<String> xmlFileNames = new ArrayList<>();
+
+    iterateZipFile((entry, stream) -> {
+      if (!entry.isDirectory() && entry.getName().toLowerCase().endsWith(".xml")) {
+        xmlFileNames.add(entry.getName());
+      }
+      return null;
+    });
 
     xmlFileNames.sort(sharedDataFirstComparator);
     return xmlFileNames;
@@ -47,27 +68,19 @@ public class ZipFileSupplier {
     return xmlFileNames
       .stream()
       .map(fileName ->
-        () -> {
-          try (
-            ZipInputStream zipStream = new ZipInputStream(new FileInputStream(zipFile))
-          ) {
-            ZipEntry entry;
-            while ((entry = zipStream.getNextEntry()) != null) {
-              if (entry.getName().equals(fileName)) {
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                byte[] buffer = new byte[4096];
-                int length;
-                while ((length = zipStream.read(buffer)) > 0) {
-                  baos.write(buffer, 0, length);
-                }
-                return new FileEntry(fileName, baos.toByteArray());
+        () ->
+          iterateZipFile((entry, zipStream) -> {
+            if (entry.getName().equals(fileName)) {
+              ByteArrayOutputStream baos = new ByteArrayOutputStream();
+              byte[] buffer = new byte[4096];
+              int length;
+              while ((length = zipStream.read(buffer)) > 0) {
+                baos.write(buffer, 0, length);
               }
+              return new FileEntry(fileName, baos.toByteArray());
             }
-            throw new IOException("File not found in ZIP: " + fileName);
-          } catch (IOException e) {
-            return null;
-          }
-        }
+            return null; // Continue iteration
+          })
       );
   }
 
