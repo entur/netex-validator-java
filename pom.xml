@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -39,8 +40,8 @@
         <connection>scm:git:ssh://git@github.com:entur/netex-validator-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/entur/netex-validator-java.git</developerConnection>
         <url>https://github.com/entur/netex-validator-java/tree/main</url>
-    <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
     <distributionManagement>
         <snapshotRepository>
             <id>snapshots</id>
@@ -95,7 +96,7 @@
         <maven-shade-plugin.version>3.6.0</maven-shade-plugin.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
-        <argLine />
+        <argLine/>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
 
@@ -342,7 +343,7 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <rules />
+                            <rules/>
                         </configuration>
                     </execution>
                 </executions>
@@ -388,7 +389,7 @@
                         <deploy>
                             <maven>
                                 <pomchecker>
-                                   <strict>false</strict>
+                                    <strict>false</strict>
                                 </pomchecker>
                                 <mavenCentral>
                                     <sonatype>
@@ -434,7 +435,7 @@
                                 <requireJavaVersion>
                                     <version>${jdk.version}</version>
                                 </requireJavaVersion>
-                                <requirePluginVersions />
+                                <requirePluginVersions/>
                             </rules>
                         </configuration>
                     </execution>
