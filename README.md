@@ -4,15 +4,15 @@ Validation library for NeTEx data.
 The library analyzes NeTEx datasets and generates a validation report. 
 In addition to XML schema validation, the library applies a configurable set of validation rules (See list below).  
 The library is intended primarily to support the validation of datasets compliant with the [Nordic NeTEx Profile](https://enturas.atlassian.net/wiki/spaces/PUBLIC/pages/728891481/Nordic+NeTEx+Profile).  
-It expects the dataset to follow the packaging and naming conventions stated in the Nordic NeTEx profile (dataset packaged as a zip file, one NeTEx Line per XML file, shared file prefixed with '_', ...)
+It expects the dataset to follow the packaging and naming conventions stated in the Nordic NeTEx profile (dataset packaged as a zip file, one NeTEx Line per XML file, shared file prefixed with `_`, ...)
 
-# Input data
+## Input data
 The validator requires:
 - The NeTEx codespace of the timetable data provider.
 - A NeTEx file containing the timetable data.
 - A unique id (string) identifying the validation run.
 
-# Output
+## Output
 The validator produces a **ValidationReport** object that contains a list of **ValidationReportEntry** instances.
 A **ValidationReportEntry** represents a unique validation finding identified by:
 - the name of the validation rule,
@@ -20,17 +20,17 @@ A **ValidationReportEntry** represents a unique validation finding identified by
 - the severity of the finding (INFO, WARNING, ERROR),
 - the name of the file being analyzed.
 
-# XML Schema validation
+## XML Schema validation
 The entry point **NetexValidatorsRunner** runs by default an XML Schema validation as the first step in the validation process.  
 This validation step is blocking: in case of an XML Schema validation error, further validations are skipped. 
 
-# XPath validation
+## XPath validation
 The entry point **NetexValidatorsRunner** can be configured with a list of XPath validators.  
 XPath validators are run after XML schema validation.  
 XPath validators assert validation rules by executing XPath queries on the NeTEx document.   
 This validation step is blocking: in case of a validation error, further validations are skipped.
 
-# JAXB validation
+## JAXB validation
 The entry point **NetexValidatorsRunner** can be configured with a list of JAXB validators.  
 JAXB validators are run after XML schema validation and XPath validation.  
 JAXB validators assert validation rules by navigating a (JAXB) object model of the NeTEx document.  
@@ -38,7 +38,7 @@ The object model makes it easier to validate more complex rules than XPath valid
 validators expect that the NeTEx document is well-formed and that the NeTEx entities required by the NeTEx profile are present.  
 It is therefore recommended that any assumption made by JAXB validators are asserted during the XPath validation step.
 
-# Configurable validators
+## Configurable validators
 The entry point **NetexValidatorsRunner** can be configured with a list of **NetexValidator** instances that are executed sequentially during a validation run, after a successful XML Schema validation.
 
 The library offers default implementations for:
@@ -48,7 +48,7 @@ The library offers default implementations for:
 
 The library can be extended with custom NetexValidator implementations (see [Antu](https://github.com/entur/antu) for examples of Entur-specific validators)
 
-# Configurable rule severity and description
+## Configurable rule severity and description
 Each rule is defined with a default name, severity (INFO, WARNING, ERROR, CRITICAL) and a parameterized message in English.
 The name, severity and message can be customized/internationalized in a configuration file (YAML).  
 The message field can contain placeholders that follow the String.format() conventions.  
@@ -62,14 +62,14 @@ Internationalization example:
   severity: WARNING
  ```
 
-# Parallel processing and thread-safety
+## Parallel processing and thread-safety
 The library is thread-safe and can execute validations in parallel within the same JVM, though some NetexValidator implementations may require synchronization.
 This is the case in particular for the NeTEx id uniqueness validation, since it checks uniqueness across several files.
 See [Antu](https://github.com/entur/antu) for examples of distributed validation across several Kubernetes pods.
 
-# Development guide
+## Development guide
 
-## Adding new XPath validation rules
+### Adding new XPath validation rules
 Simple XPath validation rules can be implemented with the following generic ValidationRules:
 - ValidateNotExist
 - ValidateAtLeastOne
@@ -77,20 +77,20 @@ Simple XPath validation rules can be implemented with the following generic Vali
 
 Example:
 ```java
-ValidationRule rule = new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportMode)]", "Missing TransportMode on Line", "LINE_4")
+ValidationRule rule = new ValidateNotExist("lines/*[self::Line or self::FlexibleLine][not(TransportMode)]", "Missing TransportMode on Line", "LINE_4");
 ```
 
 More complex rules can be implemented by extending these generic ValidationRules or implementing the ValidationRule interface.
 
-## Registering an XPath validation rule
+### Registering an XPath validation rule
 XPath rules must be registered in a ValidationTree to be applied on a NeTEx document.
 The library comes with a default validation tree (see DefaultValidationTreeFactory) that can be extended with custom rules.
 
-## Implementing custom NeTEx validators
+### Implementing custom NeTEx validators
 Other types of NeTEx validators can be added by implementing the NetexValidator interface.
 See NetexIdUniquenessValidator for an example.
 
-## Registering validators
+### Registering validators
 Validators must be registered in a NetexValidatorsRunner.
 The method NetexValidatorsRunner.validate() is the entry point for running a validation.  
 It executes the registered NeTEx validators and returns a ValidationReport containing the validation findings.
@@ -114,7 +114,7 @@ NetexValidatorsRunner netexValidatorsRunner = NetexValidatorsRunner
 ValidationReport validationReport = netexValidatorsRunner.validate(codespace, reportId, filename, content);
 ```
 
-# Default rule set
+## Default rule set
 The NeTEx validator library comes with the following rule set by default:
 
 | Rule Code                                |                                     Rule Description                                     |
@@ -265,3 +265,18 @@ The NeTEx validator library comes with the following rule set by default:
 | VALIDITY_CONDITIONS_IN_LINE_FILE_4       |                      ValidityConditions missing in TimeTableFrames                       |
 | VALIDITY_CONDITIONS_IN_LINE_FILE_5       |                    ValidityConditions missing in VehicleScheduleFrame                    |
 | VERSION_NON_NUMERIC                      |                                Non-numeric NeTEx version                                 |
+
+## Command-line interface
+The library can be used as a command-line tool to validate NeTEx datasets.
+
+```
+Usage: ./validate-netex.sh [-d] [-v] <file1> [file2] [file3] ...
+
+Supports single NeTEx XML files and ZIP archives containing multiple NeTEx files.
+All files are validated sequentially in the same session.
+
+Options:
+  -d    Enable debug output
+  -v    Show detailed validation issues instead of summary
+  -h    Show this help message
+```
