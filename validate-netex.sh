@@ -1,15 +1,14 @@
 #!/bin/bash
 
-set -e
+# NetEx Validator CLI Script
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-cd "$SCRIPT_DIR"
+JAR_FILE=$(find "$SCRIPT_DIR/target" -name "netex-validator-java-*-shaded.jar" -type f -quit 2>/dev/null)
 
-if [[ ! -f "target/classes/org/entur/netex/validation/cli/NetexValidatorCLI.class" ]]; then
-    echo "Building project..."
-    mvn compile -q || { echo "ERROR: Build failed"; exit 1; }
+if [ ! -f "$JAR_FILE" ]; then
+    echo "Shadow jar not found. Build with 'mvn clean package -DskipTests'"
+    exit 1
 fi
 
-CLASSPATH="target/classes:$(mvn dependency:build-classpath -q -Dmdep.outputFile=/dev/stdout)"
-java -cp "$CLASSPATH" org.entur.netex.validation.cli.NetexValidatorCLI "$@"
+java -jar "$JAR_FILE" "$@"
