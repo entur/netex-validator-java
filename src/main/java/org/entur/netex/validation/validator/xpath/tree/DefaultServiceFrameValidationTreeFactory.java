@@ -42,6 +42,7 @@ public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeF
   public static final String CODE_ROUTE_4 = "ROUTE_4";
   public static final String CODE_ROUTE_5 = "ROUTE_5";
   public static final String CODE_ROUTE_6 = "ROUTE_6";
+  public static final String CODE_ROUTE_7 = "ROUTE_7";
   public static final String CODE_SERVICE_FRAME_1 = "SERVICE_FRAME_1";
   public static final String CODE_SERVICE_FRAME_2 = "SERVICE_FRAME_2";
   public static final String CODE_SERVICE_FRAME_3 = "SERVICE_FRAME_3";
@@ -387,6 +388,15 @@ public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeF
           "Route duplicated order",
           "Several points on route have the same order",
           Severity.WARNING
+        )
+      )
+      .withRuleForLineFile(
+        new ValidateNotExist(
+          "routes/Route[not(@id = ../../journeyPatterns/JourneyPattern/RouteRef/@ref)]",
+          CODE_ROUTE_7,
+          "Route missing JourneyPattern",
+          "A Route should have at least one JourneyPattern",
+          Severity.ERROR
         )
       )
       .withRuleForLineFile(
