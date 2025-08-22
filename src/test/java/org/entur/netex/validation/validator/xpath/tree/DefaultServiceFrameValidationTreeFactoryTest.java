@@ -1,8 +1,7 @@
 package org.entur.netex.validation.validator.xpath.tree;
 
 import static org.entur.netex.validation.validator.xpath.tree.DefaultServiceFrameValidationTreeFactory.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -120,6 +119,24 @@ class DefaultServiceFrameValidationTreeFactoryTest {
           </Presentation>
           </Line>
         </lines>
+        <journeyPatterns>
+          <JourneyPattern version="1" id="ENT:JourneyPattern:79-R">
+              <RouteRef ref="ENT:Route:79-R" version="1"></RouteRef>
+              <pointsInSequence>
+                  <StopPointInJourneyPattern order="1" version="any" id="ENT:StopPointInJourneyPattern:121129420000115986_121120000345435067">
+                      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:9022012095006008"></ScheduledStopPointRef>
+                      <ForAlighting>false</ForAlighting>
+                      <ForBoarding>true</ForBoarding>
+                      <DestinationDisplayRef ref="ENT:DestinationDisplay:121120000364714525"></DestinationDisplayRef>
+                  </StopPointInJourneyPattern>
+                  <StopPointInJourneyPattern order="3" version="any" id="ENT:StopPointInJourneyPattern:121129420000115986_121120000345435069">
+                      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:9022012013046016"></ScheduledStopPointRef>
+                      <ForAlighting>true</ForAlighting>
+                      <ForBoarding>false</ForBoarding>
+                  </StopPointInJourneyPattern>
+              </pointsInSequence>
+          </JourneyPattern>
+        </journeyPatterns>
         <destinationDisplays>
           <DestinationDisplay version="0" id="ENT:DestinationDisplay:21-1_OsloS">
             <FrontText>Oslo S</FrontText>
@@ -138,7 +155,7 @@ class DefaultServiceFrameValidationTreeFactoryTest {
           </PassengerStopAssignment>
         </stopAssignments>
         </ServiceFrame>
-      
+
       """;
 
   private static final String NETEX_FRAGMENT_INVALID_SERVICE_LINK_NO_PROJECTION =
@@ -363,6 +380,30 @@ class DefaultServiceFrameValidationTreeFactoryTest {
     List<ValidationIssue> validationIssues = validationTree.validate(
       xpathValidationContext,
       CODE_SERVICE_LINK_5
+    );
+    assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testRouteWithoutJourneyPattern() {
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_INVALID)
+      .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_ROUTE_7
+    );
+    assertFalse(validationIssues.isEmpty());
+  }
+
+  @Test
+  void testRouteWithJourneyPattern() {
+    XPathRuleValidationContext xpathValidationContext = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_VALID)
+      .build();
+    List<ValidationIssue> validationIssues = validationTree.validate(
+      xpathValidationContext,
+      CODE_ROUTE_7
     );
     assertTrue(validationIssues.isEmpty());
   }
