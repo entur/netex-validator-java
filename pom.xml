@@ -56,7 +56,7 @@
         <jdk.version>17</jdk.version>
 
         <netex-java-model.version>2.0.15</netex-java-model.version>
-        <netex-parser-java.version>3.1.58</netex-parser-java.version>
+        <netex-parser-java.version>3.1.59</netex-parser-java.version>
         <saxon.version>12.9</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.5</snakeyaml.version>
@@ -88,7 +88,7 @@
         <sonar-maven-plugin.version>5.2.0.4988</sonar-maven-plugin.version>
         <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
-        <dependency-check-maven.version>12.1.5</dependency-check-maven.version>
+        <dependency-check-maven.version>12.1.6</dependency-check-maven.version>
         <gitflow-maven-plugin.version>1.21.0</gitflow-maven-plugin.version>
         <prettier-java.version>2.1.0</prettier-java.version>
         <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
