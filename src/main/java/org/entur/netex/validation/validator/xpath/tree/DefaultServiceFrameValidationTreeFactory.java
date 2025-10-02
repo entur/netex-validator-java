@@ -223,8 +223,8 @@ public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeF
         new ValidateExactlyOne(
           "lines/*[self::Line or self::FlexibleLine]",
           CODE_LINE_1,
-          "Line missing Line or FlexibleLine",
-          "There must be either Lines or Flexible Lines",
+          "Line - exactly one Line or FlexibleLine",
+          "There must be exactly one Line or one Flexible Line",
           Severity.ERROR
         )
       )
