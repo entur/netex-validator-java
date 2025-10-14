@@ -27,6 +27,7 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       INTERNATIONAL_COACH.value(),
       NATIONAL_COACH.value(),
       TOURIST_COACH.value(),
+      SHUTTLE_COACH.value(),
       // Tram
       LOCAL_TRAM.value(),
       CITY_TRAM.value(),
