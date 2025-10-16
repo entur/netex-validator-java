@@ -3,6 +3,7 @@ package org.entur.netex.validation.validator.jaxb;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.entur.netex.validation.validator.model.*;
 
 /**
@@ -54,4 +55,9 @@ public interface NetexDataRepository {
   Map<ServiceJourneyId, List<LocalDateTime>> serviceJourneyIdToActiveDates(
     String validationReportId
   );
+
+  /**
+   * List the scheduled stop point ids in the dataset.
+   */
+  Set<String> scheduledStopPointIds(String validationReportId);
 }
