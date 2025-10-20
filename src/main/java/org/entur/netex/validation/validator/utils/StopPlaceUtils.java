@@ -10,6 +10,8 @@ import org.rutebanken.netex.model.StopPlace;
 
 public class StopPlaceUtils {
 
+  private StopPlaceUtils() {}
+
   public static boolean isParentStopPlace(StopPlace stopPlace) {
     if (stopPlace.getKeyList() != null) {
       for (var keyValue : stopPlace.getKeyList().getKeyValue()) {
