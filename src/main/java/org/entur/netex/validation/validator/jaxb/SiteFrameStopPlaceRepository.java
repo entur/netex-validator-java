@@ -1,11 +1,13 @@
 package org.entur.netex.validation.validator.jaxb;
 
+import java.util.Set;
 import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
 import org.entur.netex.validation.validator.model.QuayCoordinates;
 import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.StopPlaceId;
 import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
+import org.entur.netex.validation.validator.utils.StopPlaceUtils;
 import org.rutebanken.netex.model.Quay;
 import org.rutebanken.netex.model.StopPlace;
 
@@ -30,6 +32,22 @@ public class SiteFrameStopPlaceRepository implements StopPlaceRepository {
   @Override
   public boolean hasQuayId(QuayId quayId) {
     return (netexEntitiesIndex.getQuayIndex().getLatestVersion(quayId.id()) != null);
+  }
+
+  @Override
+  public boolean isParentStop(StopPlaceId stopPlaceId) {
+    StopPlace stopPlace = netexEntitiesIndex
+      .getStopPlaceIndex()
+      .getLatestVersion(stopPlaceId.id());
+    return StopPlaceUtils.isParentStopPlace(stopPlace);
+  }
+
+  @Override
+  public Set<String> getQuaysForStopPlaceId(StopPlaceId stopPlaceId) {
+    StopPlace stopPlace = netexEntitiesIndex
+      .getStopPlaceIndex()
+      .getLatestVersion(stopPlaceId.id());
+    return StopPlaceUtils.getQuayIdsForStopPlace(stopPlace);
   }
 
   @Nullable

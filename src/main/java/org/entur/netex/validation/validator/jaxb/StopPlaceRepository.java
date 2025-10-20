@@ -15,6 +15,7 @@
 
 package org.entur.netex.validation.validator.jaxb;
 
+import java.util.Set;
 import javax.annotation.Nullable;
 import org.entur.netex.validation.validator.model.QuayCoordinates;
 import org.entur.netex.validation.validator.model.QuayId;
@@ -36,6 +37,16 @@ public interface StopPlaceRepository {
    * Checks that a Quay id exists.
    */
   boolean hasQuayId(QuayId quayId);
+
+  /**
+   * Checks if the StopPlace is a parent stop.
+   */
+  boolean isParentStop(StopPlaceId stopPlaceId);
+
+  /**
+   * Returns the Quay ids for a StopPlace id.
+   */
+  Set<String> getQuaysForStopPlaceId(StopPlaceId stopPlaceId);
 
   /**
    * Returns the transport mode and sub-mode for a Quay id.
