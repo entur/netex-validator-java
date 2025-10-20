@@ -23,6 +23,15 @@ class StopPlaceUtilsTest {
 
     StopPlace nonParentStopPlace = new StopPlace();
     Assertions.assertFalse(StopPlaceUtils.isParentStopPlace(nonParentStopPlace));
+
+    StopPlace nonParentStopPlace2 = new StopPlace();
+    parentStopPlace.setKeyList(
+      new KeyListStructure()
+        .withKeyValue(
+          new KeyValueStructure().withKey("IS_PARENT_STOP_PLACE").withValue("false")
+        )
+    );
+    Assertions.assertFalse(StopPlaceUtils.isParentStopPlace(nonParentStopPlace2));
   }
 
   @Test
@@ -51,5 +60,11 @@ class StopPlaceUtilsTest {
       Set.of(quay1.getId(), quay2.getId()),
       StopPlaceUtils.getQuayIdsForStopPlace(stopPlace)
     );
+  }
+
+  @Test
+  void testGetQuayIdsForStopPlaceWhenItHasNoQuays() {
+    StopPlace stopPlace = new StopPlace();
+    Assertions.assertTrue(StopPlaceUtils.getQuayIdsForStopPlace(stopPlace).isEmpty());
   }
 }
