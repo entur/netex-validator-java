@@ -22,6 +22,7 @@ public class ValidateAllowedTransportMode extends ValidateNotExist {
       "water",
       "cableway",
       "funicular",
+      "snowAndIce",
       "unknown"
     ) +
     "'";

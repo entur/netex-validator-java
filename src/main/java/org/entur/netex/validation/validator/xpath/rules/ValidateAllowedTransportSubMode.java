@@ -6,6 +6,7 @@ import static org.rutebanken.netex.model.CoachSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.FunicularSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.MetroSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.RailSubmodeEnumeration.*;
+import static org.rutebanken.netex.model.SnowAndIceSubmodeEnumeration.SNOW_COACH;
 import static org.rutebanken.netex.model.TaxiSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.TelecabinSubmodeEnumeration.*;
 import static org.rutebanken.netex.model.TramSubmodeEnumeration.*;
@@ -27,7 +28,7 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       INTERNATIONAL_COACH.value(),
       NATIONAL_COACH.value(),
       TOURIST_COACH.value(),
-      SHUTTLE_COACH.value(),
+      SNOW_COACH.value(),
       // Tram
       LOCAL_TRAM.value(),
       CITY_TRAM.value(),
@@ -73,6 +74,7 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       // Taxi
       CHARTER_TAXI.value(),
       COMMUNAL_TAXI.value(),
+      WATER_TAXI.value(),
       // All
       "unknown"
     ) +
