@@ -65,7 +65,7 @@
         <zt-zip.version>1.17</zt-zip.version>
         <junit.version>5.14.1</junit.version>
         <mockito-core.version>5.20.0</mockito-core.version>
-        <logback-classic.version>1.5.21</logback-classic.version>
+        <logback-classic.version>1.5.22</logback-classic.version>
 
         <maven-exec-plugin.version>3.4.1</maven-exec-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
