@@ -104,7 +104,7 @@
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
         <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
-        <jreleaser-maven-plugin.version>1.21.0</jreleaser-maven-plugin.version>
+        <jreleaser-maven-plugin.version>1.22.0</jreleaser-maven-plugin.version>
     </properties>
 
     <dependencies>
