@@ -56,7 +56,7 @@
         <jdk.version>17</jdk.version>
 
         <netex-java-model.version>2.0.15</netex-java-model.version>
-        <netex-parser-java.version>3.1.69</netex-parser-java.version>
+        <netex-parser-java.version>3.1.70</netex-parser-java.version>
         <saxon.version>12.9</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.5</snakeyaml.version>
@@ -65,7 +65,7 @@
         <zt-zip.version>1.17</zt-zip.version>
         <junit.version>5.14.2</junit.version>
         <mockito-core.version>5.21.0</mockito-core.version>
-        <logback-classic.version>1.5.24</logback-classic.version>
+        <logback-classic.version>1.5.25</logback-classic.version>
 
         <maven-exec-plugin.version>3.4.1</maven-exec-plugin.version>
         <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
