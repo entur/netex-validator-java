@@ -332,8 +332,7 @@ public class JAXBValidationContext implements ValidationContext {
    */
   @Nullable
   public TransportModeAndSubMode transportModeAndSubMode(ServiceJourney serviceJourney) {
-    AllVehicleModesOfTransportEnumeration transportMode =
-      serviceJourney.getTransportMode();
+    AllPublicTransportModesEnumeration transportMode = serviceJourney.getTransportMode();
 
     TransportSubmodeStructure subModeStructure = serviceJourney.getTransportSubmode();
 
