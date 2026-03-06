@@ -6,7 +6,7 @@
 
     <groupId>org.entur</groupId>
     <artifactId>netex-validator-java</artifactId>
-    <version>12.0.1-SNAPSHOT</version>
+    <version>13.0.0-SNAPSHOT</version>
 
     <name>netex-validator-java</name>
     <description>Library for validating NeTEx datasets against the Nordic NeTEx Profile.</description>
@@ -53,10 +53,10 @@
     <properties>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>17</jdk.version>
+        <jdk.version>21</jdk.version>
 
-        <netex-java-model.version>2.0.16</netex-java-model.version>
-        <netex-parser-java.version>4.0.0</netex-parser-java.version>
+        <netex-java-model.version>3.0.0-SNAPSHOT</netex-java-model.version>
+        <netex-parser-java.version>5.0.0-SNAPSHOT</netex-parser-java.version>
         <saxon.version>12.9</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.6</snakeyaml.version>
@@ -97,8 +97,8 @@
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
         <argLine/>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
 
 
         <!-- GPG configuration for jar signing-->
@@ -481,6 +481,16 @@
             <name>Open Source Geospatial Foundation Repository</name>
             <url>https://repo.osgeo.org/repository/release/</url>
         </repository>
+        <repository>
+            <id>maven-snapshots</id>
+            <url>https://central.sonatype.com/repository/maven-snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     <profiles>
         <profile>
@@ -531,7 +541,7 @@
             </activation>
 
             <properties>
-                <jdk.version>17</jdk.version>
+                <jdk.version>21</jdk.version>
             </properties>
 
             <build>
