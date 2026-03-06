@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.model;
 import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
+import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;
 
@@ -64,7 +64,7 @@ public record TransportSubMode(String name) {
   }
 
   public static Optional<TransportSubMode> of(
-    AllVehicleModesOfTransportEnumeration transportMode,
+    AllPublicTransportModesEnumeration transportMode,
     TransportSubmodeStructure subModeStructure
   ) {
     if (transportMode == null || subModeStructure == null) {

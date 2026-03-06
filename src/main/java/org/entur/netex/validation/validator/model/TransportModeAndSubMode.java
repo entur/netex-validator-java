@@ -2,7 +2,7 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Objects;
 import javax.annotation.Nullable;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
+import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
 import org.rutebanken.netex.model.StopPlace;
 import org.rutebanken.netex.model.TransportSubmodeStructure;
 
@@ -10,7 +10,7 @@ import org.rutebanken.netex.model.TransportSubmodeStructure;
  * A pair of mode and sub-mode.
  */
 public record TransportModeAndSubMode(
-  AllVehicleModesOfTransportEnumeration mode,
+  AllPublicTransportModesEnumeration mode,
   TransportSubMode subMode
 ) {
   public TransportModeAndSubMode {
@@ -25,7 +25,7 @@ public record TransportModeAndSubMode(
    */
   @Nullable
   public static TransportModeAndSubMode of(StopPlace stopPlace) {
-    AllVehicleModesOfTransportEnumeration transportMode = stopPlace.getTransportMode();
+    AllPublicTransportModesEnumeration transportMode = stopPlace.getTransportMode();
     if (transportMode == null) {
       return null;
     }
@@ -42,7 +42,7 @@ public record TransportModeAndSubMode(
    */
   @Nullable
   public static TransportModeAndSubMode of(
-    AllVehicleModesOfTransportEnumeration transportMode,
+    AllPublicTransportModesEnumeration transportMode,
     TransportSubmodeStructure submodeStructure
   ) {
     if (transportMode == null) {

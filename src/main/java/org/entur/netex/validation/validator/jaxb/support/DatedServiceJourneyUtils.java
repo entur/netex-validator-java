@@ -16,6 +16,9 @@ public class DatedServiceJourneyUtils {
   public static String originalDatedServiceJourneyRef(
     DatedServiceJourney datedServiceJourney
   ) {
+    if (datedServiceJourney.getReplacedJourneys() == null) {
+      return null;
+    }
     return datedServiceJourney
       .getReplacedJourneys()
       .getDatedVehicleJourneyRefOrNormalDatedVehicleJourneyRef()

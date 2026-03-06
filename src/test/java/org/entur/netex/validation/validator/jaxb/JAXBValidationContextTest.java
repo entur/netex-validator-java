@@ -16,7 +16,7 @@ import org.entur.netex.validation.validator.model.TransportSubMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
+import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
 import org.rutebanken.netex.model.BusSubmodeEnumeration;
 import org.rutebanken.netex.model.JourneyPattern;
 import org.rutebanken.netex.model.JourneyPatternRefStructure;
@@ -42,7 +42,7 @@ class JAXBValidationContextTest {
   void setUp() {
     Line line = new Line()
       .withId("TST:Line:1")
-      .withTransportMode(AllVehicleModesOfTransportEnumeration.BUS)
+      .withTransportMode(AllPublicTransportModesEnumeration.BUS)
       .withTransportSubmode(
         new TransportSubmodeStructure().withBusSubmode(BusSubmodeEnumeration.LOCAL_BUS)
       );
@@ -140,10 +140,7 @@ class JAXBValidationContextTest {
       journeyPattern
     );
     assertNotNull(transportModeAndSubMode);
-    assertEquals(
-      AllVehicleModesOfTransportEnumeration.BUS,
-      transportModeAndSubMode.mode()
-    );
+    assertEquals(AllPublicTransportModesEnumeration.BUS, transportModeAndSubMode.mode());
     assertEquals(
       new TransportSubMode(BusSubmodeEnumeration.LOCAL_BUS.value()),
       transportModeAndSubMode.subMode()
@@ -166,10 +163,7 @@ class JAXBValidationContextTest {
       serviceJourney
     );
     assertNotNull(transportModeAndSubMode);
-    assertEquals(
-      AllVehicleModesOfTransportEnumeration.BUS,
-      transportModeAndSubMode.mode()
-    );
+    assertEquals(AllPublicTransportModesEnumeration.BUS, transportModeAndSubMode.mode());
     assertEquals(
       new TransportSubMode(BusSubmodeEnumeration.LOCAL_BUS.value()),
       transportModeAndSubMode.subMode()
@@ -178,7 +172,7 @@ class JAXBValidationContextTest {
 
   @Test
   void transportModeAndSubModeDefinedOnServiceJourneyFromServiceJourney() {
-    serviceJourney.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
+    serviceJourney.withTransportMode(AllPublicTransportModesEnumeration.RAIL);
     serviceJourney.withTransportSubmode(
       new TransportSubmodeStructure().withRailSubmode(RailSubmodeEnumeration.LOCAL)
     );
@@ -197,10 +191,7 @@ class JAXBValidationContextTest {
       serviceJourney
     );
     assertNotNull(transportModeAndSubMode);
-    assertEquals(
-      AllVehicleModesOfTransportEnumeration.RAIL,
-      transportModeAndSubMode.mode()
-    );
+    assertEquals(AllPublicTransportModesEnumeration.RAIL, transportModeAndSubMode.mode());
     assertEquals(
       new TransportSubMode(RailSubmodeEnumeration.LOCAL.value()),
       transportModeAndSubMode.subMode()

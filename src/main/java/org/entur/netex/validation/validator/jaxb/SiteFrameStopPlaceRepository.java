@@ -2,6 +2,7 @@ package org.entur.netex.validation.validator.jaxb;
 
 import javax.annotation.Nullable;
 import org.entur.netex.index.api.NetexEntitiesIndex;
+import org.entur.netex.validation.validator.model.MultilingualStringValue;
 import org.entur.netex.validation.validator.model.QuayCoordinates;
 import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.StopPlaceId;
@@ -69,10 +70,8 @@ public class SiteFrameStopPlaceRepository implements StopPlaceRepository {
     if (stopPlaceId == null) {
       return null;
     }
-    return netexEntitiesIndex
-      .getStopPlaceIndex()
-      .getLatestVersion(stopPlaceId)
-      .getName()
-      .getValue();
+    return MultilingualStringValue.of(
+      netexEntitiesIndex.getStopPlaceIndex().getLatestVersion(stopPlaceId).getName()
+    );
   }
 }
