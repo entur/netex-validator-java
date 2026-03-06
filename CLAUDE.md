@@ -10,16 +10,16 @@ A Java library for validating NeTEx (Network Timetable Exchange) datasets agains
 
 ```bash
 # Build (skip prettier during development)
-mvn install -P prettierSkip
+mvn install -Dprettier.skip=true
 
 # Run all tests (skip prettier)
-mvn test -P prettierSkip
+mvn test -Dprettier.skip=true
 
 # Run a single test class
-mvn test -P prettierSkip -pl . -Dtest=ClassName
+mvn test -Dprettier.skip=true -Dtest=ClassName
 
 # Run a single test method
-mvn test -P prettierSkip -pl . -Dtest=ClassName#methodName
+mvn test -Dprettier.skip=true -Dtest=ClassName#methodName
 
 # Format code with prettier (run before committing)
 mvn prettier:write
@@ -28,7 +28,7 @@ mvn prettier:write
 mvn validate -P prettierCheck
 ```
 
-Java 17 is required. The project uses prettier-java for code formatting (runs in the `validate` phase by default).
+Java 17 is required. The project uses prettier-java for code formatting (runs in the `validate` phase by default). Use `-Dprettier.skip=true` to skip formatting during development.
 
 ## Architecture
 
