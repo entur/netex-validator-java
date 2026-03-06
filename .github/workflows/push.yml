@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+      - update_netex_1_16_jakarta
+      - upgrade-netex-java-model-3
   pull_request:
     branches:
       - main
@@ -27,7 +29,7 @@ jobs:
           wget https://raw.githubusercontent.com/entur/ror-maven-settings/master/.m2/settings_release_maven_central.xml -O .github/workflows/settings.xml
       - uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: liberica
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -70,3 +72,12 @@ jobs:
     with:
       push_to_repo: true
       snapshot: false
+  publish-snapshot:
+    if: github.repository_owner == 'entur' && github.event_name == 'push' && (github.ref == 'refs/heads/update_netex_1_16_jakarta' || github.ref == 'refs/heads/upgrade-netex-java-model-3')
+    needs: [maven-package]
+    name: Publish snapshot to maven central
+    uses: entur/gha-maven-central/.github/workflows/maven-publish.yml@v1
+    secrets: inherit
+    with:
+      push_to_repo: true
+      snapshot: true
