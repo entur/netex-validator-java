@@ -56,7 +56,7 @@
         <jdk.version>17</jdk.version>
 
         <netex-java-model.version>2.0.15.2</netex-java-model.version>
-        <netex-parser-java.version>3.1.73</netex-parser-java.version>
+        <netex-parser-java.version>3.1.76</netex-parser-java.version>
         <saxon.version>12.9</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.6</snakeyaml.version>
@@ -93,7 +93,7 @@
         <prettier-java.version>2.1.0</prettier-java.version>
         <prettier-maven-plugin.version>0.22</prettier-maven-plugin.version>
         <plugin.prettier.goal>write</plugin.prettier.goal>
-        <maven-shade-plugin.version>3.6.1</maven-shade-plugin.version>
+        <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
 
         <!-- empty argLine property, the value is set up by Jacoco during unit tests execution -->
         <argLine/>
