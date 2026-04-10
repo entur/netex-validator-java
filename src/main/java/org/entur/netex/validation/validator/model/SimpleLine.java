@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.rutebanken.netex.model.FlexibleLine;
 import org.rutebanken.netex.model.Line;
-import org.rutebanken.netex.model.MultilingualString;
 
 /**
  * Light-way representation of a NeTEx Line.
@@ -21,7 +20,7 @@ public record SimpleLine(String lineId, String lineName, String fileName) {
   public static SimpleLine of(Line line, String fileName) {
     return new SimpleLine(
       line.getId(),
-      Optional.ofNullable(line.getName()).map(MultilingualString::getValue).orElse(null),
+      Optional.ofNullable(line.getName()).map(MultilingualStringValue::of).orElse(null),
       fileName
     );
   }
@@ -31,7 +30,7 @@ public record SimpleLine(String lineId, String lineName, String fileName) {
       flexibleLine.getId(),
       Optional
         .ofNullable(flexibleLine.getName())
-        .map(MultilingualString::getValue)
+        .map(MultilingualStringValue::of)
         .orElse(null),
       fileName
     );
