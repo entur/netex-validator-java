@@ -104,4 +104,31 @@ class ReferenceToValidEntityTypeValidatorTest {
     );
     Assertions.assertTrue(validationIssues.isEmpty());
   }
+
+  @Test
+  void testDatedVehicleJourneyRefReferencingDatedServiceJourney() {
+    IdVersion idVersion = new IdVersion(
+      "XXX:DatedServiceJourney:1",
+      null,
+      "DatedVehicleJourneyRef",
+      null,
+      null,
+      0,
+      0
+    );
+    List<IdVersion> localRefs = List.of(idVersion);
+    XPathValidationContext xPathValidationContext = new XPathValidationContext(
+      null,
+      null,
+      TEST_CODESPACE,
+      null,
+      Set.of(),
+      localRefs,
+      validationReport.getValidationReportId()
+    );
+    List<ValidationIssue> validationIssues = referenceToValidEntityTypeValidator.validate(
+      xPathValidationContext
+    );
+    Assertions.assertTrue(validationIssues.isEmpty());
+  }
 }
