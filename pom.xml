@@ -57,13 +57,13 @@
 
         <netex-java-model.version>2.0.16</netex-java-model.version>
         <netex-parser-java.version>4.0.0</netex-parser-java.version>
-        <saxon.version>12.9</saxon.version>
+        <saxon.version>12.10</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.6</snakeyaml.version>
         <slf4j.version>2.0.17</slf4j.version>
 
-        <zt-zip.version>1.17</zt-zip.version>
-        <junit.version>6.0.3</junit.version>
+        <zt-zip.version>1.18.2</zt-zip.version>
+        <junit.version>6.1.2</junit.version>
         <mockito-core.version>5.23.0</mockito-core.version>
         <logback-classic.version>1.5.32</logback-classic.version>
 
@@ -79,13 +79,13 @@
         <maven-jar-plugin.version>3.5.0</maven-jar-plugin.version>
         <maven-clean-plugin.version>3.5.0</maven-clean-plugin.version>
         <maven-install-plugin.version>3.1.4</maven-install-plugin.version>
-        <maven-site-plugin.version>3.21.0</maven-site-plugin.version>
+        <maven-site-plugin.version>3.22.0</maven-site-plugin.version>
         <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
         <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
         <maven-scm-provider-gitexe.version>2.1.0</maven-scm-provider-gitexe.version>
         <maven-scm-api.version>2.1.0</maven-scm-api.version>
         <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
-        <sonar-maven-plugin.version>5.5.0.6356</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
         <wagon-ssh-external.version>3.5.3</wagon-ssh-external.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <dependency-check-maven.version>12.2.0</dependency-check-maven.version>
@@ -104,7 +104,7 @@
         <!-- GPG configuration for jar signing-->
         <gpg.executable>gpg</gpg.executable>
         <gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
-        <jreleaser-maven-plugin.version>1.23.0</jreleaser-maven-plugin.version>
+        <jreleaser-maven-plugin.version>1.25.0</jreleaser-maven-plugin.version>
     </properties>
 
     <dependencies>
