@@ -1,0 +1,67 @@
+# publiccode.yml metadata, see https://yml.publiccode.tools/
+publiccodeYmlVersion: "0.7.0"
+
+name: NeTEx validator Java
+url: https://github.com/entur/netex-validator-java
+
+platforms:
+  - linux
+  - windows
+  - mac
+
+categories:
+  - it-development
+  - data-collection
+
+developmentStatus: stable
+softwareType: library
+
+organisation:
+  name: Entur AS
+  uri: https://entur.no
+
+usedBy:
+  - Norway (nationwide), Entur AS
+
+intendedAudience:
+  scope:
+    - transportation
+  countries:
+    - "NO"
+
+description:
+  en:
+    localisedName: NeTEx validator Java
+    shortDescription: Java library that validates NeTEx datasets and produces a validation report.
+    longDescription: >
+      NeTEx validator Java is a library for validating NeTEx timetable data. It analyses a NeTEx dataset and
+      returns a validation report in which every finding names the rule that was broken, a context-specific
+      message, a severity of INFO, WARNING or ERROR, and the file the finding belongs to.
+      Validation runs in stages. XML schema validation happens first and blocks the rest if it fails. After that
+      the runner executes configurable XPath validators, which assert rules with XPath queries on the document,
+      and JAXB validators, which navigate an object model of the document and can express more complex rules.
+      The library targets datasets that follow the Nordic NeTEx Profile and expects its packaging and naming
+      conventions, and it can be extended with custom validators.
+    documentation: https://github.com/entur/netex-validator-java/blob/main/README.md
+    features:
+      - NeTEx XML schema validation
+      - Configurable XPath validation rules
+      - JAXB validators over an object model of the document
+      - Structured validation report with rule name, message, severity and file
+      - Extensible with custom validators
+      - Built for the Nordic NeTEx Profile
+
+legal:
+  license: EUPL-1.2
+  mainCopyrightOwner: Entur AS
+
+maintenance:
+  type: internal
+  contacts:
+    - name: Entur ROR (Open Data and Journey Planning)
+      email: kollektivdata@entur.org
+
+localisation:
+  localisationReady: false
+  availableLanguages:
+    - en
