@@ -21,6 +21,21 @@ class NetexSchemaValidatorTest {
         </PublicationDelivery>
         """;
 
+  private static final String NETEX_2_0_FRAGMENT_VALID =
+    """
+        <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="2.0:NO-NeTEx-networktimetable:1.5">
+          <PublicationTimestamp>2021-10-07T13:40:22.872</PublicationTimestamp>
+          <ParticipantRef>RB</ParticipantRef>
+        </PublicationDelivery>
+        """;
+
+  private static final String NETEX_2_0_FRAGMENT_INVALID =
+    """
+        <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="2.0:NO-NeTEx-networktimetable:1.5">
+          <PublicationTimestamp>2021-10-07T13:40:22.872</PublicationTimestamp>
+        </PublicationDelivery>
+        """;
+
   private static final String NETEX_FRAGMENT_INVALID =
     """
         <PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ns2="http://www.opengis.net/gml/3.2" xmlns:ns3="http://www.siri.org.uk/siri" version="1.15:NO-NeTEx-networktimetable:1.5">
@@ -43,6 +58,18 @@ class NetexSchemaValidatorTest {
   void validateValidDocument() {
     List<ValidationIssue> validationIssues = validate(NETEX_FRAGMENT_VALID);
     assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void validateValidNetex20Document() {
+    List<ValidationIssue> validationIssues = validate(NETEX_2_0_FRAGMENT_VALID);
+    assertTrue(validationIssues.isEmpty());
+  }
+
+  @Test
+  void validateInvalidNetex20Document() {
+    List<ValidationIssue> validationIssues = validate(NETEX_2_0_FRAGMENT_INVALID);
+    assertEquals(1, validationIssues.size());
   }
 
   @Test
