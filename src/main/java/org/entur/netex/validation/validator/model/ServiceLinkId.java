@@ -2,9 +2,9 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.LinkInJourneyPattern;
-import org.rutebanken.netex.model.ServiceLink;
-import org.rutebanken.netex.model.VersionOfObjectRefStructure;
+import org.entur.netex2.model.LinkInJourneyPattern;
+import org.entur.netex2.model.ServiceLink;
+import org.entur.netex2.model.VersionOfObjectRefStructure;
 
 /**
  * The NeTEx id of a ServiceLink.

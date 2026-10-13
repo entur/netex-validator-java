@@ -2,8 +2,8 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.ServiceJourneyInterchange;
-import org.rutebanken.netex.model.VersionOfObjectRefStructure;
+import org.entur.netex2.model.ServiceJourneyInterchange;
+import org.entur.netex2.model.VersionOfObjectRefStructure;
 
 public record ServiceJourneyInterchangeInfo(
   String filename,

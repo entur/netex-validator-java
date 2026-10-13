@@ -1,16 +1,16 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
-import static org.rutebanken.netex.model.AirSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.BusSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.CoachSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.FunicularSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.MetroSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.RailSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.SnowAndIceSubmodeEnumeration.SNOW_COACH;
-import static org.rutebanken.netex.model.TaxiSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.TelecabinSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.TramSubmodeEnumeration.*;
-import static org.rutebanken.netex.model.WaterSubmodeEnumeration.*;
+import static org.entur.netex2.model.AirSubmodeEnumeration.*;
+import static org.entur.netex2.model.BusSubmodeEnumeration.*;
+import static org.entur.netex2.model.CoachSubmodeEnumeration.*;
+import static org.entur.netex2.model.FunicularSubmodeEnumeration.*;
+import static org.entur.netex2.model.MetroSubmodeEnumeration.*;
+import static org.entur.netex2.model.RailSubmodeEnumeration.*;
+import static org.entur.netex2.model.SnowAndIceSubmodeEnumeration.SNOW_COACH;
+import static org.entur.netex2.model.TaxiSubmodeEnumeration.*;
+import static org.entur.netex2.model.TelecabinSubmodeEnumeration.*;
+import static org.entur.netex2.model.TramSubmodeEnumeration.*;
+import static org.entur.netex2.model.WaterSubmodeEnumeration.*;
 
 import net.sf.saxon.s9api.XdmNode;
 import org.entur.netex.validation.validator.Severity;

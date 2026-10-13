@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
-import org.rutebanken.netex.model.PurchaseWhenEnumeration;
+import org.entur.netex2.model.PurchaseWhenEnumeration;
 
 /**
  * Validate the "booking when" properties against the Nordic NeTEx profile.

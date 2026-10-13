@@ -2,8 +2,8 @@ package org.entur.netex.validation.validator.jaxb.support;
 
 import jakarta.xml.bind.JAXBElement;
 import javax.annotation.Nullable;
-import org.rutebanken.netex.model.DatedServiceJourney;
-import org.rutebanken.netex.model.VehicleJourneyRefStructure;
+import org.entur.netex2.model.DatedServiceJourney;
+import org.entur.netex2.model.VehicleJourneyRefStructure;
 
 public class DatedServiceJourneyUtils {
 
@@ -16,6 +16,9 @@ public class DatedServiceJourneyUtils {
   public static String originalDatedServiceJourneyRef(
     DatedServiceJourney datedServiceJourney
   ) {
+    if (datedServiceJourney.getReplacedJourneys() == null) {
+      return null;
+    }
     return datedServiceJourney
       .getReplacedJourneys()
       .getDatedVehicleJourneyRefOrNormalDatedVehicleJourneyRef()

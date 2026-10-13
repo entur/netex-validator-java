@@ -3,7 +3,7 @@ package org.entur.netex.validation.validator.model;
 import java.math.BigInteger;
 import java.time.LocalTime;
 import java.util.Optional;
-import org.rutebanken.netex.model.TimetabledPassingTime;
+import org.entur.netex2.model.TimetabledPassingTime;
 
 /**
  * The NeTEx id of ScheduledStopPoint.

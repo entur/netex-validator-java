@@ -9,7 +9,7 @@ import org.entur.netex.validation.validator.ValidationContext;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.jaxb.support.DatedServiceJourneyUtils;
 import org.entur.netex.validation.validator.model.*;
-import org.rutebanken.netex.model.*;
+import org.entur.netex2.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -332,8 +332,7 @@ public class JAXBValidationContext implements ValidationContext {
    */
   @Nullable
   public TransportModeAndSubMode transportModeAndSubMode(ServiceJourney serviceJourney) {
-    AllVehicleModesOfTransportEnumeration transportMode =
-      serviceJourney.getTransportMode();
+    AllPublicTransportModesEnumeration transportMode = serviceJourney.getTransportMode();
 
     TransportSubmodeStructure subModeStructure = serviceJourney.getTransportSubmode();
 

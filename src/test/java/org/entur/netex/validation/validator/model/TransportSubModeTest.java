@@ -3,12 +3,12 @@ package org.entur.netex.validation.validator.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.RailSubmodeEnumeration;
+import org.entur.netex2.model.SelfDriveSubmodeEnumeration;
+import org.entur.netex2.model.StopPlace;
+import org.entur.netex2.model.TransportSubmodeStructure;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
-import org.rutebanken.netex.model.RailSubmodeEnumeration;
-import org.rutebanken.netex.model.SelfDriveSubmodeEnumeration;
-import org.rutebanken.netex.model.StopPlace;
-import org.rutebanken.netex.model.TransportSubmodeStructure;
 
 class TransportSubModeTest {
 
@@ -28,7 +28,7 @@ class TransportSubModeTest {
   @Test
   void testMissingTransportSubModeOnStopPlace() {
     StopPlace stopPlace = new StopPlace();
-    stopPlace.withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL);
+    stopPlace.withTransportMode(AllPublicTransportModesEnumeration.RAIL);
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(stopPlace);
     assertFalse(transportSubMode.isPresent());
   }
@@ -37,7 +37,7 @@ class TransportSubModeTest {
   void testTransportModeAndSubModeOnStopPlace() {
     StopPlace stopPlace = new StopPlace();
     stopPlace
-      .withTransportMode(AllVehicleModesOfTransportEnumeration.RAIL)
+      .withTransportMode(AllPublicTransportModesEnumeration.RAIL)
       .withRailSubmode(RailSubmodeEnumeration.LOCAL);
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(stopPlace);
     assertTrue(transportSubMode.isPresent());
@@ -53,7 +53,7 @@ class TransportSubModeTest {
   @Test
   void testMissingTransportSubModeFromStructure() {
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      AllVehicleModesOfTransportEnumeration.RAIL,
+      AllPublicTransportModesEnumeration.RAIL,
       null
     );
     assertFalse(transportSubMode.isPresent());
@@ -62,7 +62,7 @@ class TransportSubModeTest {
   @Test
   void testUnknownTransportSubMode() {
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      AllVehicleModesOfTransportEnumeration.RAIL,
+      AllPublicTransportModesEnumeration.RAIL,
       new TransportSubmodeStructure()
         .withSelfDriveSubmode(SelfDriveSubmodeEnumeration.ALL_VEHICLES)
     );
@@ -72,7 +72,7 @@ class TransportSubModeTest {
   @Test
   void testTransportModeAndSubModeFromStructure() {
     Optional<TransportSubMode> transportSubMode = TransportSubMode.of(
-      AllVehicleModesOfTransportEnumeration.RAIL,
+      AllPublicTransportModesEnumeration.RAIL,
       new TransportSubmodeStructure().withRailSubmode(RailSubmodeEnumeration.LOCAL)
     );
     assertTrue(transportSubMode.isPresent());

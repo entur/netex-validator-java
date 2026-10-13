@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.*;
+import org.entur.netex2.model.*;
 
 /**
  * The NeTEx id of OperatingDay.

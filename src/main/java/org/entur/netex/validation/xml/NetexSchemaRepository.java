@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.validation.Schema;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.validation.NeTExValidator;
+import org.entur.netex2.validation.NeTExValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -44,7 +44,7 @@ public final class NetexSchemaRepository {
       version
     );
     try {
-      return new NeTExValidator(version).getSchema();
+      return NeTExValidator.getNeTExValidator(version).getSchema();
     } catch (IOException | SAXException e) {
       throw new NetexValidationException("Could not create NeTEx schema", e);
     }
@@ -84,6 +84,8 @@ public final class NetexSchemaRepository {
           return NeTExValidator.NetexVersion.v1_15;
         case "1.16":
           return NeTExValidator.NetexVersion.v1_16;
+        case "2.0":
+          return NeTExValidator.NetexVersion.v2_0;
         default:
       }
     }

@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
-import org.rutebanken.netex.model.PurchaseMomentEnumeration;
+import org.entur.netex2.model.PurchaseMomentEnumeration;
 
 /**
  * Validate the "buy when" access properties against the Nordic NeTEx profile.

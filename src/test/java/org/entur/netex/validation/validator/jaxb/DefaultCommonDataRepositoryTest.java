@@ -10,11 +10,11 @@ import org.entur.netex.validation.test.jaxb.support.JAXBUtils;
 import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.ScheduledStopPointId;
 import org.entur.netex.validation.validator.model.ServiceLinkId;
+import org.entur.netex2.model.PassengerStopAssignment;
+import org.entur.netex2.model.QuayRefStructure;
+import org.entur.netex2.model.ScheduledStopPointRefStructure;
+import org.entur.netex2.model.ServiceLink;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.PassengerStopAssignment;
-import org.rutebanken.netex.model.QuayRefStructure;
-import org.rutebanken.netex.model.ScheduledStopPointRefStructure;
-import org.rutebanken.netex.model.ServiceLink;
 
 class DefaultCommonDataRepositoryTest {
 

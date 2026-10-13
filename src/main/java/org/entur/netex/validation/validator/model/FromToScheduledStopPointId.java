@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.model;
 
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.ServiceLink;
+import org.entur.netex2.model.ServiceLink;
 
 /**
  * The pair of ScheduledStopPoint ids representing the "from" and "to" ends of a ServiceLink.

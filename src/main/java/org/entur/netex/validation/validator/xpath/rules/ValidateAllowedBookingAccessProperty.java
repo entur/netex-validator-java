@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
-import org.rutebanken.netex.model.BookingAccessEnumeration;
+import org.entur.netex2.model.BookingAccessEnumeration;
 
 /**
  * Validate the booking access properties against the Nordic NeTEx profile.

@@ -12,14 +12,14 @@ import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.StopPlaceId;
 import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
 import org.entur.netex.validation.validator.model.TransportSubMode;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.BusSubmodeEnumeration;
+import org.entur.netex2.model.LocationStructure;
+import org.entur.netex2.model.MultilingualString;
+import org.entur.netex2.model.Quay;
+import org.entur.netex2.model.SimplePoint_VersionStructure;
+import org.entur.netex2.model.StopPlace;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
-import org.rutebanken.netex.model.BusSubmodeEnumeration;
-import org.rutebanken.netex.model.LocationStructure;
-import org.rutebanken.netex.model.MultilingualString;
-import org.rutebanken.netex.model.Quay;
-import org.rutebanken.netex.model.SimplePoint_VersionStructure;
-import org.rutebanken.netex.model.StopPlace;
 
 class SiteFrameStopPlaceRepositoryTest {
 
@@ -28,8 +28,8 @@ class SiteFrameStopPlaceRepositoryTest {
   private static final int QUAY_LATITUDE = 1;
   private static final int QUAY_LONGITUDE = 2;
   private static final String STOP_PLACE_NAME = "STOP_PLACE_NAME";
-  private static final AllVehicleModesOfTransportEnumeration STOP_PLACE_TRANSPORT_MODE =
-    AllVehicleModesOfTransportEnumeration.BUS;
+  private static final AllPublicTransportModesEnumeration STOP_PLACE_TRANSPORT_MODE =
+    AllPublicTransportModesEnumeration.BUS;
   private static final BusSubmodeEnumeration STOP_PLACE_TRANSPORT_SUBMODE =
     BusSubmodeEnumeration.LOCAL_BUS;
 
@@ -121,7 +121,7 @@ class SiteFrameStopPlaceRepositoryTest {
   void testGetStopPlaceNameForQuayId() {
     NetexEntitiesIndex netexEntitiesIndex = new NetexEntitiesIndexImpl();
     StopPlace stopPlace = new StopPlace();
-    stopPlace.setName(new MultilingualString().withValue(STOP_PLACE_NAME));
+    stopPlace.setName(new MultilingualString().withContent(STOP_PLACE_NAME));
     netexEntitiesIndex.getStopPlaceIndex().put(STOP_PLACE_ID, List.of(stopPlace));
     Quay quay = new Quay();
     netexEntitiesIndex.getQuayIndex().put(QUAY_ID, List.of(quay));

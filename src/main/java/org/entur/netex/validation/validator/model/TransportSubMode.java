@@ -3,9 +3,9 @@ package org.entur.netex.validation.validator.model;
 import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.AllVehicleModesOfTransportEnumeration;
-import org.rutebanken.netex.model.StopPlace;
-import org.rutebanken.netex.model.TransportSubmodeStructure;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.StopPlace;
+import org.entur.netex2.model.TransportSubmodeStructure;
 
 /**
  * A NeTEx transport sub-mode.
@@ -64,7 +64,7 @@ public record TransportSubMode(String name) {
   }
 
   public static Optional<TransportSubMode> of(
-    AllVehicleModesOfTransportEnumeration transportMode,
+    AllPublicTransportModesEnumeration transportMode,
     TransportSubmodeStructure subModeStructure
   ) {
     if (transportMode == null || subModeStructure == null) {

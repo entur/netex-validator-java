@@ -3,8 +3,8 @@ package org.entur.netex.validation.validator.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalTime;
+import org.entur.netex2.model.TimetabledPassingTime;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.TimetabledPassingTime;
 
 class ServiceJourneyStopTest {
 
