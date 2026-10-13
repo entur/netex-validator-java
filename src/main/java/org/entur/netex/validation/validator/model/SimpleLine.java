@@ -3,8 +3,8 @@ package org.entur.netex.validation.validator.model;
 import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.FlexibleLine;
-import org.rutebanken.netex.model.Line;
+import org.entur.netex2.model.FlexibleLine;
+import org.entur.netex2.model.Line;
 
 /**
  * Light-way representation of a NeTEx Line.

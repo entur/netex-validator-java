@@ -13,20 +13,20 @@ import org.entur.netex.validation.validator.DataLocation;
 import org.entur.netex.validation.validator.id.IdVersion;
 import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
 import org.entur.netex.validation.validator.model.TransportSubMode;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.BusSubmodeEnumeration;
+import org.entur.netex2.model.JourneyPattern;
+import org.entur.netex2.model.JourneyPatternRefStructure;
+import org.entur.netex2.model.Line;
+import org.entur.netex2.model.LineRefStructure;
+import org.entur.netex2.model.RailSubmodeEnumeration;
+import org.entur.netex2.model.Route;
+import org.entur.netex2.model.RouteRefStructure;
+import org.entur.netex2.model.ServiceJourney;
+import org.entur.netex2.model.TransportSubmodeStructure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
-import org.rutebanken.netex.model.BusSubmodeEnumeration;
-import org.rutebanken.netex.model.JourneyPattern;
-import org.rutebanken.netex.model.JourneyPatternRefStructure;
-import org.rutebanken.netex.model.Line;
-import org.rutebanken.netex.model.LineRefStructure;
-import org.rutebanken.netex.model.RailSubmodeEnumeration;
-import org.rutebanken.netex.model.Route;
-import org.rutebanken.netex.model.RouteRefStructure;
-import org.rutebanken.netex.model.ServiceJourney;
-import org.rutebanken.netex.model.TransportSubmodeStructure;
 
 class JAXBValidationContextTest {
 

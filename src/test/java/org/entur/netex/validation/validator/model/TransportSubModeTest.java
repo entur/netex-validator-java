@@ -3,12 +3,12 @@ package org.entur.netex.validation.validator.model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.RailSubmodeEnumeration;
+import org.entur.netex2.model.SelfDriveSubmodeEnumeration;
+import org.entur.netex2.model.StopPlace;
+import org.entur.netex2.model.TransportSubmodeStructure;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
-import org.rutebanken.netex.model.RailSubmodeEnumeration;
-import org.rutebanken.netex.model.SelfDriveSubmodeEnumeration;
-import org.rutebanken.netex.model.StopPlace;
-import org.rutebanken.netex.model.TransportSubmodeStructure;
 
 class TransportSubModeTest {
 

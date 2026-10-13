@@ -15,7 +15,7 @@ import org.entur.netex.validation.validator.jaxb.JAXBValidator;
 import org.entur.netex.validation.validator.jaxb.SiteFrameStopPlaceRepository;
 import org.entur.netex.validation.validator.schema.NetexSchemaValidator;
 import org.entur.netex.validation.xml.NetexXMLParser;
-import org.rutebanken.netex.model.ServiceJourney;
+import org.entur.netex2.model.ServiceJourney;
 
 /**
  * Minimal executable class that demonstrates how to run a validation with JAXB validators.

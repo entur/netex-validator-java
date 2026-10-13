@@ -28,7 +28,7 @@ mvn prettier:write
 mvn validate -P prettierCheck
 ```
 
-Java 17 is required. The project uses prettier-java for code formatting (runs in the `validate` phase by default). Use `-Dprettier.skip=true` to skip formatting during development.
+Java 21 is required. The project uses prettier-java for code formatting (runs in the `validate` phase by default). Use `-Dprettier.skip=true` to skip formatting during development.
 
 ## Architecture
 

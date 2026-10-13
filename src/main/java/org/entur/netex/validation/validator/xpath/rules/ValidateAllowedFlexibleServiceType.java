@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
-import org.rutebanken.netex.model.FlexibleServiceEnumeration;
+import org.entur.netex2.model.FlexibleServiceEnumeration;
 
 /**
  * Validate the flexible service type against the Nordic NeTEx profile.

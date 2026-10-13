@@ -2,8 +2,8 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.ScheduledStopPointRefStructure;
-import org.rutebanken.netex.model.StopPointInJourneyPattern;
+import org.entur.netex2.model.ScheduledStopPointRefStructure;
+import org.entur.netex2.model.StopPointInJourneyPattern;
 
 /**
  * The NeTEx id od a ScheduledStopPoint.

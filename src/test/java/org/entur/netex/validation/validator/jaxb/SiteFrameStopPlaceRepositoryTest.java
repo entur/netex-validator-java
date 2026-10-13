@@ -12,14 +12,14 @@ import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.StopPlaceId;
 import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
 import org.entur.netex.validation.validator.model.TransportSubMode;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.BusSubmodeEnumeration;
+import org.entur.netex2.model.LocationStructure;
+import org.entur.netex2.model.MultilingualString;
+import org.entur.netex2.model.Quay;
+import org.entur.netex2.model.SimplePoint_VersionStructure;
+import org.entur.netex2.model.StopPlace;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
-import org.rutebanken.netex.model.BusSubmodeEnumeration;
-import org.rutebanken.netex.model.LocationStructure;
-import org.rutebanken.netex.model.MultilingualString;
-import org.rutebanken.netex.model.Quay;
-import org.rutebanken.netex.model.SimplePoint_VersionStructure;
-import org.rutebanken.netex.model.StopPlace;
 
 class SiteFrameStopPlaceRepositoryTest {
 

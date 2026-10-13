@@ -5,8 +5,8 @@ import java.util.Optional;
 import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.streams.XdmStream;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.ServiceJourney;
-import org.rutebanken.netex.model.VehicleJourneyRefStructure;
+import org.entur.netex2.model.ServiceJourney;
+import org.entur.netex2.model.VehicleJourneyRefStructure;
 
 public record ServiceJourneyId(String id) {
   public ServiceJourneyId {

@@ -2,9 +2,9 @@ package org.entur.netex.validation.validator.model;
 
 import java.util.Objects;
 import javax.annotation.Nullable;
-import org.rutebanken.netex.model.AllPublicTransportModesEnumeration;
-import org.rutebanken.netex.model.StopPlace;
-import org.rutebanken.netex.model.TransportSubmodeStructure;
+import org.entur.netex2.model.AllPublicTransportModesEnumeration;
+import org.entur.netex2.model.StopPlace;
+import org.entur.netex2.model.TransportSubmodeStructure;
 
 /**
  * A pair of mode and sub-mode.

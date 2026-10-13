@@ -1,7 +1,7 @@
 package org.entur.netex.validation.validator.xpath.rules;
 
 import org.entur.netex.validation.validator.Severity;
-import org.rutebanken.netex.model.FlexibleLineTypeEnumeration;
+import org.entur.netex2.model.FlexibleLineTypeEnumeration;
 
 /**
  * Validate the flexible line type against the Nordic NeTEx profile.

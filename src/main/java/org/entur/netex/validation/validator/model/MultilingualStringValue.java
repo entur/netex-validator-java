@@ -3,11 +3,11 @@ package org.entur.netex.validation.validator.model;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.rutebanken.netex.model.MultilingualString;
+import org.entur.netex2.model.MultilingualString;
 
 /**
  * Helper for extracting string values from NeTEx MultilingualString.
- * In NeTEx 2.0 (netex-java-model 3.x), MultilingualString uses a mixed content model
+ * In NeTEx 2.0 (netex2-java-model 3.x), MultilingualString uses a mixed content model
  * where text is stored in getContent() as a List of Serializable objects,
  * replacing the previous getValue() method.
  */

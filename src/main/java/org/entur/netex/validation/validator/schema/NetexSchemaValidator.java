@@ -10,7 +10,7 @@ import javax.xml.validation.Validator;
 import org.entur.netex.validation.exception.NetexValidationException;
 import org.entur.netex.validation.validator.*;
 import org.entur.netex.validation.xml.NetexSchemaRepository;
-import org.rutebanken.netex.validation.NeTExValidator;
+import org.entur.netex2.validation.NeTExValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.ErrorHandler;

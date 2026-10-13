@@ -55,7 +55,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jdk.version>21</jdk.version>
 
-        <netex-java-model.version>3.0.0-SNAPSHOT</netex-java-model.version>
+        <netex2-java-model.version>3.0.0-SNAPSHOT</netex2-java-model.version>
         <netex-parser-java.version>5.0.0-SNAPSHOT</netex-parser-java.version>
         <saxon.version>12.10</saxon.version>
         <geotools.version>33.0</geotools.version>
@@ -110,8 +110,8 @@
     <dependencies>
         <dependency>
             <groupId>org.entur</groupId>
-            <artifactId>netex-java-model</artifactId>
-            <version>${netex-java-model.version}</version>
+            <artifactId>netex2-java-model</artifactId>
+            <version>${netex2-java-model.version}</version>
         </dependency>
         <dependency>
             <groupId>org.entur</groupId>

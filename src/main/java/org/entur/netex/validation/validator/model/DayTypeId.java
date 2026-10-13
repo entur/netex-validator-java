@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.*;
+import org.entur.netex2.model.*;
 
 /**
  * The NeTEx id of DayType.

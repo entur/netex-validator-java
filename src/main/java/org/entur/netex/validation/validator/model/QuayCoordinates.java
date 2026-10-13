@@ -1,10 +1,10 @@
 package org.entur.netex.validation.validator.model;
 
 import org.entur.netex.validation.exception.NetexValidationException;
+import org.entur.netex2.model.LocationStructure;
+import org.entur.netex2.model.Quay;
+import org.entur.netex2.model.StopPlace;
 import org.locationtech.jts.geom.Coordinate;
-import org.rutebanken.netex.model.LocationStructure;
-import org.rutebanken.netex.model.Quay;
-import org.rutebanken.netex.model.StopPlace;
 
 /**
  * Latitude and longitude of a NeTEx Quay.

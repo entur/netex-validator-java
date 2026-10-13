@@ -7,8 +7,8 @@ import org.entur.netex.validation.validator.model.QuayCoordinates;
 import org.entur.netex.validation.validator.model.QuayId;
 import org.entur.netex.validation.validator.model.StopPlaceId;
 import org.entur.netex.validation.validator.model.TransportModeAndSubMode;
-import org.rutebanken.netex.model.Quay;
-import org.rutebanken.netex.model.StopPlace;
+import org.entur.netex2.model.Quay;
+import org.entur.netex2.model.StopPlace;
 
 /**
  * Stop place repository that retrieves stop place data from the SiteFrame in the current file.

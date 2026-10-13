@@ -3,8 +3,8 @@ package org.entur.netex.validation.validator.model;
 import java.util.Objects;
 import java.util.Optional;
 import org.entur.netex.validation.exception.NetexValidationException;
-import org.rutebanken.netex.model.Quay;
-import org.rutebanken.netex.model.QuayRefStructure;
+import org.entur.netex2.model.Quay;
+import org.entur.netex2.model.QuayRefStructure;
 
 /**
  * The NeTEx id of Quay.

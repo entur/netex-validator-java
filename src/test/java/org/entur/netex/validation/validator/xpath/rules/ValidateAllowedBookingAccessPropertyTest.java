@@ -4,9 +4,9 @@ import java.util.List;
 import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilder;
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
+import org.entur.netex2.model.BookingAccessEnumeration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.rutebanken.netex.model.BookingAccessEnumeration;
 
 class ValidateAllowedBookingAccessPropertyTest {
 

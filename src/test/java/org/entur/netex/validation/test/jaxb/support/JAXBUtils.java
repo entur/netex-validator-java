@@ -3,7 +3,7 @@ package org.entur.netex.validation.test.jaxb.support;
 import jakarta.xml.bind.JAXBElement;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
-import org.rutebanken.netex.model.VersionOfObjectRefStructure;
+import org.entur.netex2.model.VersionOfObjectRefStructure;
 
 /**
  * Utility functions to map JAXB objects.
