@@ -54,6 +54,7 @@ public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeF
     "PASSENGER_STOP_ASSIGNMENT_3";
   public static final String CODE_DESTINATION_DISPLAY_1 = "DESTINATION_DISPLAY_1";
   public static final String CODE_DESTINATION_DISPLAY_2 = "DESTINATION_DISPLAY_2";
+  public static final String CODE_DESTINATION_DISPLAY_3 = "DESTINATION_DISPLAY_3";
   public static final String CODE_SERVICE_LINK_1 = "SERVICE_LINK_1";
   public static final String CODE_SERVICE_LINK_2 = "SERVICE_LINK_2";
   public static final String CODE_SERVICE_LINK_3 = "SERVICE_LINK_3";
@@ -217,6 +218,15 @@ public class DefaultServiceFrameValidationTreeFactory implements ValidationTreeF
           "DestinationDisplay missing DestinationDisplayRef on Via",
           "Missing DestinationDisplayRef on Via",
           Severity.ERROR
+        )
+      )
+      .withRule(
+        new ValidateNotExist(
+          "destinationDisplays/DestinationDisplay/variants/DestinationDisplayVariant[not(@id)]",
+          CODE_DESTINATION_DISPLAY_3,
+          "DestinationDisplay missing id on DestinationDisplayVariant",
+          "Missing id on DestinationDisplayVariant",
+          Severity.WARNING
         )
       )
       .withRuleForLineFile(

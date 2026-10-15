@@ -47,6 +47,9 @@ class DefaultServiceFrameValidationTreeFactoryTest {
         <vias>
            <Via/>
         </vias>
+        <variants>
+          <DestinationDisplayVariant/>
+        </variants>
     </DestinationDisplay>
   </destinationDisplays>
   <stopAssignments>
@@ -281,7 +284,8 @@ class DefaultServiceFrameValidationTreeFactoryTest {
       CODE_PASSENGER_STOP_ASSIGNMENT_2,
       CODE_PASSENGER_STOP_ASSIGNMENT_3,
       CODE_DESTINATION_DISPLAY_1,
-      CODE_DESTINATION_DISPLAY_2
+      CODE_DESTINATION_DISPLAY_2,
+      CODE_DESTINATION_DISPLAY_3
     );
   }
 
