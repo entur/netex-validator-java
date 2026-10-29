@@ -33,6 +33,8 @@ public class PublicationDeliveryValidationTreeFactory implements ValidationTreeF
     new DefaultVehicleScheduleFrameValidationTreeFactory().builder();
   private ValidationTreeBuilder multipleFramesValidationTreeBuilder =
     new DefaultMultipleFramesValidationTreeFactory().builder();
+  private ValidationTreeBuilder parkingValidationTreeBuilder =
+    new DefaultParkingValidationTreeFactory().builder();
 
   @Override
   public ValidationTreeBuilder builder() {
@@ -78,6 +80,9 @@ public class PublicationDeliveryValidationTreeFactory implements ValidationTreeF
         dataObjectsValidationTree.withSubTreeBuilder(tree);
         framesInCompositeFrameValidationTree.withSubTreeBuilder(tree);
       });
+
+    dataObjectsValidationTree.withSubTreeBuilder(parkingValidationTreeBuilder);
+    framesInCompositeFrameValidationTree.withSubTreeBuilder(parkingValidationTreeBuilder);
 
     return validationTreeBuilder;
   }
@@ -182,5 +187,15 @@ public class PublicationDeliveryValidationTreeFactory implements ValidationTreeF
     ValidationTreeBuilder multipleFramesValidationTreeBuilder
   ) {
     this.multipleFramesValidationTreeBuilder = multipleFramesValidationTreeBuilder;
+  }
+
+  public ValidationTreeBuilder parkingValidationTreeBuilder() {
+    return parkingValidationTreeBuilder;
+  }
+
+  public void setParkingValidationTreeBuilder(
+    ValidationTreeBuilder parkingValidationTreeBuilder
+  ) {
+    this.parkingValidationTreeBuilder = parkingValidationTreeBuilder;
   }
 }
