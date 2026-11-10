@@ -40,6 +40,7 @@ public class ValidateAllowedTransportSubMode extends ValidateNotExist {
       RAIL_REPLACEMENT_BUS.value(),
       REGIONAL_BUS.value(),
       SCHOOL_BUS.value(),
+      SCHOOL_AND_PUBLIC_SERVICE_BUS.value(),
       SIGHTSEEING_BUS.value(),
       SHUTTLE_BUS.value(),
       // Metro
