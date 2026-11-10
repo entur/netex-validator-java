@@ -29,7 +29,7 @@ public class ValidateRestrictedPublicationOnServiceJourney extends ValidateNotEx
       "ServiceJourney restricted publication on non-school bus",
       "Restricted publication is allowed only on ServiceJourneys with transport submode " +
       SCHOOL_BUS.value(),
-      Severity.ERROR
+      Severity.WARNING
     );
   }
 }
