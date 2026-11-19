@@ -118,7 +118,40 @@ class DefaultParkingValidationTreeFactoryTest {
         </Parking>
         """;
 
+  private static final String NETEX_FRAGMENT_OVERNIGHT_DAY_OFFSET =
+    NETEX_FRAGMENT_INVALID_TIME_RANGE.replace(
+      "<EndTime>08:00:00</EndTime>",
+      "<EndTime>08:00:00</EndTime><DayOffset>1</DayOffset>"
+    );
+
+  private static final String NETEX_FRAGMENT_ZERO_DAY_OFFSET =
+    NETEX_FRAGMENT_INVALID_TIME_RANGE.replace(
+      "<EndTime>08:00:00</EndTime>",
+      "<EndTime>08:00:00</EndTime><DayOffset>0</DayOffset>"
+    );
+
   private ValidationTree validationTree;
+
+  @Test
+  void testOvernightTimebandWithPositiveDayOffsetIsAccepted() {
+    XPathRuleValidationContext context = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_OVERNIGHT_DAY_OFFSET)
+      .build();
+    assertTrue(
+      validationTree.validate(context, CODE_PARKING_TIMEBAND_INVALID_TIME_RANGE).isEmpty()
+    );
+  }
+
+  @Test
+  void testTimebandWithEndTimeBeforeStartTimeAndZeroDayOffsetIsReported() {
+    XPathRuleValidationContext context = TestValidationContextBuilder
+      .ofNetexFragment(NETEX_FRAGMENT_ZERO_DAY_OFFSET)
+      .build();
+    assertEquals(
+      1,
+      validationTree.validate(context, CODE_PARKING_TIMEBAND_INVALID_TIME_RANGE).size()
+    );
+  }
 
   @BeforeEach
   void setUp() {

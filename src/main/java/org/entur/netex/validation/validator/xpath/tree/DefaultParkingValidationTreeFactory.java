@@ -41,10 +41,10 @@ public class DefaultParkingValidationTreeFactory implements ValidationTreeFactor
       )
       .withRule(
         new ValidateNotExist(
-          "validityConditions/AvailabilityCondition/timebands/Timeband[StartTime and EndTime and StartTime != '00:00:00' and EndTime != '00:00:00' and EndTime < StartTime]",
+          "validityConditions/AvailabilityCondition/timebands/Timeband[StartTime and EndTime and StartTime != '00:00:00' and EndTime != '00:00:00' and EndTime < StartTime and not(DayOffset > 0)]",
           CODE_PARKING_TIMEBAND_INVALID_TIME_RANGE,
           "Parking Timeband EndTime before StartTime",
-          "Timeband EndTime must not be before StartTime (use 00:00:00 to denote midnight/24h)",
+          "Timeband EndTime must not be before StartTime unless DayOffset is greater than 0 (use 00:00:00 to denote midnight/24h)",
           Severity.ERROR
         )
       );

@@ -190,6 +190,24 @@ class DefaultParkingValidationTreeFactoryIntegrationTest {
     );
   }
 
+  @Test
+  void testOvernightTimebandWithDayOffsetIsAccepted() {
+    String xml = VALID_PARKING_NETEX
+      .replace("<StartTime>08:00:00</StartTime>", "<StartTime>18:00:00</StartTime>")
+      .replace(
+        "<EndTime>18:00:00</EndTime>",
+        "<EndTime>08:00:00</EndTime><DayOffset>1</DayOffset>"
+      );
+    ValidationReport report = validate(xml);
+    assertTrue(
+      !hasCode(report, CODE_PARKING_TIMEBAND_INVALID_TIME_RANGE),
+      "Did not expect " +
+      CODE_PARKING_TIMEBAND_INVALID_TIME_RANGE +
+      " but got: " +
+      parkingRuleCodes(report)
+    );
+  }
+
   private ValidationReport validate(String xml) {
     return runner.validate(
       CODESPACE,
