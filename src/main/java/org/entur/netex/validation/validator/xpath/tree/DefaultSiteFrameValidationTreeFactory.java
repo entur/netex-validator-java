@@ -14,7 +14,7 @@ public class DefaultSiteFrameValidationTreeFactory implements ValidationTreeFact
     return new ValidationTreeBuilder("Site Frame", "SiteFrame")
       .withRuleForLineFile(
         new ValidateNotExist(
-          ".",
+          ".[not(parkings/Parking)]",
           CODE_SITE_FRAME_IN_LINE_FILE,
           "SiteFrame unexpected SiteFrame in Line file",
           "Unexpected element SiteFrame. It will be ignored",
@@ -23,7 +23,7 @@ public class DefaultSiteFrameValidationTreeFactory implements ValidationTreeFact
       )
       .withRuleForCommonFile(
         new ValidateNotExist(
-          ".",
+          ".[not(parkings/Parking)]",
           CODE_SITE_FRAME_IN_COMMON_FILE,
           "SiteFrame unexpected SiteFrame in Common file",
           "Unexpected element SiteFrame. It will be ignored",
