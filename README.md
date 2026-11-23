@@ -235,6 +235,7 @@ The NeTEx validator library comes with the following rule set by default:
 | SERVICE_JOURNEY_15                       |                        ServiceJourney missing some passing times                         |
 | SERVICE_JOURNEY_16                       |                             ServiceJourney multiple versions                             |
 | SERVICE_JOURNEY_17                       |                      Non-unique NeTEx id for TimetabledPassingTime                       |
+| SERVICE_JOURNEY_18                       |                 ServiceJourney restricted publication on non-school bus                  |
 | SERVICE_JOURNEY_2                        |                           ServiceJourney illegal element Call                            |
 | SERVICE_JOURNEY_3                        |                       ServiceJourney missing element PassingTimes                        |
 | SERVICE_JOURNEY_4                        |                       ServiceJourney missing arrival and departure                       |

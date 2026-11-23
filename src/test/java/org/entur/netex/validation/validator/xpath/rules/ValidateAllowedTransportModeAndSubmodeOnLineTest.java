@@ -8,6 +8,8 @@ import org.entur.netex.validation.test.xpath.support.TestValidationContextBuilde
 import org.entur.netex.validation.validator.ValidationIssue;
 import org.entur.netex.validation.validator.xpath.XPathRuleValidationContext;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ValidateAllowedTransportModeAndSubmodeOnLineTest {
 
@@ -96,12 +98,13 @@ class ValidateAllowedTransportModeAndSubmodeOnLineTest {
     assertEquals(validateAllowedTransportMode.rule(), validationIssue.rule());
   }
 
-  @Test
-  void testValidTransportSubModeOnLine() {
+  @ParameterizedTest
+  @ValueSource(strings = { "localBus", "schoolBus", "schoolAndPublicServiceBus" })
+  void testValidTransportSubModeOnLine(String busSubmode) {
     XPathRuleValidationContext xpathRuleValidationContext = createXPathValidationContext(
       "Line",
       "<TransportMode>bus</TransportMode>",
-      "<TransportSubmode><BusSubmode>localBus</BusSubmode></TransportSubmode>"
+      "<TransportSubmode><BusSubmode>" + busSubmode + "</BusSubmode></TransportSubmode>"
     );
 
     ValidateAllowedTransportSubMode validateAllowedTransportSubMode =

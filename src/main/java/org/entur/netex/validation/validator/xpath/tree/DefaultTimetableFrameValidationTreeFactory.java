@@ -13,6 +13,7 @@ import org.entur.netex.validation.validator.xpath.rules.ValidateAtLeastOne;
 import org.entur.netex.validation.validator.xpath.rules.ValidateDuplicatedTimetabledPassingTimeId;
 import org.entur.netex.validation.validator.xpath.rules.ValidateInconsistentNumberOfTimetablePassingTimes;
 import org.entur.netex.validation.validator.xpath.rules.ValidateNotExist;
+import org.entur.netex.validation.validator.xpath.rules.ValidateRestrictedPublicationOnServiceJourney;
 
 /**
  * Construct a validation tree builder for TimetableFrames.
@@ -192,6 +193,7 @@ public class DefaultTimetableFrameValidationTreeFactory implements ValidationTre
           Severity.WARNING
         )
       )
+      .withRuleForLineFile(new ValidateRestrictedPublicationOnServiceJourney())
       .withRuleForLineFile(
         new ValidateNotExist(
           "vehicleJourneys/DatedServiceJourney[not(OperatingDayRef)]",
