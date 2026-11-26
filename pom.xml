@@ -56,7 +56,7 @@
         <jdk.version>17</jdk.version>
 
         <netex-java-model.version>2.0.16.2</netex-java-model.version>
-        <netex-parser-java.version>4.0.14</netex-parser-java.version>
+        <netex-parser-java.version>5.0.7</netex-parser-java.version>
         <saxon.version>12.10</saxon.version>
         <geotools.version>33.0</geotools.version>
         <snakeyaml.version>2.7</snakeyaml.version>
